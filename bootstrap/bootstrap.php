@@ -20,7 +20,6 @@ $dbConfig = [
     'username'  => DB_USER,
     'password'  => DB_PASSWORD,
     'charset'   => defined('DB_CHARSET') ? DB_CHARSET : 'utf8mb4',
-    'collation' => defined('DB_COLLATE') ? DB_COLLATE : 'utf8_unicode_ci',
     'prefix'    => $table_prefix,
 ];
 

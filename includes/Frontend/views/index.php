@@ -10,6 +10,17 @@
 <body <?php body_class() ?>>
     <div id="wp-client-management-root"></div>
 
+    <?php 
+        // usage of the model
+        // use WpClientManagement\Models\Post;
+
+        // $posts = Post::all();
+
+        // // echo '<pre>';
+        // print_r($posts[0]);
+        // die();
+    ?>
+
     <?php wp_footer() ?>
 </body>
 </html>
