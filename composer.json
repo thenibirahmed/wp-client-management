@@ -1,6 +1,6 @@
 {
-    "name": "nibir/codecstasy",
-    "description": "Basic WordPress Plugin Structure",
+    "name": "thenibriahmed/wp-client-managemet",
+    "description": "Client management plugin for WordPress",
     "type": "wordpress-plugin",
     "license": "GPLv2",
     "authors": [
@@ -11,7 +11,6 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "tareq1988/wp-eloquent": "dev-master"
     },
     "autoload": {
         "psr-4": {
