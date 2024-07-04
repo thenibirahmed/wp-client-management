@@ -38,7 +38,7 @@ class Assets {
      * @return void
      */
     public function enqueue_scripts() {
-        // wp_enqueue_script();
+        wp_register_script('wp-client-management-frontend', WP_CLIENT_MANAGEMENT_ASSETS . '/frontend.js', ['wp-element'], filemtime(WP_CLIENT_MANAGEMENT_PATH . '/build/frontend.js'), true);
     }
 
     /**
@@ -46,7 +46,9 @@ class Assets {
      *
      * @return void
      */
-    public function enqueue_admin_scripts() {
-        wp_enqueue_script('wp-client-management-admin', WP_CLIENT_MANAGEMENT_ASSETS . '/index.js', ['wp-element'], filemtime(WP_CLIENT_MANAGEMENT_PATH . '/build/index.js'), true);
+    public function enqueue_admin_scripts($currentPage) {
+        if($currentPage === 'toplevel_page_wp-client-management') {
+            wp_enqueue_script('wp-client-management-admin', WP_CLIENT_MANAGEMENT_ASSETS . '/index.js', ['wp-element'], filemtime(WP_CLIENT_MANAGEMENT_PATH . '/build/index.js'), true);
+        }
     }
 }

@@ -25,6 +25,7 @@ class FrontPageTemplate {
             return $template;
         }
 
+        wp_enqueue_script('wp-client-management-frontend');
         $file = WP_CLIENT_MANAGEMENT_PATH . '/includes/Frontend/views/index.php';
 
         if (file_exists($file)) {
