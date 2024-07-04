@@ -11,13 +11,14 @@ class Assets {
      * Calling the hook to enqueue
      */
     public function __construct() {
-        add_action("wp_enqueue_scripts",[$this, "enqueue"]);
+        add_action("wp_enqueue_scripts",[$this, "enqueue_frontend_scripts"]);
+        add_action("admin_enqueue_scripts",[$this, "enqueue_admin_scripts"]);
     }
 
     /**
      * Calling the script and style enqueuer
      */
-    public function enqueue() {
+    public function enqueue_frontend_scripts() {
         $this->enqueue_styles();
         $this->enqueue_scripts();
     }
@@ -37,6 +38,15 @@ class Assets {
      * @return void
      */
     public function enqueue_scripts() {
-        wp_enqueue_script('wp-client-management', filemtime(WP_CLIENT_MANAGEMENT_ASSETS . '/index.js'), ['wp-element'], '1.0.0', true);
+        // wp_enqueue_script();
+    }
+
+    /**
+     * Enqueueing admin scripts
+     *
+     * @return void
+     */
+    public function enqueue_admin_scripts() {
+        wp_enqueue_script('wp-client-management-admin', WP_CLIENT_MANAGEMENT_ASSETS . '/index.js', ['wp-element'], filemtime(WP_CLIENT_MANAGEMENT_PATH . '/build/index.js'), true);
     }
 }
