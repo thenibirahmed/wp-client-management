@@ -37,6 +37,6 @@ class Assets {
      * @return void
      */
     public function enqueue_scripts() {
-        wp_enqueue_script('wp-client-management', WP_CLIENT_MANAGEMENT_ASSETS . '/index.js', ['wp-element'], '1.0.0', true);
+        wp_enqueue_script('wp-client-management', filemtime(WP_CLIENT_MANAGEMENT_ASSETS . '/index.js'), ['wp-element'], '1.0.0', true);
     }
 }
