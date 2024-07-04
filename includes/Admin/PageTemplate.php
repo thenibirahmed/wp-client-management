@@ -2,8 +2,6 @@
 
 namespace WpClientManagement\Admin;
 
-use WpClientManagement\Admin\Controllers\Addressbook;
-
 class PageTemplate {
 
     public function __construct() {
