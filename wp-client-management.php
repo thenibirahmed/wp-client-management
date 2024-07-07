@@ -15,10 +15,11 @@
  * Domain Path:       /languages
  */
 
+use WpClientManagement\API;
 use WpClientManagement\Admin;
-use WpClientManagement\Admin\Installer;
 use WpClientManagement\Assets;
 use WpClientManagement\Frontend;
+use WpClientManagement\Admin\Installer;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -64,6 +65,8 @@ final class WpClientManagement {
         } else {
             new Frontend();
         }
+
+        new API();
     }
 
     /**
