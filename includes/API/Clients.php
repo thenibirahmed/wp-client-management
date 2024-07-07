@@ -9,7 +9,7 @@ class Clients {
         register_rest_route('wp-client-management/v1', '/posts', array(
             'methods' => 'GET',
             'callback' => array($this, 'get_posts'),
-            // 'permission_callback' => 'is_user_logged_in',
+            'permission_callback' => 'is_user_logged_in',
         ));
     }
 

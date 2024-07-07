@@ -50,9 +50,14 @@ var Dashboard = function Dashboard() {
     setPost = _useState2[1];
   var getPosts = function getPosts() {
     axios__WEBPACK_IMPORTED_MODULE_1__["default"].get('/wp-json/wp-client-management/v1/posts/', {
-      withCredentials: true
+      headers: {
+        'X-WP-Nonce': wpApiSettings.nonce
+      }
     }).then(function (response) {
       console.log(response.data);
+      setPost(response.data);
+    })["catch"](function (error) {
+      console.error('Error:', error);
     });
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "Dashboard"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {

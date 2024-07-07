@@ -49,6 +49,12 @@ class Assets {
     public function enqueue_admin_scripts($currentPage) {
         if($currentPage === 'toplevel_page_wp-client-management') {
             wp_enqueue_script('wp-client-management-admin', WP_CLIENT_MANAGEMENT_ASSETS . '/index.js', ['wp-element'], filemtime(WP_CLIENT_MANAGEMENT_PATH . '/build/index.js'), true);
+            
+            wp_localize_script('wp-client-management-admin', 'wpApiSettings', array(
+                'root' => esc_url_raw(rest_url()),
+                'nonce' => wp_create_nonce('wp_rest'),
+            ));
         }
+
     }
 }
