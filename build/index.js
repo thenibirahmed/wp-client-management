@@ -49,7 +49,7 @@ var Dashboard = function Dashboard() {
     post = _useState2[0],
     setPost = _useState2[1];
   var getPosts = function getPosts() {
-    axios__WEBPACK_IMPORTED_MODULE_1__["default"].get('/wp-json/wp-client-management/v1/posts/', {
+    axios__WEBPACK_IMPORTED_MODULE_1__["default"].get(wpApiSettings.root + 'wp-client-management/v1/posts/', {
       headers: {
         'X-WP-Nonce': wpApiSettings.nonce
       }

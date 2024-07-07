@@ -5,7 +5,7 @@ const Dashboard = () => {
     const [post, setPost] = useState([]);
 
     const getPosts = () => {
-        axios.get('/wp-json/wp-client-management/v1/posts/', {
+        axios.get(wpApiSettings.root + 'wp-client-management/v1/posts/', {
             headers: {
                 'X-WP-Nonce': wpApiSettings.nonce
             },
