@@ -51,4 +51,9 @@ class Installer {
         // dbDelta( $schema );
     }
 
+    public function create_roles()
+    {
+        add_role('client', 'Client', ['read']);
+    }
+
 }

@@ -108,6 +108,7 @@ final class WpClientManagement {
 
         $installer->add_version();
         $installer->create_tables();
+        $installer->create_roles();
     }
 
 }
