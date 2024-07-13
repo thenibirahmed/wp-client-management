@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Translation\FileLoader;
+use Illuminate\Translation\Translator;
+use Illuminate\Validation\Factory;
 
 
 if (!defined('ABSPATH')) {
@@ -25,7 +29,18 @@ $dbConfig = [
 
 $capsule = new Capsule;
 
+// Setup the Eloquent ORM
 $capsule->addConnection($dbConfig);
 
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
+
+// Setup the Validator
+$filesystem = new Filesystem();
+$loader = new FileLoader($filesystem, __DIR__ . '/../lang');
+$translator = new Translator($loader, 'en');
+$validator = new Factory($translator);
+
+// Make the validator available globally
+global $validator;
+$validator = $validator;
