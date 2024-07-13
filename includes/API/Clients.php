@@ -15,9 +15,8 @@ class Clients {
 
     public function get_posts(\WP_REST_Request $request) {
         $page = $request->get_param('page');
-        $perPage = $request->get_param('per_page');
 
-        $posts = Post::paginate($perPage, ['*'], 'page', $page);
+        $posts = Post::paginate(20, ['*'], 'page', $page);
 
         $data = [];
         foreach ($posts as $post) {
