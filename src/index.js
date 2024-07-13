@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { render } from 'react-dom';
-import axios from 'axios';
 
 import Dashboard from './Components/Dashboard';
 import Clients from './Components/Clients';
@@ -9,6 +8,7 @@ import Projects from './Components/Projects';
 import Schedules from './Components/Schedules';
 import Reports from './Components/Reports';
 import Settings from './Components/Settings';
+import PlayGround from './Components/PlayGround';
 
 const App = () => {
 	const [hash, setHash] = useState(window.location.hash || '#');
@@ -74,6 +74,9 @@ const App = () => {
 			break;
 		case '#settings':
 			component = <Settings />;
+			break;
+		case '#playground':
+			component = <PlayGround />;
 			break;
 		default:
 			component = <Dashboard />;

@@ -80,6 +80,15 @@ class MenuPage {
             'wp-client-management#settings',
             [$this, 'menu_page_template']
         );
+
+        add_submenu_page(
+            'wp-client-management',
+            'Play Ground',
+            'Play Ground',
+            'manage_options',
+            'wp-client-management#playground',
+            [$this, 'menu_page_template']
+        );
     }
 
     public function menu_page_template() {
