@@ -2,6 +2,7 @@
 
 namespace WpClientManagement;
 
+use WpClientManagement\API\Posts\GetPosts;
 use WpClientManagement\API\Users\GetUsers;
 
 class API {
@@ -13,8 +14,7 @@ class API {
     }
 
     public function register_routes() {
+        new GetPosts();
         new GetUsers();
     }
-
-    
 }

@@ -20,10 +20,26 @@ const PlayGround = () => {
         });
     };
 
+    const getUsers = () => {
+        axios.get(wpApiSettings.root + 'wp-client-management/v1/users', {
+            headers: {
+                'X-WP-Nonce': wpApiSettings.nonce
+            },
+        })
+        .then((response) => {
+            console.log(response.data);
+            setPost(response.data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    };
+
     return (
         <div>
             <h1>PlayGround</h1>
-            <button onClick={getPosts}>Click me to get all posts</button>
+            <button onClick={getPosts}>Click me to get all posts</button> <br/><br/>
+            <button onClick={getUsers}>Click me to get all users</button>
         </div>
     );
 };

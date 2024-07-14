@@ -100,9 +100,23 @@ var PlayGround = function PlayGround() {
       console.error('Error:', error);
     });
   };
+  var getUsers = function getUsers() {
+    axios__WEBPACK_IMPORTED_MODULE_1__["default"].get(wpApiSettings.root + 'wp-client-management/v1/users', {
+      headers: {
+        'X-WP-Nonce': wpApiSettings.nonce
+      }
+    }).then(function (response) {
+      console.log(response.data);
+      setPost(response.data);
+    })["catch"](function (error) {
+      console.error('Error:', error);
+    });
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "PlayGround"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: getPosts
-  }, "Click me to get all posts"));
+  }, "Click me to get all posts"), " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: getUsers
+  }, "Click me to get all users"));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PlayGround);
 
