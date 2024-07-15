@@ -29,7 +29,7 @@ class Assets {
      * @return void
      */
     public function enqueue_styles() {
-        // wp_enqueue_style();
+        wp_enqueue_style('wp-client-management-frontend', WP_CLIENT_MANAGEMENT_ASSETS . '/frontend.css', [], filemtime(WP_CLIENT_MANAGEMENT_PATH . '/build/frontend.css'));
     }
 
     /**
