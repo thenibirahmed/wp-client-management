@@ -1,0 +1,19 @@
+{
+  "name": "wp-client-management",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.7.2"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^28.2.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "wp-scripts build",
+    "start": "wp-scripts start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
