@@ -4,6 +4,7 @@ namespace WpClientManagement;
 
 use WpClientManagement\API\Posts\GetPosts;
 use WpClientManagement\API\Users\GetUsers;
+use WpClientManagement\API\Posts\GetSinglePost;
 
 class API {
     /**
@@ -16,5 +17,6 @@ class API {
     public function register_routes() {
         new GetPosts();
         new GetUsers();
+        new GetSinglePost();
     }
 }

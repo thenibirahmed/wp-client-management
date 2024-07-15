@@ -112,11 +112,25 @@ var PlayGround = function PlayGround() {
       console.error('Error:', error);
     });
   };
+  var getSinglePost = function getSinglePost() {
+    axios__WEBPACK_IMPORTED_MODULE_1__["default"].get(wpApiSettings.root + 'wp-client-management/v1/post/1', {
+      headers: {
+        'X-WP-Nonce': wpApiSettings.nonce
+      }
+    }).then(function (response) {
+      console.log(response.data);
+      setPost(response.data);
+    })["catch"](function (error) {
+      console.error('Error:', error);
+    });
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "PlayGround"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: getPosts
   }, "Click me to get all posts"), " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: getUsers
-  }, "Click me to get all users"));
+  }, "Click me to get all users"), " ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: getSinglePost
+  }, "Click me to get single post"));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PlayGround);
 
