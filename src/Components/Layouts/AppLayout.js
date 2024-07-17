@@ -22,6 +22,7 @@ import {
     HomeIcon,
     UsersIcon,
     XMarkIcon,
+    ChevronRightIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
@@ -41,6 +42,11 @@ const teams = [
 const userNavigation = [
     { name: 'Your profile', href: '#' },
     { name: 'Sign out', href: '#' },
+]
+
+const pages = [
+    // { name: 'Projects', href: '#', current: false },
+    // { name: 'Project Nero', href: '#', current: true },
 ]
 
 function classNames(...classes) {
@@ -223,7 +229,33 @@ const AppLayout = ({ children }) => {
                         {/* Separator */}
                         <div aria-hidden="true" className="h-6 w-px bg-gray-900/10 lg:hidden" />
 
-                        <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-end">
+                        <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-between">
+                            <nav aria-label="Breadcrumb" className="flex">
+                                <ol role="list" className="flex items-center space-x-4">
+                                    <li>
+                                        <div>
+                                            <a href="#" className="text-gray-400 hover:text-gray-500 flex items-center">
+                                                <HomeIcon aria-hidden="true" className="h-5 w-5 flex-shrink-0" />
+                                                <span className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Dashboard</span>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    {pages.map((page) => (
+                                        <li key={page.name}>
+                                            <div className="flex items-center">
+                                                <ChevronRightIcon aria-hidden="true" className="h-5 w-5 flex-shrink-0 text-gray-400" />
+                                                <a
+                                                    href={page.href}
+                                                    aria-current={page.current ? 'page' : undefined}
+                                                    className="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+                                                >
+                                                    {page.name}
+                                                </a>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ol>
+                            </nav>
                             <div className="flex items-center gap-x-4 lg:gap-x-6">
                                 <button type="button" className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded">
                                     <span className="sr-only">View notifications</span>
