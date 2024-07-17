@@ -1,4 +1,59 @@
-/* src/styles/tailwind.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#wpadminbar {
+  display: none !important;
+}
+
+@font-face {
+  font-family: "Metropolis";
+  font-weight: 300;
+  src: url("../../fonts/Metropolis-Light.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Metropolis";
+  font-weight: 300;
+  font-style: italic;
+  src: url("../../fonts/Metropolis-LightItalic.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Metropolis";
+  font-weight: 400;
+  src: url("../../fonts/Metropolis-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Metropolis";
+  font-weight: 400;
+  font-style: italic;
+  src: url("../../fonts/Metropolis-RegularItalic.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Metropolis";
+  font-weight: 700;
+  src: url("../../fonts/Metropolis-Bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Metropolis";
+  font-weight: 700;
+  font-style: italic;
+  src: url("../../fonts/Metropolis-BoldItalic.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Metropolis";
+  font-weight: 800;
+  src: url("../../fonts/Metropolis-ExtraBold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Metropolis";
+  font-weight: 800;
+  font-style: italic;
+  src: url("../../fonts/Metropolis-ExtraBoldItalic.otf") format("opentype");
+}

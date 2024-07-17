@@ -6,7 +6,11 @@ module.exports = {
     "./src/frontend.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        metropolis: ["Metropolis", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };
