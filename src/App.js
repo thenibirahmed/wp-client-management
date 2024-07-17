@@ -1,6 +1,6 @@
 import React from "react";
 import "./Styles/tailwind.scss";
-import "./Styles/style.scss";
+import "./Styles/eic-frontend-style.scss";
 import AppLayout from "./Components/Layouts/AppLayout";
 
 import { renderComponent } from "./utils/renderComponents";
