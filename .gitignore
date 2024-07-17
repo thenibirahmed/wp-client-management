@@ -1,2 +1,7 @@
 node_modules
+<<<<<<< HEAD
 vendor
+=======
+vendor
+build
+>>>>>>> f2ea59de71972cf036ef6e9d175b398cf9bb6132

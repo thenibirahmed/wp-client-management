@@ -1,25 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./Styles/tailwind.scss";
-import "./Styles/style.scss";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Test from "./Components/Test";
-import Layouts from "./Components/Layout";
-import Table from "./Components/Table";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './Styles/tailwind.scss';
+import './Styles/style.scss';
+import AppLayout from './Components/Layouts/AppLayout';
+
 
 const App = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/admin" element={<Layouts />}>
-          <Route path="" element={<Test />} />
-          <Route path="clients" element={<Table />} />
-          <Route path="projects" element={<Test />} />
-        </Route>
-      </Routes>
-    </Router>
-  );
+    return (
+        <AppLayout>
+            <span className='text-red-500 text-4xl'>Frontend</span>
+        </AppLayout>
+    )
 };
 
-const rootElement = document.getElementById("wp-client-management-root");
+const rootElement = document.getElementById('wp-client-management-root');
 ReactDOM.render(<App />, rootElement);
