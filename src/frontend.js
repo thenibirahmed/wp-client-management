@@ -236,7 +236,7 @@ const App = () => {
 
                         <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-end">
                             <div className="flex items-center gap-x-4 lg:gap-x-6">
-                                <button type="button" className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
+                                <button type="button" className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded">
                                     <span className="sr-only">View notifications</span>
                                     <BellIcon aria-hidden="true" className="h-6 w-6" />
                                 </button>
@@ -246,7 +246,7 @@ const App = () => {
 
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative">
-                                    <MenuButton className="-m-1.5 flex items-center p-1.5">
+                                    <MenuButton className="-m-1.5 flex items-center p-1.5 hover:bg-gray-100 rounded">
                                         <span className="sr-only">Open user menu</span>
                                         <img
                                             alt=""
