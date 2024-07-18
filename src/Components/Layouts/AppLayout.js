@@ -11,6 +11,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Sidebar from "./Sidebar";
 import ProfileDropDown from "./ProfileDropDown";
 import BreadCrum from "./BreadCrum";
+import { MenuSquareIcon } from "../../utils/icons";
 
 const AppLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -93,12 +94,16 @@ const AppLayout = ({ children }) => {
                   <span className="sr-only">View notifications</span>
                   <BellIcon aria-hidden="true" className="h-6 w-6" />
                 </button>
-
-                {/* Separator */}
-                <div
-                  aria-hidden="true"
-                  className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10"
-                />
+                <button
+                  type="button"
+                  className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded"
+                >
+                  <span className="sr-only">View notifications</span>
+                  <MenuSquareIcon
+                    aria-hidden="true"
+                    className=" text-iconColor "
+                  />
+                </button>
 
                 {/* Profile dropdown */}
                 <React.Fragment>
