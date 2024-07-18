@@ -29,7 +29,7 @@ export const navigationItems = [
   { name: "Projects", href: "#/projects", icon: Task01Icon, current: false },
   {
     name: "Estimates & Invoices",
-    href: "#/invoice",
+    href: "#/invoices",
     icon: Invoice01Icon,
     current: false,
   },

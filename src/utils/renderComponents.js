@@ -14,13 +14,13 @@ import ProfitLoss from "../Components/ProfitLoss/ProfitLoss";
 
 export const renderComponent = (path) => {
   switch (path) {
-    case "client":
+    case "clients":
       return <Clients />;
-    case "project":
+    case "projects":
       return <Projects />;
-    case "invoice":
+    case "invoices":
       return <Invoices />;
-    case "schedule":
+    case "schedules":
       return <Schedules />;
     case "report/#/client-report":
       return <ClientReport />;
