@@ -6,9 +6,9 @@ const PlayGround = () => {
     const [post, setPost] = useState([]);
 
     const getPosts = () => {
-        axios.get(wpApiSettings.root + 'wp-client-management/v1/posts/', {
+        axios.get(eicApiSettings.root + 'wp-client-management/v1/posts/', {
             headers: {
-                'X-WP-Nonce': wpApiSettings.nonce
+                'X-WP-Nonce': eicApiSettings.nonce
             },
         })
         .then((response) => {
@@ -21,9 +21,9 @@ const PlayGround = () => {
     };
 
     const getUsers = () => {
-        axios.get(wpApiSettings.root + 'wp-client-management/v1/users', {
+        axios.get(eicApiSettings.root + 'wp-client-management/v1/users', {
             headers: {
-                'X-WP-Nonce': wpApiSettings.nonce
+                'X-WP-Nonce': eicApiSettings.nonce
             },
         })
         .then((response) => {
@@ -36,9 +36,9 @@ const PlayGround = () => {
     };
 
     const getSinglePost = () => {
-        axios.get(wpApiSettings.root + 'wp-client-management/v1/post/1', {
+        axios.get(eicApiSettings.root + 'wp-client-management/v1/post/1', {
             headers: {
-                'X-WP-Nonce': wpApiSettings.nonce
+                'X-WP-Nonce': eicApiSettings.nonce
             },
         })
         .then((response) => {

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-white">
+<html lang="en" class="h-full bg-white eic-crm-html">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nibir</title>
+    <title>WP Client Management - Elegance In Code</title>
 
     <?php wp_head() ?>
 </head>
