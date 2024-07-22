@@ -23,8 +23,13 @@ class GetClients {
 
         $clients = Client::paginate(20, ['*'], 'page', $page);
 
+        $wpUsers = get_users([
+            'id' => $clients->pluck('id'),
+        ]);
+
         $data = [];
         foreach ($clients as $client) {
+            $wpUser = $this->getUserFromArrayByID($wpUsers, $client->id);
             $data[] = [
                 'id' => $client->id,
                 'organization' => $client->organization,
@@ -34,7 +39,7 @@ class GetClients {
         }
 
         return new \WP_REST_Response([
-            'data' => $data,
+            'data' => $wpUsers,
             'pagination' => [
                 'total' => $clients->total(),
                 'per_page' => $clients->perPage(),
@@ -44,5 +49,12 @@ class GetClients {
                 'prev_page_url' => $clients->previousPageUrl(),
             ],
         ]);
+    }
+
+    private function getUserFromArrayByID($users, $id)
+    {
+        return array_filter($users, function($user) use ($id) {
+            return $id == $user->ID;
+        });
     }
 }
