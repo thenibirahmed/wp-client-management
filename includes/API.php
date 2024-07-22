@@ -4,6 +4,7 @@ namespace WpClientManagement;
 
 use WpClientManagement\API\Posts\GetPosts;
 use WpClientManagement\API\Users\GetUsers;
+use WpClientManagement\API\Clients\GetClients;
 use WpClientManagement\API\Posts\GetSinglePost;
 
 class API {
@@ -18,5 +19,6 @@ class API {
         new GetPosts();
         new GetUsers();
         new GetSinglePost();
+        new GetClients();
     }
 }
