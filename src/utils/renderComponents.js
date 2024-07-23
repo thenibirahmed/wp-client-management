@@ -1,9 +1,7 @@
-import Clients from "../Components/Clients";
 import Projects from "../Components/Projects";
 import Dashboard from "../Components/Dashboard";
 import Invoices from "../Components/Invoices";
 import Schedules from "../Components/Schedules";
-import Reports from "../Components/Reports";
 import Contact from "../Components/Contact";
 import Settings from "../Components/Settings";
 import Docs from "../Components/Docs";
@@ -11,11 +9,12 @@ import ClientReport from "../Components/ClientReport/ClientReport";
 import Revenue from "../Components/Revenue/Revenue";
 import Expense from "../Components/Expense/Expense";
 import ProfitLoss from "../Components/ProfitLoss/ProfitLoss";
+import Client from "../Components/Clients/Client";
 
 export const renderComponent = (path) => {
   switch (path) {
     case "clients":
-      return <Clients />;
+      return <Client />;
     case "projects":
       return <Projects />;
     case "invoices":

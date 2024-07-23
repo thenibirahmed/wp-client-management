@@ -9,11 +9,13 @@ module.exports = {
     extend: {
       colors: {
         textColor: "rgba(31, 42, 55, 1)",
+        textColor2: "rgba(75, 85, 99, 1)",
         siderbarBG: "rgba(0, 0, 0, 1)",
         customBlue: " rgba(28, 100, 242, 1)",
         separatorColor: "rgba(55, 65, 81, 1)",
         iconColor: "rgba(107, 114, 128, 1)",
         iconColor2: "rgba(156, 163, 175, 1)",
+        borderColor: "rgba(209, 213, 219, 1)",
       },
       fontFamily: {
         metropolis: ["Metropolis", "sans-serif"],

@@ -11,8 +11,10 @@ import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Separator from "./Separator";
 import {
   ContactBookIcon,
+  CustomerService01Icon,
   EarthIcon,
   GlobalIcon,
+  GoogleDocIcon,
   Settings02Icon,
   SlidersVerticalIcon,
 } from "../../utils/icons";
@@ -166,7 +168,7 @@ const Sidebar = () => {
                   "group flex gap-x-3 rounded-md px-2 py-[6px] text-sm font-[500] font-metropolis text-white"
                 )}
               >
-                <ContactBookIcon
+                <GoogleDocIcon
                   aria-hidden="true"
                   className={`h-6 w-6 shrink-0 ${
                     currentPath === "docs" ? "text-white" : "text-iconColor2"
@@ -183,7 +185,7 @@ const Sidebar = () => {
                   "group flex gap-x-3 rounded-md px-2 py-[6px] text-sm font-[500] font-metropolis text-white"
                 )}
               >
-                <ContactBookIcon
+                <CustomerService01Icon
                   aria-hidden="true"
                   className={`h-6 w-6 shrink-0 ${
                     currentPath === "support" ? "text-white" : "text-iconColor2"

@@ -1,17 +1,7 @@
 import {
-  CalendarIcon,
-  ChartPieIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-} from "@heroicons/react/24/outline";
-import {
   AnalysisTextLinkIcon,
   Calendar02Icon,
   ContactBookIcon,
-  CustomerService01Icon,
-  GoogleDocIcon,
   Invoice01Icon,
   PieChartIcon,
   Task01Icon,

@@ -8,7 +8,7 @@ import {
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
-import Sidebar from "./Sidebar";
+import Sidebar from "./LayoutSidebar";
 import ProfileDropDown from "./ProfileDropDown";
 import BreadCrum from "./BreadCrum";
 import { MenuSquareIcon } from "../../utils/icons";
