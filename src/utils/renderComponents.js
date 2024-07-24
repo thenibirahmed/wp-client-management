@@ -1,4 +1,3 @@
-import Projects from "../Components/Projects";
 import Dashboard from "../Components/Dashboard";
 import Invoices from "../Components/Invoices";
 import Schedules from "../Components/Schedules";
@@ -10,11 +9,15 @@ import Revenue from "../Components/Revenue/Revenue";
 import Expense from "../Components/Expense/Expense";
 import ProfitLoss from "../Components/ProfitLoss/ProfitLoss";
 import Client from "../Components/Clients/Client";
+import Projects from "../Components/Projects/Projects";
+import ClientProjects from "../Components/Clients/ClientProjects/ClientProjects";
 
-export const renderComponent = (path) => {
+export const renderComponent = (path, activeClient) => {
   switch (path) {
     case "clients":
       return <Client />;
+    case `clients/#/${activeClient}`:
+      return <ClientProjects />;
     case "projects":
       return <Projects />;
     case "invoices":

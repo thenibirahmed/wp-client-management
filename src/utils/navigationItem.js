@@ -9,23 +9,38 @@ import {
 } from "./icons";
 
 export const navigationItems = [
-  { name: "Dashboard", href: "#/", icon: PieChartIcon, current: true },
+  {
+    name: "Dashboard",
+    href: "#/",
+    link: "dashboard",
+    icon: PieChartIcon,
+    current: true,
+  },
   {
     name: "Clients",
     href: "#/clients",
+    link: "clients",
     icon: UserMultipleIcon,
     current: false,
   },
-  { name: "Projects", href: "#/projects", icon: Task01Icon, current: false },
+  {
+    name: "Projects",
+    href: "#/projects",
+    link: "projects",
+    icon: Task01Icon,
+    current: false,
+  },
   {
     name: "Estimates & Invoices",
     href: "#/invoices",
+    link: "invoices",
     icon: Invoice01Icon,
     current: false,
   },
   {
     name: "Schedules",
     href: "#/schedules",
+    link: "schedules",
     icon: Calendar02Icon,
     current: false,
   },
@@ -42,12 +57,14 @@ export const navigationItems = [
       { name: "Profit/Loss", href: "#/report/#/profit", current: false },
     ],
     href: "#/report/#/client-report",
+
     icon: AnalysisTextLinkIcon,
     current: false,
   },
   {
     name: "Contacts",
     href: "#/contact",
+    link: "contact",
     icon: ContactBookIcon,
     current: false,
   },

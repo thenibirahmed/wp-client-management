@@ -7,11 +7,12 @@ import { renderComponent } from "./utils/renderComponents";
 import useHashRouting from "./utils/useHashRouting";
 
 export const App = () => {
-  const currentComponent = useHashRouting("");
+  const currentPath = useHashRouting("");
+  const pathArray = currentPath?.split("/#/");
 
   return (
     <React.Fragment>
-      <AppLayout>{renderComponent(currentComponent)}</AppLayout>
+      <AppLayout>{renderComponent(currentPath, pathArray[1])}</AppLayout>
     </React.Fragment>
   );
 };

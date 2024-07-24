@@ -6,11 +6,11 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Delete03Icon, MultiplicationSignIcon } from "../../utils/icons";
+import { MultiplicationSignIcon } from "../../../utils/icons";
 
-import AddClientForm from "./AddClientForm";
+import ClientProjectForm from "./ClientProjectForm";
 
-export const AddClientModal = ({ open, setOpen }) => {
+export const ClientProjectModal = ({ open, setOpen }) => {
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10 ">
       <DialogBackdrop
@@ -48,7 +48,7 @@ export const AddClientModal = ({ open, setOpen }) => {
                   <>
                     <div className="border-b-[1px] pb-8 border-b-borderColor flex justify-between">
                       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
-                        Add Client
+                        Add Project
                       </h1>
                       <button onClick={() => setOpen(false)}>
                         <MultiplicationSignIcon className="text-textColor2" />
@@ -57,7 +57,7 @@ export const AddClientModal = ({ open, setOpen }) => {
                   </>
 
                   <>
-                    <AddClientForm setOpen={setOpen} />
+                    <ClientProjectForm setOpen={setOpen} />
                   </>
                 </div>
               </div>

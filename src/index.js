@@ -3,12 +3,13 @@ import { render } from "react-dom";
 
 import Dashboard from "./Components/Dashboard";
 import Invoices from "./Components/Invoices";
-import Projects from "./Components/Projects";
+
 import Schedules from "./Components/Schedules";
 import Reports from "./Components/Reports";
 import Settings from "./Components/Settings";
 import PlayGround from "./Components/PlayGround";
 import Client from "./Components/Clients/Client";
+import Projects from "./Components/Projects/Projects";
 
 const App = () => {
   const [hash, setHash] = useState(window.location.hash || "#");

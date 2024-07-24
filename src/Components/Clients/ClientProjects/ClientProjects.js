@@ -3,25 +3,27 @@ import {
   CheckmarkCircle02Icon,
   Delete03Icon,
   UserAdd02Icon,
-} from "../../utils/icons";
-import { AddClientModal } from "./AddClientModal";
-import ClientTable from "./ClientTable";
-import EmptyTable from "../helper/EmptyTable";
-import { ClientSearchInput } from "./SearchInput";
-import ClientOverView from "./ClientOverView";
+} from "../../../utils/icons";
 
-const Client = () => {
+import EmptyTable from "../../helper/EmptyTable";
+import { ClientProjectSearch } from "./ClientProjectSearch";
+import ClientProjectFilter from "./ClientProjectFilter";
+import { ClientProjectModal } from "./ClientProjectModal";
+import ClientOverView from "../ClientOverView";
+import ClientInfo from "./ClientInfo";
+import ClientProjectTable from "./ClientProjectTable";
+
+const ClientProjects = () => {
   const [open, setOpen] = useState(false);
-
   const dataList = [1];
-
   return (
     <React.Fragment>
+      <ClientInfo />
       <ClientOverView />
       <div className="space-y-6">
         <div className="flex md:flex-row  md:justify-between flex-col md:items-center md:gap-0 gap-4">
           <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
-            All Clients
+            Projects
           </h1>
           <div className="flex sm:flex-row flex-wrap gap-5 items-center">
             <button>
@@ -30,7 +32,9 @@ const Client = () => {
             <button>
               <CheckmarkCircle02Icon className="text-textColor2" />
             </button>
-            <ClientSearchInput />
+            <ClientProjectFilter />
+
+            <ClientProjectSearch />
             <button
               onClick={() => setOpen(true)}
               type="button"
@@ -40,7 +44,7 @@ const Client = () => {
                 aria-hidden="true"
                 className="text-white hover:text-gray-200"
               />
-              Add Client
+              Add Project
             </button>
           </div>
         </div>
@@ -48,24 +52,24 @@ const Client = () => {
         <React.Fragment>
           {dataList.length > 0 ? (
             <>
-              <ClientTable />
+              <ClientProjectTable />
             </>
           ) : (
             <>
               <EmptyTable
                 setOpen={setOpen}
-                title="  Clients Not Yet Registered"
-                subtitle="Start building your client list."
-                btnText=" Add Client"
+                title="Projects Await Initiation"
+                subtitle="Initiate your first project now."
+                btnText="Add Project"
               />
             </>
           )}
         </React.Fragment>
       </div>
 
-      <AddClientModal open={open} setOpen={setOpen} />
+      <ClientProjectModal open={open} setOpen={setOpen} />
     </React.Fragment>
   );
 };
 
-export default Client;
+export default ClientProjects;

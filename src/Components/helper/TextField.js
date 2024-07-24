@@ -40,7 +40,7 @@ const TextField = ({
       />
 
       {errors[id]?.message && (
-        <p className="text-xs font-semibold text-red-500 -mt-1">
+        <p className="text-xs font-semibold text-customRed -mt-1">
           {errors[id]?.message}
         </p>
       )}

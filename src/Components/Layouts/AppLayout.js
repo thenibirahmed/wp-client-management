@@ -7,7 +7,6 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-
 import Sidebar from "./LayoutSidebar";
 import ProfileDropDown from "./ProfileDropDown";
 import BreadCrum from "./BreadCrum";
@@ -114,7 +113,7 @@ const AppLayout = ({ children }) => {
           </div>
 
           <main className="py-10">
-            <div className="px-4 sm:px-6 lg:px-8">{children}</div>
+            <div className="px-4 sm:px-6 lg:px-8 space-y-8">{children}</div>
           </main>
         </div>
       </div>

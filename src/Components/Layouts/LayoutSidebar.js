@@ -26,6 +26,7 @@ function classNames(...classes) {
 const Sidebar = () => {
   const [navigation, setNavigation] = useState(navigationItems);
   const currentPath = useHashRouting("");
+  const pathArray = currentPath?.split("/#/");
 
   const onNavigationItemHandler = (currentItem) => {
     setNavigation(
@@ -71,12 +72,23 @@ const Sidebar = () => {
           };
         }
 
+        if (item.link === "dashboard" && pathArray[0] === "") {
+          return {
+            ...item,
+            current: true,
+          };
+        }
+
         return {
           ...item,
-          current: item.href === `#/${currentPath}`,
+          current: pathArray.includes(item.link),
         };
       })
     );
+
+    if (pathArray[0] === "") {
+      navigation[0].current = true;
+    }
   }, [currentPath]);
 
   return (

@@ -12,12 +12,12 @@
   }
   
 */
-import { EnvelopeIcon } from "@heroicons/react/20/solid";
-import { Search01Icon } from "../../utils/icons";
 
-export default function InputField() {
+import { Search01Icon } from "../../../utils/icons";
+
+export const ClientProjectSearch = () => {
   return (
-    <div className="rounded-md relative shadow-sm ml-4">
+    <div className="rounded-md relative shadow-sm ml-0">
       <div className="pointer-events-none absolute inset-y-0 left-2 flex items-center ">
         <Search01Icon aria-hidden="true" className="h-5 w-5 text-textColor2" />
       </div>
@@ -30,4 +30,4 @@ export default function InputField() {
       />
     </div>
   );
-}
+};

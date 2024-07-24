@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import TextField from "../helper/TextField";
+import TextField from "../../helper/TextField";
 import { useForm } from "react-hook-form";
 
-const AddClientForm = ({ setOpen }) => {
+const ClientProjectForm = ({ setOpen }) => {
   const imageRef = useRef();
   const {
     register,
@@ -32,34 +32,34 @@ const AddClientForm = ({ setOpen }) => {
       <form className="space-y-4 " onSubmit={handleSubmit(addNewClientHandler)}>
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <TextField
-            label="Name"
+            label="Project Title"
             required
-            id="name"
+            id="title"
             type="text"
-            message="*Name is required"
-            placeholder="Easin"
+            message="This field is required*"
+            placeholder="Project Title"
             register={register}
             errors={errors}
           />
           <TextField
-            label="Organization"
+            label="Client Name"
             required
-            id="organization"
+            id="clientname"
             type="text"
-            message="*Organization is required"
-            placeholder="Organization"
+            message="This field is required*"
+            placeholder="Client Name"
             register={register}
             errors={errors}
           />
         </div>
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <TextField
-            label="Email"
+            label="Budget"
             required
-            id="email"
-            type="email"
-            message="*Email is required"
-            placeholder="easin@gmail.com"
+            id="budget"
+            type="number"
+            message="This field is required*"
+            placeholder="$00.00"
             register={register}
             errors={errors}
           />
@@ -165,4 +165,4 @@ const AddClientForm = ({ setOpen }) => {
   );
 };
 
-export default AddClientForm;
+export default ClientProjectForm;
