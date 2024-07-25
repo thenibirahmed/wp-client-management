@@ -5,7 +5,7 @@ import {
   Location01Icon,
   Mail02Icon,
   PencilEdit02Icon,
-} from "../../../utils/icons";
+} from "../../utils/icons";
 
 const ClientInfo = () => {
   return (

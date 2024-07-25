@@ -10,7 +10,7 @@ import { MultiplicationSignIcon } from "../../../utils/icons";
 
 import ClientProjectForm from "./ClientProjectForm";
 
-export const ClientProjectModal = ({
+export const ClientInvoicModal = ({
   openProjectModal,
   setOpenProjectModal,
 }) => {

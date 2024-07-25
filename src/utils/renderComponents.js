@@ -10,14 +10,15 @@ import Expense from "../Components/Expense/Expense";
 import ProfitLoss from "../Components/ProfitLoss/ProfitLoss";
 import Client from "../Components/Clients/Client";
 import Projects from "../Components/Projects/Projects";
-import ClientProjects from "../Components/Clients/ClientProjects/ClientProjects";
+
+import ClientDetails from "../Components/Clients/ClientDetails";
 
 export const renderComponent = (path, activeClient) => {
   switch (path) {
     case "clients":
       return <Client />;
     case `clients/#/${activeClient}`:
-      return <ClientProjects />;
+      return <ClientDetails />;
     case "projects":
       return <Projects />;
     case "invoices":

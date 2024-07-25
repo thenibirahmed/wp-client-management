@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import TextField from "../../helper/TextField";
 import { useForm } from "react-hook-form";
 
-const ClientProjectForm = ({ setOpenProjectModal }) => {
+const ClientInvoiceForm = ({ setOpenProjectModal }) => {
   const imageRef = useRef();
   const {
     register,
@@ -165,4 +165,4 @@ const ClientProjectForm = ({ setOpenProjectModal }) => {
   );
 };
 
-export default ClientProjectForm;
+export default ClientInvoiceForm;

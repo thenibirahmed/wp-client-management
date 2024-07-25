@@ -29,7 +29,7 @@ const TextField = ({
         className={`${
           className ? className : ""
         }  py-2 px-4 rounded-[5px] border  w-full   outline-none bg-transparent  text-textColor2 txt-sm font-metropolis ${
-          errors[id]?.message ? "border-red-500" : "border-borderColor"
+          errors[id]?.message ? "border-customRed" : "border-borderColor"
         }`}
         {...register(id, {
           required: { value: required, message },

@@ -1,6 +1,12 @@
 import React from "react";
 
-const EmptyTable = ({ setOpen, title, subtitle, btnText, Icon }) => {
+const EmptyTable = ({
+  setOpenProjectModal,
+  title,
+  subtitle,
+  btnText,
+  Icon,
+}) => {
   return (
     <>
       <div className=" min-h-[400px] max-h-[380px] border border-borderColor flex justify-center items-center rounded-lg">
@@ -13,7 +19,7 @@ const EmptyTable = ({ setOpen, title, subtitle, btnText, Icon }) => {
             {subtitle}
           </p>
           <button
-            onClick={() => setOpen(true)}
+            onClick={() => setOpenProjectModal(true)}
             className="border  mt-6  border-customBlue text-xs text-customBlue font-metropolis font-medium px-5 py-[10px]  rounded-[5px]"
           >
             {btnText}
