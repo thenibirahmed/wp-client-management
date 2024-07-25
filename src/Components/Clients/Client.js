@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import {
   CheckmarkCircle02Icon,
   Delete03Icon,
+  Invoice01Icon,
   UserAdd02Icon,
+  UserCircle02Icon,
 } from "../../utils/icons";
 import { AddClientModal } from "./AddClientModal";
 import ClientTable from "./ClientTable";
@@ -53,6 +55,7 @@ const Client = () => {
           ) : (
             <>
               <EmptyTable
+                Icon={UserCircle02Icon}
                 setOpen={setOpen}
                 title="  Clients Not Yet Registered"
                 subtitle="Start building your client list."

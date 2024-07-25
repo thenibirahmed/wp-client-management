@@ -5,6 +5,7 @@ const EmptyTable = ({ setOpen, title, subtitle, btnText, Icon }) => {
     <>
       <div className=" min-h-[400px] max-h-[380px] border border-borderColor flex justify-center items-center rounded-lg">
         <div className="text-center">
+          <Icon className="w-[72px] h-[72px] mx-auto text-iconColor mb-6" />
           <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
             {title}
           </h1>

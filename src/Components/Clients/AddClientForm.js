@@ -1,8 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import TextField from "../helper/TextField";
 import { useForm } from "react-hook-form";
 
 const AddClientForm = ({ setOpen }) => {
+  const [imageUrl, setImageUrl] = useState("");
+  console.log("imageUrl = ", imageUrl);
   const imageRef = useRef();
   const {
     register,
@@ -136,7 +138,14 @@ const AddClientForm = ({ setOpen }) => {
             Image
           </label>
 
-          <input ref={imageRef} type="file" className="hidden" />
+          <input
+            onChange={(e) => setImageUrl(e.target.files[0])}
+            ref={imageRef}
+            type="file"
+            className="hidden"
+            name="image"
+            id="image"
+          />
           <button
             type="button"
             onClick={onImageUploadHandler}

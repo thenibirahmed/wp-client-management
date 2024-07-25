@@ -1,5 +1,11 @@
 import React from "react";
-import { Delete03Icon } from "../../../utils/icons";
+import {
+  CallIcon,
+  Delete03Icon,
+  Location01Icon,
+  Mail02Icon,
+  PencilEdit02Icon,
+} from "../../../utils/icons";
 
 const ClientInfo = () => {
   return (
@@ -23,16 +29,16 @@ const ClientInfo = () => {
       </div>
       <div className="flex gap-6">
         <a href="">
-          <Delete03Icon className="text-textColor2" />
+          <CallIcon className="text-textColor2" />
         </a>{" "}
         <a href="">
-          <Delete03Icon className="text-textColor2" />
+          <Mail02Icon className="text-textColor2" />
         </a>{" "}
         <a href="">
-          <Delete03Icon className="text-textColor2" />
+          <Location01Icon className="text-textColor2" />
         </a>{" "}
         <a href="">
-          <Delete03Icon className="text-textColor2" />
+          <PencilEdit02Icon className="text-textColor2" />
         </a>
       </div>
     </div>

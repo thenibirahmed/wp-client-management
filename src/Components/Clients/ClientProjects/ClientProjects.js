@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   CheckmarkCircle02Icon,
   Delete03Icon,
+  Invoice01Icon,
   UserAdd02Icon,
 } from "../../../utils/icons";
 
@@ -57,6 +58,7 @@ const ClientProjects = () => {
           ) : (
             <>
               <EmptyTable
+                Icon={Invoice01Icon}
                 setOpen={setOpen}
                 title="Projects Await Initiation"
                 subtitle="Initiate your first project now."

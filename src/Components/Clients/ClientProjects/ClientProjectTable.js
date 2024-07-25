@@ -1,69 +1,83 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import useHashRouting from "../../../utils/useHashRouting";
-import { Delete03Icon, Task01Icon } from "../../../utils/icons";
+import {
+  Delete03Icon,
+  PencilEdit02Icon,
+  Task01Icon,
+} from "../../../utils/icons";
 import RedCirlcle from "../../helper/RedCirlcle";
 import SkyBlueCirle from "../../helper/SkyBlueCirle";
 import YellowCirle from "../../helper/YellowCirle";
 import Pagination from "../Pagination";
+import useCheckedHandler from "../../../utils/useCheckedItem";
+
+const tableData = [
+  {
+    id: 1,
+    name: "Easin Ahmed",
+    invoice: 2500,
+    revenue: 35,
+    due: 72,
+    status: "Completed",
+    priority: "High",
+  },
+  {
+    id: 2,
+    name: "Ahmed",
+
+    invoice: 200,
+    revenue: 5,
+    due: 72,
+    status: "On Hold",
+    priority: "Low",
+  },
+  {
+    id: 3,
+    name: "Task",
+
+    invoice: 200,
+    revenue: 5,
+    due: 72,
+    status: "Cancelled",
+    priority: "Medium",
+  },
+  {
+    id: 4,
+    name: "Mohahhamd",
+
+    invoice: 200,
+    revenue: 5,
+    due: 72,
+    status: "In progress",
+    priority: "Low",
+  },
+  {
+    id: 5,
+    name: "Rifat",
+
+    invoice: 200,
+    revenue: 5,
+    due: 72,
+    status: "In Review",
+    priority: "Low",
+  },
+];
 
 const ClientProjectTable = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
-  const tableData = [
-    {
-      id: 1,
-      name: "Easin Ahmed",
-      invoice: 2500,
-      revenue: 35,
-      due: 72,
-      status: "Completed",
-      priority: "High",
-    },
-    {
-      id: 2,
-      name: "Ahmed",
+  const [selectedClient, setSelectedClient] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
 
-      invoice: 200,
-      revenue: 5,
-      due: 72,
-      status: "On Hold",
-      priority: "Low",
-    },
-    {
-      id: 3,
-      name: "Task",
+  const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
+    selectedClient,
+    setIsAllSelected,
+    setSelectedClient
+  );
 
-      invoice: 200,
-      revenue: 5,
-      due: 72,
-      status: "Cancelled",
-      priority: "Medium",
-    },
-    {
-      id: 4,
-      name: "Mohahhamd",
-
-      invoice: 200,
-      revenue: 5,
-      due: 72,
-      status: "In progress",
-      priority: "Low",
-    },
-    {
-      id: 5,
-      name: "Rifat",
-
-      invoice: 200,
-      revenue: 5,
-      due: 72,
-      status: "In Review",
-      priority: "Low",
-    },
-  ];
-
-  const onClientSelectHandler = (item) => {};
+  console.log(selectedClient);
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -76,7 +90,17 @@ const ClientProjectTable = () => {
                     scope="col"
                     className="py-3.5  w-10  pl-4 pr-0 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
                   >
-                    <input type="checkbox" />
+                    <input
+                      checked={
+                        selectedClient.length > 0 && isAllselected
+                          ? true
+                          : false
+                      }
+                      onChange={(e) =>
+                        checkedAllClient(e.target.checked, tableData)
+                      }
+                      type="checkbox"
+                    />
                   </th>
                   <th
                     scope="col"
@@ -127,6 +151,10 @@ const ClientProjectTable = () => {
                   let itemStatus = item.status.toLowerCase();
                   let itemPriority = item.priority.toLowerCase();
 
+                  const isChecked = selectedClient.some(
+                    (client) => client.id === item.id
+                  );
+
                   const statusClass =
                     itemStatus === "completed"
                       ? "bg-customBg1 text-green"
@@ -144,7 +172,10 @@ const ClientProjectTable = () => {
                     <tr>
                       <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
                         <input
-                          onChange={() => onClientSelectHandler(item)}
+                          checked={isChecked}
+                          onChange={(e) =>
+                            checkedSingleClient(e.target.checked, item)
+                          }
                           type="checkbox"
                           className="border border-borderColor"
                         />
@@ -190,7 +221,7 @@ const ClientProjectTable = () => {
                             href={``}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
-                            <Task01Icon
+                            <PencilEdit02Icon
                               className="text-textColor2"
                               width="20px"
                               height="20px"
