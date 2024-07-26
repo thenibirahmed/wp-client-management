@@ -8,16 +8,13 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { MultiplicationSignIcon } from "../../../utils/icons";
 
-import ClientProjectForm from "./ClientProjectForm";
+import ClientViewEmail from "./ClientViewEmail";
 
-export const ClientProjectModal = ({
-  openProjectModal,
-  setOpenProjectModal,
-}) => {
+export const ClientEmailModal = ({ openEmailModal, setOpenEmailModal }) => {
   return (
     <Dialog
-      open={openProjectModal}
-      onClose={setOpenProjectModal}
+      open={openEmailModal}
+      onClose={setOpenEmailModal}
       className="relative z-10 "
     >
       <DialogBackdrop
@@ -36,7 +33,7 @@ export const ClientProjectModal = ({
                 <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 duration-500 ease-in-out data-[closed]:opacity-0 sm:-ml-10 sm:pr-4">
                   <button
                     type="button"
-                    onClick={() => setOpenProjectModal(false)}
+                    onClick={() => setOpenEmailModal(false)}
                     className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                   >
                     <span className="absolute -inset-2.5" />
@@ -55,18 +52,16 @@ export const ClientProjectModal = ({
                   <>
                     <div className="border-b-[1px] pb-8 border-b-borderColor flex justify-between">
                       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
-                        Add Project
+                        Email Title
                       </h1>
-                      <button onClick={() => setOpenProjectModal(false)}>
+                      <button onClick={() => setOpenEmailModal(false)}>
                         <MultiplicationSignIcon className="text-textColor2" />
                       </button>
                     </div>
                   </>
 
                   <>
-                    <ClientProjectForm
-                      setOpenProjectModal={setOpenProjectModal}
-                    />
+                    <ClientViewEmail />
                   </>
                 </div>
               </div>

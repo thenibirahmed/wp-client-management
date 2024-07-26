@@ -1,11 +1,11 @@
 import React from "react";
 import { OvierViewItem } from "../helper/OverViewItem";
 
-const ClientOverView = () => {
+const ProjectOverView = () => {
   return (
     <React.Fragment>
       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
-        Clients Overview
+        Projects Overview
       </h1>
       <div className="flex   w-full  sm:flex-row flex-col  sm:justify-between  items-center border border-borderColor rounded-lg">
         <OvierViewItem title="Total Invoice" amount="12.4k" invoice={1} />
@@ -17,4 +17,4 @@ const ClientOverView = () => {
   );
 };
 
-export default ClientOverView;
+export default ProjectOverView;

@@ -53,16 +53,15 @@ const ClientNoteTable = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
-  const [selectedClient, setSelectedClient] = useState([]);
+  const [selectedNote, setSelectedNote] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
-    selectedClient,
+    selectedNote,
     setIsAllSelected,
-    setSelectedClient
+    setSelectedNote
   );
 
-  console.log(selectedClient);
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -77,9 +76,7 @@ const ClientNoteTable = () => {
                   >
                     <input
                       checked={
-                        selectedClient.length > 0 && isAllselected
-                          ? true
-                          : false
+                        selectedNote.length > 0 && isAllselected ? true : false
                       }
                       onChange={(e) =>
                         checkedAllClient(e.target.checked, tableData)
@@ -115,7 +112,7 @@ const ClientNoteTable = () => {
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
                 {tableData.map((item) => {
-                  const isChecked = selectedClient.some(
+                  const isChecked = selectedNote.some(
                     (client) => client.id === item.id
                   );
 

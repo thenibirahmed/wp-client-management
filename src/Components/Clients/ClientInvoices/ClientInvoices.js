@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useStoreContext } from "../../../store/ContextApiStore";
-import ClientProjectTable from "../ClientProjects/ClientProjectTable";
+
 import EmptyTable from "../../helper/EmptyTable";
-import { ClientProjectModal } from "../ClientProjects/ClientProjectModal";
+
 import { Invoice01Icon } from "../../../utils/icons";
 import ClientInvoiceTable from "./ClientInvoiceTable";
 import ClientInvoiceHeader from "./ClientInvoiceHeader";

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import ClientProjectTable from "./ClientProjectTable";
 import EmptyTable from "../../helper/EmptyTable";
 import { Invoice01Icon } from "../../../utils/icons";
-import { ClientProjectModal } from "./ClientProjectModal";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import ClientProjectHeader from "./ClientProjectHeader";
+import { ProjectModal } from "../../helper/ProjectModal";
 
 const ClientProject = () => {
   const { openProjectModal, setOpenProjectModal } = useStoreContext();
@@ -31,10 +31,7 @@ const ClientProject = () => {
           />
         </>
       )}
-      <ClientProjectModal
-        openProjectModal={openProjectModal}
-        setOpenProjectModal={setOpenProjectModal}
-      />
+      <ProjectModal />
     </React.Fragment>
   );
 };

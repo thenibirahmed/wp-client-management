@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
-import TextField from "../../helper/TextField";
+import TextField from "./TextField";
 import { useForm } from "react-hook-form";
 
-const ClientProjectForm = ({ setOpenProjectModal }) => {
+const ProjectForm = ({ setOpenProjectModal }) => {
   const imageRef = useRef();
   const {
     register,
@@ -165,4 +165,4 @@ const ClientProjectForm = ({ setOpenProjectModal }) => {
   );
 };
 
-export default ClientProjectForm;
+export default ProjectForm;

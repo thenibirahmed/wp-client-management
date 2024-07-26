@@ -5,8 +5,10 @@ const ContextApi = createContext();
 export const ContextProvider = ({ children }) => {
   const [openProjectModal, setOpenProjectModal] = useState(false);
   const [openFileModal, setOpenFileModal] = useState(false);
+  const [openEmailModal, setOpenEmailModal] = useState(false);
   const [createInvoice, setCreateInvoice] = useState(false);
   const [createNote, setCreateNote] = useState(false);
+  const [createEmail, setCreateEmail] = useState(false);
   const defaultTabValues = localStorage.getItem("tab")
     ? JSON.parse(localStorage.getItem("tab"))
     : {
@@ -19,6 +21,8 @@ export const ContextProvider = ({ children }) => {
       };
 
   const [allTabItems, setAllTabItems] = useState(defaultTabValues);
+  //view email content
+  const [selectedViewEmail, setSelectedViewEmail] = useState("");
 
   useEffect(() => {
     localStorage.setItem("tab", JSON.stringify(allTabItems));
@@ -35,7 +39,14 @@ export const ContextProvider = ({ children }) => {
     setCreateNote,
     openFileModal,
     setOpenFileModal,
+    createEmail,
+    setCreateEmail,
+    openEmailModal,
+    setOpenEmailModal,
+    selectedViewEmail,
+    setSelectedViewEmail,
   };
+
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;
 };
 

@@ -12,15 +12,18 @@ import Client from "../Components/Clients/Client";
 import Projects from "../Components/Projects/Projects";
 
 import ClientDetails from "../Components/Clients/ClientDetails";
+import ProjectDetail from "../Components/Projects/ProjectDetail";
 
-export const renderComponent = (path, activeClient) => {
+export const renderComponent = (path, activeUrl) => {
   switch (path) {
     case "clients":
       return <Client />;
-    case `clients/#/${activeClient}`:
+    case `clients/#/${activeUrl}`:
       return <ClientDetails />;
     case "projects":
       return <Projects />;
+    case `projects/#/${activeUrl}`:
+      return <ProjectDetail />;
     case "invoices":
       return <Invoices />;
     case "schedules":

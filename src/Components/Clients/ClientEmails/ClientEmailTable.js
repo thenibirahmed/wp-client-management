@@ -5,60 +5,83 @@ import {
   Delete03Icon,
   PencilEdit02Icon,
   Task01Icon,
+  ViewIcon,
 } from "../../../utils/icons";
 import RedCirlcle from "../../helper/RedCirlcle";
 import SkyBlueCirle from "../../helper/SkyBlueCirle";
 import YellowCirle from "../../helper/YellowCirle";
 import Pagination from "../Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
+import truncateText from "../../../utils/truncateText";
+import { useStoreContext } from "../../../store/ContextApiStore";
+import { ClientEmailModal } from "./ClientEmailModal";
 
 const tableData = [
   {
     id: 1,
-    fileName: { name: "Easin Ahmed", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
+    from: "Easin Ahmed",
+    email: {
+      title: "How a visual artist redefines success in graphic design",
+      content:
+        "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
+    },
+    time: "july 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 2,
-    fileName: { name: "Tanvir Khan", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
+    from: "Easin Ahmed",
+    email: {
+      title: "How a visual artist redefines success in graphic design",
+      content:
+        "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
+    },
+    time: "july 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 3,
-    fileName: { name: "Jack Ahmed", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 4,
-    fileName: { name: "Sharif Ahmed", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
+    from: "Easin Ahmed",
+    email: {
+      title: "How a visual artist redefines success in graphic design",
+      content:
+        "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
+    },
+    time: "july 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
 ];
 
-const ClientFileTable = () => {
+const ClientEmailTable = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
-  const [selectedFile, setSelectedFile] = useState([]);
+  const {
+    openEmailModal,
+    setOpenEmailModal,
+
+    setSelectedViewEmail,
+  } = useStoreContext();
+
+  const [selectedEmail, setSelectedEmail] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
-    selectedFile,
+    selectedEmail,
     setIsAllSelected,
-    setSelectedFile
+    setSelectedEmail
   );
+
+  const viewEmailHandler = (emailId) => {
+    setOpenEmailModal(true);
+
+    const findEmail = tableData.find((email) => email.id === emailId);
+
+    setSelectedViewEmail(findEmail);
+  };
 
   return (
     <div className="mt-8 flow-root">
@@ -74,7 +97,7 @@ const ClientFileTable = () => {
                   >
                     <input
                       checked={
-                        selectedFile.length > 0 && isAllselected ? true : false
+                        selectedEmail.length > 0 && isAllselected ? true : false
                       }
                       onChange={(e) =>
                         checkedAllClient(e.target.checked, tableData)
@@ -84,15 +107,15 @@ const ClientFileTable = () => {
                   </th>
                   <th
                     scope="col"
-                    className="py-3.5  uppercase  pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
+                    className="py-3.5 uppercase   pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
                   >
-                    File name
+                    From
                   </th>
                   <th
                     scope="col"
                     className="px-3 uppercase py-3.5 text-left text-sm font-semibold text-textColor2"
                   >
-                    Uploaded by
+                    Email
                   </th>{" "}
                   <th
                     scope="col"
@@ -110,7 +133,7 @@ const ClientFileTable = () => {
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
                 {tableData.map((item) => {
-                  const isChecked = selectedFile.some(
+                  const isChecked = selectedEmail.some(
                     (client) => client.id === item.id
                   );
 
@@ -126,43 +149,43 @@ const ClientFileTable = () => {
                           className="border border-borderColor"
                         />
                       </td>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 space-y-1 ">
-                        <h3 className="text-sm   text-textColor font-metropolis font-normal ">
-                          {item.fileName.name}
-                        </h3>{" "}
-                        <h6 className="text-xs  text-textColor2 font-metropolis font-normal ">
-                          {item.fileName.title}
-                        </h6>
-                      </td>{" "}
-                      <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
                             src={item.image}
-                            alt={item.uploadedBy}
+                            alt={item.from}
                           />
                           <div>
                             <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                              {item.uploadedBy}
+                              {item.from}
                             </h3>
                           </div>
                         </div>
                       </td>
+                      <td className="whitespace-nowrap px-3 py-4 space-y-1  text-textColor2 font-metropolis font-normal text-sm">
+                        <h3 className="text-sm   text-textColor font-metropolis font-normal ">
+                          {item.email.title}
+                        </h3>{" "}
+                        <h6 className="text-xs  text-textColor2 font-metropolis font-normal ">
+                          {truncateText(item.email.content)}
+                        </h6>
+                      </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-normal">
-                        ${item.time}
+                        {item.time}
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={``}
+                          <button
+                            onClick={() => viewEmailHandler(item.id)}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
-                            <PencilEdit02Icon
+                            <ViewIcon
                               className="text-textColor2"
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                           <a
                             href=""
                             className="text-indigo-600 hover:text-indigo-900"
@@ -184,8 +207,12 @@ const ClientFileTable = () => {
           </div>
         </div>
       </div>
+      <ClientEmailModal
+        openEmailModal={openEmailModal}
+        setOpenEmailModal={setOpenEmailModal}
+      />
     </div>
   );
 };
 
-export default ClientFileTable;
+export default ClientEmailTable;

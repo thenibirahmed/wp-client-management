@@ -6,15 +6,17 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { MultiplicationSignIcon } from "../../../utils/icons";
 
-import ClientFileForm from "./ClientFileForm";
+import ProjectForm from "./ProjectForm";
+import { useStoreContext } from "../../store/ContextApiStore";
+import { MultiplicationSignIcon } from "../../utils/icons";
 
-export const ClientFileModal = ({ openFileModal, setOpenFileModal }) => {
+export const ProjectModal = () => {
+  const { openProjectModal, setOpenProjectModal } = useStoreContext();
   return (
     <Dialog
-      open={openFileModal}
-      onClose={setOpenFileModal}
+      open={openProjectModal}
+      onClose={setOpenProjectModal}
       className="relative z-10 "
     >
       <DialogBackdrop
@@ -33,7 +35,7 @@ export const ClientFileModal = ({ openFileModal, setOpenFileModal }) => {
                 <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 duration-500 ease-in-out data-[closed]:opacity-0 sm:-ml-10 sm:pr-4">
                   <button
                     type="button"
-                    onClick={() => setOpenFileModal(false)}
+                    onClick={() => setOpenProjectModal(false)}
                     className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                   >
                     <span className="absolute -inset-2.5" />
@@ -52,16 +54,16 @@ export const ClientFileModal = ({ openFileModal, setOpenFileModal }) => {
                   <>
                     <div className="border-b-[1px] pb-8 border-b-borderColor flex justify-between">
                       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
-                        Upload File
+                        Add Project
                       </h1>
-                      <button onClick={() => setOpenFileModal(false)}>
+                      <button onClick={() => setOpenProjectModal(false)}>
                         <MultiplicationSignIcon className="text-textColor2" />
                       </button>
                     </div>
                   </>
 
                   <>
-                    <ClientFileForm setOpenFileModal={setOpenFileModal} />
+                    <ProjectForm setOpenProjectModal={setOpenProjectModal} />
                   </>
                 </div>
               </div>

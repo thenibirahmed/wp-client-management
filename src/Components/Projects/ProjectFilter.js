@@ -2,7 +2,7 @@ import React from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
-const ClientProjectFilter = () => {
+const ProjectFilter = () => {
   return (
     <Menu as="div" className="relative inline-block text-left ml-4">
       <div>
@@ -12,7 +12,7 @@ const ClientProjectFilter = () => {
               aria-hidden="true"
               className=" h-5  text-textColor2"
             />
-            <span>Filter</span>
+            <span>Filters</span>
           </div>
           <ChevronDownIcon
             aria-hidden="true"
@@ -66,4 +66,4 @@ const ClientProjectFilter = () => {
   );
 };
 
-export default ClientProjectFilter;
+export default ProjectFilter;

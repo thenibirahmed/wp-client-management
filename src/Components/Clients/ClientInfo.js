@@ -6,10 +6,14 @@ import {
   Mail02Icon,
   PencilEdit02Icon,
 } from "../../utils/icons";
+import useHashRouting from "../../utils/useHashRouting";
 
 const ClientInfo = () => {
+  const currentPath = useHashRouting("");
+  const pathArray = currentPath?.split("/#/");
+
   return (
-    <div className="flex justify-between items-center   pb-5 border-b border-b-borderColor">
+    <div className="flex sm:flex-row flex-col sm:gap-0 gap-4 justify-between sm:items-center   pb-5 border-b border-b-borderColor">
       <div className="flex  gap-4">
         <div>
           <img
@@ -20,7 +24,7 @@ const ClientInfo = () => {
         </div>
         <div>
           <h1 className="font-metropolis font-semibold  text-textColor text-3xl ">
-            Easin
+            {pathArray[pathArray.length - 1]}
           </h1>
           <span className="text-xs  text-textColor2 font-metropolis font-normal ">
             ENGINEER

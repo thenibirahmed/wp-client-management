@@ -1,8 +1,10 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import TextField from "../../helper/TextField";
 import { useForm } from "react-hook-form";
+import { Image02Icon } from "../../../utils/icons";
 
 const ClientFileForm = ({ setOpenFileModal }) => {
+  const [imageUrl, setImageUrl] = useState();
   const imageRef = useRef();
   const {
     register,
@@ -27,127 +29,62 @@ const ClientFileForm = ({ setOpenFileModal }) => {
     imageRef.current.click();
   };
 
+  useEffect(() => {
+    if (imageUrl) {
+      reset();
+    }
+  }, [imageUrl]);
+
   return (
     <div className="py-5 relative h-full ">
       <form className="space-y-4 " onSubmit={handleSubmit(addNewClientHandler)}>
-        <div className="flex md:flex-row flex-col gap-4 w-full">
-          <TextField
-            label="Project Title"
-            required
-            id="title"
-            type="text"
-            message="This field is required*"
-            placeholder="Project Title"
-            register={register}
-            errors={errors}
-          />
-          <TextField
-            label="Client Name"
-            required
-            id="clientname"
-            type="text"
-            message="This field is required*"
-            placeholder="Client Name"
-            register={register}
-            errors={errors}
-          />
-        </div>
-        <div className="flex md:flex-row flex-col gap-4 w-full">
-          <TextField
-            label="Budget"
-            required
-            id="budget"
-            type="number"
-            message="This field is required*"
-            placeholder="$00.00"
-            register={register}
-            errors={errors}
-          />
-          <TextField
-            label="Phone"
-            required
-            id="phone"
-            type="number"
-            message="*Phone Number is required"
-            placeholder="Phone"
-            register={register}
-            errors={errors}
-          />
-        </div>
-
         <TextField
-          label="Address"
-          required
-          id="address"
+          label="Title"
+          required={!imageUrl}
+          id="title"
           type="text"
-          message="*Address is required"
+          message="*Title is required"
+          placeholder="Title"
+          register={register}
+          errors={errors}
+        />
+        <TextField
+          label="Add URL / Upload File"
+          required={!imageUrl}
+          id="ul"
+          type="url"
+          message="*Url is required"
           placeholder="2972 Westheimer Rd. Santa Ana, Illinois 85486 "
           register={register}
           errors={errors}
         />
-        <div className="flex md:flex-row flex-col gap-4 w-full">
-          <TextField
-            label="City"
-            required
-            id="city"
-            type="text"
-            message="*City is required"
-            placeholder="New York"
-            register={register}
-            errors={errors}
-          />{" "}
-          <TextField
-            label="ZIP Code"
-            required
-            id="zipcode"
-            type="number"
-            message="*ZIP Code is required"
-            placeholder="1254"
-            register={register}
-            errors={errors}
-          />
-        </div>
-        <div className="flex md:flex-row flex-col gap-4 w-full">
-          <TextField
-            label="Country"
-            required
-            id="country"
-            type="text"
-            message="*Country is required"
-            placeholder="USA"
-            register={register}
-            errors={errors}
-          />
-          <TextField
-            label="State / Region / Province "
-            required
-            id="state"
-            type="text"
-            message="*State is required"
-            placeholder="New Yorker"
-            register={register}
-            errors={errors}
-          />
-        </div>
-        <div className="flex  flex-col gap-2 md:w-1/2 w-full">
-          <label
-            className={"font-medium text-sm  font-metropolis text-textColor "}
-          >
-            Image
-          </label>
 
-          <input ref={imageRef} type="file" className="hidden" />
+        <div className=" font-metropolis text-sm font-normal flex justify-center text-textColor2">
+          or
+        </div>
+
+        <div className="flex  flex-col gap-2  w-full">
+          <input
+            onChange={(e) => setImageUrl(e.target.files[0])}
+            ref={imageRef}
+            type="file"
+            className="hidden"
+          />
           <button
             type="button"
             onClick={onImageUploadHandler}
-            className="py-2 px-3 border border-customBlue text-customBlue flex justify-center gap-2 font-metropolis text-xs font-medium rounded-[5px]"
+            className="py-3 px-3 border border-customBlue text-customBlue flex justify-center items-center gap-2 font-metropolis text-xs font-medium rounded-[5px]"
           >
-            <span>Upload Image</span>
+            <Image02Icon className="w-4 h-4 text-customBlue" />
+            <span>Upload File</span>
           </button>
         </div>
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button
-            onClick={() => setOpenFileModal(false)}
+            onClick={() => {
+              setOpenFileModal(false);
+              setImageUrl("");
+            }}
             type="button"
             className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
           >
