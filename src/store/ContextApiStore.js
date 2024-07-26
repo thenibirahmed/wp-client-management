@@ -4,6 +4,8 @@ const ContextApi = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [openProjectModal, setOpenProjectModal] = useState(false);
+  const [createInvoice, setCreateInvoice] = useState(false);
+  const [createNote, setCreateNote] = useState(false);
   const defaultTabValues = localStorage.getItem("tab")
     ? JSON.parse(localStorage.getItem("tab"))
     : {
@@ -26,6 +28,10 @@ export const ContextProvider = ({ children }) => {
     setOpenProjectModal,
     allTabItems,
     setAllTabItems,
+    createInvoice,
+    setCreateInvoice,
+    createNote,
+    setCreateNote,
   };
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;
 };

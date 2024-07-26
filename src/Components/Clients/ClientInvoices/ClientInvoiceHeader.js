@@ -11,7 +11,7 @@ import { ClientInvoiceSearch } from "./ClientInvoiceSearch";
 import ClientInvoiceFilter from "./ClientInvoiceFilter";
 
 const ClientInvoiceHeader = () => {
-  const { setOpenProjectModal } = useStoreContext();
+  const { setCreateInvoice } = useStoreContext();
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
@@ -28,7 +28,7 @@ const ClientInvoiceHeader = () => {
 
         <ClientInvoiceSearch />
         <button
-          onClick={() => setOpenProjectModal(true)}
+          onClick={() => setCreateInvoice(true)}
           type="button"
           className="inline-flex items-center gap-x-1.5 rounded-md bg-customBlue px-5 py-[10px] text-sm font-semibold text-white shadow-sm  hover:text-gray-200 "
         >

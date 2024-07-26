@@ -9,6 +9,10 @@ import ClientProjectHeader from "./ClientProjectHeader";
 const ClientProject = () => {
   const { openProjectModal, setOpenProjectModal } = useStoreContext();
   const dataList = [1];
+
+  const handler = () => {
+    setOpenProjectModal(true);
+  };
   return (
     <React.Fragment>
       <ClientProjectHeader />
@@ -20,7 +24,7 @@ const ClientProject = () => {
         <>
           <EmptyTable
             Icon={Invoice01Icon}
-            setOpenProjectModal={setOpenProjectModal}
+            handler={handler}
             title="Projects Await Initiation"
             subtitle="Initiate your first project now."
             btnText="Add Project"

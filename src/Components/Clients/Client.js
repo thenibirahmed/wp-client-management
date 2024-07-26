@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CheckmarkCircle02Icon,
   Delete03Icon,
@@ -11,11 +11,17 @@ import ClientTable from "./ClientTable";
 import EmptyTable from "../helper/EmptyTable";
 import { ClientSearchInput } from "./SearchInput";
 import ClientOverView from "./ClientOverView";
+import { useStoreContext } from "../../store/ContextApiStore";
 
 const Client = () => {
+  const { setCreateInvoice } = useStoreContext();
   const [open, setOpen] = useState(false);
 
   const dataList = [1];
+
+  useEffect(() => {
+    setCreateInvoice(false);
+  }, []);
 
   return (
     <React.Fragment>
