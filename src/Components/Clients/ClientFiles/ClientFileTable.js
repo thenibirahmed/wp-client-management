@@ -5,51 +5,49 @@ import {
   Delete03Icon,
   PencilEdit02Icon,
   Task01Icon,
-  ViewIcon,
 } from "../../../utils/icons";
 import RedCirlcle from "../../helper/RedCirlcle";
 import SkyBlueCirle from "../../helper/SkyBlueCirle";
 import YellowCirle from "../../helper/YellowCirle";
 import Pagination from "../Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
-import truncateText from "../../../utils/truncateText";
 
 const tableData = [
   {
     id: 1,
-    creator: "Easin Ahmed",
-    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    time: "july 05, 2024",
+    fileName: { name: "Easin Ahmed", title: "tunisian_dinar.list" },
+    uploadedBy: "Miles Esther",
+    time: "July 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 2,
-    creator: "Easin Ahmed",
-    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    time: "july 05, 2024",
+    fileName: { name: "Tanvir Khan", title: "tunisian_dinar.list" },
+    uploadedBy: "Miles Esther",
+    time: "July 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 3,
-    creator: "Easin Ahmed",
-    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    time: "july 05, 2024",
+    fileName: { name: "Jack Ahmed", title: "tunisian_dinar.list" },
+    uploadedBy: "Miles Esther",
+    time: "July 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 4,
-    creator: "Easin Ahmed",
-    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    time: "july 05, 2024",
+    fileName: { name: "Sharif Ahmed", title: "tunisian_dinar.list" },
+    uploadedBy: "Miles Esther",
+    time: "July 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
 ];
 
-const ClientNoteTable = () => {
+const ClientFileTable = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
@@ -89,15 +87,15 @@ const ClientNoteTable = () => {
                   </th>
                   <th
                     scope="col"
-                    className="py-3.5 uppercase   pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
+                    className="py-3.5  uppercase  pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
                   >
-                    Creator
+                    File name
                   </th>
                   <th
                     scope="col"
                     className="px-3 uppercase py-3.5 text-left text-sm font-semibold text-textColor2"
                   >
-                    Note
+                    Uploaded by
                   </th>{" "}
                   <th
                     scope="col"
@@ -131,25 +129,30 @@ const ClientNoteTable = () => {
                           className="border border-borderColor"
                         />
                       </td>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 space-y-1 ">
+                        <h3 className="text-sm   text-textColor font-metropolis font-normal ">
+                          {item.fileName.name}
+                        </h3>{" "}
+                        <h6 className="text-xs  text-textColor2 font-metropolis font-normal ">
+                          {item.fileName.title}
+                        </h6>
+                      </td>{" "}
+                      <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
                             src={item.image}
-                            alt={item.creator}
+                            alt={item.uploadedBy}
                           />
                           <div>
                             <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                              {item.creator}
+                              {item.uploadedBy}
                             </h3>
                           </div>
                         </div>
-                      </td>{" "}
-                      <td className="whitespace-nowrap px-3 py-4  text-textColor2 font-metropolis font-normal text-sm">
-                        {truncateText(item.note)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-normal">
-                        {item.time}
+                        ${item.time}
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
@@ -157,7 +160,7 @@ const ClientNoteTable = () => {
                             href={``}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
-                            <ViewIcon
+                            <PencilEdit02Icon
                               className="text-textColor2"
                               width="20px"
                               height="20px"
@@ -188,4 +191,4 @@ const ClientNoteTable = () => {
   );
 };
 
-export default ClientNoteTable;
+export default ClientFileTable;

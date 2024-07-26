@@ -9,7 +9,7 @@ import AddNewNote from "./AddNewNote";
 const ClientNotes = () => {
   const { createNote, setCreateNote } = useStoreContext();
 
-  const dataList = [];
+  const dataList = [1];
 
   const handler = () => {
     setCreateNote(true);

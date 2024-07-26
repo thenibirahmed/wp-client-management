@@ -4,11 +4,15 @@ import {
   Image02Icon,
   Link05Icon,
 } from "../../../utils/icons";
+import ClientNoteTable from "./ClientNoteTable";
 
 const AddNewNote = () => {
   return (
-    <div className="border border-borderColor rounded-[8px] py-[13px] ">
-      <AddNewNoteTextArea />
+    <div>
+      <div className="border border-borderColor rounded-[8px] py-[13px] ">
+        <AddNewNoteTextArea />
+      </div>
+      <ClientNoteTable />
     </div>
   );
 };
