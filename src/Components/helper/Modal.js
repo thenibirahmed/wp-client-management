@@ -7,18 +7,11 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-import ProjectForm from "./ProjectForm";
-import { useStoreContext } from "../../store/ContextApiStore";
 import { MultiplicationSignIcon } from "../../utils/icons";
 
-export const ProjectModal = () => {
-  const { openProjectModal, setOpenProjectModal } = useStoreContext();
+export const Modal = ({ open, setOpen, children }) => {
   return (
-    <Dialog
-      open={openProjectModal}
-      onClose={setOpenProjectModal}
-      className="relative z-10 "
-    >
+    <Dialog open={open} onClose={setOpen} className="relative z-10 ">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
@@ -62,9 +55,7 @@ export const ProjectModal = () => {
                     </div>
                   </>
 
-                  <>
-                    <ProjectForm setOpenProjectModal={setOpenProjectModal} />
-                  </>
+                  <>{children}</>
                 </div>
               </div>
             </DialogPanel>
@@ -74,3 +65,5 @@ export const ProjectModal = () => {
     </Dialog>
   );
 };
+
+export default Modal;

@@ -6,7 +6,7 @@ import {
 } from "../../../utils/icons";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
-import { ClientEmailSearch } from "./ClientEmailSearch";
+import { Search } from "../../helper/Search";
 
 const ClientEmailHeader = () => {
   const { createEmail, setCreateEmail } = useStoreContext();
@@ -23,7 +23,7 @@ const ClientEmailHeader = () => {
           <Delete03Icon className="text-textColor2" />
         </button>
 
-        <ClientEmailSearch />
+        <Search />
         {createEmail ? (
           <>
             <button

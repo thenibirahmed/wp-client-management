@@ -3,8 +3,10 @@ import React from "react";
 import { useStoreContext } from "../../store/ContextApiStore";
 import ProjectInfo from "./ProjectInfo";
 import ProjectOverView from "./ProjectOverView";
-import ClientAddNewInvoice from "../Clients/ClientInvoices/AddNewInvoice/ClientAddNewInvoice";
+
 import ProjectDetailsLayout from "./ProjectDetailsLayout";
+import Tab from "../helper/Tabs";
+import AddNewInvoice from "../helper/invoices/addNewInvoice/AddNewInvoice";
 
 const ProjectDetail = () => {
   const { createInvoice, setCreateInvoice } = useStoreContext();
@@ -15,7 +17,7 @@ const ProjectDetail = () => {
           <ProjectInfo />
           <ProjectOverView />
           <div className="space-y-6">
-            {/* <Tab /> */}
+            <Tab task={true} />
             <React.Fragment>
               <ProjectDetailsLayout />
             </React.Fragment>
@@ -23,7 +25,7 @@ const ProjectDetail = () => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <ClientAddNewInvoice />
+          <AddNewInvoice />
         </React.Fragment>
       )}
     </React.Fragment>

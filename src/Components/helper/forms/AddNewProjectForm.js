@@ -1,8 +1,12 @@
 import React, { useRef } from "react";
-import TextField from "../../helper/TextField";
+
 import { useForm } from "react-hook-form";
 
-const ClientInvoiceForm = ({ setOpenProjectModal }) => {
+import TextField from "../TextField";
+import { useStoreContext } from "../../../store/ContextApiStore";
+
+const AddNewProjectForm = () => {
+  const { setOpenProjectModal } = useStoreContext;
   const imageRef = useRef();
   const {
     register,
@@ -165,4 +169,4 @@ const ClientInvoiceForm = ({ setOpenProjectModal }) => {
   );
 };
 
-export default ClientInvoiceForm;
+export default AddNewProjectForm;

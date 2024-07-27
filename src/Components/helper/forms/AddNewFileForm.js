@@ -1,9 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
-import TextField from "../../helper/TextField";
-import { useForm } from "react-hook-form";
-import { Image02Icon } from "../../../utils/icons";
 
-const ClientFileForm = ({ setOpenFileModal }) => {
+import { useForm } from "react-hook-form";
+
+import { useStoreContext } from "../../../store/ContextApiStore";
+import { Image02Icon } from "../../../utils/icons";
+import TextField from "../TextField";
+
+const AddNewFileForm = () => {
+  const { setOpenFileModal } = useStoreContext();
   const [imageUrl, setImageUrl] = useState();
   const imageRef = useRef();
   const {
@@ -102,4 +106,4 @@ const ClientFileForm = ({ setOpenFileModal }) => {
   );
 };
 
-export default ClientFileForm;
+export default AddNewFileForm;

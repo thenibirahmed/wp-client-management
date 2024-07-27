@@ -13,9 +13,9 @@
   
 */
 
-import { Search01Icon } from "../../../utils/icons";
+import { Search01Icon } from "../../utils/icons";
 
-export const ClientNoteSearch = () => {
+export const Search = () => {
   return (
     <div className="rounded-md relative shadow-sm ml-0">
       <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center ">

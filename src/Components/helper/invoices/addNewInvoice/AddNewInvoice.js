@@ -1,16 +1,16 @@
 import React from "react";
 import AddNewInvoiceForm from "./AddNewInvoiceForm";
 import InvoiceItemTable from "./InvoiceItemTable";
-import InvoiceHeader from "./InvoiceHeader";
+import AddInvoiceHeader from "./AddInvoiceHeader";
 
-const ClientAddNewInvoice = () => {
+const AddNewInvoice = () => {
   return (
     <div className="space-y-4">
-      <InvoiceHeader />
+      <AddInvoiceHeader />
       <AddNewInvoiceForm />
       <InvoiceItemTable />
     </div>
   );
 };
 
-export default ClientAddNewInvoice;
+export default AddNewInvoice;

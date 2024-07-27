@@ -1,63 +1,57 @@
 import React, { useState, useEffect } from "react";
 
-import useHashRouting from "../../../utils/useHashRouting";
-import {
-  Delete03Icon,
-  PencilEdit02Icon,
-  Task01Icon,
-} from "../../../utils/icons";
-import RedCirlcle from "../../helper/RedCirlcle";
-import SkyBlueCirle from "../../helper/SkyBlueCirle";
-import YellowCirle from "../../helper/YellowCirle";
-import Pagination from "../Pagination";
+import truncateText from "../../../utils/truncateText";
 import useCheckedHandler from "../../../utils/useCheckedItem";
+import Pagination from "../../Clients/Pagination";
+import { Delete03Icon, ViewIcon } from "../../../utils/icons";
+import useHashRouting from "../../../utils/useHashRouting";
 
 const tableData = [
   {
     id: 1,
-    fileName: { name: "Easin Ahmed", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
+    creator: "Easin Ahmed",
+    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
+    time: "july 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 2,
-    fileName: { name: "Tanvir Khan", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
+    creator: "Easin Ahmed",
+    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
+    time: "july 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 3,
-    fileName: { name: "Jack Ahmed", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
+    creator: "Easin Ahmed",
+    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
+    time: "july 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 4,
-    fileName: { name: "Sharif Ahmed", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
+    creator: "Easin Ahmed",
+    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
+    time: "july 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
 ];
 
-const ClientFileTable = () => {
+const NoteTable = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
-  const [selectedFile, setSelectedFile] = useState([]);
+  const [selectedNote, setSelectedNote] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
-    selectedFile,
+    selectedNote,
     setIsAllSelected,
-    setSelectedFile
+    setSelectedNote
   );
 
   return (
@@ -74,7 +68,7 @@ const ClientFileTable = () => {
                   >
                     <input
                       checked={
-                        selectedFile.length > 0 && isAllselected ? true : false
+                        selectedNote.length > 0 && isAllselected ? true : false
                       }
                       onChange={(e) =>
                         checkedAllClient(e.target.checked, tableData)
@@ -84,15 +78,15 @@ const ClientFileTable = () => {
                   </th>
                   <th
                     scope="col"
-                    className="py-3.5  uppercase  pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
+                    className="py-3.5 uppercase   pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
                   >
-                    File name
+                    Creator
                   </th>
                   <th
                     scope="col"
                     className="px-3 uppercase py-3.5 text-left text-sm font-semibold text-textColor2"
                   >
-                    Uploaded by
+                    Note
                   </th>{" "}
                   <th
                     scope="col"
@@ -110,7 +104,7 @@ const ClientFileTable = () => {
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
                 {tableData.map((item) => {
-                  const isChecked = selectedFile.some(
+                  const isChecked = selectedNote.some(
                     (client) => client.id === item.id
                   );
 
@@ -126,30 +120,25 @@ const ClientFileTable = () => {
                           className="border border-borderColor"
                         />
                       </td>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 space-y-1 ">
-                        <h3 className="text-sm   text-textColor font-metropolis font-normal ">
-                          {item.fileName.name}
-                        </h3>{" "}
-                        <h6 className="text-xs  text-textColor2 font-metropolis font-normal ">
-                          {item.fileName.title}
-                        </h6>
-                      </td>{" "}
-                      <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
                             src={item.image}
-                            alt={item.uploadedBy}
+                            alt={item.creator}
                           />
                           <div>
                             <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                              {item.uploadedBy}
+                              {item.creator}
                             </h3>
                           </div>
                         </div>
+                      </td>{" "}
+                      <td className="whitespace-nowrap px-3 py-4  text-textColor2 font-metropolis font-normal text-sm">
+                        {truncateText(item.note)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-normal">
-                        ${item.time}
+                        {item.time}
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
@@ -157,7 +146,7 @@ const ClientFileTable = () => {
                             href={``}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
-                            <PencilEdit02Icon
+                            <ViewIcon
                               className="text-textColor2"
                               width="20px"
                               height="20px"
@@ -188,4 +177,4 @@ const ClientFileTable = () => {
   );
 };
 
-export default ClientFileTable;
+export default NoteTable;

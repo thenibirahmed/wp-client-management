@@ -1,7 +1,7 @@
 import React from "react";
 import { useStoreContext } from "../../../../store/ContextApiStore";
 
-const InvoiceHeader = () => {
+const AddInvoiceHeader = () => {
   const { setCreateInvoice } = useStoreContext();
   return (
     <div className="flex justify-between items-center">
@@ -33,4 +33,4 @@ const InvoiceHeader = () => {
   );
 };
 
-export default InvoiceHeader;
+export default AddInvoiceHeader;

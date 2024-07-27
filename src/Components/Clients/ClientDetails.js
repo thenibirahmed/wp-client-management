@@ -3,10 +3,11 @@ import React, { useState, useEffect } from "react";
 import ClientOverView from "./ClientOverView";
 import ClientInfo from "./ClientInfo";
 
-import Tab from "./Tabs";
 import ClientDetailsLayout from "./ClientDetailsLayout";
 import { useStoreContext } from "../../store/ContextApiStore";
-import ClientAddNewInvoice from "./ClientInvoices/AddNewInvoice/ClientAddNewInvoice";
+
+import Tab from "../helper/Tabs";
+import AddNewInvoice from "../helper/invoices/addNewInvoice/AddNewInvoice";
 
 const ClientDetails = () => {
   const { createInvoice, setCreateInvoice } = useStoreContext();
@@ -26,7 +27,7 @@ const ClientDetails = () => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <ClientAddNewInvoice />
+          <AddNewInvoice />
         </React.Fragment>
       )}
     </React.Fragment>

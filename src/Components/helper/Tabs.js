@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useStoreContext } from "../../store/ContextApiStore";
 
-const Tab = () => {
+const Tab = ({ task = false }) => {
   const { allTabItems, setAllTabItems } = useStoreContext();
 
   const onTabChangeHandler = (selectedTab) => {
@@ -26,12 +26,21 @@ const Tab = () => {
 
   return (
     <div className="flex pt-3 gap-5 md:flex-row  flex-wrap   items-center text-textColor2 font-metropolis text-sm font-semibold border-b   border-b-borderColor">
-      <button
-        className={`${activeClass("project")} pb-3 w-[120px]`}
-        onClick={() => onTabChangeHandler("project")}
-      >
-        Projects (25)
-      </button>
+      {task ? (
+        <button
+          className={`${activeClass("task")} pb-3 w-[120px]`}
+          onClick={() => onTabChangeHandler("task")}
+        >
+          Task (25)
+        </button>
+      ) : (
+        <button
+          className={`${activeClass("project")} pb-3 w-[120px]`}
+          onClick={() => onTabChangeHandler("project")}
+        >
+          Projects (25)
+        </button>
+      )}
       <button
         className={`${activeClass("invoice")} pb-3 w-[120px]`}
         onClick={() => onTabChangeHandler("invoice")}

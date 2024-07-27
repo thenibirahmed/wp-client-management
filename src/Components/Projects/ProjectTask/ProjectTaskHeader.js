@@ -2,36 +2,44 @@ import React from "react";
 import {
   CheckmarkCircle02Icon,
   Delete03Icon,
-  FileAddIcon,
+  Task01Icon,
   UserAdd02Icon,
 } from "../../../utils/icons";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
-import { ClientFileSearch } from "./ClientFileSearch";
+import Filter from "../../helper/Filter";
+import { Search } from "../../helper/Search";
 
-const ClientFileHeader = () => {
-  const { setOpenFileModal, allTabItems } = useStoreContext();
+const ProjectTaskHeader = () => {
+  const { openTask, setOpenTask } = useStoreContext();
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
-        Files
+        Task
       </h1>
       <div className="flex sm:flex-row flex-wrap gap-5 items-center">
-        <ClientFileSearch />
+        <button>
+          <Delete03Icon className="text-textColor2" />
+        </button>
+        <button>
+          <CheckmarkCircle02Icon className="text-textColor2" />
+        </button>
+        <Filter />
+        <Search />
         <button
-          onClick={() => setOpenFileModal(true)}
+          onClick={() => setOpenTask(true)}
           type="button"
           className="inline-flex items-center gap-x-1.5 rounded-md bg-customBlue px-5 py-[10px] text-sm font-semibold text-white shadow-sm  hover:text-gray-200 "
         >
-          <FileAddIcon
+          <Task01Icon
             aria-hidden="true"
-            className="text-white hover:text-gray-200 w-4 h-4"
+            className="text-white hover:text-gray-200 w-5 h-5"
           />
-          Add File
+          Add Task
         </button>
       </div>
     </div>
   );
 };
 
-export default ClientFileHeader;
+export default ProjectTaskHeader;

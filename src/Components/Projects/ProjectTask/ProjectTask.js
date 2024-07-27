@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import ClientProjectTable from "./ClientProjectTable";
-import EmptyTable from "../../helper/EmptyTable";
-import { Invoice01Icon } from "../../../utils/icons";
-import { useStoreContext } from "../../../store/ContextApiStore";
-import Modal from "../../helper/Modal";
-import AddNewProjectForm from "../../helper/forms/AddNewProjectForm";
-import ProjectHeader from "../../helper/projects/ProjectHeader";
 
-const ClientProject = () => {
-  const { openProjectModal, setOpenProjectModal } = useStoreContext();
+import EmptyTable from "../../helper/EmptyTable";
+import { Invoice01Icon, Task01Icon } from "../../../utils/icons";
+import { useStoreContext } from "../../../store/ContextApiStore";
+
+import ProjectTaskTable from "./ProjectTaskTable";
+import ProjectTaskHeader from "./ProjectTaskHeader";
+import Modal from "../../helper/Modal";
+import AddNewTaskForm from "./AddNewTaskForm";
+
+const ProjectTask = () => {
+  const { openTask, setOpenTask } = useStoreContext();
   const dataList = [1];
 
   const handler = () => {
@@ -16,15 +18,15 @@ const ClientProject = () => {
   };
   return (
     <React.Fragment>
-      <ProjectHeader />
+      <ProjectTaskHeader />
       {dataList.length > 0 ? (
         <>
-          <ClientProjectTable />
+          <ProjectTaskTable />
         </>
       ) : (
         <>
           <EmptyTable
-            Icon={Invoice01Icon}
+            Icon={Task01Icon}
             handler={handler}
             title="Projects Await Initiation"
             subtitle="Initiate your first project now."
@@ -32,11 +34,11 @@ const ClientProject = () => {
           />
         </>
       )}
-      <Modal open={openProjectModal} setOpen={setOpenProjectModal}>
-        <AddNewProjectForm />
+      <Modal open={openTask} setOpen={setOpenTask}>
+        <AddNewTaskForm />
       </Modal>
     </React.Fragment>
   );
 };
 
-export default ClientProject;
+export default ProjectTask;

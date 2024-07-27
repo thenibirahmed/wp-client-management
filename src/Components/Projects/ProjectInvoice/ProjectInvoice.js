@@ -1,15 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
+
 import { useStoreContext } from "../../../store/ContextApiStore";
 
-import EmptyTable from "../../helper/EmptyTable";
-
-import { Invoice01Icon } from "../../../utils/icons";
-
 import InvoiceTable from "../../helper/invoices/InvoiceTable";
+import EmptyTable from "../../helper/EmptyTable";
+import { Invoice01Icon } from "../../../utils/icons";
 import InvoiceHeader from "../../helper/invoices/InvoiceHeader";
 
-const ClientInvoices = () => {
-  const { setCreateInvoice, createInvoice } = useStoreContext();
+const ProjectInvoice = () => {
+  const { setCreateInvoice } = useStoreContext();
   const dataList = [1];
 
   const handler = () => {
@@ -38,4 +37,4 @@ const ClientInvoices = () => {
   );
 };
 
-export default ClientInvoices;
+export default ProjectInvoice;

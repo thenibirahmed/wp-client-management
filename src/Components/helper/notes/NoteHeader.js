@@ -1,4 +1,7 @@
 import React from "react";
+
+import { useStoreContext } from "../../../store/ContextApiStore";
+import { Search } from "../Search";
 import {
   CheckmarkCircle02Icon,
   Delete03Icon,
@@ -7,10 +10,7 @@ import {
   UserAdd02Icon,
 } from "../../../utils/icons";
 
-import { useStoreContext } from "../../../store/ContextApiStore";
-import { ClientNoteSearch } from "./ClientNoteSearch";
-
-const ClientNoteHeader = () => {
+const NoteHeader = () => {
   const { setCreateNote, createNote } = useStoreContext();
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
@@ -22,7 +22,7 @@ const ClientNoteHeader = () => {
           <Delete03Icon className="text-textColor2" />
         </button>
 
-        <ClientNoteSearch />
+        <Search />
         {createNote ? (
           <>
             <button
@@ -52,4 +52,4 @@ const ClientNoteHeader = () => {
   );
 };
 
-export default ClientNoteHeader;
+export default NoteHeader;

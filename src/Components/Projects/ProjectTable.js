@@ -286,7 +286,7 @@ const ProjectTable = () => {
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
                           <a
-                            href={`/admin/#/projects/#/${item.projectName}`}
+                            href={`/admin/#/projects/#/${item.id}`}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon

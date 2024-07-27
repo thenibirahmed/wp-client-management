@@ -1,10 +1,12 @@
 import React from "react";
-import ClientNoteHeader from "./ClientNoteHeader";
-import ClientNoteTable from "./ClientNoteTable";
-import { Task01Icon } from "../../../utils/icons";
+
 import EmptyTable from "../../helper/EmptyTable";
 import { useStoreContext } from "../../../store/ContextApiStore";
-import AddNewNote from "./AddNewNote";
+
+import NoteTable from "../../helper/notes/NoteTable";
+import NoteHeader from "../../helper/notes/NoteHeader";
+import AddNewNote from "../../helper/notes/AddNewNote";
+import { Task01Icon } from "../../../utils/icons";
 
 const ClientNotes = () => {
   const { createNote, setCreateNote } = useStoreContext();
@@ -16,7 +18,7 @@ const ClientNotes = () => {
   };
   return (
     <React.Fragment>
-      <ClientNoteHeader />
+      <NoteHeader />
 
       {createNote ? (
         <React.Fragment>
@@ -26,7 +28,7 @@ const ClientNotes = () => {
         <React.Fragment>
           {dataList.length > 0 ? (
             <>
-              <ClientNoteTable />
+              <NoteTable />
             </>
           ) : (
             <>

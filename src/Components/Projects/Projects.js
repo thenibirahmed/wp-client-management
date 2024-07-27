@@ -5,11 +5,16 @@ import EmptyTable from "../helper/EmptyTable";
 import ProjectTable from "./ProjectTable";
 
 import ProjectOverView from "./ProjectOverView";
-import ProjectHeader from "./ProjectHeader";
+
 import { UserCircle02Icon } from "../../utils/icons";
-import { ProjectModal } from "../helper/ProjectModal";
+
+import Modal from "../helper/Modal";
+import { useStoreContext } from "../../store/ContextApiStore";
+import AddNewProjectForm from "../helper/forms/AddNewProjectForm";
+import ProjectHeader from "../helper/projects/ProjectHeader";
 
 const Projects = () => {
+  const { openProjectModal, setOpenProjectModal } = useStoreContext();
   const dataList = [1];
 
   return (
@@ -37,7 +42,9 @@ const Projects = () => {
         </React.Fragment>
       </div>
 
-      <ProjectModal />
+      <Modal open={openProjectModal} setOpen={setOpenProjectModal}>
+        <AddNewProjectForm />
+      </Modal>
     </React.Fragment>
   );
 };

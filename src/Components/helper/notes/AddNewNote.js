@@ -1,10 +1,11 @@
 import React from "react";
+
+import NoteTable from "./NoteTable";
 import {
   Attachment02Icon,
   Image02Icon,
   Link05Icon,
 } from "../../../utils/icons";
-import ClientNoteTable from "./ClientNoteTable";
 
 const AddNewNote = () => {
   return (
@@ -12,7 +13,7 @@ const AddNewNote = () => {
       <div className="border border-borderColor rounded-[8px] py-[13px] ">
         <AddNewNoteTextArea />
       </div>
-      <ClientNoteTable />
+      <NoteTable />
     </div>
   );
 };
