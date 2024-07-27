@@ -4,8 +4,10 @@ import EmptyTable from "../../helper/EmptyTable";
 import { Invoice01Icon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import Modal from "../../helper/Modal";
-import AddNewProjectForm from "../../helper/forms/AddNewProjectForm";
+
 import ProjectHeader from "../../helper/projects/ProjectHeader";
+
+import AddNewClientProjectForm from "../../helper/forms/AddNewClientProjectForm";
 
 const ClientProject = () => {
   const { openProjectModal, setOpenProjectModal } = useStoreContext();
@@ -32,8 +34,12 @@ const ClientProject = () => {
           />
         </>
       )}
-      <Modal open={openProjectModal} setOpen={setOpenProjectModal}>
-        <AddNewProjectForm />
+      <Modal
+        open={openProjectModal}
+        setOpen={setOpenProjectModal}
+        title="Add Project"
+      >
+        <AddNewClientProjectForm />
       </Modal>
     </React.Fragment>
   );

@@ -1,4 +1,6 @@
 import React from "react";
+
+import EmailTable from "./EmailTable";
 import {
   Attachment02Icon,
   Image02Icon,
@@ -6,15 +8,13 @@ import {
   SignatureIcon,
 } from "../../../utils/icons";
 
-import ClientEmailTable from "./ClientEmailTable";
-
 const AddNewEmail = () => {
   return (
     <div>
       <div className="border border-borderColor rounded-[8px] py-[13px] ">
         <EmailBox />
       </div>
-      <ClientEmailTable />
+      <EmailTable />
     </div>
   );
 };

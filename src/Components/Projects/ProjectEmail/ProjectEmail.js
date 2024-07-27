@@ -6,7 +6,7 @@ import EmailTable from "../../helper/emails/EmailTable";
 import AddNewEmail from "../../helper/emails/AddNewEmail";
 import EmailHeader from "../../helper/emails/EmailHeader";
 
-const ClientEmails = () => {
+const ProjectEmail = () => {
   const { createEmail, setCreateEmail } = useStoreContext();
 
   const dataList = [1];
@@ -46,4 +46,4 @@ const ClientEmails = () => {
   );
 };
 
-export default ClientEmails;
+export default ProjectEmail;

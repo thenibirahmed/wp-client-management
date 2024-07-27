@@ -6,21 +6,33 @@ import {
   UserAdd02Icon,
   UserCircle02Icon,
 } from "../../utils/icons";
-import { AddClientModal } from "./AddClientModal";
+
 import ClientTable from "./ClientTable";
 import EmptyTable from "../helper/EmptyTable";
 import { ClientSearchInput } from "./SearchInput";
 import ClientOverView from "./ClientOverView";
 import { useStoreContext } from "../../store/ContextApiStore";
+import Modal from "../helper/Modal";
+import AddClientForm from "./AddClientForm";
 
 const Client = () => {
-  const { setCreateInvoice } = useStoreContext();
+  const { setCreateInvoice, setAllTabItems } = useStoreContext();
   const [open, setOpen] = useState(false);
 
   const dataList = [1];
 
   useEffect(() => {
     setCreateInvoice(false);
+
+    setAllTabItems({
+      project: true,
+      task: true,
+      invoice: false,
+      note: false,
+      file: false,
+      email: false,
+      info: false,
+    });
   }, []);
 
   return (
@@ -71,8 +83,9 @@ const Client = () => {
           )}
         </React.Fragment>
       </div>
-
-      <AddClientModal open={open} setOpen={setOpen} />
+      <Modal open={open} setOpen={setOpen} title="Add Client">
+        <AddClientForm setOpen={setOpen} />
+      </Modal>
     </React.Fragment>
   );
 };

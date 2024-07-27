@@ -4,10 +4,10 @@ import EmptyTable from "../../helper/EmptyTable";
 import { Invoice01Icon, Task01Icon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
 
-import ProjectTaskTable from "./ProjectTaskTable";
-import ProjectTaskHeader from "./ProjectTaskHeader";
 import Modal from "../../helper/Modal";
-import AddNewTaskForm from "./AddNewTaskForm";
+import ProjectTaskTable from "../../helper/projectTask/ProjectTaskTable";
+import ProjectTaskHeader from "../../helper/projectTask/ProjectTaskHeader";
+import AddNewTaskForm from "../../helper/projectTask/AddNewTaskForm";
 
 const ProjectTask = () => {
   const { openTask, setOpenTask } = useStoreContext();
@@ -34,7 +34,7 @@ const ProjectTask = () => {
           />
         </>
       )}
-      <Modal open={openTask} setOpen={setOpenTask}>
+      <Modal open={openTask} setOpen={setOpenTask} title="Add Task">
         <AddNewTaskForm />
       </Modal>
     </React.Fragment>

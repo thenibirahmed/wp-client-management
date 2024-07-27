@@ -1,10 +1,10 @@
 import React from "react";
 import { useStoreContext } from "../../../store/ContextApiStore";
 
-const ClientViewEmail = () => {
+const ViewEmail = () => {
   const { selectedViewEmail } = useStoreContext();
 
   return <div>{selectedViewEmail.id}</div>;
 };
 
-export default ClientViewEmail;
+export default ViewEmail;

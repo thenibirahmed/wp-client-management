@@ -9,7 +9,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { MultiplicationSignIcon } from "../../utils/icons";
 
-export const Modal = ({ open, setOpen, children }) => {
+export const Modal = ({ open, setOpen, children, title = "" }) => {
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10 ">
       <DialogBackdrop
@@ -47,7 +47,7 @@ export const Modal = ({ open, setOpen, children }) => {
                   <>
                     <div className="border-b-[1px] pb-8 border-b-borderColor flex justify-between">
                       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
-                        Add Project
+                        {title}{" "}
                       </h1>
                       <button onClick={() => setOpenProjectModal(false)}>
                         <MultiplicationSignIcon className="text-textColor2" />

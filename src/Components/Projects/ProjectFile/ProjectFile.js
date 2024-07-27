@@ -9,7 +9,7 @@ import FileTable from "../../helper/files/FileTable";
 import FileHeader from "../../helper/files/FileHeader";
 import AddNewFileForm from "../../helper/forms/AddNewFileForm";
 
-const ClientFiles = () => {
+const ProjectFile = () => {
   const { openFileModal, setOpenFileModal } = useStoreContext();
 
   const handler = () => {
@@ -41,4 +41,4 @@ const ClientFiles = () => {
   );
 };
 
-export default ClientFiles;
+export default ProjectFile;

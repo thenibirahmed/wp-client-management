@@ -2,20 +2,33 @@ import React, { useState, useEffect } from "react";
 
 import EmptyTable from "../helper/EmptyTable";
 
-import ProjectTable from "./ProjectTable";
-
 import ProjectOverView from "./ProjectOverView";
 
 import { UserCircle02Icon } from "../../utils/icons";
 
 import Modal from "../helper/Modal";
 import { useStoreContext } from "../../store/ContextApiStore";
-import AddNewProjectForm from "../helper/forms/AddNewProjectForm";
+
 import ProjectHeader from "../helper/projects/ProjectHeader";
+import ProjectTable from "../helper/projects/ProjectTable";
+import AddNewProjectForm from "../helper/forms/AddNewProjectForm";
 
 const Projects = () => {
-  const { openProjectModal, setOpenProjectModal } = useStoreContext();
+  const { openProjectModal, setOpenProjectModal, setAllTabItems } =
+    useStoreContext();
   const dataList = [1];
+
+  useEffect(() => {
+    setAllTabItems({
+      project: true,
+      task: true,
+      invoice: false,
+      note: false,
+      file: false,
+      email: false,
+      info: false,
+    });
+  }, []);
 
   return (
     <React.Fragment>
@@ -42,7 +55,11 @@ const Projects = () => {
         </React.Fragment>
       </div>
 
-      <Modal open={openProjectModal} setOpen={setOpenProjectModal}>
+      <Modal
+        open={openProjectModal}
+        setOpen={setOpenProjectModal}
+        title="Add Project"
+      >
         <AddNewProjectForm />
       </Modal>
     </React.Fragment>

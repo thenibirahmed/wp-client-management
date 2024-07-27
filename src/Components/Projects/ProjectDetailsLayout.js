@@ -1,11 +1,12 @@
 import React from "react";
 import { useStoreContext } from "../../store/ContextApiStore";
 import ProjectTask from "./ProjectTask/ProjectTask";
-import ClientNotes from "../Clients/ClientNotes/ClientNotes";
-import ClientFiles from "../Clients/ClientFiles/ClientFiles";
-import ClientEmails from "../Clients/ClientEmails/ClientEmails";
-import ClientAddiInfo from "../Clients/ClientAddiInfo/ClientAddiInfo";
+
 import ProjectInvoice from "./ProjectInvoice/ProjectInvoice";
+import ProjectNote from "./ProjectNote/ProjectNote";
+import ProjectFile from "./ProjectFile/ProjectFile";
+import ProjectEmail from "./ProjectEmail/ProjectEmail";
+import ProjectInfo from "./ProjectInfo/ProjectInfo";
 
 const ProjectDetailsLayout = () => {
   const { allTabItems } = useStoreContext();
@@ -15,13 +16,13 @@ const ProjectDetailsLayout = () => {
   } else if (allTabItems["invoice"]) {
     return <ProjectInvoice />;
   } else if (allTabItems["note"]) {
-    return <ClientNotes />;
+    return <ProjectNote />;
   } else if (allTabItems["file"]) {
-    return <ClientFiles />;
+    return <ProjectFile />;
   } else if (allTabItems["email"]) {
-    return <ClientEmails />;
+    return <ProjectEmail />;
   } else if (allTabItems["info"]) {
-    return <ClientAddiInfo />;
+    return <ProjectInfo />;
   } else {
     return <ProjectTask />;
   }

@@ -1,14 +1,14 @@
 import React from "react";
+
 import {
   Delete03Icon,
   Mail02Icon,
   MultiplicationSignIcon,
+  Search01Icon,
 } from "../../../utils/icons";
-
 import { useStoreContext } from "../../../store/ContextApiStore";
-import { Search } from "../../helper/Search";
 
-const ClientEmailHeader = () => {
+const EmailHeader = () => {
   const { createEmail, setCreateEmail } = useStoreContext();
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
@@ -23,7 +23,7 @@ const ClientEmailHeader = () => {
           <Delete03Icon className="text-textColor2" />
         </button>
 
-        <Search />
+        <Search01Icon />
         {createEmail ? (
           <>
             <button
@@ -53,4 +53,4 @@ const ClientEmailHeader = () => {
   );
 };
 
-export default ClientEmailHeader;
+export default EmailHeader;

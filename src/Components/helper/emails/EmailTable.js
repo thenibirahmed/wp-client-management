@@ -7,14 +7,15 @@ import {
   Task01Icon,
   ViewIcon,
 } from "../../../utils/icons";
-import RedCirlcle from "../../helper/RedCirlcle";
-import SkyBlueCirle from "../../helper/SkyBlueCirle";
-import YellowCirle from "../../helper/YellowCirle";
-import Pagination from "../Pagination";
+
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import truncateText from "../../../utils/truncateText";
 import { useStoreContext } from "../../../store/ContextApiStore";
-import { ClientEmailModal } from "./ClientEmailModal";
+
+import Pagination from "../../Clients/Pagination";
+import Modal from "../Modal";
+
+import ViewEmail from "./ViewEmail";
 
 const tableData = [
   {
@@ -55,7 +56,7 @@ const tableData = [
   },
 ];
 
-const ClientEmailTable = () => {
+const EmailTable = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
@@ -206,13 +207,16 @@ const ClientEmailTable = () => {
             <Pagination />
           </div>
         </div>
+        <Modal
+          open={openEmailModal}
+          setOpen={setOpenEmailModal}
+          title="How a visual artist redefines success in graphic design"
+        >
+          <ViewEmail />
+        </Modal>
       </div>
-      <ClientEmailModal
-        openEmailModal={openEmailModal}
-        setOpenEmailModal={setOpenEmailModal}
-      />
     </div>
   );
 };
 
-export default ClientEmailTable;
+export default EmailTable;
