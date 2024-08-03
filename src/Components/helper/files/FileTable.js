@@ -13,33 +13,33 @@ import Pagination from "../../Clients/Pagination";
 const tableData = [
   {
     id: 1,
-    fileName: { name: "Easin Ahmed", title: "tunisian_dinar.list" },
+    fileName: { name: "Note", title: "tunisian_dinar.list" },
     uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
+    time: "May 03, 2022",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 2,
-    fileName: { name: "Tanvir Khan", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
+    fileName: { name: "Task", title: "tunisian_dinar.list" },
+    uploadedBy: "Tanvir ",
+    time: "August 30, 2023",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 3,
-    fileName: { name: "Jack Ahmed", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
+    fileName: { name: "My App", title: "tunisian_dinar.list" },
+    uploadedBy: "Khan",
+    time: "June 01, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 4,
-    fileName: { name: "Sharif Ahmed", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "July 05, 2024",
+    fileName: { name: "Lists", title: "tunisian_dinar.list" },
+    uploadedBy: "Jack",
+    time: "July 07, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },

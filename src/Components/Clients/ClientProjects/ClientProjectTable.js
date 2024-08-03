@@ -15,7 +15,7 @@ import useCheckedHandler from "../../../utils/useCheckedItem";
 const tableData = [
   {
     id: 1,
-    name: "Easin Ahmed",
+    name: "Easin",
     invoice: 2500,
     revenue: 35,
     due: 72,
@@ -25,8 +25,7 @@ const tableData = [
   {
     id: 2,
     name: "Ahmed",
-
-    invoice: 200,
+    invoice: 350,
     revenue: 5,
     due: 72,
     status: "On Hold",
@@ -34,11 +33,10 @@ const tableData = [
   },
   {
     id: 3,
-    name: "Task",
-
-    invoice: 200,
-    revenue: 5,
-    due: 72,
+    name: "Tanvir",
+    invoice: 180,
+    revenue: 15,
+    due: 200,
     status: "Cancelled",
     priority: "Medium",
   },
@@ -46,9 +44,9 @@ const tableData = [
     id: 4,
     name: "Mohahhamd",
 
-    invoice: 200,
-    revenue: 5,
-    due: 72,
+    invoice: 720,
+    revenue: 150,
+    due: 750,
     status: "In progress",
     priority: "Low",
   },
@@ -56,9 +54,9 @@ const tableData = [
     id: 5,
     name: "Rifat",
 
-    invoice: 200,
+    invoice: 900,
     revenue: 5,
-    due: 72,
+    due: 666,
     status: "In Review",
     priority: "Low",
   },

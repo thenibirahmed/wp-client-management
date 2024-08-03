@@ -16,24 +16,24 @@ const tableData = [
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
-    id: 2,
-    creator: "Easin Ahmed",
-    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    time: "july 05, 2024",
+    id: 1,
+    creator: "Jane Smith",
+    note: "Loram offers track maintenance services to passenger, freight, and transit railroads worldwide.",
+    time: "July 07, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
-    id: 3,
-    creator: "Easin Ahmed",
-    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    time: "july 05, 2024",
+    id: 2,
+    creator: "John Doe",
+    note: "Loram Maintenance of Way, Inc. leases and sells railroad maintenance equipment to various railroads.",
+    time: "July 06, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 4,
-    creator: "Easin Ahmed",
+    creator: "Jack",
     note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
     time: "july 05, 2024",
     image:

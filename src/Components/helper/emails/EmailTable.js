@@ -20,7 +20,7 @@ import ViewEmail from "./ViewEmail";
 const tableData = [
   {
     id: 1,
-    from: "Easin Ahmed",
+    from: "Easin",
     email: {
       title: "How a visual artist redefines success in graphic design",
       content:
@@ -32,25 +32,25 @@ const tableData = [
   },
   {
     id: 2,
-    from: "Easin Ahmed",
+    from: "Tanvir",
     email: {
-      title: "How a visual artist redefines success in graphic design",
+      title: "Web Development",
       content:
         "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
     },
-    time: "july 05, 2024",
+    time: "August 10, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
   {
     id: 3,
-    from: "Easin Ahmed",
+    from: "Ahmed",
     email: {
-      title: "How a visual artist redefines success in graphic design",
+      title: "Journey",
       content:
         "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
     },
-    time: "july 05, 2024",
+    time: "May 05, 2024",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
