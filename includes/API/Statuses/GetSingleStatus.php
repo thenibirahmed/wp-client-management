@@ -1,11 +1,23 @@
 <?php
 namespace WpClientManagement\API\Statuses;
 
+use WpClientManagement\Models\Status;
+
 class GetSingleStatus {
 
     private $namespace = 'wp-client-management/v1';
 
     private $endpoint = '/status/(?P<id>\d+)';
+
+    protected array $rules = [
+        'id' => 'required|integer|exists:statuses,id',
+    ];
+
+    protected array $validationMessages = [
+        'id.required' => 'The status ID is required.',
+        'id.integer' => 'The status ID must be an integer.',
+        'id.exists' => 'The status does not exist.',
+    ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
@@ -16,22 +28,33 @@ class GetSingleStatus {
     }
 
     public function get_single_status(\WP_REST_Request $request) {
-        $data = $request->get_params();
+        global $validator;
 
-        if(!isset($data['id'])) {
+        $status_id = $request->get_param('id');
+
+        if(!isset($status_id)) {
             return new \WP_REST_Response([
                 'error' => 'Id param is required',
             ]);
         }
 
-        $status = get_status($data['id']);
+        $data = ['id' => $status_id];
 
-        if(!$status) {
+        $validator = $validator->make($data, $this->rules, $this->validationMessages);
+
+        if ($validator->fails()) {
+            return new \WP_REST_Response([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        $status = Status::find($data['id']);
+
+        if(!$client) {
             return new \WP_REST_Response([
                 'error' => 'No Status found',
             ]);
         }
-
         $response = [
             'data' => $status,
         ];

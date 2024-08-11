@@ -2,11 +2,23 @@
 
 namespace WpClientManagement\API\Priorities;
 
+use WpClientManagement\Models\Priority;
+
 class GetSinglePriority {
 
     private $namespace = 'wp-client-management/v1';
 
     private $endpoint = '/priority/(?P<id>\d+)';
+
+    protected array $rules = [
+        'id' => 'required|integer|exists:priorities,id',
+    ];
+
+    protected array $validationMessages = [
+        'id.required' => 'The priority ID is required.',
+        'id.integer' => 'The priority ID must be an integer.',
+        'id.exists' => 'The priority does not exist.',
+    ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
@@ -17,15 +29,27 @@ class GetSinglePriority {
     }
 
     public function get_single_priority(\WP_REST_Request $request) {
-        $data = $request->get_params();
+        global $validator;
 
-        if(!isset($data['id'])) {
+        $priority_id = $request->get_param('id');
+
+        if(!isset($priority_id)) {
             return new \WP_REST_Response([
                 'error' => 'Id param is required',
             ]);
         }
 
-        $priority = get_priority($data['id']);
+        $data = ['id' => $priority_id];
+
+        $validator = $validator->make($data, $this->rules, $this->validationMessages);
+
+        if ($validator->fails()) {
+            return new \WP_REST_Response([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        $priority = Priority::find($data['id']);
 
         if(!$priority) {
             return new \WP_REST_Response([

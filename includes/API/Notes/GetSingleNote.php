@@ -1,12 +1,24 @@
-<?php 
+<?php
 
 namespace WpClientManagement\API\Notes;
+
+use WpClientManagement\Models\Note;
 
 class GetSingleNote {
 
     private $namespace = 'wp-client-management/v1';
 
     private $endpoint = '/note/(?P<id>\d+)';
+
+    protected array $rules = [
+        'id' => 'required|integer|exists:notes,id',
+    ];
+
+    protected array $validationMessages = [
+        'id.required' => 'The note ID is required.',
+        'id.integer' => 'The note ID must be an integer.',
+        'id.exists' => 'The note does not exist.',
+    ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
@@ -17,22 +29,33 @@ class GetSingleNote {
     }
 
     public function get_single_note(\WP_REST_Request $request) {
-        $data = $request->get_params();
+        global $validator;
 
-        if(!isset($data['id'])) {
+        $note_id = $request->get_param('id');
+
+        if(!isset($note_id)) {
             return new \WP_REST_Response([
                 'error' => 'Id param is required',
             ]);
         }
 
-        $note = get_note($data['id']);
+        $data = ['id' => $note_id];
+
+        $validator = $validator->make($data, $this->rules, $this->validationMessages);
+
+        if ($validator->fails()) {
+            return new \WP_REST_Response([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        $note = Note::find($data['id']);
 
         if(!$note) {
             return new \WP_REST_Response([
                 'error' => 'No Note found',
             ]);
         }
-
         $response = [
             'data' => $note,
         ];
