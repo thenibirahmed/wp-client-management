@@ -22,7 +22,7 @@ class DeleteUser {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::DELETABLE, // DELETE
+            'methods' => \WP_REST_Server::DELETABLE,
             'callback' => array($this, 'delete_user'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -33,17 +33,15 @@ class DeleteUser {
 
         $user_id = $request->get_param('id');
 
-        // ------------------- Validation Example -------------------
-        // $data = ['id' => $user_id];
+        $data = ['id' => $user_id];
 
-        // $validator = $validator->make($data, $this->rules, $this->validationMessages);
+        $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
-        // if ($validator->fails()) {
-        //     return new \WP_REST_Response([
-        //         'errors' => $validator->errors(),
-        //     ], 400);
-        // }
-        // ------------------- Validation Example -------------------
+        if ($validator->fails()) {
+            return new \WP_REST_Response([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
 
         $user = User::find($user_id);
 
