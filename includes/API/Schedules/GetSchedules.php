@@ -10,25 +10,6 @@ class GetSchedules {
 
     private $endpoint = '/schedules';
 
-    protected array $rules = [
-        'eic_crm_user_id' => 'required',
-        'client_id' => 'required',
-        'date' => 'required|date',
-        'duration' => 'nullable|integer',
-        'link' => 'nullable|string',
-        'hosts' => 'nullable|json'
-    ];
-
-    protected array $validationMessages = [
-        'eic_crm_user_id.required' => 'The eic_crm_user_id field is required.',
-        'client_id.required' => 'The client_id field is required.',
-        'date.required' => 'The date field is required.',
-        'date.date' => 'The date field must be a valid date.',
-        'duration.integer' => 'The duration field must be an integer.',
-        'link.string' => 'The link must be a string.',
-        'hosts.json' => 'The hosts must contain a json representation.',
-    ];
-
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE, // GET

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EicCrmUser extends Model
 {
-    protected $table = 'eic_crm_users';
+    protected $table = 'eic_eic_crm_users';
 
 
     public function user() {

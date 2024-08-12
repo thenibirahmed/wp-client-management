@@ -10,21 +10,9 @@ class GetPriorities {
 
     private $endpoint = '/priorities';
 
-    protected array $rules = [
-        'name' => 'required|string',
-        'type' => 'required|string'
-    ];
-
-    protected array $validationMessages = [
-        'name.required' => 'The name field is required.',
-        'name.string' => 'The name must be a string.',
-        'type.required' => 'The type field is required.',
-        'type.string' => 'The type must be a string.',
-    ];
-
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE, // GET
+            'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_priorities'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -48,7 +36,7 @@ class GetPriorities {
         return new \WP_REST_Response([
             'data' => $data,
             'pagination' => [
-                'total' => $priorities->ftotal(),
+                'total' => $priorities->total(),
                 'per_page' => $priorities->perPage(),
                 'current_page' => $priorities->currentPage(),
                 'last_page' => $priorities->lastPage(),

@@ -10,24 +10,9 @@ class GetEicCrmUsers {
 
     private $endpoint = '/eic-crm-users';
 
-    protected array $rules = [
-        'wp_user_id' => 'nullable',
-        'phone' => 'nullable',
-        'address' => 'nullable',
-        'city' => 'nullable',
-        'state' => 'nullable',
-        'zip' => 'nullable',
-        'country' => 'nullable',
-        'role' => 'nullable',
-    ];
-
-    protected array $validationMessages = [
-        //
-    ];
-
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE, // GET
+            'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_eic_crm_users'),
             'permission_callback' => 'is_user_logged_in',
         ]);

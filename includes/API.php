@@ -45,51 +45,51 @@ class API {
         new GetPosts();
         new GetSinglePost();
 
-        // // Client
-        // new GetClients();
-        // new GetSingleClient();
+        // Client
+        new GetClients();
+        new GetSingleClient();
 
-        // // DealPipeline
+        // DealPipeline
         new GetDealPipelines();
         new GetSingleDealPipeline();
 
-        // // EicCrmUser
+        // EicCrmUser
         new GetEicCrmUsers();
         new GetSingleEicCrmUser();
 
-        // // Email
-        // new GetEmails();
+        // Email
+        new GetEmails();
         new GetSingleEmail();
 
-        // // File
+        // File
         new GetFiles();
         new GetSingleFile();
 
-        // // Invoice
+        // Invoice
         new GetInvoices();
         new GetSingleInvoice();
 
-        // // Note
+        // Note
         new GetNotes();
         new GetSingleNote();
 
-        // // Priority
+        // Priority
         new GetPriorities();
         new GetSinglePriority();
 
-        // // Project
+        // Project
         new GetProjects();
         new GetSingleProject();
 
-        // // Schedule
+        // Schedule
         new GetSchedules();
         new GetSingleSchedule();
 
-        // // Status
+        // Status
         new GetStatuses();
         new GetSingleStatus();
 
-        // // Task
+        // Task
         new GetTasks();
         new GetSingleTask();
 

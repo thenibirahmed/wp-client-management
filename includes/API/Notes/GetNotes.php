@@ -10,24 +10,9 @@ class GetNotes {
 
     private $endpoint = '/notes';
 
-    protected array $rules = [
-        'eic_crm_user_id' => 'required',
-        'project_id' => 'required',
-        'client_id' => 'required',
-        'text' => 'required|string'
-    ];
-
-    protected array $validationMessages = [
-        'eic_crm_user_id.required' => 'The eic_crm_user_id field is required.',
-        'project_id.required' => 'The project_id field is required.',
-        'client_id.required' => 'The client_id field is required.',
-        'text.required' => 'The text field is required.',
-        'text.string' => 'The text must be a string.',
-    ];
-
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE, // GET
+            'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_notes'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -36,7 +21,6 @@ class GetNotes {
     public function get_notes(\WP_REST_Request $request) {
 
         $page = $request->get_params('page');
-
 
         $notes = Note::paginate(20, ['*'], 'page', $page);
 
@@ -54,7 +38,7 @@ class GetNotes {
         return new \WP_REST_Response([
             'data' => $data,
             'pagination' => [
-                'total' => $notes->ftotal(),
+                'total' => $notes->total(),
                 'per_page' => $notes->perPage(),
                 'current_page' => $notes->currentPage(),
                 'last_page' => $notes->lastPage(),

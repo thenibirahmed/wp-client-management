@@ -65,7 +65,7 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.get(wpApiSettings.root + 'wp-client-management/v1/statuses/', {
+        axios.get(wpApiSettings.root + 'wp-client-management/v1/tasks', {
             headers: {
                 'X-WP-Nonce': wpApiSettings.nonce
             },
