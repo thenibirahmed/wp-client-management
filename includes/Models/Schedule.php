@@ -1,15 +1,15 @@
-<?php 
+<?php
 
 namespace WpClientManagement\Models;
 
+use WpClientManagement\Models\Client;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Schedule extends Model
 {
-    protected $table = 'schedules';
+    protected $table = 'eic_schedules';
 
-    public function client() :BelongsTo {
+    public function client() {
         return $this->belongsTo(Client::class);
     }
 

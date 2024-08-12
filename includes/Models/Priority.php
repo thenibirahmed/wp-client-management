@@ -1,22 +1,21 @@
-<?php 
+<?php
 
 namespace WpClientManagement\Models;
 
+use WpClientManagement\Models\Task;
+use WpClientManagement\Models\Project;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Priority extends Model
 {
-    protected $table = 'priorities';
+    protected $table = 'eic_priorities';
 
-        
-    public function projects() :HasMany {
+    public function projects() {
         return $this->hasMany(Project::class);
     }
-    
-    public function tasks() :HasMany {
+
+    public function tasks() {
         return $this->hasMany(Task::class);
     }
-
 
 }

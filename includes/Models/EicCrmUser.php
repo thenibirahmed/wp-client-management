@@ -1,21 +1,22 @@
-<?php 
+<?php
 
 namespace WpClientManagement\Models;
 
+use WpClientManagement\Models\User;
+use WpClientManagement\Models\Client;
+use WpClientManagement\Models\Project;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class EicCrmUser extends Model
 {
     protected $table = 'eic_crm_users';
 
-    
-    public function user() :BelongsTo{
+
+    public function user() {
         return $this->belongsTo(User::class);
     }
 
-    public function client() :HasOne {
+    public function client() {
         return $this->hasOne(Client::class);
     }
 

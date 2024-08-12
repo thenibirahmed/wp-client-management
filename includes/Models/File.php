@@ -1,15 +1,15 @@
-<?php 
+<?php
 
 namespace WpClientManagement\Models;
 
+use WpClientManagement\Models\Project;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class File extends Model
 {
-    protected $table = 'files';
+    protected $table = 'eic_files';
 
-    public function project() :BelongsTo{
+    public function project() {
         return $this->belongsTo(Project::class);
     }
 
