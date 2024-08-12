@@ -1,24 +1,23 @@
-<?php 
+<?php
 
 namespace WpClientManagement\Models;
 
+use WpClientManagement\Models\Task;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-
+use WpClientManagement\Models\EicCrmUser;
 class TaskComment extends Model
 {
-    protected $table = 'task_comments';
+    protected $table = 'eic_task_comments';
 
-    public function task() :BelongsTo {
+    public function task() {
         return $this->belongsTo(Task::class);
     }
 
-    public function eic_crm_user() :BelongsTo {
+    public function eic_crm_user() {
         return $this->belongsTo(EicCrmUser::class);
     }
 
-    public function reply_to() :BelongsTo {
+    public function reply_to() {
         return $this->belongsTo(TaskComment::class,'reply_to');
     }
 

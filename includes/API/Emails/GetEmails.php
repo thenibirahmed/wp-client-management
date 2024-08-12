@@ -4,7 +4,7 @@ namespace WpClientManagement\API\Emails;
 
 use WpClientManagement\Models\Email;
 
-class GetEmail {
+class GetEmails {
 
     private $namespace = 'wp-client-management/v1';
 

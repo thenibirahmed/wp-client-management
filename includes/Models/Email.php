@@ -1,16 +1,16 @@
-<?php 
+<?php
 
 namespace WpClientManagement\Models;
 
+use WpClientManagement\Models\Client;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Email extends Model
 {
-    protected $table = 'emails';
+    protected $table = 'eic_emails';
 
-    
-    public function client() :BelongsTo {
+
+    public function client() {
         return $this->belongsTo(Client::class);
     }
 

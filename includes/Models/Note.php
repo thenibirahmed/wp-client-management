@@ -1,15 +1,15 @@
-<?php 
+<?php
 
 namespace WpClientManagement\Models;
 
+use WpClientManagement\Models\Project;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Note extends Model
 {
-    protected $table = 'notes';
+    protected $table = 'eic_notes';
 
-    public function project() :BelongsTo{
+    public function project() {
         return $this->belongsTo(Project::class);
     }
 }

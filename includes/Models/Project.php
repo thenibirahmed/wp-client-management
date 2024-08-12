@@ -1,50 +1,56 @@
-<?php 
+<?php
 
 namespace WpClientManagement\Models;
 
+use WpClientManagement\Models\File;
+use WpClientManagement\Models\Note;
+use WpClientManagement\Models\User;
+use WpClientManagement\Models\Client;
+use WpClientManagement\Models\Status;
+use WpClientManagement\Models\Invoice;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use WpClientManagement\Models\Priority;
+use WpClientManagement\Models\EicCrmUser;
+use WpClientManagement\Models\DealPipeline;
 
 class Project extends Model
 {
-    protected $table = 'projects';
+    protected $table = 'eic_projects';
 
-    
-    public function client() :BelongsTo {
+    public function client() {
         return $this->belongsTo(Client::class);
     }
 
-    public function manager() :BelongsTo {
+    public function manager() {
         return $this->belongsTo(User::class);
     }
 
-    public function notes() :HasMany {
+    public function notes() {
         return $this->hasMany(Note::class);
     }
 
-    public function files() :HasMany {
+    public function files() {
         return $this->hasMany(File::class);
     }
-    
+
     public function eicCrmUsers()
     {
         return $this->belongsToMany(EicCrmUser::class, 'project_eic_crm_users');
     }
 
-    public function status() :BelongsTo {
+    public function status() {
         return $this->belongsTo(Status::class);
     }
 
-    public function priority() :BelongsTo {
+    public function priority() {
         return $this->belongsTo(Priority::class);
     }
 
-    public function deal_pipeline() :BelongsTo {
+    public function deal_pipeline()   {
         return $this->belongsTo(DealPipeline::class);
     }
 
-    public function invoices() :HasMany {
+    public function invoices() {
         return $this->hasMany(Invoice::class);
     }
 

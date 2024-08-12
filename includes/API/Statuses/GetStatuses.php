@@ -10,27 +10,16 @@ class GetStatuses {
 
     private $endpoint = '/statuses';
 
-    protected array $rules = [
-        'name' => 'required|string',
-        'type' => 'required|string'
-    ];
-
-    protected array $validationMessages = [
-        'name.required' => 'The name field is required.',
-        'name.string' => 'The name must be a string.',
-        'type.required' => 'The type field is required.',
-        'type.string' => 'The type must be a string.',
-    ];
-
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE, // GET
+            'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_statuses'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
     public function get_statuses(\WP_REST_Request $request) {
+
         $page = $request->get_params('page');
 
         $statuses = Status::paginate(20, ['*'], 'page', $page);

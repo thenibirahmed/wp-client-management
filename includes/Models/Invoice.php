@@ -1,19 +1,20 @@
-<?php 
+<?php
 
 namespace WpClientManagement\Models;
 
+use WpClientManagement\Models\Client;
+use WpClientManagement\Models\Project;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Invoice extends Model
 {
-    protected $table = 'invoices';
-    
-    public function client() :BelongsTo{
+    protected $table = 'eic_invoices';
+
+    public function client() {
         return $this->belongsTo(Client::class);
     }
 
-    public function project() :BelongsTo{
+    public function project() {
         return $this->belongsTo(Project::class);
     }
 

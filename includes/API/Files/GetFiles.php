@@ -34,13 +34,13 @@ class GetFiles {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE, // GET
-            'callback' => array($this, 'get_files'),
+            'methods' => \WP_REST_Server::READABLE,
+            'callback' => array($this, 'get_posts'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function get_files(\WP_REST_Request $request) {
+    public function get_posts(\WP_REST_Request $request) {
 
         $page = $request->get_params('page');
 
@@ -51,9 +51,9 @@ class GetFiles {
         foreach ($files as $file) {
             $data[] = [
                 'id' => $file->ID,
-                'eic_crm_user' => $file->eic_crm_user->name,
-                'project' => $file->project->name,
-                'client' => $file->client->name,
+                // 'eic_crm_user' => $file->eic_crm_user->name,
+                // 'project' => $file->project->name,
+                // 'client' => $file->client->name,
                 'title' => $file->title,
                 'url' => $file->url,
                 'type' => $file->type
