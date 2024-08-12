@@ -8,7 +8,7 @@ use WpClientManagement\API\DealPipelines\GetDealPipelines;
 use WpClientManagement\API\DealPipelines\GetSingleDealPipeline;
 use WpClientManagement\API\EicCrmUsers\GetEicCrmUsers;
 use WpClientManagement\API\EicCrmUsers\GetSingleEicCrmUser;
-use WpClientManagement\API\Emails\GetEmail;
+use WpClientManagement\API\Emails\GetEmails;
 use WpClientManagement\API\Emails\GetSingleEmail;
 use WpClientManagement\API\Files\GetFiles;
 use WpClientManagement\API\Files\GetSingleFile;
@@ -40,7 +40,7 @@ class API {
 
     public function register_routes() {
         new GetUsers();
-        
+
         // Post
         new GetPosts();
         new GetSinglePost();
@@ -58,8 +58,8 @@ class API {
         new GetSingleEicCrmUser();
 
         // // Email
-        // new GetEmail();
-        // new GetSingleEmail();
+        // new GetEmails();
+        new GetSingleEmail();
 
         // // File
         new GetFiles();
