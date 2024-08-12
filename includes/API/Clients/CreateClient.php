@@ -47,11 +47,13 @@ class CreateClient {
             return new \WP_REST_Response([
                 'errors' => $validator->errors(),
             ], 400);
-    }
+        }
+        
         $user_id = wp_create_user(
-        sanitize_user($data['email'], true),
-        $data['password'],
-        $data['email']);
+            sanitize_user($data['email'], true),
+            $data['password'],
+            $data['email']
+        );
 
     if (is_wp_error($user_id)) {
         return new \WP_REST_Response([
