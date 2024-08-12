@@ -40,6 +40,7 @@ class API {
 
     public function register_routes() {
         new GetUsers();
+        
         // Post
         new GetPosts();
         new GetSinglePost();
