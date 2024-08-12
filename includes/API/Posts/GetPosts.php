@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace WpClientManagement\API\Posts;
 
@@ -32,21 +32,9 @@ class GetPosts {
     }
 
     public function get_posts(\WP_REST_Request $request) {
-        global $validator;
 
         $page = $request->get_params('page');
 
-        // ------------------- Validation Example -------------------
-        // $data = $request->get_params();
-
-        // $validator = $validator->make($data, $this->rules, $this->validationMessages);
-
-        // if($validator->fails()) {
-        //     return new \WP_REST_Response([
-        //         'errors' => $validator->errors(),
-        //     ]);
-        // }
-        // ------------------- Validation Example -------------------
 
         $posts = Post::paginate(20, ['*'], 'page', $page);
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace WpClientManagement\API\DealPipelines;
 
@@ -29,21 +29,7 @@ class GetDealPipelines {
     }
 
     public function get_dealpipelines(\WP_REST_Request $request) {
-        global $validator;
-
         $page = $request->get_params('page');
-
-        // ------------------- Validation Example -------------------
-        // $data = $request->get_params();
-
-        // $validator = $validator->make($data, $this->rules, $this->validationMessages);
-
-        // if($validator->fails()) {
-        //     return new \WP_REST_Response([
-        //         'errors' => $validator->errors(),
-        //     ]);
-        // }
-        // ------------------- Validation Example -------------------
 
         $dealpipelines = DealPipeline::paginate(20, ['*'], 'page', $page);
 

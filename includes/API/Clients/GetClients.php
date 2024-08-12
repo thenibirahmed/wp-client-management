@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace WpClientManagement\API\Clients;
 
@@ -36,18 +36,6 @@ class GetClient {
         global $validator;
 
         $page = $request->get_params('page');
-
-        // ------------------- Validation Example -------------------
-        // $data = $request->get_params();
-
-        // $validator = $validator->make($data, $this->rules, $this->validationMessages);
-
-        // if($validator->fails()) {
-        //     return new \WP_REST_Response([
-        //         'errors' => $validator->errors(),
-        //     ]);
-        // }
-        // ------------------- Validation Example -------------------
 
         $clients = Client::paginate(20, ['*'], 'page', $page);
 

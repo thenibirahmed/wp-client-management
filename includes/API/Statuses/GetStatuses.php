@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace WpClientManagement\API\Statuses;
 
@@ -31,21 +31,7 @@ class GetStatuses {
     }
 
     public function get_statuses(\WP_REST_Request $request) {
-        global $validator;
-
         $page = $request->get_params('page');
-
-        // ------------------- Validation Example -------------------
-        // $data = $request->get_params();
-
-        // $validator = $validator->make($data, $this->rules, $this->validationMessages);
-
-        // if($validator->fails()) {
-        //     return new \WP_REST_Response([
-        //         'errors' => $validator->errors(),
-        //     ]);
-        // }
-        // ------------------- Validation Example -------------------
 
         $statuses = Status::paginate(20, ['*'], 'page', $page);
 
