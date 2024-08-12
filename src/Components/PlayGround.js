@@ -51,7 +51,7 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.get(wpApiSettings.root + 'wp-client-management/v1/posts/', {
+        axios.get(wpApiSettings.root + 'wp-client-management/v1/statuses/', {
             headers: {
                 'X-WP-Nonce': wpApiSettings.nonce
             },
@@ -70,13 +70,9 @@ const PlayGround = () => {
             <h1>PlayGround</h1>
             <button onClick={getPosts}>Click me to get all posts</button> <br/><br/>
             <button onClick={getUsers}>Click me to get all users</button> <br/><br/>
-            <button onClick={getSinglePost}>Click me to get single post</button><br/>
-
+            <button onClick={getSinglePost}>Click me to get single post</button> <br/><br/>
 
             <button onClick={getTest}>Testing</button><br/>
-
-
-
         </div>
     );
 };
