@@ -36,7 +36,7 @@ class GetStatuses {
         return new \WP_REST_Response([
             'data' => $data,
             'pagination' => [
-                'total' => $statuses->ftotal(),
+                'total' => $statuses->total(),
                 'per_page' => $statuses->perPage(),
                 'current_page' => $statuses->currentPage(),
                 'last_page' => $statuses->lastPage(),
