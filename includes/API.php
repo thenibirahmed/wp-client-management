@@ -2,7 +2,6 @@
 
 namespace WpClientManagement;
 
-use WpClientManagement\API\Clients\GetClient;
 use WpClientManagement\API\Clients\GetSingleClient;
 use WpClientManagement\API\DealPipelines\GetDealPipelines;
 use WpClientManagement\API\DealPipelines\GetSingleDealPipeline;
@@ -47,7 +46,7 @@ class API {
         new GetSinglePost();
 
         // // Client
-        // new GetClient();
+        // new GetClients();
         // new GetSingleClient();
 
         // // DealPipeline
