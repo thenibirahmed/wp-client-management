@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Validation\Factory;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\Translator;
-use Illuminate\Validation\Factory;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Validation\DatabasePresenceVerifier;
 
 
 if (!defined('ABSPATH')) {
@@ -40,6 +41,10 @@ $filesystem = new Filesystem();
 $loader = new FileLoader($filesystem, __DIR__ . '/../lang');
 $translator = new Translator($loader, 'en');
 $validator = new Factory($translator);
+
+// Set the presence verifier for the validator
+$databasePresenceVerifier = new DatabasePresenceVerifier($capsule->getDatabaseManager());
+$validator->setPresenceVerifier($databasePresenceVerifier);
 
 // Make the validator available globally
 global $validator;

@@ -11,7 +11,7 @@ class GetSingleClient {
     private $endpoint = '/client/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:clients,id',
+        'id' => 'required|integer|exists:eic_clients,id',
     ];
 
     protected array $validationMessages = [
