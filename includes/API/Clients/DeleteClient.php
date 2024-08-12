@@ -8,7 +8,7 @@ class DeleteClient {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/clients/(?P<id>\d+)';
+    private $endpoint = '/client/(?P<id>\d+)';
 
     protected array $rules = [
         'id' => 'required|integer|exists:clients,id',
