@@ -30,7 +30,7 @@ class CreateClient {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::CREATABLE, // POST
+            'methods' => \WP_REST_Server::CREATABLE,
             'callback' => array($this, 'create_client'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -62,7 +62,7 @@ class CreateClient {
     $eic_crm_user = EicCrmUser::create(['wp_user_id' => $user_id]);
 
     $client = Client::create([
-        'eic_crm_user_id' => $eic_crm_user,
+        'eic_crm_user_id' => $eic_crm_user->id,
         'organization' => $data['organization'] ?? null,
         'designation' => $data['designation'] ?? null,
         'status' => $data['status'] ?? null,
