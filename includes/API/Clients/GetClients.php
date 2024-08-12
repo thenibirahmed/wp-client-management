@@ -4,7 +4,7 @@ namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
 
-class GetClient {
+class GetClients {
 
     private $namespace = 'wp-client-management/v1';
 

@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './Styles/tailwind.scss';
 import './Styles/style.scss';
+import AppLayout from './Components/Layouts/AppLayout';
 
-const App = () => (
-    <div>
-        <h1>WP Client Management</h1>
-        <p>Welcome to the React app integrated with WordPress!</p>
-    </div>
-);
+
+const App = () => {
+    return (
+        <AppLayout>
+            <span className='text-red-500 text-4xl'>Frontend</span>
+        </AppLayout>
+    )
+};
 
 const rootElement = document.getElementById('wp-client-management-root');
 ReactDOM.render(<App />, rootElement);

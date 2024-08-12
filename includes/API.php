@@ -18,6 +18,7 @@ use WpClientManagement\API\Notes\GetNotes;
 use WpClientManagement\API\Notes\GetSingleNote;
 use WpClientManagement\API\Posts\GetPosts;
 use WpClientManagement\API\Users\GetUsers;
+use WpClientManagement\API\Clients\GetClients;
 use WpClientManagement\API\Posts\GetSinglePost;
 use WpClientManagement\API\Priorities\GetPriorities;
 use WpClientManagement\API\Priorities\GetSinglePriority;

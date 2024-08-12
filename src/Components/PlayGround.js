@@ -35,6 +35,20 @@ const PlayGround = () => {
         });
     };
 
+    const getClients = () => {
+        axios.get(wpApiSettings.root + 'wp-client-management/v1/clients', {
+            headers: {
+                'X-WP-Nonce': wpApiSettings.nonce
+            },
+        })
+        .then((response) => {
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    };
+
     const getSinglePost = () => {
         axios.get(wpApiSettings.root + 'wp-client-management/v1/post/1', {
             headers: {
