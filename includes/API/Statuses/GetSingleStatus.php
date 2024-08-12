@@ -10,7 +10,7 @@ class GetSingleStatus {
     private $endpoint = '/status/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:statuses,id',
+        'id' => 'required|integer|exists:eic_statuses,id',
     ];
 
     protected array $validationMessages = [
@@ -50,7 +50,7 @@ class GetSingleStatus {
 
         $status = Status::find($data['id']);
 
-        if(!$client) {
+        if(!$status) {
             return new \WP_REST_Response([
                 'error' => 'No Status found',
             ]);

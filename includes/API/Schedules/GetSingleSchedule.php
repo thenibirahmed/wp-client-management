@@ -11,7 +11,7 @@ class GetSingleSchedule {
     private $endpoint = '/schedule/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:schedules,id',
+        'id' => 'required|integer|exists:eic_schedules,id',
     ];
 
     protected array $validationMessages = [

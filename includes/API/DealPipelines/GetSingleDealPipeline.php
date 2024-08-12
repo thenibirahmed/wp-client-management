@@ -11,7 +11,7 @@ class GetSingleDealPipeline {
     private $endpoint = '/deal-pipeline/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:deal_pipelines,id',
+        'id' => 'required|integer|exists:eic_deal_pipelines,id',
     ];
 
     protected array $validationMessages = [
@@ -22,7 +22,7 @@ class GetSingleDealPipeline {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE, // GET
+            'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_single_deal_pipeline'),
             'permission_callback' => 'is_user_logged_in',
         ]);

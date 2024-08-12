@@ -29,6 +29,7 @@ use WpClientManagement\API\Statuses\GetSingleStatus;
 use WpClientManagement\API\Statuses\GetStatuses;
 use WpClientManagement\API\Tasks\GetSingleTask;
 use WpClientManagement\API\Tasks\GetTasks;
+use WpClientManagement\API\Users\GetSingleUser;
 
 class API {
     /**
@@ -39,7 +40,10 @@ class API {
     }
 
     public function register_routes() {
+
+        // User
         new GetUsers();
+        new GetSingleUser();
 
         // Post
         new GetPosts();

@@ -65,7 +65,7 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.get(wpApiSettings.root + 'wp-client-management/v1/tasks', {
+        axios.get(wpApiSettings.root + 'wp-client-management/v1/user/1', {
             headers: {
                 'X-WP-Nonce': wpApiSettings.nonce
             },
@@ -75,7 +75,7 @@ const PlayGround = () => {
             setPost(response.data);
         })
         .catch((error) => {
-            console.error('Error:', error);
+            console.log('Error:', error);
         });
     }
 

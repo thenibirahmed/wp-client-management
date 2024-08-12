@@ -13,7 +13,7 @@ class GetSingleEmail {
     private $endpoint = '/email/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:emails,id',
+        'id' => 'required|integer|exists:eic_emails,id',
     ];
 
     protected array $validationMessages = [

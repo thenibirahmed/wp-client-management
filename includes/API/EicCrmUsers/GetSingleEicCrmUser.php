@@ -11,7 +11,7 @@ class GetSingleEicCrmUser {
     private $endpoint = '/eic-crm-user/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:eic_crm_users,id',
+        'id' => 'required|integer|exists:eic_eic_crm_users,id',
     ];
 
     protected array $validationMessages = [
@@ -56,6 +56,10 @@ class GetSingleEicCrmUser {
                 'error' => 'No EicCrmUser found',
             ]);
         }
+
+        return new \WP_REST_Response([
+            'data' => $crm_user,
+        ]);
 
         $user = get_user_by('id',$crm_user->wp_user_id);
 

@@ -40,7 +40,6 @@ class GetSingleClient {
         }
 
         $data = ['id' => $client_id];
-
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
         if ($validator->fails()) {

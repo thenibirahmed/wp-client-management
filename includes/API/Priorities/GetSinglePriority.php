@@ -11,7 +11,7 @@ class GetSinglePriority {
     private $endpoint = '/priority/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:priorities,id',
+        'id' => 'required|integer|exists:eic_priorities,id',
     ];
 
     protected array $validationMessages = [
@@ -22,7 +22,7 @@ class GetSinglePriority {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE, // GET
+            'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_single_priority'),
             'permission_callback' => 'is_user_logged_in',
         ]);

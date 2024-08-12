@@ -11,7 +11,7 @@ class GetSingleFile {
     private $endpoint = '/file/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:files,id',
+        'id' => 'required|integer|exists:eic_files,id',
     ];
 
     protected array $validationMessages = [

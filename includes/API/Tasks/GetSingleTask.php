@@ -10,7 +10,7 @@ class GetSingleTask {
     private $endpoint = '/task/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:tasks,id',
+        'id' => 'required|integer|exists:eic_tasks,id',
     ];
 
     protected array $validationMessages = [

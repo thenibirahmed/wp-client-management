@@ -11,7 +11,7 @@ class GetSingleProject {
     private $endpoint = '/project/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:projects,id',
+        'id' => 'required|integer|exists:eic_projects,id',
     ];
 
     protected array $validationMessages = [
