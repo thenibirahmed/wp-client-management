@@ -8,10 +8,10 @@ class DeletePriority {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/priorities/(?P<id>\d+)';
+    private $endpoint = '/priority/delete/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:priorities,id',
+        'id' => 'required|integer|exists:eic_priorities,id',
     ];
 
     protected array $validationMessages = [

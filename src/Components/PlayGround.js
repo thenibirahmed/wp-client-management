@@ -65,7 +65,7 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.delete(wpApiSettings.root + 'wp-client-management/v1/status/delete/2', {
+        axios.delete(wpApiSettings.root + 'wp-client-management/v1/email/delete/4', {
             headers: {
                 'X-WP-Nonce': wpApiSettings.nonce
             }
@@ -78,7 +78,6 @@ const PlayGround = () => {
             console.log('Error:', error.response ? error.response.data : error.message);
         });
     };
-
 
     return (
         <div>

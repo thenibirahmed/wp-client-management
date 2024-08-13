@@ -8,10 +8,10 @@ class DeleteEmail {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/emails/(?P<id>\d+)';
+    private $endpoint = '/email/delete/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:emails,id',
+        'id' => 'required|integer|exists:eic_emails,id',
     ];
 
     protected array $validationMessages = [
@@ -44,13 +44,11 @@ class DeleteEmail {
         }
 
         $email = Email::find($email_id);
-
         if (!$email) {
             return new \WP_REST_Response([
                 'message' => 'Email not found.',
             ], 404);
         }
-
         $email->delete();
 
         return new \WP_REST_Response([

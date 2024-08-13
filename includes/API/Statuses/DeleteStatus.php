@@ -9,7 +9,6 @@ class DeleteStatus {
     private $namespace = 'wp-client-management/v1';
 
     private $endpoint = '/status/delete/(?P<id>\d+)';
-    // private $endpoint = '/status/delete';
 
     protected array $rules = [
         'id' => 'required|integer|exists:eic_statuses,id',

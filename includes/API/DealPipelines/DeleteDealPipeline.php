@@ -8,10 +8,10 @@ class DeleteDealPipeline {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/deal-pipelines/(?P<id>\d+)';
+    private $endpoint = '/deal-pipelines/delete/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:deal_pipelines,id',
+        'id' => 'required|integer|exists:eic_deal_pipelines,id',
     ];
 
     protected array $validationMessages = [
@@ -43,7 +43,7 @@ class DeleteDealPipeline {
             ], 400);
         }
 
-        $delete_deal_pipeline = DealPipeline::find($deal_pipeline_id);
+        $deal_pipeline = DealPipeline::find($deal_pipeline_id);
 
         if (!$deal_pipeline) {
             return new \WP_REST_Response([

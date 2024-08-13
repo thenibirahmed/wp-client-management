@@ -75,19 +75,17 @@ class API {
         // DealPipeline
         new GetDealPipelines();
         new GetSingleDealPipeline();
-        // new DeleteDealPipeline();
+        new DeleteDealPipeline();
 
         // EicCrmUser
         new GetEicCrmUsers();
         new GetSingleEicCrmUser();
         // new DeleteCrmUser();
 
-
-
         // Email
         new GetEmails();
         new GetSingleEmail();
-        // new DeleteEmail();
+        new DeleteEmail();
 
         // File
         new GetFiles();
@@ -107,7 +105,7 @@ class API {
         // Priority
         new GetPriorities();
         new GetSinglePriority();
-        // new DeletePriority();
+        new DeletePriority();
 
         // Project
         new GetProjects();
