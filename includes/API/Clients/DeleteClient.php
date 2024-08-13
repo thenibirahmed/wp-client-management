@@ -29,6 +29,7 @@ class DeleteClient {
     }
 
     public function delete_client(\WP_REST_Request $request) {
+        require_once(ABSPATH . 'wp-admin/includes/user.php');
         global $validator;
 
         $client_id = $request->get_param('id');
@@ -52,19 +53,15 @@ class DeleteClient {
         }
 
         $user = get_user_by('id', $client->eic_crm_user->wp_user_id);
+
         if ($user) {
-            $delete = \wp_delete_user($user->ID);
-            if(!$delete) {
-                return new \WP_REST_Response([
-                    'data' => "Error",
-                ]);
-            }
+            wp_delete_user($user->ID);
         }
-        return new \WP_REST_Response([
-            'data' => "done",
-        ]);
+
         $client->delete();
+
         $client->eic_crm_user->delete();
+
         return new \WP_REST_Response([
             'message' => 'Client deleted successfully.',
         ], 200);
