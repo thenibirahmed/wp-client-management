@@ -37,6 +37,7 @@ use WpClientManagement\API\Projects\GetSingleProject;
 use WpClientManagement\API\Schedules\DeleteSchedule;
 use WpClientManagement\API\Schedules\GetSchedules;
 use WpClientManagement\API\Schedules\GetSingleSchedule;
+use WpClientManagement\API\Statuses\CreateStatus;
 use WpClientManagement\API\Statuses\DeleteStatus;
 use WpClientManagement\API\Statuses\GetSingleStatus;
 use WpClientManagement\API\Statuses\GetStatuses;
@@ -121,6 +122,7 @@ class API {
         new GetStatuses();
         new GetSingleStatus();
         new DeleteStatus();
+        new CreateStatus();
 
         // Task
         new GetTasks();

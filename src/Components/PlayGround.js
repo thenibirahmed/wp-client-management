@@ -65,11 +65,18 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.delete(wpApiSettings.root + 'wp-client-management/v1/client/delete/3', {
-            headers: {
-                'X-WP-Nonce': wpApiSettings.nonce
+        axios.post(wpApiSettings.root + 'wp-client-management/v1/status/create',
+            {
+                // Data
+                name: 'test name-2',
+                type: 'test type-2',
+            },
+            {
+                headers: {
+                    'X-WP-Nonce': wpApiSettings.nonce
+                }
             }
-        })
+        )
         .then((response) => {
             console.log(response.data);
             setPost(response.data);
@@ -78,6 +85,7 @@ const PlayGround = () => {
             console.log('Error:', error.response ? error.response.data : error.message);
         });
     };
+
 
     return (
         <div>
