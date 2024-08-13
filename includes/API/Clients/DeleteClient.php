@@ -51,16 +51,20 @@ class DeleteClient {
             ], 404);
         }
 
-        $user = get_user_by('id', $client->eic_crm_user_id);
-        return new \WP_REST_Response([
-            'data' => $client,
-        ]);
+        $user = get_user_by('id', $client->eic_crm_user->wp_user_id);
         if ($user) {
-            wp_delete_user($user->ID);
+            $delete = \wp_delete_user($user->ID);
+            if(!$delete) {
+                return new \WP_REST_Response([
+                    'data' => "Error",
+                ]);
+            }
         }
-
+        return new \WP_REST_Response([
+            'data' => "done",
+        ]);
         $client->delete();
-        // $client->eic_crm_user->delete();
+        $client->eic_crm_user->delete();
         return new \WP_REST_Response([
             'message' => 'Client deleted successfully.',
         ], 200);

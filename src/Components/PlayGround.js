@@ -65,7 +65,7 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.delete(wpApiSettings.root + 'wp-client-management/v1/email/delete/4', {
+        axios.delete(wpApiSettings.root + 'wp-client-management/v1/client/delete/3', {
             headers: {
                 'X-WP-Nonce': wpApiSettings.nonce
             }

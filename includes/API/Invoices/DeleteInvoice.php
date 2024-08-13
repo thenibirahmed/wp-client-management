@@ -8,10 +8,10 @@ class DeleteInvoice {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/invoices/(?P<id>\d+)';
+    private $endpoint = '/invoice/delete/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:invoices,id',
+        'id' => 'required|integer|exists:eic_invoices,id',
     ];
 
     protected array $validationMessages = [

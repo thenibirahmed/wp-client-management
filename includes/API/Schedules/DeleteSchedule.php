@@ -8,10 +8,10 @@ class DeleteSchedule {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/schedules/(?P<id>\d+)';
+    private $endpoint = '/schedule/delete/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:schedules,id',
+        'id' => 'required|integer|exists:eic_schedules,id',
     ];
 
     protected array $validationMessages = [

@@ -8,10 +8,10 @@ class DeleteNote {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/notes/(?P<id>\d+)';
+    private $endpoint = '/note/delete/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:notes,id',
+        'id' => 'required|integer|exists:eic_notes,id',
     ];
 
     protected array $validationMessages = [

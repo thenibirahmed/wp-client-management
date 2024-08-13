@@ -8,10 +8,10 @@ class DeleteCrmUser {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/eic-crm-users(?P<id>\d+)';
+    private $endpoint = '/eic-crm-user/delete/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:eic_crm_users,id',
+        'id' => 'required|integer|exists:eic_eic_crm_users,id',
     ];
 
     protected array $validationMessages = [

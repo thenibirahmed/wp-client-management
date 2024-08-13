@@ -8,10 +8,10 @@ class DeleteFile {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/files/(?P<id>\d+)';
+    private $endpoint = '/file/delete/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:files,id',
+        'id' => 'required|integer|exists:eic_files,id',
     ];
 
     protected array $validationMessages = [
@@ -42,7 +42,6 @@ class DeleteFile {
                 'errors' => $validator->errors(),
             ], 400);
         }
-
         $file = File::find($file_id);
 
         if (!$file) {

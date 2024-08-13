@@ -69,7 +69,7 @@ class API {
         // Client
         new GetClients();
         new GetSingleClient();
-        // new DeleteClient();
+        new DeleteClient();
         // new CreateClient();
 
         // DealPipeline
@@ -80,7 +80,7 @@ class API {
         // EicCrmUser
         new GetEicCrmUsers();
         new GetSingleEicCrmUser();
-        // new DeleteCrmUser();
+        new DeleteCrmUser();
 
         // Email
         new GetEmails();
@@ -90,17 +90,17 @@ class API {
         // File
         new GetFiles();
         new GetSingleFile();
-        // new DeleteFile();
+        new DeleteFile();
 
         // Invoice
         new GetInvoices();
         new GetSingleInvoice();
-        // new DeleteInvoice();
+        new DeleteInvoice();
 
         // Note
         new GetNotes();
         new GetSingleNote();
-        // new DeleteNote();
+        new DeleteNote();
 
         // Priority
         new GetPriorities();
@@ -110,12 +110,12 @@ class API {
         // Project
         new GetProjects();
         new GetSingleProject();
-        // new DeleteProject();
+        new DeleteProject();
 
         // Schedule
         new GetSchedules();
         new GetSingleSchedule();
-        // new DeleteSchedule();
+        new DeleteSchedule();
 
         // Status
         new GetStatuses();
@@ -125,7 +125,7 @@ class API {
         // Task
         new GetTasks();
         new GetSingleTask();
-        // new DeleteTask();
+        new DeleteTask();
 
     }
 }

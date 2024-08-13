@@ -8,10 +8,10 @@ class DeleteTask {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/tasks/(?P<id>\d+)';
+    private $endpoint = '/task/delete/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:tasks,id',
+        'id' => 'required|integer|exists:eic_tasks,id',
     ];
 
     protected array $validationMessages = [
@@ -41,7 +41,7 @@ class DeleteTask {
             return new \WP_REST_Response([
                 'errors' => $validator->errors(),
             ], 400);
-        // }
+        }
 
         $task = Task::find($task_id);
 
