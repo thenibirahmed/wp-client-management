@@ -20,14 +20,17 @@ use WpClientManagement\API\Notes\GetSingleNote;
 use WpClientManagement\API\Posts\GetPosts;
 use WpClientManagement\API\Users\GetUsers;
 use WpClientManagement\API\Clients\GetClients;
+use WpClientManagement\API\DealPipelines\CreateDealPipeline;
 use WpClientManagement\API\DealPipelines\DeleteDealPipeline;
 use WpClientManagement\API\EicCrmUsers\DeleteCrmUser;
 use WpClientManagement\API\Emails\DeleteEmail;
 use WpClientManagement\API\Files\DeleteFile;
 use WpClientManagement\API\Invoices\DeleteInvoice;
+use WpClientManagement\API\Notes\CreateNote;
 use WpClientManagement\API\Notes\DeleteNote;
 use WpClientManagement\API\Posts\DeletePost;
 use WpClientManagement\API\Posts\GetSinglePost;
+use WpClientManagement\API\Priorities\CreatePriority;
 use WpClientManagement\API\Priorities\DeletePriority;
 use WpClientManagement\API\Priorities\GetPriorities;
 use WpClientManagement\API\Priorities\GetSinglePriority;
@@ -77,6 +80,7 @@ class API {
         new GetDealPipelines();
         new GetSingleDealPipeline();
         new DeleteDealPipeline();
+        new CreateDealPipeline();
 
         // EicCrmUser
         new GetEicCrmUsers();
@@ -102,11 +106,13 @@ class API {
         new GetNotes();
         new GetSingleNote();
         new DeleteNote();
+        new CreateNote();
 
         // Priority
         new GetPriorities();
         new GetSinglePriority();
         new DeletePriority();
+        new CreatePriority();
 
         // Project
         new GetProjects();

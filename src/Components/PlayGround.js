@@ -65,11 +65,11 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.post(wpApiSettings.root + 'wp-client-management/v1/status/create',
+        axios.post(wpApiSettings.root + 'wp-client-management/v1/priority/create',
             {
                 // Data
-                name: 'test name-2',
-                type: 'test type-2',
+                name: 'test name',
+                type: 'test type',
             },
             {
                 headers: {

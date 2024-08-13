@@ -1,35 +1,33 @@
 <?php
+namespace WpClientManagement\API\Priorities;
 
-namespace WpClientManagement\API\Statuses;
+use WpClientManagement\Models\Priority;
 
-use WpClientManagement\Models\Status;
-
-class CreateStatus {
+class CreatePriority{
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/status/create';
+    private $endpoint = '/priority/create';
 
     protected array $rules = [
         'name' => 'required|string',
-        'type' => 'nullable|string'
     ];
 
     protected array $validationMessages = [
         'name.required' => 'The name field is required.',
-        'name.string' => 'The name field must be string.',
-        'type.string' => 'The type field must be string.',
+        'name.string' => 'The name field must be string.'
     ];
+
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => array($this, 'create_status'),
+            'callback' => array($this, 'create_priority'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function create_status(\WP_REST_Request $request) {
+    public function create_priority(\WP_REST_Request $request) {
         global $validator;
 
         $data = $request->get_params();
@@ -42,20 +40,20 @@ class CreateStatus {
             ], 400);
         }
 
-        $status = Status::create([
+        $priority = Priority::create([
             'name' => $data['name'],
             'type' => $data['type'],
         ]);
 
-        if(!$status) {
+        if(!$priority) {
             return new \WP_REST_Response([
                 'message' => 'Something went wrong',
             ]);
         }
 
         return new \WP_REST_Response([
-            'message' => 'Status created successfully.',
-            'status' => $status,
+            'message' => 'Priority created successfully.',
+            'status' => $priority,
         ], 201);
     }
 }

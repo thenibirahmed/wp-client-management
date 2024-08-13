@@ -9,6 +9,8 @@ class DealPipeline extends Model
 {
     protected $table = 'eic_deal_pipelines';
 
+    protected $fillable = ['name'];
+
     public function projects() {
         return $this->hasMany(Project::class);
     }

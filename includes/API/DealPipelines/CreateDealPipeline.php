@@ -1,35 +1,32 @@
 <?php
+namespace WpClientManagement\API\DealPipelines;
 
-namespace WpClientManagement\API\Statuses;
+use WpClientManagement\Models\DealPipeline;
 
-use WpClientManagement\Models\Status;
-
-class CreateStatus {
+class CreateDealPipeline{
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/status/create';
+    private $endpoint = '/deal-pipeline/create';
 
     protected array $rules = [
         'name' => 'required|string',
-        'type' => 'nullable|string'
     ];
 
     protected array $validationMessages = [
         'name.required' => 'The name field is required.',
-        'name.string' => 'The name field must be string.',
-        'type.string' => 'The type field must be string.',
+        'name.string' => 'The name field must be string.'
     ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => array($this, 'create_status'),
+            'callback' => array($this, 'create_deal_pipeline'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function create_status(\WP_REST_Request $request) {
+    public function create_deal_pipeline(\WP_REST_Request $request) {
         global $validator;
 
         $data = $request->get_params();
@@ -42,20 +39,19 @@ class CreateStatus {
             ], 400);
         }
 
-        $status = Status::create([
+        $deal_pipeline = DealPipeline::create([
             'name' => $data['name'],
-            'type' => $data['type'],
         ]);
 
-        if(!$status) {
+        if(!$deal_pipeline) {
             return new \WP_REST_Response([
                 'message' => 'Something went wrong',
             ]);
         }
 
         return new \WP_REST_Response([
-            'message' => 'Status created successfully.',
-            'status' => $status,
+            'message' => 'Deal Pipeline created successfully.',
+            'status' => $deal_pipeline,
         ], 201);
     }
 }

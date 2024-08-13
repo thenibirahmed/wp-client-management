@@ -10,6 +10,11 @@ class Priority extends Model
 {
     protected $table = 'eic_priorities';
 
+    protected $fillable = [
+        'name',
+        'type',
+    ];
+
     public function projects() {
         return $this->hasMany(Project::class);
     }
