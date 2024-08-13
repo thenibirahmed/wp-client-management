@@ -32,15 +32,14 @@ class CreateClient {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::CREATABLE,
             'callback' => array($this, 'create_client'),
-            'permission_callback' => 'is_user_logged_in',
+            // 'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
     public function create_client(\WP_REST_Request $request) {
         global $validator;
 
-        $data = $request->get_json_params();
-
+        $data = $request->get_params();
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
         if ($validator->fails()) {
@@ -48,20 +47,26 @@ class CreateClient {
                 'errors' => $validator->errors(),
             ], 400);
         }
-        
+        return new \WP_REST_Response([
+            'data' => $data,
+        ]);
+
         $user_id = wp_create_user(
             sanitize_user($data['email'], true),
             $data['password'],
             $data['email']
         );
 
-    if (is_wp_error($user_id)) {
-        return new \WP_REST_Response([
-            'error' => $user_id->get_error_message(),
-        ], 400);
-    }
+        if (is_wp_error($user_id)) {
+            return new \WP_REST_Response([
+                'error' => $user_id->get_error_message(),
+            ], 400);
+        }
 
-    $eic_crm_user = EicCrmUser::create(['wp_user_id' => $user_id]);
+    $eic_crm_user = EicCrmUser::create([
+        'wp_user_id' => $user_id,
+        'phone' => $data['phone'],
+    ]);
 
     $client = Client::create([
         'eic_crm_user_id' => $eic_crm_user->id,

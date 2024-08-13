@@ -8,10 +8,10 @@ class DeleteClient {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/client/(?P<id>\d+)';
+    private $endpoint = '/client/delete/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:clients,id',
+        'id' => 'required|integer|exists:eic_clients,id',
     ];
 
     protected array $validationMessages = [
@@ -51,8 +51,16 @@ class DeleteClient {
             ], 404);
         }
 
-        $client->delete();
+        $user = get_user_by('id', $client->eic_crm_user_id);
+        return new \WP_REST_Response([
+            'data' => $client,
+        ]);
+        if ($user) {
+            wp_delete_user($user->ID);
+        }
 
+        $client->delete();
+        // $client->eic_crm_user->delete();
         return new \WP_REST_Response([
             'message' => 'Client deleted successfully.',
         ], 200);

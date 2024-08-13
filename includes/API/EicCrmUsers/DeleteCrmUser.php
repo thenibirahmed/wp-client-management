@@ -4,7 +4,7 @@ namespace WpClientManagement\API\EicCrmUsers;
 
 use WpClientManagement\Models\EicCrmUser;
 
-class DeleteClient {
+class DeleteCrmUser {
 
     private $namespace = 'wp-client-management/v1';
 

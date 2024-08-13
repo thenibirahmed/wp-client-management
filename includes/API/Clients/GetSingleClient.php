@@ -69,7 +69,9 @@ class GetSingleClient {
                 'role' => $user->role,
                 'organization' => $client->organization,
                 'designnation' => $client->designation,
-                'status' => $client->status
+                'status' => $client->status,
+                'projects' => $client->projects,
+                'invoices' => $client->invoices
             ],
         ];
 

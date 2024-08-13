@@ -8,10 +8,10 @@ class DeleteProject {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/projects/(?P<id>\d+)';
+    private $endpoint = '/project/delete/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:projects,id',
+        'id' => 'required|integer|exists:eic_projects,id',
     ];
 
     protected array $validationMessages = [

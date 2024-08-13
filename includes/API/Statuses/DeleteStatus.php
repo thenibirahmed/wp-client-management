@@ -8,10 +8,11 @@ class DeleteStatus {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/statuses/(?P<id>\d+)';
+    private $endpoint = '/status/delete/(?P<id>\d+)';
+    // private $endpoint = '/status/delete';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:statuses,id',
+        'id' => 'required|integer|exists:eic_statuses,id',
     ];
 
     protected array $validationMessages = [
@@ -30,7 +31,6 @@ class DeleteStatus {
 
     public function delete_status(\WP_REST_Request $request) {
         global $validator;
-
         $status_id = $request->get_param('id');
 
         $data = ['id' => $status_id];
@@ -42,7 +42,6 @@ class DeleteStatus {
                 'errors' => $validator->errors(),
             ], 400);
         }
-
         $status = Status::find($status_id);
 
         if (!$status) {
