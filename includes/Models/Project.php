@@ -17,6 +17,21 @@ class Project extends Model
 {
     protected $table = 'eic_projects';
 
+    protected $fillable = [
+        'client_id',
+        'manager_id',
+        'deal_pipeline_id',
+        'status_id',
+        'priority_id',
+        'title',
+        'budget',
+        'currency',
+        'start_date',
+        'due_date',
+        'description',
+        'is_deal'
+    ];
+
     public function client() {
         return $this->belongsTo(Client::class);
     }

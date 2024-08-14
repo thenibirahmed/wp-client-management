@@ -12,6 +12,13 @@ class Client extends Model
 {
     protected $table = 'eic_clients';
 
+    protected $fillable  = [
+        'eic_crm_user_id',
+        'organization',
+        'designation',
+        'status'
+    ];
+
     public function eic_crm_user() {
         return $this->belongsTo(EicCrmUser::class);
     }

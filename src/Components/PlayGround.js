@@ -65,11 +65,25 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.post(wpApiSettings.root + 'wp-client-management/v1/priority/create',
+        axios.post(wpApiSettings.root + 'wp-client-management/v1/client/create',
             {
-                // Data
-                name: 'test name',
-                type: 'test type',
+                //  Data goes
+                name: 'test_client',
+                eic_user_data: {
+                    phone: 'phone',
+                    address: 'address',
+                    city: 'city',
+                    state: 'state',
+                    zip: 'zip',
+                    country: 'country',
+                    role : 'role',
+                },
+                client_data: {
+                    organization: 'organization',
+                    designation: 'designation',
+                    status: 'status',
+                }
+                // scheduled_at: '2024-08-14 12:18:46',
             },
             {
                 headers: {

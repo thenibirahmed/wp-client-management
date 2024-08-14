@@ -12,6 +12,18 @@ class Task extends Model
 {
     protected $table = 'eic_tasks';
 
+    protected $fillable  = [
+        'eic_crm_user_id',
+        'assigned_to',
+        'project_id',
+        'title',
+        'start_date',
+        'due_date',
+        'status_id',
+        'priority_id',
+        'description'
+    ];
+
     public function eic_crm_user() {
         return $this->belongsTo(EicCrmUser::class,);
     }

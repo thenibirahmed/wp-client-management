@@ -9,6 +9,15 @@ class File extends Model
 {
     protected $table = 'eic_files';
 
+    protected $fillable = [
+        'eic_crm_user_id',
+        'project_id',
+        'client_id',
+        'title',
+        'url',
+        'type'
+    ];
+
     public function project() {
         return $this->belongsTo(Project::class);
     }

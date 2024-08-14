@@ -1,15 +1,13 @@
 <?php
+namespace WpClientManagement\API\EicCrmUsers;
 
-namespace WpClientManagement\API\Clients;
-
-use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
 
-class CreateClient {
+class CreateEicCrmUser {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/client/create';
+    private $endpoint = '/eic-crm-user/create';
 
     protected array $rules = [
         'wp_user_id' => 'nullable|integer',
@@ -20,9 +18,6 @@ class CreateClient {
         'zip' => 'nullable|string',
         'country' => 'nullable|string',
         'role' => 'nullable|string',
-        'organization' => 'nullable|string',
-        'designation' => 'nullable|string',
-        'status' => 'nullable|string',
     ];
 
     protected array $validationMessages = [
@@ -34,20 +29,17 @@ class CreateClient {
         'zip.string' => 'The zip code must be a valid string.',
         'country.string' => 'The country must be a valid string.',
         'role.string' => 'The role must be a valid string.',
-        'organization.string' => 'The organization must be a string.',
-        'designation.string' => 'The designation must be a string.',
-        'status.string' => 'The status must be a string.',
     ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => array($this, 'create_client'),
+            'callback' => array($this, 'create_eic_crm_user'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function create_client(\WP_REST_Request $request) {
+    public function create_eic_crm_user(\WP_REST_Request $request) {
         global $validator;
 
         $data = $request->get_params();
@@ -74,20 +66,16 @@ class CreateClient {
             ]);
         }
 
-        $eic_crm_user_data = array_merge($data['eic_user_data'], ['wp_user_id' => $wp_user]);
-
-        $eic_crm_user = EicCrmUser::create($eic_crm_user_data);
-
-        // $eic_crm_user = EicCrmUser::create([
-        //     'wp_user_id' => $wp_user,
-        //     'phone' => $data['eic_user_data']['phone'],
-        //     'address' => $data['eic_user_data']['address'],
-        //     'city' => $data['eic_user_data']['city'],
-        //     'state' => $data['eic_user_data']['state'],
-        //     'zip' => $data['eic_user_data']['zip'],
-        //     'country' => $data['eic_user_data']['country'],
-        //     'role' => $data['eic_user_data']['role'],
-        // ]);
+        $eic_crm_user = EicCrmUser::create([
+            'wp_user_id' => $wp_user,
+            'phone' => $data['phone'],
+            'address' => $data['address'],
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'zip' => $data['zip'],
+            'country' => $data['country'],
+            'role' => $data['role'],
+        ]);
 
         if(!$eic_crm_user) {
             return new \WP_REST_Response([
@@ -95,25 +83,9 @@ class CreateClient {
             ]);
         }
 
-        $client_data = array_merge($data['client_data'], ['eic_crm_user_id' => $eic_crm_user->id]);
-
-        $client = Client::create($client_data);
-
-        // $client = Client::create([
-        //     'eic_crm_user_id' => $eic_crm_user->id,
-        //     'organization' => $data['client_data']['organization'],
-        //     'designation' => $data['client_data']['designation'],
-        // ]);
-
-        if(!$client) {
-            return new \WP_REST_Response([
-                'message' => 'Something went wrong',
-            ]);
-        }
-
         return new \WP_REST_Response([
-            'message' => 'Client created successfully.',
-            'client' => $client,
+            'message' => 'Eic Crm User created successfully.',
+            'eic_crm_user' => $eic_crm_user,
         ], 201);
     }
 }

@@ -10,6 +10,25 @@ class Invoice extends Model
 {
     protected $table = 'eic_invoices';
 
+    protected $fillable = [
+        'eic_crm_user_id',
+        'project_id',
+        'client_id',
+        'code',
+        'type',
+        'title',
+        'date',
+        'due_date',
+        'items',
+        'note',
+        'billing_address',
+        'status',
+        'total',
+        'discount',
+        'tax',
+        'fee'
+    ];
+
     public function client() {
         return $this->belongsTo(Client::class);
     }

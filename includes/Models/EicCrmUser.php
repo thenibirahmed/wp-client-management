@@ -11,6 +11,16 @@ class EicCrmUser extends Model
 {
     protected $table = 'eic_eic_crm_users';
 
+    protected $fillable = [
+        'wp_user_id',
+        'phone',
+        'address',
+        'city',
+        'country',
+        'state',
+        'zip',
+        'role'
+    ];
 
     public function user() {
         return $this->belongsTo(User::class);

@@ -53,7 +53,7 @@ class CreatePriority{
 
         return new \WP_REST_Response([
             'message' => 'Priority created successfully.',
-            'status' => $priority,
+            'priority' => $priority,
         ], 201);
     }
 }

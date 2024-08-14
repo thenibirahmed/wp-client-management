@@ -51,7 +51,7 @@ class CreateDealPipeline{
 
         return new \WP_REST_Response([
             'message' => 'Deal Pipeline created successfully.',
-            'status' => $deal_pipeline,
+            'deal_pipeline' => $deal_pipeline,
         ], 201);
     }
 }

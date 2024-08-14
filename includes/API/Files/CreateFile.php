@@ -1,19 +1,21 @@
 <?php
-namespace WpClientManagement\API\Notes;
+namespace WpClientManagement\API\Files;
 
-use WpClientManagement\Models\Note;
+use WpClientManagement\Models\File;
 
-class CreateNote{
+class CreateFile{
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/note/create';
+    private $endpoint = '/file/create';
 
     protected array $rules = [
         'eic_crm_user_id' => 'required|exists:eic_eic_crm_users,id',
         'project_id' => 'required|exists:eic_projects,id',
         'client_id' => 'required|exists:eic_clients,id',
-        'note' => 'required|string',
+        'title' => 'required|string',
+        'url' => 'required|url',
+        'type' => 'required|string',
     ];
 
     protected array $validationMessages = [
@@ -23,19 +25,23 @@ class CreateNote{
         'project_id.exists' => 'The Project does not exist',
         'client_id.required' => 'The Client ID is required',
         'client_id.exists' => 'The Client does not exist',
-        'note.required' => 'The name field is required.',
-        'note.string' => 'The name field must be string.'
+        'title.required' => 'The Title is required',
+        'title.string' => 'The Title must be a valid string',
+        'url.required' => 'The URL is required',
+        'url.url' => 'The URL must be a valid URL',
+        'type.required' => 'The Type is required',
+        'type.string' => 'The Type must be a valid string',
     ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::CREATABLE,
-            'callback' => array($this, 'create_note'),
+            'callback' => array($this, 'create_file'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function create_note(\WP_REST_Request $request) {
+    public function create_file(\WP_REST_Request $request) {
         global $validator;
 
         $data = $request->get_params();
@@ -48,22 +54,24 @@ class CreateNote{
             ], 400);
         }
 
-        $note = Note::create([
+        $file = File::create([
             'eic_crm_user_id' => $data['eic_crm_user_id'],
             'project_id' => $data['project_id'],
             'client_id' => $data['client_id'],
-            'note' => $data['note'],
+            'title' => $data['title'],
+            'url' => $data['url'],
+            'type' => $data['type'],
         ]);
 
-        if(!$note) {
+        if(!$file) {
             return new \WP_REST_Response([
                 'message' => 'Something went wrong',
             ]);
         }
 
         return new \WP_REST_Response([
-            'message' => 'Note created successfully.',
-            'note' => $note,
+            'message' => 'File created successfully.',
+            'file' => $file,
         ], 201);
     }
 }
