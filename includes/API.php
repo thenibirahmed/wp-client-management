@@ -50,6 +50,7 @@ use WpClientManagement\API\Statuses\CreateStatus;
 use WpClientManagement\API\Statuses\DeleteStatus;
 use WpClientManagement\API\Statuses\GetSingleStatus;
 use WpClientManagement\API\Statuses\GetStatuses;
+use WpClientManagement\API\Statuses\UpdateStatus;
 use WpClientManagement\API\Tasks\CreateTask;
 use WpClientManagement\API\Tasks\DeleteTask;
 use WpClientManagement\API\Tasks\GetSingleTask;
@@ -142,6 +143,7 @@ class API {
         new GetSingleStatus();
         new DeleteStatus();
         new CreateStatus();
+        new UpdateStatus();
 
         // Task
         new GetTasks();

@@ -65,29 +65,16 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.post(wpApiSettings.root + 'wp-client-management/v1/client/create',
+        axios.put(wpApiSettings.root + 'wp-client-management/v1/status/update/1',
             {
-                //  Data goes
-                name: 'test_client',
-                eic_user_data: {
-                    phone: 'phone',
-                    address: 'address',
-                    city: 'city',
-                    state: 'state',
-                    zip: 'zip',
-                    country: 'country',
-                    role : 'role',
-                },
-                client_data: {
-                    organization: 'organization',
-                    designation: 'designation',
-                    status: 'status',
-                }
-                // scheduled_at: '2024-08-14 12:18:46',
+                //  Data goes here
+                name: 'update name',
+                type: 'update type'
             },
             {
                 headers: {
-                    'X-WP-Nonce': wpApiSettings.nonce
+                    'X-WP-Nonce': wpApiSettings.nonce,
+                    'Content-Type' : 'application/json'
                 }
             }
         )
@@ -99,7 +86,6 @@ const PlayGround = () => {
             console.log('Error:', error.response ? error.response.data : error.message);
         });
     };
-
 
     return (
         <div>
