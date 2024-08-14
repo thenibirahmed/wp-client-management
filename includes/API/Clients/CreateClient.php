@@ -78,17 +78,6 @@ class CreateClient {
 
         $eic_crm_user = EicCrmUser::create($eic_crm_user_data);
 
-        // $eic_crm_user = EicCrmUser::create([
-        //     'wp_user_id' => $wp_user,
-        //     'phone' => $data['eic_user_data']['phone'],
-        //     'address' => $data['eic_user_data']['address'],
-        //     'city' => $data['eic_user_data']['city'],
-        //     'state' => $data['eic_user_data']['state'],
-        //     'zip' => $data['eic_user_data']['zip'],
-        //     'country' => $data['eic_user_data']['country'],
-        //     'role' => $data['eic_user_data']['role'],
-        // ]);
-
         if(!$eic_crm_user) {
             return new \WP_REST_Response([
                 'message' => 'Something went wrong',
@@ -98,12 +87,6 @@ class CreateClient {
         $client_data = array_merge($data['client_data'], ['eic_crm_user_id' => $eic_crm_user->id]);
 
         $client = Client::create($client_data);
-
-        // $client = Client::create([
-        //     'eic_crm_user_id' => $eic_crm_user->id,
-        //     'organization' => $data['client_data']['organization'],
-        //     'designation' => $data['client_data']['designation'],
-        // ]);
 
         if(!$client) {
             return new \WP_REST_Response([
