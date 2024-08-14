@@ -65,11 +65,10 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.put(wpApiSettings.root + 'wp-client-management/v1/status/update/1',
+        axios.put(wpApiSettings.root + 'wp-client-management/v1/deal-pipeline/update/1',
             {
                 //  Data goes here
-                name: 'update name',
-                type: 'update type'
+                name: 'update name'
             },
             {
                 headers: {

@@ -22,6 +22,7 @@ use WpClientManagement\API\Users\GetUsers;
 use WpClientManagement\API\Clients\GetClients;
 use WpClientManagement\API\DealPipelines\CreateDealPipeline;
 use WpClientManagement\API\DealPipelines\DeleteDealPipeline;
+use WpClientManagement\API\DealPipelines\UpdateDealPipeline;
 use WpClientManagement\API\EicCrmUsers\CreateEicCrmUser;
 use WpClientManagement\API\EicCrmUsers\DeleteCrmUser;
 use WpClientManagement\API\Emails\CreateEmail;
@@ -89,6 +90,7 @@ class API {
         new GetSingleDealPipeline();
         new DeleteDealPipeline();
         new CreateDealPipeline();
+        new UpdateDealPipeline();
 
         // EicCrmUser
         new GetEicCrmUsers();
