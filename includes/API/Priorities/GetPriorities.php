@@ -27,7 +27,7 @@ class GetPriorities {
         $data = [];
         foreach ($priorities as $priority) {
             $data[] = [
-                'id' => $priority->ID,
+                'id' => $priority->id,
                 'name' => $priority->name,
                 'type' => $priority->type,
             ];

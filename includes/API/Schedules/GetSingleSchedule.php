@@ -56,8 +56,11 @@ class GetSingleSchedule {
                 'error' => 'No Schedule found',
             ]);
         }
+
         $response = [
             'data' => $schedule,
+            'eic_crm_user' => $schedule->eic_crm_user,
+            'client' => $schedule->client,
         ];
 
         return new \WP_REST_Response($response);

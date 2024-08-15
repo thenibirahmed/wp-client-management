@@ -11,7 +11,7 @@ class GetSingleNote {
     private $endpoint = '/note/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:notes,id',
+        'id' => 'required|integer|exists:eic_notes,id',
     ];
 
     protected array $validationMessages = [
@@ -22,7 +22,7 @@ class GetSingleNote {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE, // GET
+            'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_single_note'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -49,7 +49,7 @@ class GetSingleNote {
             ], 400);
         }
 
-        $note = Note::find($data['id']);
+        $note = Note::find($note_id);
 
         if(!$note) {
             return new \WP_REST_Response([
@@ -58,6 +58,7 @@ class GetSingleNote {
         }
         $response = [
             'data' => $note,
+            'eic_crm_user' => $note->eic_crm_user
         ];
 
         return new \WP_REST_Response($response);

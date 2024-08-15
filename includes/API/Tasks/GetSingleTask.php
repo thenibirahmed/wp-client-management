@@ -58,6 +58,8 @@ class GetSingleTask {
 
         $response = [
             'data' => $task,
+            'eic_crm_user' => $task->eic_crm_user,
+            'assigned_to' => $task->assigned_user,
         ];
 
         return new \WP_REST_Response($response);

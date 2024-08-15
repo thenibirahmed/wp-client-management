@@ -50,10 +50,10 @@ class GetFiles {
         $data = [];
         foreach ($files as $file) {
             $data[] = [
-                'id' => $file->ID,
-                // 'eic_crm_user' => $file->eic_crm_user->name,
-                // 'project' => $file->project->name,
-                // 'client' => $file->client->name,
+                'id' => $file->id,
+                'eic_crm_user' => $file->eic_crm_user,
+                'project' => $file->project,
+                'client' => $file->client,
                 'title' => $file->title,
                 'url' => $file->url,
                 'type' => $file->type

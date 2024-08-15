@@ -18,6 +18,10 @@ class Schedule extends Model
         'hosts'
     ];
 
+    public function eic_crm_user() {
+        return $this->belongsTo(EicCrmUser::class);
+    }
+
     public function client() {
         return $this->belongsTo(Client::class);
     }

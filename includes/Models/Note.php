@@ -16,6 +16,14 @@ class Note extends Model
         'note',
     ];
 
+    public function eic_crm_user() {
+        return $this->belongsTo(EicCrmUser::class);
+    }
+
+    public function client() {
+        return $this->belongsTo(Client::class);
+    }
+
     public function project() {
         return $this->belongsTo(Project::class);
     }

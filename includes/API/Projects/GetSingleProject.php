@@ -58,17 +58,15 @@ class GetSingleProject {
         }
 
         $response = [
-            'data' => [
-                'project' => $project,
+                'data' => $project,
                 'client' => $project->client,
-                'manager' => $project->manager->display_name,
+                'manager' => $project->manager,
                 'deal_pipeline' => $project->deal_pipeline->name,
                 'status' => $project->status->name,
                 'priority' => $project->priority->name,
                 'invoices' => $project->invoices,
                 'notes' => $project->notes,
                 'files' => $project->files,
-            ]
         ];
 
         return new \WP_REST_Response($response);

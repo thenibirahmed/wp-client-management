@@ -48,13 +48,13 @@ class GetEmails {
         $data = [];
         foreach ($emails as $email) {
             $data[] = [
-                'id' => $email->ID,
-                'eic_crm_user' => $email->eic_crm_user->name,
-                'project' => $email->project->name,
-                'client' => $email->client->name,
+                'id' => $email->id,
+                'eic_crm_user' => $email->eic_crm_user,
+                'project' => $email->project,
+                'client' => $email->client,
                 'subject' => $email->subject,
                 'body' => $email->body,
-                'date' => $email->date
+                'scheduled_at' => $email->scheduled_at
             ];
         }
 

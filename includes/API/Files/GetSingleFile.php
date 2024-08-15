@@ -59,6 +59,7 @@ class GetSingleFile {
 
         $response = [
             'data' => $file,
+            'eic_crm_user' => $file->eic_crm_user
         ];
 
         return new \WP_REST_Response($response);

@@ -60,10 +60,9 @@ class GetProjects {
         $data = [];
         foreach ($projects as $project) {
             $data[] = [
-                'id' => $project->ID,
-                'eic_crm_user' => $project->eic_crm_user->name,
-                'client' => $project->client->name,
-                'manager' => $project->manager->name,
+                'id' => $project->id,
+                'client' => $project->client,
+                'manager' => $project->manager,
                 'status' => $project->status->name,
                 'priority' => $project->priority->name,
                 'title' => $project->title,

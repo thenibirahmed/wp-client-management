@@ -27,7 +27,7 @@ class GetStatuses {
         $data = [];
         foreach ($statuses as $status) {
             $data[] = [
-                'id' => $status->ID,
+                'id' => $status->id,
                 'name' => $status->name,
                 'type' => $status->type,
             ];

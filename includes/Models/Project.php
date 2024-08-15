@@ -37,7 +37,7 @@ class Project extends Model
     }
 
     public function manager() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(EicCrmUser::class);
     }
 
     public function notes() {

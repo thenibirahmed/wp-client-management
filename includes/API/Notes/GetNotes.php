@@ -27,11 +27,11 @@ class GetNotes {
         $data = [];
         foreach ($notes as $note) {
             $data[] = [
-                'id' => $note->ID,
-                'eic_crm_user' => $note->eic_crm_user->name,
-                'project' => $note->project->name,
-                'client' => $note->client->name,
-                'text' => $note->text
+                'id' => $note->id,
+                'eic_crm_user' => $note->eic_crm_user,
+                'project' => $note->project,
+                'client' => $note->client,
+                'note' => $note->note
             ];
         }
 

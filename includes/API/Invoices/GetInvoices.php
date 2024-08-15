@@ -27,10 +27,10 @@ class GetInvoices {
         $data = [];
         foreach ($invoices as $invoice) {
             $data[] = [
-                'id' => $invoice->ID,
-                'eic_crm_user' => $invoice->eic_crm_user->name,
-                'project' => $invoice->project->name,
-                'client' => $invoice->client->name,
+                'id' => $invoice->id,
+                'eic_crm_user' => $invoice->eic_crm_user,
+                'project' => $invoice->project,
+                'client' => $invoice->client,
                 'code' => $invoice->code,
                 'title' => $invoice->title,
                 'type' => $invoice->type,

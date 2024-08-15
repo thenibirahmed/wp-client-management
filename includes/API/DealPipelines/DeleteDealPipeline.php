@@ -8,7 +8,7 @@ class DeleteDealPipeline {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/deal-pipelines/delete/(?P<id>\d+)';
+    private $endpoint = '/deal-pipeline/delete/(?P<id>\d+)';
 
     protected array $rules = [
         'id' => 'required|integer|exists:eic_deal_pipelines,id',

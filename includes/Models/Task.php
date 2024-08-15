@@ -25,11 +25,19 @@ class Task extends Model
     ];
 
     public function eic_crm_user() {
-        return $this->belongsTo(EicCrmUser::class,);
+        return $this->belongsTo(EicCrmUser::class);
+    }
+
+    public function assigned_user() {
+        return $this->belongsTo(EicCrmUser::class,'assigned_to');
     }
 
     public function status() {
         return $this->belongsTo(Status::class);
+    }
+
+    public function project() {
+        return $this->belongsTo(Project::class);
     }
 
     public function priority() {

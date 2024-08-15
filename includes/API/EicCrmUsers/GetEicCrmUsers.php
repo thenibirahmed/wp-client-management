@@ -27,7 +27,7 @@ class GetEicCrmUsers {
         $data = [];
         foreach ($eic_crm_users as $eic_crm_user) {
             $data[] = [
-                'id' => $eic_crm_user->ID,
+                'id' => $eic_crm_user->id,
                 'phone' => $eic_crm_user->phone,
                 'address' => $eic_crm_user->address,
                 'city' => $eic_crm_user->city,

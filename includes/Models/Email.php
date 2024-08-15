@@ -23,4 +23,12 @@ class Email extends Model
         return $this->belongsTo(Client::class);
     }
 
+    public function eic_crm_user() {
+        return $this->belongsTo(EicCrmUser::class);
+    }
+
+    public function project() {
+        return $this->belongsTo(Project::class);
+    }
+
 }

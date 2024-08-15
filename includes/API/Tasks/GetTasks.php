@@ -27,15 +27,16 @@ class GetTasks {
         $data = [];
         foreach ($tasks as $task) {
             $data[] = [
-                'id' => $task->ID,
-                'eic_crm_user' => $task->eic_crm_user->name,
-                'project' => $task->project->name,
+                'id' => $task->id,
+                'eic_crm_user' => $task->eic_crm_user,
+                'assigned_to' => $task->assigned_to,
+                'project' => $task->project,
                 'title' => $task->title,
                 'start_date' => $task->start_date,
                 'due_date' => $task->due_date,
                 'status' => $task->status->name,
                 'priority' => $task->priority->name,
-                'text' => $task->text,
+                'description' => $task->description,
             ];
         }
 

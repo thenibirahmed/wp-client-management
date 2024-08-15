@@ -31,6 +31,8 @@ class DeleteCrmUser {
     public function delete_crm_user(\WP_REST_Request $request) {
         global $validator;
 
+        require_once(ABSPATH . 'wp-admin/includes/user.php');
+
         $crm_user_id = $request->get_param('id');
 
         $data = ['id' => $crm_user_id];
@@ -49,6 +51,12 @@ class DeleteCrmUser {
             return new \WP_REST_Response([
                 'message' => 'Eic Crm User not found.',
             ], 404);
+        }
+
+        $user = get_user_by('id', $crm_user->wp_user_id);
+
+        if ($user) {
+            wp_delete_user($user->ID);
         }
 
         $crm_user->delete();

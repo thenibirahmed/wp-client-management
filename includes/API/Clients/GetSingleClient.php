@@ -3,6 +3,7 @@
 namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
+use WpClientManagement\Models\EicCrmUser;
 
 class GetSingleClient {
 
@@ -56,17 +57,26 @@ class GetSingleClient {
             ]);
         }
 
+        $eic_crm_user = EicCrmUser::find($client->eic_crm_user_id);
         $user = get_user_by('id', $client->eic_crm_user_id);
+
+        if (!$user || !$eic_crm_user) {
+            return new \WP_REST_Response([
+                'error' => 'Related User or EicCrmUser data not found.',
+            ]);
+        }
 
         $response = [
             'data' => [
-                'phone' => $user->phone,
-                'address' => $user->address,
-                'city' => $user->city,
-                'state' => $user->state,
-                'zip' => $user->zip,
-                'country' => $user->country,
-                'role' => $user->role,
+                'name' => $user->user_login,
+                'email' => $user->user_email,
+                'phone' => $eic_crm_user->phone,
+                'address' => $eic_crm_user->address,
+                'city' => $eic_crm_user->city,
+                'state' => $eic_crm_user->state,
+                'zip' => $eic_crm_user->zip,
+                'country' => $eic_crm_user->country,
+                'role' => $eic_crm_user->role,
                 'organization' => $client->organization,
                 'designnation' => $client->designation,
                 'status' => $client->status,

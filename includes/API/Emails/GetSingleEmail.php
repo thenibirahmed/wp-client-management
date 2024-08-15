@@ -60,7 +60,9 @@ class GetSingleEmail {
         }
 
         $response = [
-            'data' => $email
+            'data' => $email,
+            'eic_crm_user' => $email->eic_crm_user,
+            'client' => $email->client,
         ];
 
         return new \WP_REST_Response($response);

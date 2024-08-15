@@ -27,13 +27,13 @@ class GetSchedules {
         $data = [];
         foreach ($schedules as $schedule) {
             $data[] = [
-                'id' => $schedule->ID,
-                'eic_crm_user' => $schedule->eic_crm_user->name,
-                'client' => $schedule->client->name,
+                'id' => $schedule->id,
+                'eic_crm_user' => $schedule->eic_crm_user,
+                'client' => $schedule->client,
                 'date' => $schedule->date,
                 'duration' => $schedule->duration,
                 'link' => $schedule->link,
-                'hosts' => $schedule->hostsschedules
+                'hosts' => $schedule->hosts
             ];
         }
 

@@ -11,7 +11,7 @@ class GetSingleInvoice {
     private $endpoint = '/invoice/(?P<id>\d+)';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:invoices,id',
+        'id' => 'required|integer|exists:eic_invoices,id',
     ];
 
     protected array $validationMessages = [
@@ -39,6 +39,7 @@ class GetSingleInvoice {
             ]);
         }
 
+
         $data = ['id' => $invoice_id];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
@@ -49,7 +50,7 @@ class GetSingleInvoice {
             ], 400);
         }
 
-        $invoice = Invoice::find($data['id']);
+        $invoice = Invoice::find($invoice_id);
 
         if(!$invoice) {
             return new \WP_REST_Response([
@@ -59,6 +60,9 @@ class GetSingleInvoice {
 
         $response = [
             'data' => $invoice,
+            'eic_crm_user' => $invoice->eic_crm_user,
+            'client' => $invoice->client,
+            'project' => $invoice->project,
         ];
 
         return new \WP_REST_Response($response);
