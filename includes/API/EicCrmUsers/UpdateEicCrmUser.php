@@ -1,15 +1,13 @@
 <?php
+namespace WpClientManagement\API\EicCrmUsers;
 
-namespace WpClientManagement\API\Clients;
-
-use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
 
-class UpdateClient {
+class UpdateEicCrmUser {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/client/update/(?P<id>\d+)';
+    private $endpoint = '/eic-crm-user/update/(?P<id>\d+)';
 
     protected array $rules = [
         'wp_user_id' => 'nullable|integer',
@@ -20,9 +18,9 @@ class UpdateClient {
         'zip' => 'nullable|string',
         'country' => 'nullable|string',
         'role' => 'nullable|string',
-        'organization' => 'nullable|string',
-        'designation' => 'nullable|string',
-        'status' => 'nullable|string',
+        'user_login' => 'nullable|string',
+        'user_email' => 'nullable|email',
+        'user_pass' => 'nullable|string',
     ];
 
     protected array $validationMessages = [
@@ -34,24 +32,32 @@ class UpdateClient {
         'zip.string' => 'The zip code must be a valid string.',
         'country.string' => 'The country must be a valid string.',
         'role.string' => 'The role must be a valid string.',
-        'organization.string' => 'The organization must be a string.',
-        'designation.string' => 'The designation must be a string.',
-        'status.string' => 'The status must be a string.',
+        'user_login.string' => 'The user login must be a valid string.',
+        'user_email.email' => 'The user email must be a valid email address.',
+        'user_pass.string' => 'The user password must be a valid string.',
     ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::EDITABLE,
-            'callback' => array($this, 'update_client'),
+            'callback' => array($this, 'update_eic_crm_user'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function update_client(\WP_REST_Request $request) {
+    public function update_eic_crm_user(\WP_REST_Request $request) {
         global $validator;
 
         $data = $request->get_params();
         $id = $request->get_param('id');
+
+        $eic_crm_user = EicCrmUser::find($id);
+
+        if (!$eic_crm_user) {
+            return new \WP_REST_Response([
+                'message' => 'Eic Crm User not found',
+            ], 404);
+        }
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -61,27 +67,7 @@ class UpdateClient {
             ], 400);
         }
 
-        $client = Client::find($id);
-
-        if (!$client) {
-            return new \WP_REST_Response([
-                'error' => 'Client not found.',
-            ], 404);
-        }
-
-        $eic_crm_user = EicCrmUser::find($client->eic_crm_user_id);
-
-        $eic_crm_user->update([
-            'phone' => $data['phone'],
-            'address' => $data['address'],
-            'city' => $data['city'],
-            'state' => $data['state'],
-            'zip' => $data['zip'],
-            'country' => $data['country'],
-            'role' => $data['role'],
-        ]);
-
-       if (isset($data['user_login']) || isset($data['user_email']) || isset($data['user_pass'])) {
+        if (isset($data['user_login']) || isset($data['user_email']) || isset($data['user_pass'])) {
             $wp_user_data = [
                 'ID' => $eic_crm_user->wp_user_id,
                 'user_login' => $data['user_login'] ?? null,
@@ -100,15 +86,17 @@ class UpdateClient {
             }
         }
 
-        $client->update([
-            'organization' => $data['organization'],
-            'designation' => $data['designation'],
-            'status' => $data['status'],
-        ]);
+        $updated = $eic_crm_user->update($data);
+
+        if (!$updated) {
+            return new \WP_REST_Response([
+                'message' => 'Something went wrong',
+            ]);
+        }
 
         return new \WP_REST_Response([
-            'message' => 'Client updated successfully.',
-            'client' => $client,
+            'message' => 'Eic Crm User updated successfully.',
+            'eic_crm_user' => $eic_crm_user,
         ], 200);
     }
 }

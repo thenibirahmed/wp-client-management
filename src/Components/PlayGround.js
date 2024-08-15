@@ -65,10 +65,24 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.put(wpApiSettings.root + 'wp-client-management/v1/deal-pipeline/update/1',
+        axios.put(wpApiSettings.root + 'wp-client-management/v1/client/update/1',
             {
                 //  Data goes here
-                name: 'update name'
+                organization: 'updated',
+                designation: 'updated',
+                status: 'updated',
+                phone: 'updated',
+                address: 'updated',
+                city: 'updated',
+                state: 'updated',
+                zip: 'updated',
+                country: 'updated',
+                role: 'updated',
+                user_login: 'finalized',
+                user_email: 'finalized@gmail.com',
+                user_pass: 'finalized',
+                // link: 'update link',
+
             },
             {
                 headers: {
