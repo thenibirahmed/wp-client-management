@@ -62,6 +62,7 @@ class CreateProject {
             ], 400);
         }
 
+
         $project = Project::create([
             'client_id' => $data['client_id'],
             'manager_id' => $data['manager_id'],

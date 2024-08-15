@@ -65,26 +65,24 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.delete(wpApiSettings.root + 'wp-client-management/v1/task/delete/2',
-            // {
-            //     organization: 'updated',
-            //     designation: 'updated',
-            //     status: 'updated',
-            //     phone: 'updated',
-            //     address: 'updated',
-            //     city: 'updated',
-            //     state: 'updated',
-            //     zip: 'updated',
-            //     country: 'updated',
-            //     role: 'updated',
-            //     user_login: 'finalized',
-            //     user_email: 'finalized@gmail.com',
-            //     user_pass: 'fina',
-            // },
+        axios.put(wpApiSettings.root + 'wp-client-management/v1/client/update/2',
+            {
+                name: 'final update',
+                phone: '0525252',
+                city: 'fianl update',
+                address: 'fianl update',
+                state: 'fianl update',
+                zip: 'fianl update',
+                country: 'fianl update',
+                role: 'fianl update',
+                organization: 'fianl update',
+                designation: 'fianl update',
+                status: 'fianl update',
+            },
             {
                 headers: {
                     'X-WP-Nonce': wpApiSettings.nonce,
-                    'Content-Type' : 'application/json'
+                    // 'Content-Type' : 'application/json'
                 }
             }
         )

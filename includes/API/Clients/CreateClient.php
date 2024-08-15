@@ -74,7 +74,16 @@ class CreateClient {
             ]);
         }
 
-        $eic_crm_user_data = array_merge($data['eic_user_data'], ['wp_user_id' => $wp_user]);
+        $eic_crm_user_data = array(
+            'wp_user_id' => $wp_user,
+            'phone' => $data['phone'],
+            'address' => $data['address'],
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'zip' => $data['zip'],
+            'country' => $data['country'],
+            'role' => $data['role'],
+        );
 
         $eic_crm_user = EicCrmUser::create($eic_crm_user_data);
 
@@ -84,7 +93,12 @@ class CreateClient {
             ]);
         }
 
-        $client_data = array_merge($data['client_data'], ['eic_crm_user_id' => $eic_crm_user->id]);
+        $client_data = array(
+            'eic_crm_user_id' => $eic_crm_user->id,
+            'organization' => $data['organization'],
+            'designation' => $data['designation'],
+            'status' => $data['status'],
+        );
 
         $client = Client::create($client_data);
 
