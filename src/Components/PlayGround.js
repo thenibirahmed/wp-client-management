@@ -65,12 +65,12 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.post(wpApiSettings.root + 'wp-client-management/v1/client/create',
+        axios.put(wpApiSettings.root + 'wp-client-management/v1/client/update/12',
             {
-                user_login: 'samim',
-                user_email: 'samim@gmail.com',
-                user_login: 'kiserpassword',
-                phone: '0525252',
+                user_login: 'samimur rahman',
+                user_email: 'rahman@gmail.com',
+                user_pass: 'nopassword',
+                phone: '6565656',
                 city: 'lost city',
                 address: 'address',
                 state: 'no state',
