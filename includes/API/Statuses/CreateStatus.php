@@ -34,6 +34,9 @@ class CreateStatus {
 
         $data = $request->get_params();
 
+        $data['name'] = sanitize_text_field($data['name'] ?? '');
+        $data['type'] = sanitize_text_field($data['type'] ?? '');
+
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
         if ($validator->fails()) {

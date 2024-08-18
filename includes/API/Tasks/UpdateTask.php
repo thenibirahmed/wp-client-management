@@ -9,6 +9,7 @@ class UpdateTask {
     private $namespace = 'wp-client-management/v1';
 
     private $endpoint = '/task/update/(?P<id>\d+)';
+
     protected array $rules = [
         'eic_crm_user_id' => 'required|exists:eic_eic_crm_users,id',
         'assigned_to' => 'nullable|exists:eic_eic_crm_users,id',
@@ -47,8 +48,18 @@ class UpdateTask {
     public function update_task(\WP_REST_Request $request) {
         global $validator;
 
-        $id = $request->get_param('id');
+        $id = intval($request->get_param('id'));
         $data = $request->get_params();
+
+        $data['eic_crm_user_id'] = sanitize_text_field($data['eic_crm_user_id'] ?? '');
+        $data['assigned_to'] = sanitize_text_field($data['assigned_to'] ?? '');
+        $data['project_id'] = sanitize_text_field($data['project_id'] ?? '');
+        $data['title'] = sanitize_text_field($data['title'] ?? '');
+        $data['start_date'] = sanitize_text_field($data['start_date'] ?? '');
+        $data['due_date'] = sanitize_text_field($data['due_date'] ?? '');
+        $data['status_id'] = sanitize_text_field($data['status_id'] ?? '');
+        $data['priority_id'] = sanitize_text_field($data['priority_id'] ?? '');
+        $data['description'] = sanitize_textarea_field($data['description'] ?? '');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

@@ -67,8 +67,26 @@ class UpdateInvoice {
 
     public function update_invoice(\WP_REST_Request $request) {
         global $validator;
-        $id = $request->get_param('id');
+
+        $id = intval($request->get_param('id'));
         $data = $request->get_params();
+
+        $data['eic_crm_user_id'] = intval($data['eic_crm_user_id'] ?? 0);
+        $data['project_id'] = intval($data['project_id'] ?? 0);
+        $data['client_id'] = intval($data['client_id'] ?? 0);
+        $data['code'] = intval($data['code'] ?? 0);
+        $data['type'] = sanitize_text_field($data['type'] ?? '');
+        $data['title'] = sanitize_text_field($data['title'] ?? '');
+        $data['date'] = sanitize_text_field($data['date'] ?? '');
+        $data['due_date'] = sanitize_text_field($data['due_date'] ?? '');
+        $data['items'] = isset($data['items']) ? json_encode(array_map('sanitize_text_field', json_decode($data['items'], true) ?? [])) : json_encode([]);
+        $data['note'] = sanitize_textarea_field($data['note'] ?? '');
+        $data['billing_address'] = sanitize_textarea_field($data['billing_address'] ?? '');
+        $data['status'] = sanitize_text_field($data['status'] ?? '');
+        $data['total'] = floatval($data['total'] ?? 0.0);
+        $data['discount'] = floatval($data['discount'] ?? 0.0);
+        $data['tax'] = floatval($data['tax'] ?? 0.0);
+        $data['fee'] = floatval($data['fee'] ?? 0.0);
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

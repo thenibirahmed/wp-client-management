@@ -38,8 +38,14 @@ class UpdateNote {
 
     public function update_note(\WP_REST_Request $request) {
         global $validator;
-        $id = $request->get_param('id');
+
+        $id = intval($request->get_param('id'));
         $data = $request->get_params();
+
+        $data['eic_crm_user_id'] = intval($data['eic_crm_user_id'] ?? 0);
+        $data['project_id'] = intval($data['project_id'] ?? 0);
+        $data['client_id'] = intval($data['client_id'] ?? 0);
+        $data['note'] = sanitize_textarea_field($data['note'] ?? '');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

@@ -45,8 +45,17 @@ class UpdateEmail {
 
     public function update_email(\WP_REST_Request $request) {
         global $validator;
-        $id = $request->get_param('id');
+
+        $id = intval($request->get_param('id'));
         $data = $request->get_params();
+
+        $data['eic_crm_user_id'] = isset($data['eic_crm_user_id']) ? intval($data['eic_crm_user_id']) : null;
+        $data['client_id'] = isset($data['client_id']) ? intval($data['client_id']) : null;
+        $data['project_id'] = isset($data['project_id']) ? intval($data['project_id']) : null;
+        $data['subject'] = sanitize_text_field($data['subject'] ?? '');
+        $data['body'] = sanitize_textarea_field($data['body'] ?? '');
+        $data['scheduled_at'] = sanitize_text_field($data['scheduled_at'] ?? '');
+        $data['sent'] = filter_var($data['sent'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

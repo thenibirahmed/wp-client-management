@@ -53,8 +53,21 @@ class UpdateProject {
     public function update_project(\WP_REST_Request $request) {
         global $validator;
 
-        $id = $request->get_param('id');
+        $id = intval($request->get_param('id'));
         $data = $request->get_params();
+
+        $data['client_id'] = isset($data['client_id']) ? intval($data['client_id']) : null;
+        $data['manager_id'] = isset($data['manager_id']) ? intval($data['manager_id']) : null;
+        $data['deal_pipeline_id'] = isset($data['deal_pipeline_id']) ? intval($data['deal_pipeline_id']) : null;
+        $data['status_id'] = isset($data['status_id']) ? intval($data['status_id']) : null;
+        $data['priority_id'] = isset($data['priority_id']) ? intval($data['priority_id']) : null;
+        $data['title'] = sanitize_text_field($data['title'] ?? '');
+        $data['budget'] = isset($data['budget']) ? floatval($data['budget']) : null;
+        $data['currency'] = sanitize_text_field($data['currency'] ?? '');
+        $data['start_date'] = sanitize_text_field($data['start_date'] ?? '');
+        $data['due_date'] = sanitize_text_field($data['due_date'] ?? '');
+        $data['description'] = sanitize_textarea_field($data['description'] ?? '');
+        $data['is_deal'] = isset($data['is_deal']) ? boolval($data['is_deal']) : null;
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

@@ -29,8 +29,12 @@ class UpdatePriority {
 
     public function update_priority(\WP_REST_Request $request) {
         global $validator;
-        $id = $request->get_param('id');
+
+        $id = intval($request->get_param('id'));
         $data = $request->get_params();
+
+        $data['name'] = sanitize_text_field($data['name'] ?? '');
+        $data['type'] = sanitize_text_field($data['type'] ?? '');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

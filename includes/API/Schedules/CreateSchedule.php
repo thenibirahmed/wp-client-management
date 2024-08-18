@@ -42,6 +42,13 @@ class CreateSchedule {
 
         $data = $request->get_params();
 
+        $data['eic_crm_user_id'] = isset($data['eic_crm_user_id']) ? intval($data['eic_crm_user_id']) : null;
+        $data['client_id'] = intval($data['client_id']);
+        $data['date'] = sanitize_text_field($data['date'] ?? '');
+        $data['duration'] = isset($data['duration']) ? intval($data['duration']) : null;
+        $data['link'] = sanitize_text_field($data['link'] ?? '');
+        $data['hosts'] = isset($data['hosts']) ? json_encode(array_map('sanitize_text_field', json_decode($data['hosts'], true) ?? [])) : json_encode([]);
+
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
         if ($validator->fails()) {

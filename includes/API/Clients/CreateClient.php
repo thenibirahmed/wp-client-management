@@ -1,5 +1,4 @@
 <?php
-
 namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
@@ -51,6 +50,20 @@ class CreateClient {
         global $validator;
 
         $data = $request->get_params();
+
+        $data['user_login']   = sanitize_user($data['user_login'], true);
+        $data['user_email']   = sanitize_email($data['user_email']);
+        $data['user_pass']    = sanitize_text_field($data['user_pass']);
+        $data['phone']        = sanitize_text_field($data['phone']);
+        $data['address']      = sanitize_text_field($data['address']);
+        $data['city']         = sanitize_text_field($data['city']);
+        $data['state']        = sanitize_text_field($data['state']);
+        $data['zip']          = sanitize_text_field($data['zip']);
+        $data['country']      = sanitize_text_field($data['country']);
+        $data['role']         = sanitize_text_field($data['role']);
+        $data['organization'] = sanitize_text_field($data['organization']);
+        $data['designation']  = sanitize_text_field($data['designation']);
+        $data['status']       = sanitize_text_field($data['status']);
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -113,4 +126,5 @@ class CreateClient {
             'client' => $client,
         ], 201);
     }
+
 }

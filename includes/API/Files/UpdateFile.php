@@ -43,8 +43,15 @@ class UpdateFile {
 
     public function update_file(\WP_REST_Request $request) {
         global $validator;
-        $id = $request->get_param('id');
+        $id = intval($request->get_param('id'));
         $data = $request->get_params();
+
+        $data['eic_crm_user_id'] = intval($data['eic_crm_user_id'] ?? 0);
+        $data['project_id'] = intval($data['project_id'] ?? 0);
+        $data['client_id'] = intval($data['client_id'] ?? 0);
+        $data['title'] = sanitize_text_field($data['title'] ?? '');
+        $data['url'] = esc_url_raw($data['url'] ?? '');
+        $data['type'] = sanitize_text_field($data['type'] ?? '');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

@@ -65,21 +65,10 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.put(wpApiSettings.root + 'wp-client-management/v1/client/update/12',
+        axios.post(wpApiSettings.root + 'wp-client-management/v1/status/create',
             {
-                user_login: 'samimur rahman',
-                user_email: 'rahman@gmail.com',
-                user_pass: 'nopassword',
-                phone: '6565656',
-                city: 'lost city',
-                address: 'address',
-                state: 'no state',
-                zip: 'no zip',
-                country: 'no country',
-                role: 'no role',
-                organization: 'no organization',
-                designation: 'no designation',
-                status: 'no status',
+                name: 'no name',
+                type: 'no type',
             },
             {
                 headers: {

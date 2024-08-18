@@ -53,6 +53,20 @@ class UpdateClient {
         $data = $request->get_params();
         $id = $request->get_param('id');
 
+        $data['user_login']   = isset($data['user_login']) ? sanitize_user($data['user_login'], true) : null;
+        $data['user_email']   = isset($data['user_email']) ? sanitize_email($data['user_email']) : null;
+        $data['user_pass']    = isset($data['user_pass']) ? sanitize_text_field($data['user_pass']) : null;
+        $data['phone']        = sanitize_text_field($data['phone']);
+        $data['address']      = sanitize_text_field($data['address']);
+        $data['city']         = sanitize_text_field($data['city']);
+        $data['state']        = sanitize_text_field($data['state']);
+        $data['zip']          = sanitize_text_field($data['zip']);
+        $data['country']      = sanitize_text_field($data['country']);
+        $data['role']         = sanitize_text_field($data['role']);
+        $data['organization'] = sanitize_text_field($data['organization']);
+        $data['designation']  = sanitize_text_field($data['designation']);
+        $data['status']       = sanitize_text_field($data['status']);
+
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
         if ($validator->fails()) {
@@ -81,7 +95,7 @@ class UpdateClient {
             'role' => $data['role'],
         ]);
 
-       if (isset($data['user_login']) || isset($data['user_email']) || isset($data['user_pass'])) {
+        if (isset($data['user_login']) || isset($data['user_email']) || isset($data['user_pass'])) {
             $wp_user_data = [
                 'ID' => $eic_crm_user->wp_user_id,
                 'user_login' => $data['user_login'] ?? null,
@@ -111,4 +125,5 @@ class UpdateClient {
             'client' => $client,
         ], 200);
     }
+
 }

@@ -29,8 +29,11 @@ class UpdateDealPipeline {
 
     public function update_deal_pipeline(\WP_REST_Request $request) {
         global $validator;
+
         $id = $request->get_param('id');
         $data = $request->get_params();
+
+        $data['name'] = sanitize_text_field($data['name']);
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

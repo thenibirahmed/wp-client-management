@@ -31,6 +31,8 @@ class CreateDealPipeline{
 
         $data = $request->get_params();
 
+        $data['name'] = sanitize_text_field($data['name']);
+
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
         if ($validator->fails()) {
@@ -43,7 +45,7 @@ class CreateDealPipeline{
             'name' => $data['name'],
         ]);
 
-        if(!$deal_pipeline) {
+        if (!$deal_pipeline) {
             return new \WP_REST_Response([
                 'message' => 'Something went wrong',
             ]);
@@ -54,4 +56,5 @@ class CreateDealPipeline{
             'deal_pipeline' => $deal_pipeline,
         ], 201);
     }
+
 }

@@ -49,6 +49,16 @@ class CreateTask {
 
         $data = $request->get_params();
 
+        $data['eic_crm_user_id'] = sanitize_text_field($data['eic_crm_user_id'] ?? '');
+        $data['assigned_to'] = sanitize_text_field($data['assigned_to'] ?? '');
+        $data['project_id'] = sanitize_text_field($data['project_id'] ?? '');
+        $data['title'] = sanitize_text_field($data['title'] ?? '');
+        $data['start_date'] = sanitize_text_field($data['start_date'] ?? '');
+        $data['due_date'] = sanitize_text_field($data['due_date'] ?? '');
+        $data['status_id'] = sanitize_text_field($data['status_id'] ?? '');
+        $data['priority_id'] = sanitize_text_field($data['priority_id'] ?? '');
+        $data['description'] = sanitize_textarea_field($data['description'] ?? '');
+
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
         if ($validator->fails()) {
