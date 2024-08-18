@@ -35,6 +35,20 @@ const PlayGround = () => {
         });
     };
 
+    const getClients = () => {
+        axios.get(wpApiSettings.root + 'wp-client-management/v1/clients', {
+            headers: {
+                'X-WP-Nonce': wpApiSettings.nonce
+            },
+        })
+        .then((response) => {
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    };
+
     const getSinglePost = () => {
         axios.get(eicApiSettings.root + 'wp-client-management/v1/post/1', {
             headers: {
@@ -50,12 +64,36 @@ const PlayGround = () => {
         });
     };
 
+    const getTest = () => {
+        axios.post(wpApiSettings.root + 'wp-client-management/v1/status/create',
+            {
+                name: 'no name',
+                type: 'no type',
+            },
+            {
+                headers: {
+                    'X-WP-Nonce': wpApiSettings.nonce,
+                    // 'Content-Type' : 'application/json'
+                }
+            }
+        )
+        .then((response) => {
+            console.log(response.data);
+            setPost(response.data);
+        })
+        .catch((error) => {
+            console.log('Error:', error.response ? error.response.data : error.message);
+        });
+    };
+
     return (
         <div>
             <h1>PlayGround</h1>
             <button onClick={getPosts}>Click me to get all posts</button> <br/><br/>
             <button onClick={getUsers}>Click me to get all users</button> <br/><br/>
-            <button onClick={getSinglePost}>Click me to get single post</button>
+            <button onClick={getSinglePost}>Click me to get single post</button> <br/><br/>
+
+            <button onClick={getTest}>Testing</button><br/>
         </div>
     );
 };

@@ -33,22 +33,194 @@ class Installer {
 
         $collate = $wpdb->get_charset_collate();
 
-        $schema = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}ce_addressess` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `name` varchar(100) NOT NULL,
-            `address` varchar(255) DEFAULT NULL,
-            `phone` varchar(255) DEFAULT NULL,
-            `created_by` int(11) DEFAULT NULL,
-            `created_at` datetime DEFAULT NULL,
-            `updated_at` datetime DEFAULT NULL,
-            PRIMARY KEY (`id`)
-          ) {$collate}";
+        $schema = [];
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_eic_crm_users` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `wp_user_id` bigint NOT NULL,
+                        `phone` varchar(255) DEFAULT NULL,
+                        `address` text COLLATE utf8mb4_unicode_ci,
+                        `city` varchar(255) DEFAULT NULL,
+                        `state` varchar(255) DEFAULT NULL,
+                        `zip` varchar(255) DEFAULT NULL,
+                        `country` varchar(255) DEFAULT NULL,
+                        `role` varchar(255) DEFAULT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_clients` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `eic_crm_user_id` bigint UNSIGNED NOT NULL,
+                        `organization` varchar(255) DEFAULT NULL,
+                        `designation` varchar(255) DEFAULT NULL,
+                        `status` varchar(255) NOT NULL DEFAULT 'unknown',
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_deal_pipelines` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `name` varchar(255) NOT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+        
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_emails` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
+                        `project_id` bigint UNSIGNED DEFAULT NULL,
+                        `client_id` bigint UNSIGNED DEFAULT NULL,
+                        `subject` text COLLATE utf8mb4_unicode_ci,
+                        `body` text NOT NULL,
+                        `scheduled_at` date NOT NULL,
+                        `sent` tinyint(1) NOT NULL DEFAULT '0',
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_files` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
+                        `project_id` bigint UNSIGNED DEFAULT NULL,
+                        `client_id` bigint UNSIGNED DEFAULT NULL,
+                        `title` varchar(255) NOT NULL,
+                        `url` varchar(255) NOT NULL,
+                        `type` varchar(255) NOT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_invoices` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
+                        `project_id` bigint UNSIGNED DEFAULT NULL,
+                        `client_id` bigint UNSIGNED DEFAULT NULL,
+                        `code` int NOT NULL,
+                        `type` varchar(255) NOT NULL,
+                        `title` varchar(255) NOT NULL,
+                        `date` date NOT NULL,
+                        `due_date` date DEFAULT NULL,
+                        `items` json DEFAULT NULL,
+                        `note` text COLLATE utf8mb4_unicode_ci,
+                        `billing_address` text COLLATE utf8mb4_unicode_ci,
+                        `status` varchar(255) DEFAULT NULL,
+                        `total` decimal(8,2) NOT NULL,
+                        `discount` decimal(8,2) DEFAULT NULL,
+                        `tax` decimal(8,2) DEFAULT NULL,
+                        `fee` decimal(8,2) DEFAULT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_notes` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
+                        `project_id` bigint UNSIGNED DEFAULT NULL,
+                        `client_id` bigint UNSIGNED DEFAULT NULL,
+                        `note` text NOT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_priorities` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `name` varchar(255) NOT NULL,
+                        `type` varchar(255) NOT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+                
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_projects` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `client_id` bigint UNSIGNED DEFAULT NULL,
+                        `manager_id` bigint UNSIGNED DEFAULT NULL,
+                        `deal_pipeline_id` bigint UNSIGNED DEFAULT NULL,
+                        `status_id` bigint UNSIGNED DEFAULT NULL,
+                        `priority_id` bigint UNSIGNED DEFAULT NULL,
+                        `title` varchar(255) NOT NULL,
+                        `budget` decimal(8,2) NOT NULL DEFAULT '0.00',
+                        `currency` varchar(255) DEFAULT NULL,
+                        `start_date` datetime DEFAULT NULL,
+                        `due_date` datetime DEFAULT NULL,
+                        `description` varchar(255) DEFAULT NULL,
+                        `is_deal` tinyint(1) NOT NULL DEFAULT '0',
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_project_eic_crm_users` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `project_id` bigint UNSIGNED DEFAULT NULL,
+                        `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_schedules` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `client_id` bigint UNSIGNED NOT NULL,
+                        `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
+                        `date` datetime NOT NULL,
+                        `duration` int DEFAULT NULL,
+                        `link` text COLLATE utf8mb4_unicode_ci,
+                        `hosts` json DEFAULT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_statuses` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `name` varchar(255) NOT NULL,
+                        `type` varchar(255) NOT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_tasks` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `project_id` bigint UNSIGNED NOT NULL,
+                        `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
+                        `assigned_to` bigint UNSIGNED DEFAULT NULL,
+                        `title` varchar(255) NOT NULL,
+                        `start_date` date DEFAULT NULL,
+                        `due_date` date DEFAULT NULL,
+                        `status_id` bigint UNSIGNED DEFAULT NULL,
+                        `priority_id` bigint UNSIGNED DEFAULT NULL,
+                        `description` text COLLATE utf8mb4_unicode_ci,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_task_comments` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `task_id` bigint UNSIGNED DEFAULT NULL,
+                        `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
+                        `reply_to` bigint UNSIGNED DEFAULT NULL,
+                        `comment` text NOT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
 
         if ( ! function_exists( "dbDelta" ) ) {
             require_once ABSPATH . "/wp-admin/includes/upgrade.php";
         }
 
-        // dbDelta( $schema );
+        dbDelta( $schema );
     }
 
     public function create_roles()
