@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace WpClientManagement\API\Posts;
 
@@ -26,8 +26,7 @@ class GetSinglePost {
         }
 
         $post = get_post($data['id']);
-        // $post = Client::find($data['id']);
-
+        
         if(!$post) {
             return new \WP_REST_Response([
                 'error' => 'No Post found',
