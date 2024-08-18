@@ -77,7 +77,7 @@ class UpdateEicCrmUser {
 
             $wp_user_data = array_filter($wp_user_data);
 
-            $wp_user = wp_insert_user($wp_user_data);
+            $wp_user = wp_update_user($wp_user_data);
 
             if (is_wp_error($wp_user)) {
                 return new \WP_REST_Response([
