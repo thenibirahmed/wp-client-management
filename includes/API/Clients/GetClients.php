@@ -27,8 +27,8 @@ class GetClients {
         $data = [];
         foreach ($clients as $client) {
             $data[] = [
-                'id' => $client->ID,
-                'eic_crm_user' => $client->eic_crm_user->name,
+                'id' => $client->id,
+                'eic_crm_user' => $client->eic_crm_user,
                 'organization' => $client->organization,
                 'designation' => $client->designation,
                 'status' => $client->status

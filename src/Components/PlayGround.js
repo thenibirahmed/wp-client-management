@@ -65,19 +65,21 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.put(wpApiSettings.root + 'wp-client-management/v1/client/update/2',
+        axios.post(wpApiSettings.root + 'wp-client-management/v1/client/create',
             {
-                name: 'final update',
+                user_login: 'samim',
+                user_email: 'samim@gmail.com',
+                user_login: 'kiserpassword',
                 phone: '0525252',
-                city: 'fianl update',
-                address: 'fianl update',
-                state: 'fianl update',
-                zip: 'fianl update',
-                country: 'fianl update',
-                role: 'fianl update',
-                organization: 'fianl update',
-                designation: 'fianl update',
-                status: 'fianl update',
+                city: 'lost city',
+                address: 'address',
+                state: 'no state',
+                zip: 'no zip',
+                country: 'no country',
+                role: 'no role',
+                organization: 'no organization',
+                designation: 'no designation',
+                status: 'no status',
             },
             {
                 headers: {

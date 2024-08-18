@@ -61,9 +61,9 @@ class CreateClient {
         }
 
         $wp_user_data = array(
-            'user_login'    => $data['name'],
-            'user_email'    => $data['name'].'@gmail.com',
-            'user_pass'     => $data['name'].'_pass',
+            'user_login'    => $data['user_login'],
+            'user_email'    => $data['user_email'],
+            'user_pass'     => $data['user_pass'],
         );
 
         $wp_user = wp_insert_user($wp_user_data);
