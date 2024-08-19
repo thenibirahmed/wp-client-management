@@ -8,8 +8,10 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { MultiplicationSignIcon } from "../../utils/icons";
+import { useStoreContext } from "../../store/ContextApiStore";
 
 export const Modal = ({ open, setOpen, children, title = "" }) => {
+  const { setOpenProjectModal } = useStoreContext();
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10 ">
       <DialogBackdrop

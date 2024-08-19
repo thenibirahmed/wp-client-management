@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 
 const AddClientForm = ({ setOpen }) => {
   const [imageUrl, setImageUrl] = useState("");
-  console.log("imageUrl = ", imageUrl);
+
   const imageRef = useRef();
   const {
     register,

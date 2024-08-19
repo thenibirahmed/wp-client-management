@@ -1,24 +1,65 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 import { useForm } from "react-hook-form";
 
 import TextField from "../TextField";
 import { useStoreContext } from "../../../store/ContextApiStore";
+import { SelectTextField } from "../SelectTextField";
 
 const AddNewClientProjectForm = () => {
-  const { setOpenProjectModal } = useStoreContext;
+  const { setOpenProjectModal } = useStoreContext();
+  const people = [
+    { id: 1, name: "Client Name" },
+    { id: 2, name: "Arlene Mccoy" },
+    { id: 3, name: "Devon Webb" },
+  ];
+  const currencyLists = [
+    { id: 1, name: "Select Currency" },
+    { id: 2, name: "USD" },
+    { id: 3, name: "EUR" },
+    { id: 4, name: "JPY" },
+    { id: 5, name: "GBP" },
+  ];
+  const statusLists = [
+    { id: 1, name: "Select Status" },
+    { id: 2, name: "Active" },
+    { id: 3, name: "Pending" },
+    { id: 3, name: "Completed" },
+  ];
+  const priorityLists = [
+    { id: 1, name: "Select Priority" },
+    { id: 2, name: "Nomal" },
+    { id: 3, name: "Medium" },
+    { id: 3, name: "Hard" },
+  ];
+  const projectManagerLists = [
+    { id: 1, name: "Select Project Manager" },
+    { id: 2, name: "Scrum Master" },
+    { id: 3, name: "Program Manager" },
+  ];
+  const assigneeLists = [
+    { id: 1, name: "Select Assignee" },
+    { id: 2, name: "Software Developer" },
+    { id: 3, name: "UX Designer" },
+  ];
+
+  const [selectClientName, setSelectClientName] = useState(people[0]);
+  const [selectCurrency, setSelectCurrency] = useState(currencyLists[0]);
+  const [selectStatus, setSelectStatus] = useState(statusLists[0]);
+  const [selectPriority, setSelectPriority] = useState(priorityLists[0]);
+  const [selectProjectManager, setSelectProjectManager] = useState(
+    projectManagerLists[0]
+  );
+  const [selectAssignee, setSelectAssignee] = useState(assigneeLists[0]);
+
   const imageRef = useRef();
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    setError,
+    formState: { errors, isSubmitting },
   } = useForm({
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-    },
     mode: "onTouched",
   });
 
@@ -45,15 +86,13 @@ const AddNewClientProjectForm = () => {
             register={register}
             errors={errors}
           />
-          <TextField
+
+          <SelectTextField
             label="Client Name"
-            required
-            id="clientname"
-            type="text"
-            message="This field is required*"
-            placeholder="Client Name"
-            register={register}
-            errors={errors}
+            select={selectClientName}
+            setSelect={setSelectClientName}
+            lists={people}
+            isSubmitting={isSubmitting}
           />
         </div>
         <div className="flex md:flex-row flex-col gap-4 w-full">
@@ -67,71 +106,70 @@ const AddNewClientProjectForm = () => {
             register={register}
             errors={errors}
           />
-          <TextField
-            label="Phone"
-            required
-            id="phone"
-            type="number"
-            message="*Phone Number is required"
-            placeholder="Phone"
-            register={register}
-            errors={errors}
+          <SelectTextField
+            label="Currency"
+            select={selectCurrency}
+            setSelect={setSelectCurrency}
+            lists={currencyLists}
+            isSubmitting={isSubmitting}
           />
         </div>
 
-        <TextField
-          label="Address"
-          required
-          id="address"
-          type="text"
-          message="*Address is required"
-          placeholder="2972 Westheimer Rd. Santa Ana, Illinois 85486 "
-          register={register}
-          errors={errors}
-        />
         <div className="flex md:flex-row flex-col gap-4 w-full">
-          <TextField
-            label="City"
-            required
-            id="city"
-            type="text"
-            message="*City is required"
-            placeholder="New York"
-            register={register}
-            errors={errors}
-          />{" "}
-          <TextField
-            label="ZIP Code"
-            required
-            id="zipcode"
-            type="number"
-            message="*ZIP Code is required"
-            placeholder="1254"
-            register={register}
-            errors={errors}
+          <SelectTextField
+            label="Status"
+            select={selectStatus}
+            setSelect={setSelectStatus}
+            lists={statusLists}
+            isSubmitting={isSubmitting}
+          />
+          <SelectTextField
+            label="Priority"
+            select={selectPriority}
+            setSelect={setSelectPriority}
+            lists={priorityLists}
+            isSubmitting={isSubmitting}
           />
         </div>
         <div className="flex md:flex-row flex-col gap-4 w-full">
-          <TextField
-            label="Country"
-            required
-            id="country"
-            type="text"
-            message="*Country is required"
-            placeholder="USA"
-            register={register}
-            errors={errors}
+          <SelectTextField
+            label="Project Manager"
+            select={selectProjectManager}
+            setSelect={setSelectProjectManager}
+            lists={projectManagerLists}
+            isSubmitting={isSubmitting}
           />
-          <TextField
-            label="State / Region / Province "
-            required
-            id="state"
-            type="text"
-            message="*State is required"
-            placeholder="New Yorker"
-            register={register}
-            errors={errors}
+          <SelectTextField
+            label="Assignee"
+            select={selectAssignee}
+            setSelect={setSelectAssignee}
+            lists={assigneeLists}
+            isSubmitting={isSubmitting}
           />
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <label
+            htmlFor="desc"
+            className={`font-medium text-sm  font-metropolis text-textColor `}
+          >
+            Description
+          </label>
+          <textarea
+            rows={5}
+            className={` py-2 px-4 rounded-[5px] border  w-full   outline-none bg-transparent  text-textColor2 text-sm font-metropolis ${
+              errors["description"]?.message
+                ? "border-customRed"
+                : "border-borderColor"
+            }`}
+            {...register("description", {
+              required: { value: true, message: "Description is required*" },
+            })}
+          />
+          {errors["description"]?.message && (
+            <p className="text-xs font-semibold text-customRed -mt-1">
+              {errors["description"]?.message}
+            </p>
+          )}
         </div>
 
         <div className="flex  w-full justify-between items-center absolute bottom-5">

@@ -28,7 +28,7 @@ const TextField = ({
         placeholder={placeholder}
         className={`${
           className ? className : ""
-        }  py-2 px-4 rounded-[5px] border  w-full   outline-none bg-transparent  text-textColor2 txt-sm font-metropolis ${
+        }  py-2 px-4 rounded-[5px] border  w-full   outline-none bg-transparent  text-textColor2 text-sm font-metropolis ${
           errors[id]?.message ? "border-customRed" : "border-borderColor"
         }`}
         {...register(id, {

@@ -1,14 +1,15 @@
 import React from "react";
 import AddNewInvoiceForm from "./AddNewInvoiceForm";
 import InvoiceItemTable from "./InvoiceItemTable";
-import AddInvoiceHeader from "./AddInvoiceHeader";
+import AddInvoiceNote from "./AddInvoiceNote";
 
 const AddNewInvoice = () => {
   return (
     <div className="space-y-4">
-      <AddInvoiceHeader />
+      {/* <AddInvoiceHeader /> */}
       <AddNewInvoiceForm />
       <InvoiceItemTable />
+      <AddInvoiceNote />
     </div>
   );
 };
