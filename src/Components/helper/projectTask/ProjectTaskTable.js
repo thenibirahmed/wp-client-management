@@ -15,7 +15,7 @@ import useHashRouting from "../../../utils/useHashRouting";
 const tableData = [
   {
     id: 1,
-    owner: "Easin Ahmed",
+    owner: "Easin Ahmedss",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     name: "Analysis Request",
@@ -231,7 +231,7 @@ const ProjectTaskTable = () => {
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
                           <a
-                            href={``}
+                            href={`/admin/#/projects/#/${item.id}/#/Task`}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon

@@ -1,27 +1,62 @@
 import React, { useState, useRef } from "react";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import "react-quill/dist/quill.snow.css";
+
 import {
   Attachment02Icon,
   Image02Icon,
   Link05Icon,
 } from "../../../utils/icons";
-import NoteTable from "./NoteTable";
+import CommentLists from "./CommentLists";
 
-const AddNewNote = () => {
+const messages = [
+  {
+    sender: {
+      name: "Alice",
+      image: "https://cdn.tailwindcss.com/assets/img/image1.jpg",
+      text: "Hey, how are you?",
+      time: "10:30 AM",
+    },
+    receiver: {
+      name: "Bob",
+      image: "https://cdn.tailwindcss.com/assets/img/image2.jpg",
+      text: "I'm good, thanks! How about you?",
+      time: "10:32 AM",
+    },
+  },
+  {
+    sender: {
+      name: "Charlie",
+      image: "https://cdn.tailwindcss.com/assets/img/image3.jpg",
+      text: "Can we meet tomorrow?",
+      time: "11:15 AM",
+    },
+    receiver: {
+      name: "David",
+      image: "https://cdn.tailwindcss.com/assets/img/image4.jpg",
+      text: "Sure, what time?",
+      time: "11:17 AM",
+    },
+  },
+];
+
+const Comments = () => {
   return (
     <div>
+      <h1 className="font-metropolis text-textColor font-semibold sm:text-2xl text-xl  leading-10 mb-5 ">
+        All Comments <span className="font-normal">(3)</span>
+      </h1>
       <div className="border border-borderColor rounded-[8px] py-[13px]">
-        <AddNewNoteTextArea />
+        <CommentBox />
       </div>
-      <NoteTable />
+      <CommentLists commentlists={messages} />
     </div>
   );
 };
 
-export default AddNewNote;
+export default Comments;
 
-const AddNewNoteTextArea = () => {
+const CommentBox = () => {
   const [editorContent, setEditorContent] = useState("");
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
@@ -83,7 +118,7 @@ const AddNewNoteTextArea = () => {
         modules={{
           toolbar: false,
         }}
-        className="w-full  text-textColor2 px-4 outline-none font-metropolis  font-normal text-sm  "
+        className="w-full  text-textColor2 px-4 outline-none font-metropolis  font-normal text-sm h-32  "
         placeholder="Write text here"
       />
 

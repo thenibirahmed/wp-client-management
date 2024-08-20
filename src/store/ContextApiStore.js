@@ -10,6 +10,7 @@ export const ContextProvider = ({ children }) => {
   const [createInvoice, setCreateInvoice] = useState(false);
   const [createNote, setCreateNote] = useState(false);
   const [createEmail, setCreateEmail] = useState(false);
+  const [openTaskDetail, setOpenTaskDetail] = useState(false);
 
   const [allTabItems, setAllTabItems] = useState({
     project: true,
@@ -42,6 +43,8 @@ export const ContextProvider = ({ children }) => {
     setOpenEmailModal,
     selectedViewEmail,
     setSelectedViewEmail,
+    openTaskDetail,
+    setOpenTaskDetail,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

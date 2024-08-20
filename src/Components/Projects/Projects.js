@@ -12,10 +12,16 @@ import { useStoreContext } from "../../store/ContextApiStore";
 import ProjectHeader from "../helper/projects/ProjectHeader";
 import ProjectTable from "../helper/projects/ProjectTable";
 import AddNewProjectForm from "../helper/forms/AddNewProjectForm";
+import ProjectTaskDetails from "./ProjectTask/ProjectTaskDetails";
 
 const Projects = () => {
-  const { openProjectModal, setOpenProjectModal, setAllTabItems } =
-    useStoreContext();
+  const {
+    openProjectModal,
+    setOpenProjectModal,
+    setAllTabItems,
+    openTaskDetail,
+    setOpenTaskDetail,
+  } = useStoreContext();
   const dataList = [1];
 
   useEffect(() => {
@@ -32,36 +38,42 @@ const Projects = () => {
 
   return (
     <React.Fragment>
-      <ProjectOverView />
-      <div className="space-y-6">
-        <ProjectHeader />
+      {openTaskDetail ? (
+        <ProjectTaskDetails />
+      ) : (
+        <>
+          <ProjectOverView />
+          <div className="space-y-6">
+            <ProjectHeader />
 
-        <React.Fragment>
-          {dataList.length > 0 ? (
-            <>
-              <ProjectTable />
-            </>
-          ) : (
-            <>
-              <EmptyTable
-                Icon={UserCircle02Icon}
-                setOpen={setOpen}
-                title="  Clients Not Yet Registered"
-                subtitle="Start building your client list."
-                btnText=" Add Client"
-              />
-            </>
-          )}
-        </React.Fragment>
-      </div>
+            <React.Fragment>
+              {dataList.length > 0 ? (
+                <>
+                  <ProjectTable />
+                </>
+              ) : (
+                <>
+                  <EmptyTable
+                    Icon={UserCircle02Icon}
+                    setOpen={setOpen}
+                    title="  Clients Not Yet Registered"
+                    subtitle="Start building your client list."
+                    btnText=" Add Client"
+                  />
+                </>
+              )}
+            </React.Fragment>
+          </div>
 
-      <Modal
-        open={openProjectModal}
-        setOpen={setOpenProjectModal}
-        title="Add Project"
-      >
-        <AddNewProjectForm />
-      </Modal>
+          <Modal
+            open={openProjectModal}
+            setOpen={setOpenProjectModal}
+            title="Add Project"
+          >
+            <AddNewProjectForm />
+          </Modal>
+        </>
+      )}
     </React.Fragment>
   );
 };

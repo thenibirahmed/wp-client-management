@@ -15,7 +15,7 @@ const ProjectHeader = () => {
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
-        Projects
+        All Project
       </h1>
       <div className="flex sm:flex-row flex-wrap gap-5 items-center">
         <button>
