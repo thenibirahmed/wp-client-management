@@ -11,7 +11,6 @@ import { MultiplicationSignIcon } from "../../utils/icons";
 import { useStoreContext } from "../../store/ContextApiStore";
 
 export const Modal = ({ open, setOpen, children, title = "" }) => {
-  const { setOpenProjectModal } = useStoreContext();
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10 ">
       <DialogBackdrop
@@ -30,7 +29,7 @@ export const Modal = ({ open, setOpen, children, title = "" }) => {
                 <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 duration-500 ease-in-out data-[closed]:opacity-0 sm:-ml-10 sm:pr-4">
                   <button
                     type="button"
-                    onClick={() => setOpenProjectModal(false)}
+                    onClick={() => setOpen(false)}
                     className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                   >
                     <span className="absolute -inset-2.5" />
@@ -51,7 +50,7 @@ export const Modal = ({ open, setOpen, children, title = "" }) => {
                       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
                         {title}{" "}
                       </h1>
-                      <button onClick={() => setOpenProjectModal(false)}>
+                      <button onClick={() => setOpen(false)}>
                         <MultiplicationSignIcon className="text-textColor2" />
                       </button>
                     </div>
