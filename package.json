@@ -1,24 +1,28 @@
 {
-  "name": "wp-client-management",
-  "version": "1.0.0",
-  "description": "",
-  "dependencies": {
-    "@headlessui/react": "^2.1.2",
-    "@heroicons/react": "^2.1.5",
-    "autoprefixer": "^10.4.19",
-    "axios": "^1.7.2",
-    "postcss": "^8.4.39",
-    "tailwindcss": "^3.4.5"
-  },
-  "devDependencies": {
-    "@wordpress/scripts": "^28.2.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "wp-scripts build",
-    "start": "wp-scripts start"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+	"name": "wp-client-management",
+	"version": "1.0.0",
+	"description": "",
+	"dependencies": {
+		"@headlessui/react": "^2.1.2",
+		"@heroicons/react": "^2.1.5",
+		"@hugeicons/react-pro": "^0.3.2",
+		"autoprefixer": "^10.4.19",
+		"axios": "^1.7.2",
+		"react-hook-form": "^7.52.1",
+		"react-quill": "^2.0.0",
+		"react-router-dom": "^6.25.0",
+		"tailwindcss": "^3.4.5"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^28.2.0",
+		"webpack": "^5.93.0"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "wp-scripts build",
+		"start": "wp-scripts start"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
 }
