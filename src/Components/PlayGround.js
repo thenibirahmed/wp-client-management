@@ -6,7 +6,7 @@ const PlayGround = () => {
 
 	const getPosts = () => {
 		axios
-			.get(eicApiSettings.root + "wp-client-management/v1/posts/", {
+			.get(eicApiSettings.rest_url + "wp-client-management/v1/posts/", {
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
 				},
@@ -22,7 +22,7 @@ const PlayGround = () => {
 
 	const getUsers = () => {
 		axios
-			.get(eicApiSettings.root + "wp-client-management/v1/users", {
+			.get(eicApiSettings.rest_url + "wp-client-management/v1/users", {
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
 				},
@@ -38,7 +38,7 @@ const PlayGround = () => {
 
 	const getClients = () => {
 		axios
-			.get(eicApiSettings.root + "wp-client-management/v1/clients", {
+			.get(eicApiSettings.rest_url + "wp-client-management/v1/clients", {
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
 				},
@@ -53,7 +53,7 @@ const PlayGround = () => {
 
 	const getSinglePost = () => {
 		axios
-			.get(eicApiSettings.root + "wp-client-management/v1/post/1", {
+			.get(eicApiSettings.rest_url + "wp-client-management/v1/post/1", {
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
 				},
@@ -70,7 +70,7 @@ const PlayGround = () => {
 	const getTest = () => {
 		axios
 			.post(
-				eicApiSettings.root + "wp-client-management/v1/status/create",
+				eicApiSettings.rest_url + "wp-client-management/v1/status/create",
 				{
 					name: "no name",
 					type: "no type",
