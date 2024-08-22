@@ -60,7 +60,7 @@ const ClientTable = () => {
   const pathArray = currentPath?.split("/#/");
   const currentPageName = window.location.pathname.split("/")[1];
 
-  console.log("currentPath = ", currentPath);
+  console.log("currentPath =", currentPath);
   console.log("path = ", pathArray);
   const [selectedClient, setSelectedClient] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
