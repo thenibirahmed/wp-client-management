@@ -58,6 +58,10 @@ const tableData = [
 const ClientTable = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
+  const currentPageName = window.location.pathname.split("/")[1];
+
+  console.log("currentPath = ", currentPath);
+  console.log("path = ", pathArray);
   const [selectedClient, setSelectedClient] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
@@ -188,7 +192,7 @@ const ClientTable = () => {
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
                           <a
-                            href={`/admin/#/clients/#/${item.name}`}
+                            href={`/${currentPageName}/#/clients/#/${item.name}`}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -212,36 +216,6 @@ const ClientTable = () => {
                     </tr>
                   );
                 })}
-
-                {/* <tr>
-                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-textColor2 sm:pl-6">
-                    Lindsay Walton
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    easin@gmail.com
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    01
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    $2500
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    $350
-                  </td>{" "}
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    $350
-                  </td>
-                  <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-sm font-medium sm:pr-6">
-                    <a
-                      href="#"
-                      className="text-indigo-600 hover:text-indigo-900"
-                    >
-                      edit
-                    </a>
-                  </td>
-                </tr> */}
-                {/* More people... */}
               </tbody>
             </table>
             <Pagination />

@@ -1,6 +1,9 @@
 import React, { useRef, useState } from "react";
-import TextField from "../helper/TextField";
+import axios from "axios";
 import { useForm } from "react-hook-form";
+
+import TextField from "../helper/TextField";
+import api from "../../api/api";
 
 const AddClientForm = ({ setOpen }) => {
   const [imageUrl, setImageUrl] = useState("");
@@ -12,17 +15,21 @@ const AddClientForm = ({ setOpen }) => {
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-    },
     mode: "onTouched",
   });
 
-  const addNewClientHandler = (data) => {
-    console.log(data);
-    reset();
+  const addNewClientHandler = async (data) => {
+    try {
+      console.log(data);
+
+      //const { data } = await api.post("/client/create");
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+
+    //reset();
   };
 
   const onImageUploadHandler = () => {
