@@ -32,6 +32,14 @@ class Project extends Model
         'is_deal'
     ];
 
+    public static function getActiveProjects()
+    {
+        return self::whereHas('status', function ($query) {
+            $query->where('type', 'project')
+                  ->where('name', 'active');
+        })->get();
+    }
+
     public function client() {
         return $this->belongsTo(Client::class);
     }
@@ -54,7 +62,7 @@ class Project extends Model
     }
 
     public function status() {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(Status::class, 'status_id');
     }
 
     public function priority() {

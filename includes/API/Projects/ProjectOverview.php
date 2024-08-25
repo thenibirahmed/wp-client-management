@@ -23,13 +23,15 @@ class ProjectOverview {
 
     public function get_project_overview()
     {
-        $clients = Client::count();
-        $projects = Project::count();
-        $invoices = Invoice::count();
+        $projects = Project::activeProjects();
+
+        $clients = Client::getActiveClients();
+
+        $invoices = Invoice::getActiveProjectInvoices();
 
         $data = [
-            'total_clients' => $clients,
             'total_projects' => $projects,
+            'total_clients'  => $clients,
             'total_invoices' => $invoices,
         ];
 

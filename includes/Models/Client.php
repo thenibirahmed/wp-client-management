@@ -19,6 +19,18 @@ class Client extends Model
         'status'
     ];
 
+    public static function getActiveClients()
+    {
+        return self::whereHas('projects', function ($query)
+        {
+            $query->whereHas('status', function ($subQuery)
+            {
+                $subQuery->where('type', 'project')
+                         ->where('name', 'active');
+            });
+        })->get();
+    }
+
     public function eic_crm_user() {
         return $this->belongsTo(EicCrmUser::class);
     }
