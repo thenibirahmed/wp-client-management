@@ -40,6 +40,7 @@ use WpClientManagement\API\Notes\CreateNote;
 use WpClientManagement\API\Notes\DeleteNote;
 use WpClientManagement\API\Notes\UpdateNote;
 use WpClientManagement\API\Overview\ClientOverview;
+use WpClientManagement\API\Overview\ProjectOverview;
 use WpClientManagement\API\Posts\DeletePost;
 use WpClientManagement\API\Posts\GetSinglePost;
 use WpClientManagement\API\Priorities\CreatePriority;
@@ -88,6 +89,7 @@ class API {
 
         // Overview 
         new ClientOverview();
+        new ProjectOverview();
 
         // Post
         new GetPosts();
