@@ -49,10 +49,6 @@ class CreateClient {
     public function create_client(\WP_REST_Request $request) {
         global $validator;
 
-        return new \WP_REST_Response([
-            'message' => 'Working....................',
-        ], 201);
-
         $data = $request->get_params();
         
         $data['user_login']   = sanitize_user($data['user_login'], true);
@@ -76,6 +72,10 @@ class CreateClient {
                 'errors' => $validator->errors(),
             ], 400);
         }
+
+        return new \WP_REST_Response([
+            'message' => 'Validation kaj korteche vai..',
+        ], 201);
 
         $wp_user_data = array(
             'user_login'    => $data['user_login'],
