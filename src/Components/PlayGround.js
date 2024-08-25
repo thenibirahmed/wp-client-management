@@ -65,7 +65,7 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.get(wpApiSettings.root + 'wp-client-management/v1/client-overview',
+        axios.get(wpApiSettings.root + 'wp-client-management/v1/project-overview',
             // {
             //     name: 'no name',
             //     type: 'no type',
@@ -78,7 +78,7 @@ const PlayGround = () => {
             }
         )
         .then((response) => {
-            console.log(response.data);
+            console.log(response.data.data);
             setPost(response.data);
         })
         .catch((error) => {

@@ -3,6 +3,8 @@
 namespace WpClientManagement\API\Overview;
 
 use WpClientManagement\Models\Client;
+use WpClientManagement\Models\Invoice;
+use WpClientManagement\Models\Project;
 
 class ClientOverview {
 
@@ -10,7 +12,8 @@ class ClientOverview {
 
     private $endpoint = '/client-overview';
 
-    public function __construct() {
+    public function __construct()
+    {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_clients_overview'),
@@ -18,22 +21,19 @@ class ClientOverview {
         ]);
     }
 
-    public function get_clients_overview(\WP_REST_Request $request) {
+    public function get_clients_overview(\WP_REST_Request $request)
+    {
+        $page = $request->get_param('page') ?: 1;
 
-        $page = $request->get_params('page');
+        $clients = Client::paginate(10, ['*'], 'page', $page);
+        $projects = Project::paginate(10, ['*'], 'page', $page);
+        $invoices = Invoice::paginate(10, ['*'], 'page', $page);
 
-        $clients = Client::paginate(20, ['*'], 'page', $page);
-
-        $data = [];
-        foreach ($clients as $client) {
-            $data[] = [
-                'id' => $client->id,
-                'eic_crm_user' => $client->eic_crm_user,
-                'organization' => $client->organization,
-                'designation' => $client->designation,
-                'status' => $client->status
-            ];
-        }
+        $data = [
+            'total_clients' => $clients->total(),
+            'total_projects' => $projects->total(),
+            'total_invoices' => $invoices->total(),
+        ];
 
         return new \WP_REST_Response([
             'data' => $data,

@@ -10,7 +10,8 @@ class GetClients {
 
     private $endpoint = '/clients';
 
-    public function __construct() {
+    public function __construct()
+    {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_clients'),
@@ -18,7 +19,8 @@ class GetClients {
         ]);
     }
 
-    public function get_clients(\WP_REST_Request $request) {
+    public function get_clients(\WP_REST_Request $request)
+    {
 
         $page = $request->get_params('page');
 
