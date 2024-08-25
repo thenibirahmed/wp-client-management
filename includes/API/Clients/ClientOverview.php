@@ -23,7 +23,12 @@ class ClientOverview {
 
     public function get_clients_overview()
     {
-        $clients = Client::count();
+        $clients = Client::whereHas('projects', function ($query) {
+            $query->whereHas('status', function ($subQuery) {
+                $subQuery->where('type', 'project')
+                         ->where('name', 'active');
+            });
+        })->count();
         $projects = Project::count();
         $invoices = Invoice::count();
 
