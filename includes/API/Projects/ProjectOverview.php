@@ -1,27 +1,27 @@
 <?php
 
-namespace WpClientManagement\API\Overview;
+namespace WpClientManagement\API\Projects;
 
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
 
-class ClientOverview {
+class ProjectOverview {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/client-overview';
+    private $endpoint = '/project-overview';
 
     public function __construct()
     {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
-            'callback' => array($this, 'get_clients_overview'),
+            'callback' => array($this, 'get_project_overview'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function get_clients_overview(\WP_REST_Request $request)
+    public function get_project_overview(\WP_REST_Request $request)
     {
         $page = $request->get_param('page') ?: 1;
 
@@ -33,6 +33,7 @@ class ClientOverview {
             'total_clients' => $clients->total(),
             'total_projects' => $projects->total(),
             'total_invoices' => $invoices->total(),
+            'projects' => $projects->items(),
         ];
 
         return new \WP_REST_Response([
