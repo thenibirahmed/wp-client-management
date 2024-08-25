@@ -2,6 +2,7 @@
 
 namespace WpClientManagement;
 
+use WpClientManagement\API\Clients\ClientOverview;
 use WpClientManagement\API\Clients\CreateClient;
 use WpClientManagement\API\Clients\DeleteClient;
 use WpClientManagement\API\Clients\GetSingleClient;
@@ -39,7 +40,6 @@ use WpClientManagement\API\Invoices\UpdateInvoice;
 use WpClientManagement\API\Notes\CreateNote;
 use WpClientManagement\API\Notes\DeleteNote;
 use WpClientManagement\API\Notes\UpdateNote;
-use WpClientManagement\API\Posts\DeletePost;
 use WpClientManagement\API\Posts\GetSinglePost;
 use WpClientManagement\API\Priorities\CreatePriority;
 use WpClientManagement\API\Priorities\DeletePriority;
@@ -50,6 +50,7 @@ use WpClientManagement\API\Projects\CreateProject;
 use WpClientManagement\API\Projects\DeleteProject;
 use WpClientManagement\API\Projects\GetProjects;
 use WpClientManagement\API\Projects\GetSingleProject;
+use WpClientManagement\API\Projects\ProjectOverview;
 use WpClientManagement\API\Projects\UpdateProject;
 use WpClientManagement\API\Schedules\CreateSchedule;
 use WpClientManagement\API\Schedules\DeleteSchedule;
@@ -84,6 +85,10 @@ class API {
         new GetSingleUser();
         // new DeleteUser();
 
+
+        // Overview
+        new ProjectOverview();
+
         // Post
         new GetPosts();
         new GetSinglePost();
@@ -95,6 +100,7 @@ class API {
         new DeleteClient();
         new CreateClient();
         new UpdateClient();
+        new ClientOverview();
 
         // DealPipeline
         new GetDealPipelines();
@@ -151,6 +157,7 @@ class API {
         new DeleteProject();
         new CreateProject();
         new UpdateProject();
+        new ProjectOverview();
 
         // Schedule
         new GetSchedules();

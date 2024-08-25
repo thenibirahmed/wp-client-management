@@ -84,10 +84,21 @@ const PlayGround = () => {
   const getTest = () => {
     axios
       .post(
-        eicApiSettings.rest_url + "wp-client-management/v1/status/create",
+        eicApiSettings.rest_url + "wp-client-management/v1/client/create",
         {
-          name: "no name",
-          type: "no type",
+          user_login: "easin-dev",
+          user_email: "easin-dev@example.com",
+          user_pass: "easin-dev",
+          phone: "45454",
+          address: "London",
+          city: "London",
+          state: "London",
+          country: "London",
+          zip: "123",
+          role: "no role",
+          organization: "no type",
+          designation: "no",
+          status: "no status",
         },
         {
           headers: {
@@ -115,13 +126,10 @@ const PlayGround = () => {
       <br />
       <button onClick={getUsers}>Click me to get all users</button> <br />
       <br />
-      <button onClick={getClients}>Get Cilents</button> <br />
-      <br />
       <button onClick={getSinglePost}>Click me to get single post</button>{" "}
       <br />
       <br />
       <button onClick={getTest}>Testing</button>
-      <button onClick={createClient}>create Client</button>
       <br />
     </div>
   );

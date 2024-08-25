@@ -49,8 +49,12 @@ class CreateClient {
     public function create_client(\WP_REST_Request $request) {
         global $validator;
 
-        $data = $request->get_params();
+        return new \WP_REST_Response([
+            'message' => 'Working....................',
+        ], 201);
 
+        $data = $request->get_params();
+        
         $data['user_login']   = sanitize_user($data['user_login'], true);
         $data['user_email']   = sanitize_email($data['user_email']);
         $data['user_pass']    = sanitize_text_field($data['user_pass']);
