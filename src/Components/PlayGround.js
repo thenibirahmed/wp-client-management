@@ -130,6 +130,7 @@ const PlayGround = () => {
       <br />
       <br />
       <button onClick={getTest}>Testing</button>
+      <button onClick={getClients}>Get client</button>
       <br />
     </div>
   );
