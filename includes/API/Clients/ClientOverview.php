@@ -24,8 +24,8 @@ class ClientOverview {
     public function get_clients_overview()
     {
         $clients = Client::getActiveClients();
-                
-        $projects = Project::getActiveProjects();
+
+        $projects = Project::getActiveProjects()->count();
 
         $invoices = Invoice::getActiveProjectInvoices();
 
