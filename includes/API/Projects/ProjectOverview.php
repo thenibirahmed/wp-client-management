@@ -21,31 +21,20 @@ class ProjectOverview {
         ]);
     }
 
-    public function get_project_overview(\WP_REST_Request $request)
+    public function get_project_overview()
     {
-        $page = $request->get_param('page') ?: 1;
-
-        $clients = Client::paginate(10, ['*'], 'page', $page);
-        $projects = Project::paginate(10, ['*'], 'page', $page);
-        $invoices = Invoice::paginate(10, ['*'], 'page', $page);
+        $clients = Client::count();
+        $projects = Project::count();
+        $invoices = Invoice::count();
 
         $data = [
-            'total_clients' => $clients->total(),
-            'total_projects' => $projects->total(),
-            'total_invoices' => $invoices->total(),
-            'projects' => $projects->items(),
+            'total_clients' => $clients,
+            'total_projects' => $projects,
+            'total_invoices' => $invoices,
         ];
 
         return new \WP_REST_Response([
             'data' => $data,
-            'pagination' => [
-                'total' => $clients->total(),
-                'per_page' => $clients->perPage(),
-                'current_page' => $clients->currentPage(),
-                'last_page' => $clients->lastPage(),
-                'next_page_url' => $clients->nextPageUrl(),
-                'prev_page_url' => $clients->previousPageUrl(),
-            ],
         ]);
     }
 }
