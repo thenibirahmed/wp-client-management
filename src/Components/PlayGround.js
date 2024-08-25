@@ -71,19 +71,19 @@ const PlayGround = () => {
 		axios.post(
 				eicApiSettings.rest_url + "wp-client-management/v1/client/create",
 				{
-					user_login: "easin-dev",
-					user_email: "easin-dev@example.com",
-					user_pass: "easin-dev",
-					phone: "45454",
-					address: "London",
-					city: "London",
-					state: "London",
-					country: "London",
-					zip: "123",
-					role: "no role",
-					organization: "no type",
-					designation: "no",
-					status: "no status"
+					user_login: "soweb",
+					user_email: "soweb@example.com",
+					user_pass: "soweb",
+					phone: "soweb",
+					address: "soweb",
+					city: "soweb",
+					state: "soweb",
+					country: "soweb",
+					zip: "soweb",
+					role: "soweb",
+					organization: "soweb",
+					designation: "soweb",
+					status: "soweb"
 				},
 				{
 					headers: {

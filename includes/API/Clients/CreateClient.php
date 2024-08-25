@@ -100,10 +100,6 @@ class CreateClient {
 
         $eic_crm_user = EicCrmUser::create($eic_crm_user_data);
 
-        return new \WP_REST_Response([
-            'message' => 'CRM user created...',
-        ], 201);
-
         if(!$eic_crm_user) {
             return new \WP_REST_Response([
                 'message' => 'Something went wrong',
