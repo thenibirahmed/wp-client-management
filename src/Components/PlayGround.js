@@ -65,20 +65,30 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.get(wpApiSettings.root + 'wp-client-management/v1/project-overview',
-            // {
-            //     name: 'no name',
-            //     type: 'no type',
-            // },
+        axios.post(wpApiSettings.root + 'wp-client-management/v1/client/create',
+            {
+                user_login: 'Samimf9',
+                user_email: 'samim@gmail.com',
+                user_pass: 'samim',
+                phone: '123-456',
+                address: 'dhaka',
+                city: 'Hamb',
+                state: 'nai',
+                zip: 5858,
+                country: 'Pakistan',
+                organization: 'Google',
+                designation: 'Google',
+                status: 'nai vai',
+            },
             {
                 headers: {
                     'X-WP-Nonce': wpApiSettings.nonce,
-                    // 'Content-Type' : 'application/json'
+                    'Content-Type' : 'application/json'
                 }
             }
         )
         .then((response) => {
-            console.log(response.data.data);
+            console.log(response.data);
             setPost(response.data);
         })
         .catch((error) => {

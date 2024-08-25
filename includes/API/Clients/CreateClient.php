@@ -50,7 +50,7 @@ class CreateClient {
         global $validator;
 
         $data = $request->get_params();
-
+        
         $data['user_login']   = sanitize_user($data['user_login'], true);
         $data['user_email']   = sanitize_email($data['user_email']);
         $data['user_pass']    = sanitize_text_field($data['user_pass']);
