@@ -65,11 +65,11 @@ const PlayGround = () => {
     };
 
     const getTest = () => {
-        axios.post(wpApiSettings.root + 'wp-client-management/v1/status/create',
-            {
-                name: 'no name',
-                type: 'no type',
-            },
+        axios.get(wpApiSettings.root + 'wp-client-management/v1/client-overview',
+            // {
+            //     name: 'no name',
+            //     type: 'no type',
+            // },
             {
                 headers: {
                     'X-WP-Nonce': wpApiSettings.nonce,

@@ -39,6 +39,7 @@ use WpClientManagement\API\Invoices\UpdateInvoice;
 use WpClientManagement\API\Notes\CreateNote;
 use WpClientManagement\API\Notes\DeleteNote;
 use WpClientManagement\API\Notes\UpdateNote;
+use WpClientManagement\API\Overview\ClientOverview;
 use WpClientManagement\API\Posts\DeletePost;
 use WpClientManagement\API\Posts\GetSinglePost;
 use WpClientManagement\API\Priorities\CreatePriority;
@@ -83,6 +84,10 @@ class API {
         new GetUsers();
         new GetSingleUser();
         // new DeleteUser();
+
+
+        // Overview 
+        new ClientOverview();
 
         // Post
         new GetPosts();
