@@ -10,15 +10,15 @@ class Status extends Model
 {
     protected $table = 'eic_statuses';
 
+    protected $fillable = [
+        'name',
+        'type'
+    ];
+
     public CONST TYPES = [
         'project' => 'project',
         'task' => 'task',
         'deal' => 'deal'
-    ];
-
-    protected $fillable = [
-        'name',
-        'type'
     ];
 
     public function projects() {
