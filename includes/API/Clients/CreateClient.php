@@ -106,7 +106,6 @@ class CreateClient {
             ]);
         }
 
-        
         return new \WP_REST_Response([
             'user' => $eic_crm_user,
         ], 201);
