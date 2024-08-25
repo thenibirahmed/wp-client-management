@@ -25,7 +25,7 @@ const Tab = ({ task = false }) => {
   }
 
   return (
-    <div className="flex pt-3 gap-5 md:flex-row  flex-wrap   items-center text-textColor2 font-metropolis text-sm font-semibold border-b   border-b-borderColor">
+    <div className="flex pt-3 gap-5 md:flex-row  flex-wrap   items-center sm:justify-start justify-center text-textColor2 font-metropolis text-sm font-semibold border-b   border-b-borderColor">
       {task ? (
         <button
           className={`${activeClass("task")} pb-3 w-[120px]`}

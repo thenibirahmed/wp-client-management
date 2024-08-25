@@ -18,18 +18,61 @@ const AddClientForm = ({ setOpen }) => {
     mode: "onTouched",
   });
 
-  const addNewClientHandler = async (data) => {
-    try {
-      console.log(data);
+  // const addNewClientHandler = async (data) => {
+  //   const sendData = {
+  //     ...data,
+  //     user_pass: "test",
+  //     role: "myRole",
+  //     designation: "designation",
+  //     status: "status",
+  //   };
+  //   console.log(sendData);
+  //   try {
+  //     console.log(data);
 
-      //const { data } = await api.post("/client/create");
+  //     const { data } = await api.post("/client/create", sendData);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
 
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
+  //   //reset();
+  // };
 
-    //reset();
+  const addNewClientHandler = () => {
+    axios
+      .post(
+        eicApiSettings.rest_url + "wp-client-management/v1/client/create",
+        {
+          user_login: "easin-dev1",
+          user_email: "easin-dev1@example.com",
+          user_pass: "easin-dev",
+          phone: "45454",
+          address: "London",
+          city: "London",
+          state: "London",
+          country: "London",
+          zip: "123",
+          role: "no role",
+          organization: "no type",
+          designation: "no",
+          status: "no status",
+        },
+        {
+          headers: {
+            "X-WP-Nonce": eicApiSettings.nonce,
+            // 'Content-Type' : 'application/json'
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
   };
 
   const onImageUploadHandler = () => {
@@ -43,7 +86,7 @@ const AddClientForm = ({ setOpen }) => {
           <TextField
             label="Name"
             required
-            id="name"
+            id="user_login"
             type="text"
             message="*Name is required"
             placeholder="Easin"
@@ -65,7 +108,7 @@ const AddClientForm = ({ setOpen }) => {
           <TextField
             label="Email"
             required
-            id="email"
+            id="user_email"
             type="email"
             message="*Email is required"
             placeholder="easin@gmail.com"
@@ -108,7 +151,7 @@ const AddClientForm = ({ setOpen }) => {
           <TextField
             label="ZIP Code"
             required
-            id="zipcode"
+            id="zip"
             type="number"
             message="*ZIP Code is required"
             placeholder="1254"
@@ -120,7 +163,7 @@ const AddClientForm = ({ setOpen }) => {
           <TextField
             label="Country"
             required
-            id="country"
+            id="contry"
             type="text"
             message="*Country is required"
             placeholder="USA"
