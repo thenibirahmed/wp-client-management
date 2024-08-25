@@ -10,6 +10,11 @@ class Status extends Model
 {
     protected $table = 'eic_statuses';
 
+    public CONST TYPES = [
+        'project' => 'project',
+        'task' => 'task'
+    ];
+
     protected $fillable = [
         'name',
         'type'
