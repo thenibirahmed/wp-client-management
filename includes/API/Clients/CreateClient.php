@@ -73,10 +73,6 @@ class CreateClient {
             ], 400);
         }
 
-        return new \WP_REST_Response([
-            'message' => 'Validation kaj korteche vai..',
-        ], 201);
-
         $wp_user_data = array(
             'user_login'    => $data['user_login'],
             'user_email'    => $data['user_email'],
@@ -90,6 +86,10 @@ class CreateClient {
                 'message' => $wp_user->get_error_message(),
             ]);
         }
+
+        return new \WP_REST_Response([
+            'message' => 'Wordpress user created...',
+        ], 201);
 
         $eic_crm_user_data = array(
             'wp_user_id' => $wp_user,
