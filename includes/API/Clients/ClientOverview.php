@@ -37,22 +37,35 @@ class ClientOverview {
         }
 
         $clientIds = $clientsData->pluck('id')->toArray();
-        $invoices  = Invoice::whereIn('client_id', $clientIds)->get();
+        $invoices  = Invoice::whereIn('client_id', $clientIds)
+                    ->with('status')
+                    ->get();
 
-        $invoiceTotals = $invoices->groupBy('client_id')->map(function ($group) {
-            return $group->sum('total');
+        $invoiceTotalsByClient = $invoices->groupBy('client_id')->map(function ($invoices) {
+
+            $total = $invoices->sum('total');
+            $paid = $invoices->where('status.name', 'paid')->where('status.type', 'invoice')->sum('total');
+            $unpaid = $total - $paid;
+
+            return [
+                'total' => $total,
+                'revenue'  => $paid,
+                'due' => $unpaid,
+            ];
         });
 
-        $clientsWithDetails = $clientsData->map(function ($client) use ($wpUsers, $invoiceTotals) {
+        $clientsWithDetails = $clientsData->map(function ($client) use ($wpUsers, $invoiceTotalsByClient) {
             $eicCrmUser = $client->eic_crm_user;
             $wpUserId   = $eicCrmUser->wp_user_id;
             $wpUser     = $wpUsers[$wpUserId] ?? [];
 
-            $totalInvoiceAmount = $invoiceTotals->get($client->id, 0);
+            $invoices = $invoiceTotalsByClient->get($client->id, [
+                'total' => 0, 'revenue' => 0, 'due' => 0
+            ]);
 
             return [
                 'client_id'             => $client->id,
-                'total_invoice_amount'  => $totalInvoiceAmount,
+                'invoice'               => $invoices,
                 'country'               => $eicCrmUser->country,
                 'organization'          => $client->organization,
                 'project_count'         => $client->projects_count,

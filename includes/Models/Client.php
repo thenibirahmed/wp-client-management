@@ -27,7 +27,7 @@ class Client extends Model
             $query->whereHas('status', function ($subQuery)
             {
                 $subQuery->where('type', 'project')
-                         ->where('name', 'active');
+                         ->where('name', 'in_progress');
             });
         })->get();
     }
