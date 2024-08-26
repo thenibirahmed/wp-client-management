@@ -21,41 +21,37 @@ class ClientOverview {
         ]);
     }
 
-    public function get_clients_overview()
-    {
+    public function get_clients_overview() {
+
         $clientsData = Client::getActiveClients();
-
-        $clients = $clientsData->map(function($client) {
-            return [
-                'client_id'      => $client->id,
-                'organization'   => $client->organization,
-                'designation'    => $client->designation,
-                'status'         => $client->status,
-                // Include EicCrmUser data
-                'wp_user_id'     => $client->eic_crm_user->wp_user_id,
-                'phone'          => $client->eic_crm_user->phone,
-                'address'        => $client->eic_crm_user->address,
-                'city'           => $client->eic_crm_user->city,
-                'state'          => $client->eic_crm_user->state,
-                'zip'            => $client->eic_crm_user->zip,
-                'country'        => $client->eic_crm_user->country,
-                'role'           => $client->eic_crm_user->role,
+    
+        $wp_user_ids = $clientsData->pluck('eic_crm_user.wp_user_id')->toArray();
+        
+        $wpUsersDb = get_users([
+            'include' => $wp_user_ids,
+        ]);
+        
+        $wpUsers = [];
+        foreach ($wpUsersDb as $user) {
+            $wpUsers[$user->ID] = [
+                'name'          => $user->user_login,
+                'email'         => $user->user_email,
+                'display_name'  => $user->display_name,
+                'roles'         => $user->roles,
             ];
+        }
+        
+        $clientsWithDetails = $clientsData->map(function ($client) use ($wpUsers) {
+            $eicCrmUser = $client->eic_crm_user;
+            $wpUserId = $eicCrmUser->wp_user_id;
+            $wpUser = $wpUsers[$wpUserId] ?? [];
+    
+            return array_merge($client->toArray(), $eicCrmUser->toArray(), $wpUser);
         });
-
-
-        $projects = Project::getActiveProjects()->count();
-
-        $invoices = Invoice::getActiveProjectInvoices();
-
-        $data = [
-            'clients'  => $clients,
-            // 'total_projects' => $projects,
-            // 'total_invoices' => $invoices,
-        ];
-
+    
         return new \WP_REST_Response([
-            'data' => $data,
+            'clients' => $clientsWithDetails,
         ]);
     }
+    
 }
