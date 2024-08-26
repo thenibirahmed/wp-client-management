@@ -3,6 +3,7 @@ namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
+use WpClientManagement\Models\Project;
 
 class ClientOverview {
 
@@ -41,18 +42,28 @@ class ClientOverview {
                     ->with('status')
                     ->get();
 
+        $projectCount = Project::getActiveProjects()->count();
+
         $invoiceTotalsByClient = $invoices->groupBy('client_id')->map(function ($invoices) {
 
-            $total = $invoices->sum('total');
-            $paid = $invoices->where('status.name', 'paid')->where('status.type', 'invoice')->sum('total');
+            $total  = $invoices->sum('total');
+            $paid   = $invoices->where('status.name', 'paid')->where('status.type', 'invoice')->sum('total');
             $unpaid = $total - $paid;
 
             return [
-                'total' => $total,
+                'total'    => $total,
                 'revenue'  => $paid,
-                'due' => $unpaid,
+                'due'      => $unpaid,
             ];
         });
+
+        $totalInvoices = $invoiceTotalsByClient->sum('total');
+        $totalRevenue  = $invoiceTotalsByClient->sum('revenue');
+        $totalDue      = $invoiceTotalsByClient->sum('due');
+
+        $totalInvoiceCount  = $invoices->count();
+        $paidInvoiceCount   = $invoices->where('status.name', 'paid')->where('status.type', 'invoice')->count();
+        $unpaidInvoiceCount = $totalInvoiceCount - $paidInvoiceCount;
 
         $clientsWithDetails = $clientsData->map(function ($client) use ($wpUsers, $invoiceTotalsByClient) {
             $eicCrmUser = $client->eic_crm_user;
@@ -64,18 +75,42 @@ class ClientOverview {
             ]);
 
             return [
-                'client_id'             => $client->id,
-                'invoice'               => $invoices,
-                'country'               => $eicCrmUser->country,
-                'organization'          => $client->organization,
-                'project_count'         => $client->projects_count,
-                'name'                  => $wpUser['name'] ?? null,
-                'email'                 => $wpUser['email'] ?? null,
+                'client_id'     => $client->id,
+                'invoice'       => $invoices,
+                'country'       => $eicCrmUser->country,
+                'organization'  => $client->organization,
+                'project_count' => $client->projects_count,
+                'name'          => $wpUser['name'] ?? null,
+                'email'         => $wpUser['email'] ?? null,
             ];
         });
 
+        $topBar = [
+            "invoice" => [
+                'name'    => 'Total Invoice',
+                'amount'  => $totalInvoiceCount,
+                'subText' => $totalInvoices . ' invoices'
+            ],
+            "revenue" => [
+                'name'    => 'Total Revenue',
+                'amount'  => $totalRevenue,
+                'subText' => $paidInvoiceCount.'invoices'
+            ],
+            "due" => [
+                'name'    => 'Total Due',
+                'amount'  => $totalDue,
+                'subText' => $unpaidInvoiceCount.'invoices'
+            ],
+            "project" => [
+                'name'    => 'Total Projects',
+                'amount'  => $projectCount,
+                'subText' => 'last 3 months'
+            ]
+        ];
+
         return new \WP_REST_Response([
             'clients' => $clientsWithDetails,
+            'topBar' => $topBar
         ]);
     }
 }

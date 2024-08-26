@@ -29,13 +29,6 @@ class Invoice extends Model
         'fee'
     ];
 
-    
-   public function getPaidInvoices()
-   {
-
-   }
-
-
     public function eic_crm_user()
     {
         return $this->belongsTo(EicCrmUser::class);

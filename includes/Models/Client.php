@@ -29,7 +29,7 @@ class Client extends Model
                 $subQuery->where('type', 'project')
                          ->where('name', 'in_progress');
             });
-        })->get();
+        })->paginate(10);
     }
 
     public function eic_crm_user() {

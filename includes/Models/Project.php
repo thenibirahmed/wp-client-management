@@ -36,7 +36,7 @@ class Project extends Model
     {
         return self::whereHas('status', function ($query) {
             $query->where('type', 'project')
-                  ->where('name', 'active');
+                  ->where('name', 'in_progress');
         })->get();
     }
 
