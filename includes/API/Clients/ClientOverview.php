@@ -23,16 +23,35 @@ class ClientOverview {
 
     public function get_clients_overview()
     {
-        $clients = Client::getActiveClients();
+        $clientsData = Client::getActiveClients();
+
+        $clients = $clientsData->map(function($client) {
+            return [
+                'client_id'      => $client->id,
+                'organization'   => $client->organization,
+                'designation'    => $client->designation,
+                'status'         => $client->status,
+                // Include EicCrmUser data
+                'wp_user_id'     => $client->eic_crm_user->wp_user_id,
+                'phone'          => $client->eic_crm_user->phone,
+                'address'        => $client->eic_crm_user->address,
+                'city'           => $client->eic_crm_user->city,
+                'state'          => $client->eic_crm_user->state,
+                'zip'            => $client->eic_crm_user->zip,
+                'country'        => $client->eic_crm_user->country,
+                'role'           => $client->eic_crm_user->role,
+            ];
+        });
+
 
         $projects = Project::getActiveProjects()->count();
 
         $invoices = Invoice::getActiveProjectInvoices();
 
         $data = [
-            'total_clients'  => $clients,
-            'total_projects' => $projects,
-            'total_invoices' => $invoices,
+            'clients'  => $clients,
+            // 'total_projects' => $projects,
+            // 'total_invoices' => $invoices,
         ];
 
         return new \WP_REST_Response([

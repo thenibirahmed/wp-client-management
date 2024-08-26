@@ -87,16 +87,18 @@ class CreateClient {
             ]);
         }
 
-        $eic_crm_user = EicCrmUser::create([
+        $eic_crm_user_data = array(
             'wp_user_id' => intval($wp_user),
-            // 'phone' => $data['phone'],
-            // 'address' => $data['address'],
-            // 'city' => $data['city'],
-            // 'state' => $data['state'],
-            // 'zip' => $data['zip'],
-            // 'country' => $data['country'],
-            // 'role' => $data['role'],
-        ]);
+            'phone' => $data['phone'],
+            'address' => $data['address'],
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'zip' => $data['zip'],
+            'country' => $data['country'],
+            'role' => $data['role'],
+        );
+
+        $eic_crm_user = EicCrmUser::create($eic_crm_user_data);
 
         if(!$eic_crm_user) {
             return new \WP_REST_Response([
