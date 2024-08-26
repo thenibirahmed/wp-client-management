@@ -19,9 +19,11 @@ class ClientOverview {
         ]);
     }
 
-    public function get_clients_overview() {
+    public function get_clients_overview(\WP_REST_Request $request)
+    {
+        $page = $request->get_params('page');
 
-        $clientsData = Client::getActiveClients();
+        $clientsData = Client::getActiveClients($page);
 
         $wp_user_ids = $clientsData->pluck('eic_crm_user.wp_user_id')->toArray();
 
@@ -108,8 +110,16 @@ class ClientOverview {
         ];
 
         return new \WP_REST_Response([
-            'clients' => $clientsWithDetails,
-            'topBar' => $topBar
+            'clients'    => $clientsWithDetails,
+            'topBar'     => $topBar,
+            'pagination' => [
+                'total'         => $clientsData->total(),
+                'per_page'      => $clientsData->perPage(),
+                'current_page'  => $clientsData->currentPage(),
+                'last_page'     => $clientsData->lastPage(),
+                'next_page_url' => $clientsData->nextPageUrl(),
+                'prev_page_url' => $clientsData->previousPageUrl(),
+            ],
         ]);
     }
 }

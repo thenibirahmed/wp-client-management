@@ -19,7 +19,7 @@ class Client extends Model
         'status'
     ];
 
-    public static function getActiveClients()
+    public static function getActiveClients($page)
     {
         return self::withCount('projects')->with(['eic_crm_user'])
                 ->whereHas('projects', function ($query)
@@ -29,7 +29,7 @@ class Client extends Model
                 $subQuery->where('type', 'project')
                          ->where('name', 'in_progress');
             });
-        })->paginate(10);
+        })->paginate(20, ['*'], 'page', $page);
     }
 
     public function eic_crm_user() {
