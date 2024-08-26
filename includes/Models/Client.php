@@ -21,7 +21,7 @@ class Client extends Model
 
     public static function getActiveClients()
     {
-        return self::with('eic_crm_user')
+        return self::withCount('projects')->with(['eic_crm_user'])
                 ->whereHas('projects', function ($query)
         {
             $query->whereHas('status', function ($subQuery)

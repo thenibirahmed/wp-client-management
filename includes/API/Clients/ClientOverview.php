@@ -24,6 +24,8 @@ class ClientOverview {
     public function get_clients_overview() {
 
         $clientsData = Client::getActiveClients();
+
+        // $clientsData->first()->products_count;
     
         $wp_user_ids = $clientsData->pluck('eic_crm_user.wp_user_id')->toArray();
         
@@ -48,8 +50,32 @@ class ClientOverview {
     
             return array_merge($client->toArray(), $eicCrmUser->toArray(), $wpUser);
         });
+
+        $topBar = [
+            [
+                'name' => 'Total Invoice',
+                'amount' => 16400,
+                'subText' => '5 invoices'
+            ],
+            [
+                'name' => 'Total Revenue',
+                'amount' => 12400,
+                'subText' => '3 invoices'
+            ],
+            [
+                'name' => 'Total Due',
+                'amount' => 4000,
+                'subText' => '2 invoices'
+            ],
+            [
+                'name' => 'Total Projects',
+                'amount' => 5,
+                'subText' => 'last 3 months'
+            ]
+        ];
     
         return new \WP_REST_Response([
+            'topBar' => $topBar,
             'clients' => $clientsWithDetails,
         ]);
     }
