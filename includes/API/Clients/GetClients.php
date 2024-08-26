@@ -24,7 +24,7 @@ class GetClients {
 
         $page = $request->get_params('page');
 
-        $clients = Client::paginate(20, ['*'], 'page', $page);
+        $clients = Client::paginate(2, ['*'], 'page', $page);
 
         $data = [];
         foreach ($clients as $client) {

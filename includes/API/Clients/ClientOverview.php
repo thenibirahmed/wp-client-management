@@ -89,18 +89,18 @@ class ClientOverview {
         $topBar = [
             "invoice" => [
                 'name'    => 'Total Invoice',
-                'amount'  => $totalInvoiceCount,
-                'subText' => $totalInvoices . ' invoices'
+                'amount'  => $totalInvoices,
+                'subText' => $totalInvoiceCount . ($totalInvoiceCount == 1 ? ' invoice' : ' invoices')
             ],
             "revenue" => [
                 'name'    => 'Total Revenue',
                 'amount'  => $totalRevenue,
-                'subText' => $paidInvoiceCount.'invoices'
+                'subText' => $paidInvoiceCount . ($paidInvoiceCount == 1 ? ' invoice' : ' invoices')
             ],
             "due" => [
                 'name'    => 'Total Due',
                 'amount'  => $totalDue,
-                'subText' => $unpaidInvoiceCount.'invoices'
+                'subText' => $unpaidInvoiceCount . ($unpaidInvoiceCount == 1 ? ' invoice' : ' invoices')
             ],
             "project" => [
                 'name'    => 'Total Projects',
