@@ -86,9 +86,9 @@ const PlayGround = () => {
       .post(
         eicApiSettings.rest_url + "wp-client-management/v1/client/create",
         {
-          user_login: "kajkorenahlfsdf",
-          user_email: "kajkorensdf ah@gmail.com",
-          user_pass: "kajkorenasdfasdh",
+          user_login: "testset33",
+          user_email: "test33@gmail.com",
+          user_pass: "kajkorssadfdfenh",
           phone: "soweb1",
           address: "soweb",
           city: "soweb",
