@@ -39,6 +39,13 @@ class Project extends Model
                   ->where('name', 'in_progress');
         })->get();
     }
+    
+    public static function getClientProjects($id, $page)
+    {
+        return self::where('client_id', $id)->paginate(1, ['*'], 'page', $page);
+    }
+
+
 
     public function client() {
         return $this->belongsTo(Client::class);

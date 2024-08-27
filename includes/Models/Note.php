@@ -16,6 +16,11 @@ class Note extends Model
         'note',
     ];
 
+    public static function getClientNotes($id)
+    {
+        return self::where('client_id',$id)->get();
+    }
+
     public function eic_crm_user() {
         return $this->belongsTo(EicCrmUser::class);
     }

@@ -35,7 +35,6 @@ class GetPosts {
 
         $page = $request->get_params('page');
 
-
         $posts = Post::paginate(20, ['*'], 'page', $page);
 
         $data = [];

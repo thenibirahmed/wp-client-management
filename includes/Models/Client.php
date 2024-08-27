@@ -32,6 +32,12 @@ class Client extends Model
         })->paginate(20, ['*'], 'page', $page);
     }
 
+    public static function getClientTopBarInfo(Client $client)
+    {
+        // $totalProject = Project::
+        return $client;
+    }
+
     public function eic_crm_user() {
         return $this->belongsTo(EicCrmUser::class);
     }

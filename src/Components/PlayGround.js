@@ -68,19 +68,19 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/create",
-				{
-					user_login: "checking3",
-					user_email: "checkin3g@gmail.com",
-					phone: "5545",
-					address: "Kamarpara3",
-					city: "dhaka",
-					state: "dhaka",
-					country: "uganda",
-					zip: "jani nah",
-					organization: "rest",
-				},
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/client/1/projects",
+				// {
+				// 	user_login: "checking3",
+				// 	user_email: "checkin3g@gmail.com",
+				// 	phone: "5545",
+				// 	address: "Kamarpara3",
+				// 	city: "dhaka",
+				// 	state: "dhaka",
+				// 	country: "uganda",
+				// 	zip: "jani nah",
+				// 	organization: "rest",
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
