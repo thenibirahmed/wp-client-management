@@ -3,13 +3,14 @@
 namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
+use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
 
 class GetClientProjects {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/client/(?P<id>\d+)/projects';
+    private $endpoint  = '/client/(?P<id>\d+)/projects';
 
     protected array $rules = [
         'id' => 'required|integer|exists:eic_clients,id',
@@ -66,9 +67,46 @@ class GetClientProjects {
                 'error' => 'No Project found',
             ]);
         }
-        
+
+        $projectIds = $projects->pluck('id')->toArray();
+
+        $invoices   = Invoice::whereIn('project_id', $projectIds)
+                        ->with('status')
+                        ->get();
+
+        $invoiceTotalsByProject = $invoices->groupBy('project_id')->map(function ($invoices) {
+            $total  = $invoices->sum('total');
+            $paid   = $invoices->where('status.name', 'paid')->where('status.type', 'invoice')->sum('total');
+            $unpaid = $total - $paid;
+
+            return [
+                'total'    => $total,
+                'revenue'  => $paid,
+                'due'      => $unpaid,
+            ];
+        });
+
+        $data = [];
+        foreach ($projects as $project) {
+            $invoiceData = $invoiceTotalsByProject->get($project->id, [
+                'total'   => 0,
+                'revenue' => 0,
+                'due'     => 0,
+            ]);
+
+            $data[] = [
+                'id'        => $project->id,
+                'name'      => $project->title,
+                'invoice'   => $invoiceData['total'],
+                'revenue'   => $invoiceData['revenue'],
+                'due'       => $invoiceData['due'],
+                'status'    => $project->status->name,
+                'priority'  => $project->priority->name
+            ];
+        }
+
         $response = [
-            'data'       => $projects,
+            'data'       => $data,
             'pagination' => [
                 'total'         => $projects->total(),
                 'per_page'      => $projects->perPage(),
@@ -78,7 +116,6 @@ class GetClientProjects {
                 'prev_page_url' => $projects->previousPageUrl(),
             ],
         ];
-        
 
         return new \WP_REST_Response($response);
     }

@@ -42,10 +42,8 @@ class Project extends Model
     
     public static function getClientProjects($id, $page)
     {
-        return self::where('client_id', $id)->paginate(1, ['*'], 'page', $page);
+        return self::with('invoices','priority')->where('client_id', $id)->paginate(20, ['*'], 'project', $page);
     }
-
-
 
     public function client() {
         return $this->belongsTo(Client::class);
