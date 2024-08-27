@@ -4,7 +4,6 @@ namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
-use WpClientManagement\Models\Project;
 
 class GetClientInvoices {
 
@@ -71,13 +70,13 @@ class GetClientInvoices {
         $data = [];
         foreach($invoices as $invoice) {
             $data[] = [
-                'id' => $invoice->id,      
-                'code' => $invoice->code,
-                'project' => $invoice->project->title,
-                'amount' => $invoice->total,
-                'status' => $invoice->status->name,
+                'id'             => $invoice->id,      
+                'code'           => $invoice->code,
+                'project'        => $invoice->project->title,
+                'amount'         => $invoice->total,
+                'status'         => $invoice->status->name,
                 'payment_method' => $invoice->paymentMethod->name,
-                'due_date' => $invoice->due_date ? human_time_diff(strtotime($invoice->due_date), current_time('timestamp')) . ' ago' : null,
+                'due_date'       => $invoice->due_date ? human_time_diff(strtotime($invoice->due_date), current_time('timestamp')) . ' ago' : null,
             ];
         };
 

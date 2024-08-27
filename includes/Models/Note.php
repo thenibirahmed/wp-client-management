@@ -18,7 +18,8 @@ class Note extends Model
 
     public static function getClientNotes($id, $page)
     {
-        return self::where('client_id',$id)
+        return self::with('eic_crm_user')
+                    ->where('client_id',$id)
                     ->paginate(20, ['*'], 'file', $page);
     }
 
