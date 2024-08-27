@@ -29,28 +29,24 @@ class Invoice extends Model
         'fee'
     ];
 
-    public static function getActiveProjectInvoices()
+    public function eic_crm_user()
     {
-       return self::whereHas('project', function ($query)
-        {
-            $query->whereHas('status', function ($subQuery)
-            {
-                $subQuery->where('type', 'project')
-                         ->where('status', 'active');
-            });
-        })->get();
-    }
-
-    public function eic_crm_user() {
         return $this->belongsTo(EicCrmUser::class);
     }
 
-    public function client() {
+    public function client()
+    {
         return $this->belongsTo(Client::class);
     }
 
-    public function project() {
+    public function project()
+    {
         return $this->belongsTo(Project::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class,'status_id');
     }
 
 }

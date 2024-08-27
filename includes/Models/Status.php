@@ -15,6 +15,13 @@ class Status extends Model
         'type'
     ];
 
+    public CONST TYPES = [
+        'project' => 'project',
+        'task' => 'task',
+        'deal' => 'deal',
+        'invoice' => 'invoice',
+    ];
+
     public function projects() {
         return $this->hasMany(Project::class);
     }
