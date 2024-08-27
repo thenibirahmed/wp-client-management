@@ -5,6 +5,7 @@ namespace WpClientManagement;
 use WpClientManagement\API\Clients\ClientOverview;
 use WpClientManagement\API\Clients\CreateClient;
 use WpClientManagement\API\Clients\DeleteClient;
+use WpClientManagement\API\Clients\GetClientEmails;
 use WpClientManagement\API\Clients\GetClientFiles;
 use WpClientManagement\API\Clients\GetClientInvoices;
 use WpClientManagement\API\Clients\GetClientNotes;
@@ -109,6 +110,7 @@ class API {
         new GetClientInvoices();
         new GetClientNotes();
         new GetClientFiles();
+        new GetClientEmails();
 
         // DealPipeline
         new GetDealPipelines();

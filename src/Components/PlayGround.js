@@ -69,7 +69,7 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/1/files",
+				eicApiSettings.rest_url + "wp-client-management/v1/client/1/emails",
 				// {
 				// 	user_login: "checking3",
 				// 	user_email: "checkin3g@gmail.com",

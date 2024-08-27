@@ -19,9 +19,10 @@ class Email extends Model
         'sent'
     ];
 
-    public static function getClientEmails($id)
+    public static function getClientEmails($id, $page)
     {
-        return self::where('client_id', $id)->get();
+        return self::where('client_id', $id)
+                ->paginate(1, ['*'], 'email', $page);
     } 
 
     public function client() {
