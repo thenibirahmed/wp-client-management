@@ -18,8 +18,8 @@ class GetClientProjects {
 
     protected array $validationMessages = [
         'id.required' => 'The client ID is required.',
-        'id.integer' => 'The client ID must be an integer.',
-        'id.exists' => 'The client does not exist.',
+        'id.integer'  => 'The client ID must be an integer.',
+        'id.exists'   => 'The client does not exist.',
     ];
 
     public function __construct() {
@@ -97,11 +97,13 @@ class GetClientProjects {
             $data[] = [
                 'id'        => $project->id,
                 'name'      => $project->title,
-                'invoice'   => $invoiceData['total'],
-                'revenue'   => $invoiceData['revenue'],
-                'due'       => $invoiceData['due'],
                 'status'    => $project->status->name,
-                'priority'  => $project->priority->name
+                'priority'  => $project->priority->name,
+                'invoice'   => [
+                    'total'   => $invoiceData['total'],
+                    'revenue' => $invoiceData['revenue'],
+                    'due'     => $invoiceData['due'],
+                ],
             ];
         }
 
