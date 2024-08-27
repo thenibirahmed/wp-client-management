@@ -189,6 +189,14 @@ class Installer {
                         PRIMARY KEY (`id`)
                     ) {$collate}";
 
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_payment_methods` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `name` varchar(255) NOT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_tasks` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `project_id` bigint UNSIGNED NOT NULL,
