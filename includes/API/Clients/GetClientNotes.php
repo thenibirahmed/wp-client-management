@@ -4,13 +4,14 @@ namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
+use WpClientManagement\Models\Note;
 use WpClientManagement\Models\Project;
 
-class GetClientInvoices {
+class GetClientNotes {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint  = '/client/(?P<id>\d+)/invoices';
+    private $endpoint  = '/client/(?P<id>\d+)/notes';
 
     protected array $rules = [
         'id' => 'required|integer|exists:eic_clients,id',
@@ -25,12 +26,12 @@ class GetClientInvoices {
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
-            'callback' => array($this, 'get_client_invoices'),
+            'callback' => array($this, 'get_client_notes'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function get_client_invoices(\WP_REST_Request $request) {
+    public function get_client_notes(\WP_REST_Request $request) {
         global $validator;
 
         $client_id  = $request->get_param('id');
@@ -60,36 +61,49 @@ class GetClientInvoices {
             ]);
         }
 
-        $invoices = Invoice::getClientInvoices($client_id, $page);
-
-        if(!$invoices) {
+        $notes = Note::getClientNotes($client_id, $page);
+        
+        if(!$notes) {
             return new \WP_REST_Response([
                 'error' => 'No Invoices found',
             ]);
         }
 
-        $data = [];
-        foreach($invoices as $invoice) {
-            $data[] = [
-                'id' => $invoice->id,      
-                'code' => $invoice->code,
-                'project' => $invoice->project->title,
-                'amount' => $invoice->total,
-                'status' => $invoice->status->name,
-                'payment_method' => $invoice->paymentMethod->name,
-                'due_date' => $invoice->due_date ? human_time_diff(strtotime($invoice->due_date), current_time('timestamp')) . ' ago' : null,
+        $wp_user_ids = $notes->pluck('eic_crm_user.wp_user_id')->toArray();
+        
+        $wpUsersDb = get_users([
+            'include' => $wp_user_ids,
+        ]);
+        
+        $wpUsers = [];
+        foreach ($wpUsersDb as $user) {
+            $wpUsers[$user->ID] = [
+                'name'  => $user->user_login,
             ];
-        };
+        }
+
+
+        $data = [];
+        foreach ($notes as $note) {
+            $wp_user_id = $note->eic_crm_user->wp_user_id;
+
+            $data[] = [
+                'id' => $note->id,
+                'author' => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
+                'note' => $note->note,
+                'time' => $note->created_at ? human_time_diff(strtotime($note->created_at), current_time('timestamp')) . ' ago' : null,
+            ];
+        }
 
         $response = [
             'data'       => $data,
             'pagination' => [
-                'total'         => $invoices->total(),
-                'per_page'      => $invoices->perPage(),
-                'current_page'  => $invoices->currentPage(),
-                'last_page'     => $invoices->lastPage(),
-                'next_page_url' => $invoices->nextPageUrl(),
-                'prev_page_url' => $invoices->previousPageUrl(),
+                'total'         => $notes->total(),
+                'per_page'      => $notes->perPage(),
+                'current_page'  => $notes->currentPage(),
+                'last_page'     => $notes->lastPage(),
+                'next_page_url' => $notes->nextPageUrl(),
+                'prev_page_url' => $notes->previousPageUrl(),
             ],
         ];
 
