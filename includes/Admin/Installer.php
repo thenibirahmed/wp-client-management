@@ -109,6 +109,7 @@ class Installer {
                         `items` json DEFAULT NULL,
                         `note` text COLLATE utf8mb4_unicode_ci,
                         `billing_address` text COLLATE utf8mb4_unicode_ci,
+                        `payment_method_id` bigint UNSIGNED DEFAULT NULL,
                         `status_id` bigint UNSIGNED DEFAULT NULL,
                         `total` decimal(8,2) NOT NULL,
                         `discount` decimal(8,2) DEFAULT NULL,
