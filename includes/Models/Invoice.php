@@ -29,14 +29,21 @@ class Invoice extends Model
         'fee'
     ];
 
-    public static function getClientInvoices($id)
+    public static function getClientInvoices($id ,$page)
     {
-        return self::where('client_id',$id)->get();
+        return self::with(['status','project','paymentMethod'])
+                ->where('client_id',$id)
+                ->paginate(20, ['*'], 'invoice', $page);
     }
 
     public function eic_crm_user()
     {
         return $this->belongsTo(EicCrmUser::class);
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }
 
     public function client()

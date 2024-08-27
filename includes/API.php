@@ -5,6 +5,7 @@ namespace WpClientManagement;
 use WpClientManagement\API\Clients\ClientOverview;
 use WpClientManagement\API\Clients\CreateClient;
 use WpClientManagement\API\Clients\DeleteClient;
+use WpClientManagement\API\Clients\GetClientInvoices;
 use WpClientManagement\API\Clients\GetClientProjects;
 use WpClientManagement\API\Clients\GetSingleClient;
 use WpClientManagement\API\DealPipelines\GetDealPipelines;
@@ -103,6 +104,7 @@ class API {
         new UpdateClient();
         new ClientOverview();
         new GetClientProjects();
+        new GetClientInvoices();
 
         // DealPipeline
         new GetDealPipelines();
