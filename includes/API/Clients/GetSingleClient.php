@@ -4,6 +4,11 @@ namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
+use WpClientManagement\Models\Email;
+use WpClientManagement\Models\File;
+use WpClientManagement\Models\Invoice;
+use WpClientManagement\Models\Note;
+use WpClientManagement\Models\Project;
 
 class GetSingleClient {
 
@@ -66,25 +71,32 @@ class GetSingleClient {
             ]);
         }
 
+        $projects = Project::getClientProjects($client->id);
+        $invoices = Invoice::getClientInvoices($client->id);
+        $notes    = Note::getClientNotes($client->id);
+        $files    = File::getClientFiles($client->id);
+        $emails   = Email::getClientEmails($client->id);
+
+        return new \WP_REST_Response($emails);
+
         $response = [
-            'data' => [
+            'profile' => [
                 'name' => $user->user_login,
                 'email' => $user->user_email,
                 'phone' => $eic_crm_user->phone,
                 'address' => $eic_crm_user->address,
-                'city' => $eic_crm_user->city,
-                'state' => $eic_crm_user->state,
-                'zip' => $eic_crm_user->zip,
-                'country' => $eic_crm_user->country,
                 'role' => $eic_crm_user->role,
-                'organization' => $client->organization,
-                'designnation' => $client->designation,
-                'status' => $client->status,
-                'projects' => $client->projects,
-                'invoices' => $client->invoices
+                'organization' => $eic_crm_user->organization
             ],
         ];
 
         return new \WP_REST_Response($response);
     }
 }
+
+
+    // 'organization' => $client->organization,
+    // 'designnation' => $client->designation,
+    // 'status' => $client->status,
+    // 'projects' => $client->projects,
+    // 'invoices' => $client->invoices

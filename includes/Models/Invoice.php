@@ -29,6 +29,11 @@ class Invoice extends Model
         'fee'
     ];
 
+    public static function getClientInvoices($id)
+    {
+        return self::where('client_id',$id)->get();
+    }
+
     public function eic_crm_user()
     {
         return $this->belongsTo(EicCrmUser::class);

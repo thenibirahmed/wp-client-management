@@ -19,6 +19,11 @@ class Email extends Model
         'sent'
     ];
 
+    public static function getClientEmails($id)
+    {
+        return self::where('client_id', $id)->get();
+    } 
+
     public function client() {
         return $this->belongsTo(Client::class);
     }

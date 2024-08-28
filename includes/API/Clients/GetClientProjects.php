@@ -1,15 +1,16 @@
 <?php
 
-namespace WpClientManagement\API\Projects;
+namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
+use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
 
 class GetClientProjects {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/client/(?P<id>\d+)/projects';
+    private $endpoint  = '/client/(?P<id>\d+)/projects';
 
     protected array $rules = [
         'id' => 'required|integer|exists:eic_clients,id',
@@ -32,7 +33,8 @@ class GetClientProjects {
     public function get_client_projects(\WP_REST_Request $request) {
         global $validator;
 
-        $client_id = $request->get_param('id');
+        $client_id  = $request->get_param('id');
+        $page       = $request->get_param('page');
 
         if(!isset($client_id)) {
             return new \WP_REST_Response([
@@ -50,26 +52,69 @@ class GetClientProjects {
             ], 400);
         }
 
-        $client = Client::find($client_id);
+        $client = Client::find($data['id']);
 
-        // $project = Project::find($data['id']);
+        if(!$client) {
+            return new \WP_REST_Response([
+                'error' => 'Client does not exists.',
+            ]);
+        }
 
-        if(!$project) {
+        $projects = Project::getClientProjects($client_id, $page);
+
+        if(!$projects) {
             return new \WP_REST_Response([
                 'error' => 'No Project found',
             ]);
         }
-        
+
+        $projectIds = $projects->pluck('id')->toArray();
+
+        $invoices   = Invoice::whereIn('project_id', $projectIds)
+                        ->with('status')
+                        ->get();
+
+        $invoiceTotalsByProject = $invoices->groupBy('project_id')->map(function ($invoices) {
+            $total  = $invoices->sum('total');
+            $paid   = $invoices->where('status.name', 'paid')->where('status.type', 'invoice')->sum('total');
+            $unpaid = $total - $paid;
+
+            return [
+                'total'    => $total,
+                'revenue'  => $paid,
+                'due'      => $unpaid,
+            ];
+        });
+
+        $data = [];
+        foreach ($projects as $project) {
+            $invoiceData = $invoiceTotalsByProject->get($project->id, [
+                'total'   => 0,
+                'revenue' => 0,
+                'due'     => 0,
+            ]);
+
+            $data[] = [
+                'id'        => $project->id,
+                'name'      => $project->title,
+                'invoice'   => $invoiceData['total'],
+                'revenue'   => $invoiceData['revenue'],
+                'due'       => $invoiceData['due'],
+                'status'    => $project->status->name,
+                'priority'  => $project->priority->name
+            ];
+        }
+
         $response = [
-                'data' => $project,
-                'client' => $project->client,
-                'manager' => $project->manager,
-                'deal_pipeline' => $project->deal_pipeline->name,
-                'status' => $project->status->name,
-                'priority' => $project->priority->name,
-                'invoices' => $project->invoices,
-                'notes' => $project->notes,
-                'files' => $project->files,
+            'data'       => $data,
+            'pagination' => [
+                'total'         => $projects->total(),
+                'per_page'      => $projects->perPage(),
+                'current_page'  => $projects->currentPage(),
+                'last_page'     => $projects->lastPage(),
+                'next_page_url' => $projects->nextPageUrl(),
+                'prev_page_url' => $projects->previousPageUrl(),
+            ],
         ];
 
         return new \WP_REST_Response($response);

@@ -36,7 +36,7 @@ class GetClients {
                 'status' => $client->status
             ];
         }
-
+  
         return new \WP_REST_Response([
             'data' => $data,
             'pagination' => [

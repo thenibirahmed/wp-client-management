@@ -18,6 +18,11 @@ class File extends Model
         'type'
     ];
 
+    public static function getClientFiles($id)
+    {
+        return self::where('client_id', $id)->get();
+    }
+
     public function client() {
         return $this->belongsTo(Client::class);
     }
