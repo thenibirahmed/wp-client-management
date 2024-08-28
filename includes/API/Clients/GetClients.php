@@ -26,19 +26,42 @@ class GetClients {
 
         $clients = Client::paginate(20, ['*'], 'page', $page);
 
-        $data = [];
-        foreach ($clients as $client) {
-            $data[] = [
-                'id' => $client->id,
-                'eic_crm_user' => $client->eic_crm_user,
-                'organization' => $client->organization,
-                'designation' => $client->designation,
-                'status' => $client->status
+        $wp_user_ids = $clients->pluck('eic_crm_user.wp_user_id')->toArray();
+
+        $wpUsersDb = get_users([
+            'include' => $wp_user_ids,
+        ]);
+        
+        $wpUsers = [];
+        foreach ($wpUsersDb as $user) {
+            $wpUsers[$user->ID] = [
+                'name'  => $user->user_login,
+                'email' => $user->user_email,
             ];
         }
-  
+
+        $clientsWithDetails = $clients->map(function ($client) use ($wpUsers) {
+            $eicCrmUser = $client->eic_crm_user;
+            $wpUserId   = $eicCrmUser->wp_user_id;
+            $wpUser     = $wpUsers[$wpUserId] ?? [];
+
+            return [
+                'client_id'     => $client->id,
+                'name'          => $wpUser['name'] ?? null,
+                'email'         => $wpUser['email'] ?? null,
+                'phone'         => $eicCrmUser->phone,
+                'address'       => $eicCrmUser->address,
+                'city'          => $eicCrmUser->city,
+                'state'         => $eicCrmUser->state,
+                'country'       => $eicCrmUser->country,
+                'zip'           => $eicCrmUser->zip,
+                'organization'  => $client->organization,
+                'designation'  => $client->designation,
+            ];
+        });
+
         return new \WP_REST_Response([
-            'data' => $data,
+            'data' => $clientsWithDetails,
             'pagination' => [
                 'total' => $clients->total(),
                 'per_page' => $clients->perPage(),
