@@ -36,6 +36,12 @@ class Invoice extends Model
                 ->paginate(20, ['*'], 'invoice', $page);
     }
 
+    public static function getSingleClientInvoices($id)
+    {
+        return self::where('client_id',$id)
+                ->get();
+    }
+
     public function eic_crm_user()
     {
         return $this->belongsTo(EicCrmUser::class);

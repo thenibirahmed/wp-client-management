@@ -32,10 +32,9 @@ class Client extends Model
         })->paginate(20, ['*'], 'page', $page);
     }
 
-    public static function getClientTopBarInfo(Client $client)
+    public static function getClientData($id)
     {
-        // $totalProject = Project::
-        return $client;
+        return self::with('eic_crm_user')->find($id);
     }
 
     public function eic_crm_user() {

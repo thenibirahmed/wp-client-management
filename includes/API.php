@@ -26,6 +26,7 @@ use WpClientManagement\API\Notes\GetSingleNote;
 use WpClientManagement\API\Posts\GetPosts;
 use WpClientManagement\API\Users\GetUsers;
 use WpClientManagement\API\Clients\GetClients;
+use WpClientManagement\API\Clients\GetSingleClientOverview;
 use WpClientManagement\API\Clients\UpdateClient;
 use WpClientManagement\API\DealPipelines\CreateDealPipeline;
 use WpClientManagement\API\DealPipelines\DeleteDealPipeline;
@@ -111,6 +112,7 @@ class API {
         new GetClientNotes();
         new GetClientFiles();
         new GetClientEmails();
+        new GetSingleClientOverview();
 
         // DealPipeline
         new GetDealPipelines();
