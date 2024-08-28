@@ -69,13 +69,14 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/note/create",
+				eicApiSettings.rest_url + "wp-client-management/v1/file/create",
 				{
 					// title: "Soweb vai title",
 					// manager_id: 1,
 					eic_crm_user_id: 1,
 					client_id: 1,
-					note: "test note here soweb vai",
+					title: "file",
+					url: "https://github.com/SamSamimz.pdf",
 					// status_id: 1,
 					// priority_id: 1,
 					// budget: 50000.00,
