@@ -76,7 +76,7 @@ class Installer {
                         `client_id` bigint UNSIGNED DEFAULT NULL,
                         `subject` text COLLATE utf8mb4_unicode_ci,
                         `body` text NOT NULL,
-                        `scheduled_at` date NOT NULL,
+                        `scheduled_at` date NULL,
                         `sent` tinyint(1) NOT NULL DEFAULT '0',
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,
