@@ -23,8 +23,6 @@ const Client = () => {
   const { setCreateInvoice, setAllTabItems } = useStoreContext();
   const [open, setOpen] = useState(false);
 
-  const dataList = [1];
-
   const { isLoading, data } = useFetchAllClients(onError);
   console.log(data);
 
@@ -46,9 +44,13 @@ const Client = () => {
     });
   }, []);
 
+  const addNewClient = () => {
+    setOpen(true);
+  };
+
   return (
     <React.Fragment>
-      <ClientOverView />
+      <ClientOverView overViewData={data?.topBar} />
       <div className="space-y-6">
         <div className="flex md:flex-row  md:justify-between flex-col md:items-center md:gap-0 gap-4">
           <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
@@ -82,7 +84,7 @@ const Client = () => {
           </div>
         ) : (
           <React.Fragment>
-            {dataList.length > 0 ? (
+            {data.clients.length > 0 ? (
               <>
                 <ClientTable />
               </>
@@ -90,7 +92,7 @@ const Client = () => {
               <>
                 <EmptyTable
                   Icon={UserCircle02Icon}
-                  setOpen={setOpen}
+                  handler={addNewClient}
                   title="  Clients Not Yet Registered"
                   subtitle="Start building your client list."
                   btnText=" Add Client"

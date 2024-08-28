@@ -16,6 +16,7 @@ const AddClientForm = ({ setOpen }) => {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
@@ -38,8 +39,17 @@ const AddClientForm = ({ setOpen }) => {
       toast.success(res.message);
       reset();
     } catch (err) {
+      if (err?.response?.data?.errors["user_email"]?.length > 0) {
+        setError("user_email", {
+          message: err?.response?.data?.errors["user_email"][0],
+        });
+      }
+      if (err?.response?.data?.errors["user_login"]?.length > 0) {
+        setError("user_login", {
+          message: err?.response?.data?.errors["user_login"][0],
+        });
+      }
       console.log(err);
-      toast.error(err?.response?.data?.message);
     } finally {
       setLoading(false);
     }

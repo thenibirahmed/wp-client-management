@@ -3,17 +3,19 @@ import api from "../api/api";
 
 export const useFetchAllClients = (onError) => {
   return useQuery(
-    "all-clients",
+    "client-overview",
     async () => {
-      return await api.get("/clients");
+      return await api.get("/client-overview");
     },
     {
-      // select: (data) => {
-      //   const sortedData = data.data.sort(
-      //     (a, b) => new Date(b.createdDate) - new Date(a.createdDate)
-      //   );
-      //   return sortedData;
-      // },
+      select: (data) => {
+        const sendData = {
+          clients: data.data.clients,
+          pagination: data.data.pagination,
+          topBar: data.data.topBar,
+        };
+        return sendData;
+      },
       onError,
       staleTime: 5000,
     }

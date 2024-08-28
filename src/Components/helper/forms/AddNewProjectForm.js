@@ -1,12 +1,16 @@
 import React, { useRef, useState } from "react";
-
 import { useForm } from "react-hook-form";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import TextField from "../TextField";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { SelectTextField } from "../SelectTextField";
 
 const AddNewProjectForm = () => {
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
   const { setOpenProjectModal } = useStoreContext();
   const people = [
     { id: 1, name: "Client Name" },
@@ -139,20 +143,34 @@ const AddNewProjectForm = () => {
           />
         </div>
         <div className="flex md:flex-row flex-col gap-4 w-full">
-          <SelectTextField
-            label="Start Date"
-            select={selectProjectManager}
-            setSelect={setSelectProjectManager}
-            lists={projectManagerLists}
-            isSubmitting={isSubmitting}
-          />
-          <SelectTextField
-            label="Due Date"
-            select={selectAssignee}
-            setSelect={setSelectAssignee}
-            lists={assigneeLists}
-            isSubmitting={isSubmitting}
-          />
+          <div className="flex flex-col gap-2 w-full">
+            <label className="font-medium text-sm  font-metropolis text-textColor">
+              Start Date
+            </label>
+            <div
+              className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}
+            >
+              <DatePicker
+                className="font-metropolis text-sm text-textColor w-full outline-none"
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+              />
+            </div>
+          </div>{" "}
+          <div className="flex flex-col gap-2 w-full">
+            <label className="font-medium text-sm  font-metropolis text-textColor">
+              End Date
+            </label>
+            <div
+              className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}
+            >
+              <DatePicker
+                className="font-metropolis text-sm text-textColor w-full outline-none"
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+              />
+            </div>
+          </div>
         </div>
         <div className="flex flex-col gap-2 w-full">
           <label
