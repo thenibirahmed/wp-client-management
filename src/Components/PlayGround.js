@@ -68,19 +68,27 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/1/overview",
-				// {
-				// 	user_login: "checking3",
-				// 	user_email: "checkin3g@gmail.com",
-				// 	phone: "5545",
-				// 	address: "Kamarpara3",
-				// 	city: "dhaka",
-				// 	state: "dhaka",
-				// 	country: "uganda",
-				// 	zip: "jani nah",
-				// 	organization: "rest",
-				// },
+		axios.post(
+				eicApiSettings.rest_url + "wp-client-management/v1/project/create",
+				{
+					title: "Soweb vai title",
+					manager_id: 1,
+					client_id: 1,
+					status_id: 1,
+					priority_id: 1,
+					budget: 50000.00,
+					currency: 'USD',
+					start_date: '2022-02-02',
+					due_date: '2022-02-02',
+					description: 'test',
+					// phone: "454545",
+					// address: "Kamarpara3",
+					// city: "dhaka",
+					// state: "dhaka",
+					// country: "uganda",
+					// zip: "jani nah",
+					// organization: "rest",
+				},
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
