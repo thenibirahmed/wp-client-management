@@ -11,6 +11,8 @@ class CreateClient {
     private $endpoint = '/client/create';
 
     protected array $rules = [
+        'user_login' => 'required|string|unique:users,user_login',
+        'user_email' => 'required|email|unique:users,user_email',
         'phone' => 'nullable|string',
         'address' => 'nullable|string',
         'city' => 'nullable|string',
@@ -23,6 +25,11 @@ class CreateClient {
     ];
 
     protected array $validationMessages = [
+        'user_login.required' => 'The name is required.',
+        'user_login.unique' => 'The user name already exists.',
+        'user_email.required' => 'The email is required.',
+        'user_email.email' => 'The email must be a valid email.',
+        'user_email.unique' => 'The user email already exists.',
         'phone.string' => 'The phone number must be a valid string.',
         'address.string' => 'The address must be a valid string.',
         'city.string' => 'The city must be a valid string.',
@@ -49,7 +56,6 @@ class CreateClient {
         
         $data['user_login']   = sanitize_user($data['user_login'], true);
         $data['user_email']   = sanitize_email($data['user_email']);
-        $data['user_pass']    = sanitize_text_field($data['user_pass']);
         $data['phone']        = sanitize_text_field($data['phone']);
         $data['address']      = sanitize_text_field($data['address']);
         $data['city']         = sanitize_text_field($data['city']);
@@ -72,6 +78,7 @@ class CreateClient {
             'user_pass'     => $data['user_login'],
         );
 
+    
         $wp_user_id = wp_insert_user($wp_user_data);
 
         if (is_wp_error($wp_user_id)) {
@@ -84,13 +91,13 @@ class CreateClient {
 
         $eic_crm_user_data = array(
             'wp_user_id' => intval($wp_user_id),
-            'phone' => $data['phone'],
-            'address' => $data['address'],
-            'city' => $data['city'],
-            'state' => $data['state'],
-            'zip' => $data['zip'],
-            'country' => $data['country'],
-            'role' => 'admin',
+            'phone'      => $data['phone'],
+            'address'    => $data['address'],
+            'city'       => $data['city'],
+            'state'      => $data['state'],
+            'zip'        => $data['zip'],
+            'country'    => $data['country'],
+            'role'       => 'admin',
         );
 
         $eic_crm_user = EicCrmUser::create($eic_crm_user_data);
@@ -103,7 +110,7 @@ class CreateClient {
 
         $client_data = array(
             'eic_crm_user_id' => $eic_crm_user->id,
-            'organization' => $data['organization'],
+            'organization'    => $data['organization'],
         );
 
         $client = Client::create($client_data);
@@ -115,14 +122,14 @@ class CreateClient {
         }
 
         $client_response_data = [
-            'name' => $wp_user->user_login,
-            'email' => $wp_user->user_email,
-            'phone' => $eic_crm_user->phone,
+            'name'    => $wp_user->user_login,
+            'email'   => $wp_user->user_email,
+            'phone'   => $eic_crm_user->phone,
             'address' => $eic_crm_user->address,
             'country' => $eic_crm_user->country,
-            'city' => $eic_crm_user->city,
-            'state' => $eic_crm_user->state,
-            'zip' => $eic_crm_user->zip,
+            'city'    => $eic_crm_user->city,
+            'state'   => $eic_crm_user->state,
+            'zip'     => $eic_crm_user->zip,
         ];
 
         return new \WP_REST_Response([

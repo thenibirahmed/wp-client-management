@@ -5,9 +5,11 @@ import { useForm } from "react-hook-form";
 import TextField from "../helper/TextField";
 import api from "../../api/api";
 import toast from "react-hot-toast";
+import Loaders from "../Loaders";
 
 const AddClientForm = ({ setOpen }) => {
   const [imageUrl, setImageUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const imageRef = useRef();
   const {
@@ -30,59 +32,18 @@ const AddClientForm = ({ setOpen }) => {
     console.log(sendData);
 
     try {
-      const { data: res } = await axios.post(
-        eicApiSettings.rest_url + "wp-client-management/v1/client/create",
-        sendData,
-        {
-          headers: {
-            "X-WP-Nonce": eicApiSettings.nonce,
-          },
-        }
-      );
+      setLoading(true);
+      const { data: res } = await api.post("/client/create", sendData);
       console.log(res);
-      toast.success("tuki");
+      toast.success(res.message);
       reset();
     } catch (err) {
       console.log(err);
+      toast.error(err?.response?.data?.message);
+    } finally {
+      setLoading(false);
     }
   };
-
-  // const addNewClientHandler = () => {
-  //   axios
-  //     .post(
-  //       eicApiSettings.rest_url + "wp-client-management/v1/client/create",
-  //       {
-  //         user_login: "easin-dev1",
-  //         user_email: "easin-dev1@example.com",
-  //         user_pass: "easin-dev",
-  //         phone: "45454",
-  //         address: "London",
-  //         city: "London",
-  //         state: "London",
-  //         country: "London",
-  //         zip: "123",
-  //         role: "no role",
-  //         organization: "no type",
-  //         designation: "no",
-  //         status: "no status",
-  //       },
-  //       {
-  //         headers: {
-  //           "X-WP-Nonce": eicApiSettings.nonce,
-  //           // 'Content-Type' : 'application/json'
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(
-  //         "Error:",
-  //         error.response ? error.response.data : error.message
-  //       );
-  //     });
-  // };
 
   const onImageUploadHandler = () => {
     imageRef.current.click();
@@ -215,17 +176,20 @@ const AddClientForm = ({ setOpen }) => {
         </div>
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button
+            disabled={loading}
             onClick={() => setOpen(false)}
             type="button"
             className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
           >
             Cancel
           </button>
+
           <button
+            disabled={loading}
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            Save
+            {loading ? <Loaders /> : "Save"}
           </button>
         </div>
       </form>

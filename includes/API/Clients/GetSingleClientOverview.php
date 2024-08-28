@@ -31,7 +31,6 @@ class GetSingleClientOverview {
 
     public function get_client_overview(\WP_REST_Request $request)
     {
-
         global $validator;
 
         $id = $request->get_param('id');
@@ -61,7 +60,7 @@ class GetSingleClientOverview {
             'email'        => $wpUser->user_email,
             'phone'        => $clientData->eic_crm_user->phone,
             'address'      => $clientData->eic_crm_user->address,
-            'role'         => $clientData->eic_crm_user->role,
+            'designation'  => $clientData->designation,
             'organization' => $clientData->organization,
         ];
 

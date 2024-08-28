@@ -14,6 +14,10 @@ import ClientOverView from "./ClientOverView";
 import { useStoreContext } from "../../store/ContextApiStore";
 import Modal from "../helper/Modal";
 import AddClientForm from "./AddClientForm";
+import api from "../../api/api";
+import { useFetchAllClients } from "../../hooks/useQuery";
+import toast from "react-hot-toast";
+import Skeleton from "../Skeleton";
 
 const Client = () => {
   const { setCreateInvoice, setAllTabItems } = useStoreContext();
@@ -21,9 +25,16 @@ const Client = () => {
 
   const dataList = [1];
 
+  const { isLoading, data } = useFetchAllClients(onError);
+  console.log(data);
+
+  function onError(err) {
+    toast.error(err?.response?.data?.message);
+    console.log(err);
+  }
+
   useEffect(() => {
     setCreateInvoice(false);
-
     setAllTabItems({
       project: true,
       task: true,
@@ -65,23 +76,29 @@ const Client = () => {
           </div>
         </div>
 
-        <React.Fragment>
-          {dataList.length > 0 ? (
-            <>
-              <ClientTable />
-            </>
-          ) : (
-            <>
-              <EmptyTable
-                Icon={UserCircle02Icon}
-                setOpen={setOpen}
-                title="  Clients Not Yet Registered"
-                subtitle="Start building your client list."
-                btnText=" Add Client"
-              />
-            </>
-          )}
-        </React.Fragment>
+        {isLoading ? (
+          <div className="w-full">
+            <Skeleton />
+          </div>
+        ) : (
+          <React.Fragment>
+            {dataList.length > 0 ? (
+              <>
+                <ClientTable />
+              </>
+            ) : (
+              <>
+                <EmptyTable
+                  Icon={UserCircle02Icon}
+                  setOpen={setOpen}
+                  title="  Clients Not Yet Registered"
+                  subtitle="Start building your client list."
+                  btnText=" Add Client"
+                />
+              </>
+            )}
+          </React.Fragment>
+        )}
       </div>
       <Modal open={open} setOpen={setOpen} title="Add Client">
         <AddClientForm setOpen={setOpen} />

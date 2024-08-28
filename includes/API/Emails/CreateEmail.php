@@ -11,12 +11,9 @@ class CreateEmail{
 
     protected array $rules = [
         'eic_crm_user_id' => 'required|exists:eic_eic_crm_users,id',
-        'client_id' => 'required|exists:eic_clients,id',
-        'project_id' => 'nullable|exists:eic_projects,id',
-        'subject' => 'nullable|string',
-        'body' => 'required|string',
-        'scheduled_at' => 'required|date',
-        'sent' => 'required|boolean',
+        'client_id'       => 'required|exists:eic_clients,id',
+        'subject'         => 'nullable|string',
+        'body'            => 'required|string',
     ];
 
     protected array $validationMessages = [
@@ -24,14 +21,9 @@ class CreateEmail{
         'eic_crm_user_id.exists' => 'The selected User does not exist.',
         'client_id.required' => 'The client field is required.',
         'client_id.exists' => 'The selected client does not exist.',
-        'project_id.exists' => 'The selected project does not exist.',
         'subject.string' => 'The subject must be a valid string.',
         'body.required' => 'The body field is required.',
         'body.string' => 'The body must be a valid string.',
-        'scheduled_at.required' => 'The date field is required.',
-        'scheduled_at.date' => 'The date must be a valid date.',
-        'sent.required' => 'The sent field is required.',
-        'sent.boolean' => 'The sent field must be true or false.',
     ];
 
     public function __construct() {
@@ -49,11 +41,8 @@ class CreateEmail{
 
         $data['eic_crm_user_id'] = intval($data['eic_crm_user_id']);
         $data['client_id'] = intval($data['client_id']);
-        $data['project_id'] = isset($data['project_id']) ? intval($data['project_id']) : null;
         $data['subject'] = sanitize_text_field($data['subject']);
         $data['body'] = sanitize_text_field($data['body']);
-        $data['scheduled_at'] = sanitize_text_field($data['scheduled_at']);
-        $data['sent'] = filter_var($data['sent'], FILTER_VALIDATE_BOOLEAN);
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -65,12 +54,9 @@ class CreateEmail{
 
         $email = Email::create([
             'eic_crm_user_id' => $data['eic_crm_user_id'],
-            'project_id' => $data['project_id'],
             'client_id' => $data['client_id'],
             'subject' => $data['subject'],
             'body' => $data['body'],
-            'scheduled_at' => $data['scheduled_at'],
-            'sent' => $data['sent'],
         ]);
 
         if(!$email) {

@@ -83,29 +83,14 @@ const PlayGround = () => {
 
   const getTest = () => {
     axios
-      .post(
-        eicApiSettings.rest_url + "wp-client-management/v1/client/create",
-        {
-          user_login: "checking",
-          user_email: "checking@gmail.com",
-          phone: "5545",
-          address: "Kamarpara3",
-          city: "dhaka",
-          state: "dhaka",
-          country: "uganda",
-          zip: "jani nah",
-          organization: "rest",
+      .get(eicApiSettings.rest_url + "wp-client-management/v1/client/1", {
+        headers: {
+          "X-WP-Nonce": eicApiSettings.nonce,
+          // 'Content-Type' : 'application/json'
         },
-        {
-          headers: {
-            "X-WP-Nonce": eicApiSettings.nonce,
-            // 'Content-Type' : 'application/json'
-          },
-        }
-      )
+      })
       .then((response) => {
         console.log(response.data);
-        setPost(response.data);
       })
       .catch((error) => {
         console.log(
