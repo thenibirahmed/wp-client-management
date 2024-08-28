@@ -83,57 +83,18 @@ const PlayGround = () => {
 
   const getTest = () => {
     axios
-      .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/client/1/projects",
-        // {
-        // 	user_login: "checking3",
-        // 	user_email: "checkin3g@gmail.com",
-        // 	phone: "5545",
-        // 	address: "Kamarpara3",
-        // 	city: "dhaka",
-        // 	state: "dhaka",
-        // 	country: "uganda",
-        // 	zip: "jani nah",
-        // 	organization: "rest",
-        // },
-        {
-          headers: {
-            "X-WP-Nonce": eicApiSettings.nonce,
-            // 'Content-Type' : 'application/json'
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setPost(response.data);
-      })
-      .catch((error) => {
-        console.log(
-          "Error:",
-          error.response ? error.response.data : error.message
-        );
-      });
-  };
-
-  const createProject = () => {
-    axios
       .post(
-        eicApiSettings.rest_url + "wp-client-management/v1/project/create",
+        eicApiSettings.rest_url + "wp-client-management/v1/client/create",
         {
-          client_id: 1, // must be integer
-          manager_id: 1, // must be integer
-          deal_pipeline_id: 1, // must be integer
-          status_id: 1, //must be integer
-          priority_id: 1, //must be integer
-          title: "First",
-          budget: "450", //number
-          currency: "BDT",
-          start_date: "2024-08-27 10:45:00", // time format
-          due_date: "2024-08-27 10:45:00", // time format
-          start_date: "2024-08-27 10:45:00", // time format
-          due_date: "2024-08-27 10:45:00", //time format
-          description: "Test",
-          is_deal: false,
+          user_login: "checking",
+          user_email: "checking@gmail.com",
+          phone: "5545",
+          address: "Kamarpara3",
+          city: "dhaka",
+          state: "dhaka",
+          country: "uganda",
+          zip: "jani nah",
+          organization: "rest",
         },
         {
           headers: {
@@ -165,7 +126,6 @@ const PlayGround = () => {
       <br />
       <br />
       <button onClick={getTest}>Testing</button>
-      <button onClick={createProject}>Project</button>
       <br />
     </div>
   );

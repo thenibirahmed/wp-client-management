@@ -6,6 +6,7 @@ import AppLayout from "./Components/Layouts/AppLayout";
 import { renderComponent } from "./utils/renderComponents";
 import useHashRouting from "./utils/useHashRouting";
 import { ContextProvider } from "./store/ContextApiStore";
+import { Toaster } from "react-hot-toast";
 
 export const App = () => {
   const currentPath = useHashRouting("");
@@ -13,7 +14,10 @@ export const App = () => {
 
   return (
     <ContextProvider>
-      <AppLayout>{renderComponent(currentPath, pathArray[1])}</AppLayout>
+      <AppLayout>
+        <Toaster position="bottom-center" reverseOrder={false} />
+        {renderComponent(currentPath, pathArray[1])}
+      </AppLayout>
     </ContextProvider>
   );
 };

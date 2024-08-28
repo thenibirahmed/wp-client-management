@@ -109,6 +109,7 @@ class Installer {
                         `items` json DEFAULT NULL,
                         `note` text COLLATE utf8mb4_unicode_ci,
                         `billing_address` text COLLATE utf8mb4_unicode_ci,
+                        `payment_method_id` bigint UNSIGNED DEFAULT NULL,
                         `status_id` bigint UNSIGNED DEFAULT NULL,
                         `total` decimal(8,2) NOT NULL,
                         `discount` decimal(8,2) DEFAULT NULL,
@@ -184,6 +185,14 @@ class Installer {
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `name` varchar(255) NOT NULL,
                         `type` varchar(255) NOT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_payment_methods` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `name` varchar(255) NOT NULL,
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,
                         PRIMARY KEY (`id`)

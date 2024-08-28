@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 
 import TextField from "../helper/TextField";
 import api from "../../api/api";
+import toast from "react-hot-toast";
 
 const AddClientForm = ({ setOpen }) => {
   const [imageUrl, setImageUrl] = useState("");
@@ -21,20 +22,29 @@ const AddClientForm = ({ setOpen }) => {
   const addNewClientHandler = async (data) => {
     const sendData = {
       ...data,
-      user_pass: "test",
-      role: "myRole",
+      user_pass: "12345",
+      role: "admin",
       designation: "designation",
-      status: "status",
+      status: "active",
     };
     console.log(sendData);
+
     try {
-      const { data: res } = await api.post("/client/create", sendData);
+      const { data: res } = await axios.post(
+        eicApiSettings.rest_url + "wp-client-management/v1/client/create",
+        sendData,
+        {
+          headers: {
+            "X-WP-Nonce": eicApiSettings.nonce,
+          },
+        }
+      );
       console.log(res);
+      toast.success("tuki");
+      reset();
     } catch (err) {
       console.log(err);
     }
-
-    //reset();
   };
 
   // const addNewClientHandler = () => {
@@ -162,7 +172,7 @@ const AddClientForm = ({ setOpen }) => {
           <TextField
             label="Country"
             required
-            id="contry"
+            id="country"
             type="text"
             message="*Country is required"
             placeholder="USA"

@@ -18,9 +18,9 @@ class File extends Model
         'type'
     ];
 
-    public static function getClientFiles($id)
+    public static function getClientFiles($id, $page)
     {
-        return self::where('client_id', $id)->get();
+        return self::where('client_id', $id)->paginate(20, ['*'], 'file', $page);
     }
 
     public function client() {

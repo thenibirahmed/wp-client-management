@@ -5,6 +5,10 @@ namespace WpClientManagement;
 use WpClientManagement\API\Clients\ClientOverview;
 use WpClientManagement\API\Clients\CreateClient;
 use WpClientManagement\API\Clients\DeleteClient;
+use WpClientManagement\API\Clients\GetClientEmails;
+use WpClientManagement\API\Clients\GetClientFiles;
+use WpClientManagement\API\Clients\GetClientInvoices;
+use WpClientManagement\API\Clients\GetClientNotes;
 use WpClientManagement\API\Clients\GetClientProjects;
 use WpClientManagement\API\Clients\GetSingleClient;
 use WpClientManagement\API\DealPipelines\GetDealPipelines;
@@ -22,6 +26,7 @@ use WpClientManagement\API\Notes\GetSingleNote;
 use WpClientManagement\API\Posts\GetPosts;
 use WpClientManagement\API\Users\GetUsers;
 use WpClientManagement\API\Clients\GetClients;
+use WpClientManagement\API\Clients\GetSingleClientOverview;
 use WpClientManagement\API\Clients\UpdateClient;
 use WpClientManagement\API\DealPipelines\CreateDealPipeline;
 use WpClientManagement\API\DealPipelines\DeleteDealPipeline;
@@ -103,6 +108,11 @@ class API {
         new UpdateClient();
         new ClientOverview();
         new GetClientProjects();
+        new GetClientInvoices();
+        new GetClientNotes();
+        new GetClientFiles();
+        new GetClientEmails();
+        new GetSingleClientOverview();
 
         // DealPipeline
         new GetDealPipelines();
