@@ -11,7 +11,7 @@ class CreateClient {
     private $endpoint = '/client/create';
 
     protected array $rules = [
-        'user_login' => 'required|string',
+        'user_login' => 'required|string|unique:users,user_login',
         'user_email' => 'required|email|unique:users,user_email',
         'phone' => 'nullable|string',
         'address' => 'nullable|string',
@@ -26,9 +26,10 @@ class CreateClient {
 
     protected array $validationMessages = [
         'user_login.required' => 'The name is required.',
+        'user_login.unique' => 'The user name already exists.',
         'user_email.required' => 'The email is required.',
         'user_email.email' => 'The email must be a valid email.',
-        'user_email.unique' => 'The user login already exists.',
+        'user_email.unique' => 'The user email already exists.',
         'phone.string' => 'The phone number must be a valid string.',
         'address.string' => 'The address must be a valid string.',
         'city.string' => 'The city must be a valid string.',

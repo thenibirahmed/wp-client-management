@@ -69,28 +69,18 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/email/create",
+				eicApiSettings.rest_url + "wp-client-management/v1/client/create",
 				{
-					// title: "Soweb vai title",
-					// manager_id: 1,
-					eic_crm_user_id: 1,
-					client_id: 1,
-					subject: "no sub",
-					body: "NO BODY", 
-					// status_id: 1,
-					// priority_id: 1,
-					// budget: 50000.00,
-					// currency: 'USD',
-					// start_date: '2022-02-02',
-					// due_date: '2022-02-02',
-					// description: 'test',
-					// phone: "454545",
-					// address: "Kamarpara3",
-					// city: "dhaka",
-					// state: "dhaka",
-					// country: "uganda",
-					// zip: "jani nah",
-					// organization: "rest",
+					user_login: "Testx",
+					user_email: "testx11@wp.com",
+					organization: "rest",
+					address: "Kamarpara123",
+					phone: "454545",
+					city: "dhaka",
+					state: "dhaka",
+					zip: "jani nah",
+					country: "uganda",
+					
 				},
 				{
 					headers: {
