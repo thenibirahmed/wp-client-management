@@ -19,7 +19,8 @@ class EicCrmUser extends Model
         'country',
         'state',
         'zip',
-        'role'
+        'role',
+        'designation'
     ];
 
     public static function getTeamMembers($page)

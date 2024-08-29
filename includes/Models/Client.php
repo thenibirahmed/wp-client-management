@@ -15,7 +15,6 @@ class Client extends Model
     protected $fillable  = [
         'eic_crm_user_id',
         'organization',
-        'designation',
         'status'
     ];
 
