@@ -44,10 +44,11 @@ class GetTeamMembers {
             $wpUser     = $wpUsers[$wpUserId] ?? [];
 
             return [
-                'id'         => $member->id,
-                'name'       => $wpUser['name'] ?? null,
-                'email'      => $wpUser['email'] ?? null,
-                'phone'      => $member->phone,
+                'id'           => $member->id,
+                'name'         => $wpUser['name'] ?? null,
+                'email'        => $wpUser['email'] ?? null,
+                'phone'        => $member->phone,
+                'designation'  => $member->designation,
                 'created_date' => date('F d, Y', strtotime($member->created_at)),
             ];
         });
