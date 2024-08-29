@@ -14,8 +14,7 @@ import ClientOverView from "./ClientOverView";
 import { useStoreContext } from "../../store/ContextApiStore";
 import Modal from "../helper/Modal";
 import AddClientForm from "./AddClientForm";
-import api from "../../api/api";
-import { useFetchAllClients } from "../../hooks/useQuery";
+import { useFetchClientOverView } from "../../hooks/useQuery";
 import toast from "react-hot-toast";
 import Skeleton from "../Skeleton";
 
@@ -23,7 +22,7 @@ const Client = () => {
   const { setCreateInvoice, setAllTabItems } = useStoreContext();
   const [open, setOpen] = useState(false);
 
-  const { isLoading, data } = useFetchAllClients(onError);
+  const { isLoading, data } = useFetchClientOverView(onError);
   console.log(data);
 
   function onError(err) {

@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import api from "../api/api";
 
-export const useFetchAllClients = (onError) => {
+export const useFetchClientOverView = (onError) => {
   return useQuery(
     "client-overview",
     async () => {
@@ -22,32 +22,61 @@ export const useFetchAllClients = (onError) => {
   );
 };
 
-export const useFetchTotalClicks = (token, onError) => {
+export const useFetchAllClients = (onError, onSuccess) => {
   return useQuery(
-    "url-totalclick",
+    "clients",
     async () => {
-      return await api.get(
-        "/api/urls/totalclicks?startDate=2024-01-01&endDate=2024-12-31",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      return await api.get("/clients");
     },
 
     {
       select: (data) => {
-        const convertToArray = Object.keys(data.data).map((key) => ({
-          clickDate: key,
-          count: data.data[key],
-        }));
+        // console.log("allclients", data.data);
 
-        return convertToArray;
+        const clients = data?.data?.data?.map((item) => {
+          return {
+            id: item.client_id,
+            name: item.name,
+          };
+        });
+
+        return {
+          clients,
+          pagination: data.data.pagination,
+        };
       },
       onError,
+      onSuccess,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchAllPriorities = (onError, onSuccess) => {
+  return useQuery(
+    "priorities",
+    async () => {
+      return await api.get("/priorities");
+    },
+
+    {
+      select: (data) => {
+        //console.log("allprorities", data.data);
+
+        const priorities = data?.data?.data?.map((item) => {
+          return {
+            id: item.id,
+            name: item.name,
+          };
+        });
+
+        return {
+          priorities,
+          pagination: data.data.pagination,
+        };
+      },
+      onError,
+      onSuccess,
       staleTime: 5000,
     }
   );

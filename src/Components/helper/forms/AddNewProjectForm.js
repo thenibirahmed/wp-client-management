@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -6,57 +6,70 @@ import "react-datepicker/dist/react-datepicker.css";
 import TextField from "../TextField";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { SelectTextField } from "../SelectTextField";
+import {
+  useFetchAllClients,
+  useFetchAllPriorities,
+} from "../../../hooks/useQuery";
+import Skeleton from "../../Skeleton";
+import api from "../../../api/api";
+import { Calendar02Icon } from "../../../utils/icons";
+
+const currencyLists = [
+  { id: 1, name: "Select Currency" },
+  { id: 2, name: "USD" },
+  { id: 3, name: "EUR" },
+  { id: 4, name: "JPY" },
+  { id: 5, name: "GBP" },
+];
+
+const statusLists = [
+  { id: 1, name: "Select Status" },
+  { id: 2, name: "Active" },
+  { id: 3, name: "Pending" },
+  { id: 3, name: "Completed" },
+];
+
+const projectManagerLists = [
+  { id: 1, name: "Select Project Manager" },
+  { id: 2, name: "Scrum Master" },
+  { id: 3, name: "Program Manager" },
+];
+const assigneeLists = [
+  { id: 1, name: "Select Assignee" },
+  { id: 2, name: "Software Developer" },
+  { id: 3, name: "UX Designer" },
+];
 
 const AddNewProjectForm = () => {
+  const datePickerStartRef = useRef(null);
+  const datePickerDueRef = useRef(null);
+  const { setOpenProjectModal } = useStoreContext();
+
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  const { setOpenProjectModal } = useStoreContext();
-  const people = [
-    { id: 1, name: "Client Name" },
-    { id: 2, name: "Arlene Mccoy" },
-    { id: 3, name: "Devon Webb" },
-  ];
-  const currencyLists = [
-    { id: 1, name: "Select Currency" },
-    { id: 2, name: "USD" },
-    { id: 3, name: "EUR" },
-    { id: 4, name: "JPY" },
-    { id: 5, name: "GBP" },
-  ];
-  const statusLists = [
-    { id: 1, name: "Select Status" },
-    { id: 2, name: "Active" },
-    { id: 3, name: "Pending" },
-    { id: 3, name: "Completed" },
-  ];
-  const priorityLists = [
-    { id: 1, name: "Select Priority" },
-    { id: 2, name: "Nomal" },
-    { id: 3, name: "Medium" },
-    { id: 3, name: "Hard" },
-  ];
-  const projectManagerLists = [
-    { id: 1, name: "Select Project Manager" },
-    { id: 2, name: "Scrum Master" },
-    { id: 3, name: "Program Manager" },
-  ];
-  const assigneeLists = [
-    { id: 1, name: "Select Assignee" },
-    { id: 2, name: "Software Developer" },
-    { id: 3, name: "UX Designer" },
-  ];
-
-  const [selectClientName, setSelectClientName] = useState(people[0]);
+  const [selectClient, setSelectClient] = useState();
   const [selectCurrency, setSelectCurrency] = useState(currencyLists[0]);
   const [selectStatus, setSelectStatus] = useState(statusLists[0]);
-  const [selectPriority, setSelectPriority] = useState(priorityLists[0]);
+  const [selectPriority, setSelectPriority] = useState();
   const [selectProjectManager, setSelectProjectManager] = useState(
     projectManagerLists[0]
   );
   const [selectAssignee, setSelectAssignee] = useState(assigneeLists[0]);
+  const [submitLoader, setSubmitLoader] = useState(false);
 
   const imageRef = useRef();
+
+  //calling react-query Parallely for fetching data
+  const { isLoading: isLoadingClients, data: clients } = useFetchAllClients(
+    onError,
+    onSuccessClients
+  );
+  const { isLoading: isLoadingPriorities, data: priorities } =
+    useFetchAllPriorities(onError, onSuccessPriorities);
+
+  const isLoading = isLoadingClients || isLoadingPriorities;
+
   const {
     register,
     handleSubmit,
@@ -67,14 +80,51 @@ const AddNewProjectForm = () => {
     mode: "onTouched",
   });
 
-  const addNewClientHandler = (data) => {
-    console.log(data);
-    reset();
+  const addNewClientHandler = async (data) => {
+    setSubmitLoader(true);
+    const sendData = {
+      client_id: Number(selectClient.id), // must be integer
+      manager_id: "1", // must be integer
+      status_id: "2", //must be integer
+      priority_id: Number(selectPriority.id), //must be integer
+      title: data.title,
+      budget: 450.2, // decimal
+      currency: "USD",
+      start_date: startDate, // time format
+      due_date: endDate, //time format
+      description: data.description,
+    };
+    console.log(sendData);
+    // try {
+    //   const { data } = await api.post("/project/create", sendData);
+    // } catch (err) {
+    //   console.log(err);
+    // } finally {
+    //   setSubmitLoader(false);
+    // }
+
+    //reset();
   };
 
   const onImageUploadHandler = () => {
     imageRef.current.click();
   };
+
+  function onSuccessClients(data) {
+    setSelectClient(data?.clients[0]);
+  }
+  function onSuccessPriorities(data) {
+    setSelectPriority(data?.priorities[0]);
+  }
+
+  function onError(err) {
+    toast.error(err?.response?.data?.message);
+    console.log(err);
+  }
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
 
   return (
     <div className="py-5 relative h-full ">
@@ -95,9 +145,9 @@ const AddNewProjectForm = () => {
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <SelectTextField
             label="Client Name"
-            select={selectClientName}
-            setSelect={setSelectClientName}
-            lists={people}
+            select={selectClient}
+            setSelect={setSelectClient}
+            lists={clients?.clients}
             isSubmitting={isSubmitting}
           />
 
@@ -138,7 +188,7 @@ const AddNewProjectForm = () => {
             label="Priority"
             select={selectPriority}
             setSelect={setSelectPriority}
-            lists={priorityLists}
+            lists={priorities?.priorities}
             isSubmitting={isSubmitting}
           />
         </div>
@@ -151,24 +201,41 @@ const AddNewProjectForm = () => {
               className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}
             >
               <DatePicker
+                ref={datePickerStartRef}
                 className="font-metropolis text-sm text-textColor w-full outline-none"
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
               />
+
+              <button
+                type="button"
+                onClick={() => datePickerStartRef.current.setFocus()}
+                className="absolute right-0 top-0 bottom-0 m-auto"
+              >
+                <Calendar02Icon />
+              </button>
             </div>
           </div>{" "}
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col gap-2 w-full   ">
             <label className="font-medium text-sm  font-metropolis text-textColor">
-              End Date
+              Due Date
             </label>
             <div
               className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}
             >
               <DatePicker
+                ref={datePickerDueRef}
                 className="font-metropolis text-sm text-textColor w-full outline-none"
                 selected={endDate}
                 onChange={(date) => setEndDate(date)}
               />
+              <button
+                type="button"
+                onClick={() => datePickerDueRef.current.setFocus()}
+                className="absolute right-0 top-0 bottom-0 m-auto"
+              >
+                <Calendar02Icon />
+              </button>
             </div>
           </div>
         </div>

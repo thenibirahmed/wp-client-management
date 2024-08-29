@@ -22,6 +22,7 @@ const AddClientForm = ({ setOpen }) => {
     mode: "onTouched",
   });
 
+  //submitting the form
   const addNewClientHandler = async (data) => {
     const sendData = {
       ...data,
@@ -30,12 +31,11 @@ const AddClientForm = ({ setOpen }) => {
       designation: "designation",
       status: "active",
     };
-    console.log(sendData);
+    //console.log(sendData);
 
     try {
       setLoading(true);
       const { data: res } = await api.post("/client/create", sendData);
-      console.log(res);
       toast.success(res.message);
       reset();
     } catch (err) {
@@ -44,11 +44,13 @@ const AddClientForm = ({ setOpen }) => {
           message: err?.response?.data?.errors["user_email"][0],
         });
       }
+
       if (err?.response?.data?.errors["user_login"]?.length > 0) {
         setError("user_login", {
           message: err?.response?.data?.errors["user_login"][0],
         });
       }
+
       console.log(err);
     } finally {
       setLoading(false);
