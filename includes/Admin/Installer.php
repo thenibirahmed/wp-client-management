@@ -45,6 +45,7 @@ class Installer {
                         `zip` varchar(255) DEFAULT NULL,
                         `country` varchar(255) DEFAULT NULL,
                         `role` varchar(255) DEFAULT NULL,
+                        `designation` varchar(255) DEFAULT NULL,
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,
                         PRIMARY KEY (`id`)
@@ -54,7 +55,6 @@ class Installer {
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `eic_crm_user_id` bigint UNSIGNED NOT NULL,
                         `organization` varchar(255) DEFAULT NULL,
-                        `designation` varchar(255) DEFAULT NULL,
                         `status` varchar(255) NOT NULL DEFAULT 'unknown',
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,

@@ -84,11 +84,18 @@ const PlayGround = () => {
   const getTest = () => {
     axios
       .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/client/1",
+        eicApiSettings.rest_url + "wp-client-management/v1/clients",
+        // {
+        // 	name: "Employee",
+        // 	email: "employee@wp.com",
+        // 	phone: "32323",
+        // 	designation: "codecon",
 
+        // },
         {
           headers: {
             "X-WP-Nonce": eicApiSettings.nonce,
+            // 'Content-Type' : 'application/json'
           },
         }
       )

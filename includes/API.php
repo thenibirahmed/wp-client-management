@@ -28,6 +28,8 @@ use WpClientManagement\API\Users\GetUsers;
 use WpClientManagement\API\Clients\GetClients;
 use WpClientManagement\API\Clients\GetSingleClientOverview;
 use WpClientManagement\API\Clients\UpdateClient;
+use WpClientManagement\API\Contacts\AddTeamMember;
+use WpClientManagement\API\Contacts\GetTeamMembers;
 use WpClientManagement\API\DealPipelines\CreateDealPipeline;
 use WpClientManagement\API\DealPipelines\DeleteDealPipeline;
 use WpClientManagement\API\DealPipelines\UpdateDealPipeline;
@@ -127,6 +129,10 @@ class API {
         new DeleteCrmUser();
         new CreateEicCrmUser();
         new UpdateEicCrmUser();
+
+        // Team Member
+        new GetTeamMembers();
+        new AddTeamMember();
 
         // Email
         new GetEmails();

@@ -60,7 +60,7 @@ class GetSingleClientOverview {
             'email'        => $wpUser->user_email,
             'phone'        => $clientData->eic_crm_user->phone,
             'address'      => $clientData->eic_crm_user->address,
-            'designation'  => $clientData->designation,
+            'designation'  => $clientData->eic_crm_user->designation,
             'organization' => $clientData->organization,
         ];
 

@@ -19,8 +19,15 @@ class EicCrmUser extends Model
         'country',
         'state',
         'zip',
-        'role'
+        'role',
+        'designation'
     ];
+
+    public static function getTeamMembers($page)
+    {
+        return EicCrmUser::where('role', 'team')
+                    ->paginate(20, ['*'], 'page', $page);
+    }
 
     public function user() {
         return $this->belongsTo(User::class);

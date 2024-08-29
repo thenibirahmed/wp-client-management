@@ -8,7 +8,7 @@ class GetClients {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/clients';
+    private $endpoint  = '/clients';
 
     public function __construct()
     {
@@ -21,7 +21,6 @@ class GetClients {
 
     public function get_clients(\WP_REST_Request $request)
     {
-
         $page = $request->get_params('page');
 
         $clients = Client::paginate(20, ['*'], 'page', $page);
@@ -46,27 +45,27 @@ class GetClients {
             $wpUser     = $wpUsers[$wpUserId] ?? [];
 
             return [
-                'client_id'     => $client->id,
-                'name'          => $wpUser['name'] ?? null,
-                'email'         => $wpUser['email'] ?? null,
-                'phone'         => $eicCrmUser->phone,
-                'address'       => $eicCrmUser->address,
-                'city'          => $eicCrmUser->city,
-                'state'         => $eicCrmUser->state,
-                'country'       => $eicCrmUser->country,
-                'zip'           => $eicCrmUser->zip,
-                'organization'  => $client->organization,
-                'designation'  => $client->designation,
+                'id'           => $client->id,
+                'name'         => $wpUser['name'] ?? null,
+                'email'        => $wpUser['email'] ?? null,
+                'phone'        => $eicCrmUser->phone,
+                'address'      => $eicCrmUser->address,
+                'city'         => $eicCrmUser->city,
+                'state'        => $eicCrmUser->state,
+                'country'      => $eicCrmUser->country,
+                'zip'          => $eicCrmUser->zip,
+                'designation'  => $eicCrmUser->designation,
+                'organization' => $client->organization,
             ];
         });
 
         return new \WP_REST_Response([
             'data' => $clientsWithDetails,
             'pagination' => [
-                'total' => $clients->total(),
-                'per_page' => $clients->perPage(),
-                'current_page' => $clients->currentPage(),
-                'last_page' => $clients->lastPage(),
+                'total'         => $clients->total(),
+                'per_page'      => $clients->perPage(),
+                'current_page'  => $clients->currentPage(),
+                'last_page'     => $clients->lastPage(),
                 'next_page_url' => $clients->nextPageUrl(),
                 'prev_page_url' => $clients->previousPageUrl(),
             ],

@@ -31,27 +31,26 @@ const AddClientForm = ({ setOpen }) => {
       designation: "designation",
       status: "active",
     };
-    //console.log(sendData);
+    console.log(sendData);
 
     try {
       setLoading(true);
       const { data: res } = await api.post("/client/create", sendData);
-      toast.success(res.message);
+      toast.success(res?.message);
       reset();
     } catch (err) {
-      if (err?.response?.data?.errors["user_email"]?.length > 0) {
+      console.log(err.response);
+      if (err?.response?.data?.errors["email"]?.length > 0) {
         setError("user_email", {
-          message: err?.response?.data?.errors["user_email"][0],
+          message: err?.response?.data?.errors["email"][0],
         });
       }
 
-      if (err?.response?.data?.errors["user_login"]?.length > 0) {
+      if (err?.response?.data?.errors["name"]?.length > 0) {
         setError("user_login", {
-          message: err?.response?.data?.errors["user_login"][0],
+          message: err?.response?.data?.errors["name"][0],
         });
       }
-
-      console.log(err);
     } finally {
       setLoading(false);
     }
