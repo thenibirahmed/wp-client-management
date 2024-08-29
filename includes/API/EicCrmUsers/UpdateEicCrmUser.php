@@ -7,34 +7,36 @@ class UpdateEicCrmUser {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/eic-crm-user/update/(?P<id>\d+)';
+    private $endpoint  = '/eic-crm-user/update/(?P<id>\d+)';
 
     protected array $rules = [
-        'wp_user_id' => 'nullable|integer',
-        'phone' => 'nullable|string',
-        'address' => 'nullable|string',
-        'city' => 'nullable|string',
-        'state' => 'nullable|string',
-        'zip' => 'nullable|string',
-        'country' => 'nullable|string',
-        'role' => 'nullable|string',
-        'user_login' => 'nullable|string',
-        'user_email' => 'nullable|email',
-        'user_pass' => 'nullable|string',
+        'wp_user_id'  => 'nullable|integer',
+        'phone'       => 'nullable|string',
+        'address'     => 'nullable|string',
+        'city'        => 'nullable|string',
+        'state'       => 'nullable|string',
+        'zip'         => 'nullable|string',
+        'country'     => 'nullable|string',
+        'role'        => 'nullable|string',
+        'designation' => 'nullable|string',
+        'user_login'  => 'nullable|string',
+        'user_email'  => 'nullable|email',
+        'user_pass'   => 'nullable|string',
     ];
 
     protected array $validationMessages = [
         'wp_user_id.integer' => 'The wp_user_id must be an integer.',
-        'phone.string' => 'The phone number must be a valid string.',
-        'address.string' => 'The address must be a valid string.',
-        'city.string' => 'The city must be a valid string.',
-        'state.string' => 'The state must be a valid string.',
-        'zip.string' => 'The zip code must be a valid string.',
-        'country.string' => 'The country must be a valid string.',
-        'role.string' => 'The role must be a valid string.',
-        'user_login.string' => 'The user login must be a valid string.',
-        'user_email.email' => 'The user email must be a valid email address.',
-        'user_pass.string' => 'The user password must be a valid string.',
+        'phone.string'       => 'The phone number must be a valid string.',
+        'address.string'     => 'The address must be a valid string.',
+        'city.string'        => 'The city must be a valid string.',
+        'state.string'       => 'The state must be a valid string.',
+        'zip.string'         => 'The zip code must be a valid string.',
+        'country.string'     => 'The country must be a valid string.',
+        'role.string'        => 'The role must be a valid string.',
+        'user_login.string'  => 'The user login must be a valid string.',
+        'user_email.email'   => 'The user email must be a valid email address.',
+        'user_pass.string'   => 'The user password must be a valid string.',
+        'designation.string' => 'The designation must be a valid string.',
     ];
 
     public function __construct() {
@@ -49,7 +51,7 @@ class UpdateEicCrmUser {
         global $validator;
 
         $data = $request->get_params();
-        $id = $request->get_param('id');
+        $id   = $request->get_param('id');
 
         $eic_crm_user = EicCrmUser::find($id);
 
@@ -59,16 +61,17 @@ class UpdateEicCrmUser {
             ], 404);
         }
 
-        $data['user_login'] = sanitize_text_field($data['user_login']);
-        $data['user_email'] = sanitize_email($data['user_email']);
-        $data['user_pass'] = sanitize_text_field($data['user_pass']);
-        $data['phone'] = sanitize_text_field($data['phone']);
-        $data['address'] = sanitize_text_field($data['address']);
-        $data['city'] = sanitize_text_field($data['city']);
-        $data['state'] = sanitize_text_field($data['state']);
-        $data['zip'] = sanitize_text_field($data['zip']);
-        $data['country'] = sanitize_text_field($data['country']);
-        $data['role'] = sanitize_text_field($data['role']);
+        $data['user_login']  = sanitize_text_field($data['user_login']);
+        $data['user_email']  = sanitize_email($data['user_email']);
+        $data['user_pass']   = sanitize_text_field($data['user_pass']);
+        $data['phone']       = sanitize_text_field($data['phone']);
+        $data['address']     = sanitize_text_field($data['address']);
+        $data['city']        = sanitize_text_field($data['city']);
+        $data['state']       = sanitize_text_field($data['state']);
+        $data['zip']         = sanitize_text_field($data['zip']);
+        $data['country']     = sanitize_text_field($data['country']);
+        $data['role']        = sanitize_text_field($data['role']);
+        $data['designation'] = sanitize_text_field($data['designation']);
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -83,7 +86,7 @@ class UpdateEicCrmUser {
                 'ID' => $eic_crm_user->wp_user_id,
                 'user_login' => $data['user_login'] ?? null,
                 'user_email' => $data['user_email'] ?? null,
-                'user_pass' => $data['user_pass'] ?? null,
+                'user_pass'  => $data['user_pass'] ?? null,
             ];
 
             $wp_user_data = array_filter($wp_user_data);
