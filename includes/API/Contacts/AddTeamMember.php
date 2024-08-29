@@ -74,6 +74,7 @@ class AddTeamMember {
         $eic_crm_user_data = array(
             'wp_user_id' => intval($wp_user_id),
             'phone'      => $data['phone'],
+            'designation' => $data['designation'],
             'role'       => 'team',
         );
 
@@ -85,24 +86,11 @@ class AddTeamMember {
             ]);
         }
 
-        $client_data = array(
-            'eic_crm_user_id' => $eic_crm_user->id,
-            'designation'     => $data['designation'],
-        );
-
-        $client = Client::create($client_data);
-
-        if(!$client) {
-            return new \WP_REST_Response([
-                'message' => 'Something went wrong',
-            ]);
-        }
-
         $member_response_data = [
             'name'        => $wp_user->user_login,
             'email'       => $wp_user->user_email,
             'phone'       => $eic_crm_user->phone,
-            'designation' => $client->designation,
+            'designation' => $eic_crm_user->designation,
         ];
 
         return new \WP_REST_Response([

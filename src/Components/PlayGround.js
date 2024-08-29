@@ -68,21 +68,15 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/1/overview",
-				// {
-				// 	name: "Serabon3",
-				// 	email: "serabon3@wp.com",
-				// 	designation: "rest",
-				// 	phone: "454545",
-				// 	address: "kathmandu",
-				// 	city: "kathmandu",
-				// 	state: "kathmandu",
-				// 	country: "kathmandu",
-				// 	zip: "4545",
-				// 	organization: "serabon",
+		axios.post(
+				eicApiSettings.rest_url + "wp-client-management/v1/team-member/create",
+				{
+					name: "Employee",
+					email: "employee@wp.com",
+					phone: "32323",
+					designation: "codecon",
 
-				// },
+				},
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
