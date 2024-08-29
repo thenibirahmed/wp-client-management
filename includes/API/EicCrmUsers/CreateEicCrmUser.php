@@ -18,6 +18,7 @@ class CreateEicCrmUser {
         'zip' => 'nullable|string',
         'country' => 'nullable|string',
         'role' => 'nullable|string',
+        'designation' => 'nullable|string',
     ];
 
     protected array $validationMessages = [
@@ -29,6 +30,7 @@ class CreateEicCrmUser {
         'zip.string' => 'The zip code must be a valid string.',
         'country.string' => 'The country must be a valid string.',
         'role.string' => 'The role must be a valid string.',
+        'designation.string' => 'The designation must be a string.',
     ];
 
     public function __construct() {
@@ -54,6 +56,7 @@ class CreateEicCrmUser {
         $data['zip'] = sanitize_text_field($data['zip']);
         $data['country'] = sanitize_text_field($data['country']);
         $data['role'] = sanitize_text_field($data['role']);
+        $data['designation'] = sanitize_text_field($data['designation']);
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -86,6 +89,7 @@ class CreateEicCrmUser {
             'zip' => $data['zip'],
             'country' => $data['country'],
             'role' => $data['role'],
+            'designation' => $data['designation'],
         ]);
 
         if(!$eic_crm_user) {
