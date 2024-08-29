@@ -24,6 +24,11 @@ class Task extends Model
         'description'
     ];
 
+    public static function getTeamMemberTasks($id)
+    {
+        return Task::where('assigned_to', $id)->get();
+    }
+
     public function eic_crm_user() {
         return $this->belongsTo(EicCrmUser::class);
     }
