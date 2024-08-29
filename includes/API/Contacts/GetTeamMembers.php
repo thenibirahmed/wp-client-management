@@ -8,7 +8,7 @@ class GetTeamMembers {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/team-members';
+    private $endpoint  = '/team-members';
 
     public function __construct()
     {
@@ -21,13 +21,13 @@ class GetTeamMembers {
 
     public function get_team_members(\WP_REST_Request $request)
     {
-        $page = $request->get_params('page');
+        $page        = $request->get_params('page');
 
         $teamMembers = EicCrmUser::getTeamMembers($page);
 
         $wp_user_ids = $teamMembers->pluck('wp_user_id')->toArray();
 
-        $wpUsersDb = get_users([
+        $wpUsersDb   = get_users([
             'include' => $wp_user_ids,
         ]);
         
@@ -44,21 +44,21 @@ class GetTeamMembers {
             $wpUser     = $wpUsers[$wpUserId] ?? [];
 
             return [
-                'id'     => $member->id,
-                'name'          => $wpUser['name'] ?? null,
-                'email'         => $wpUser['email'] ?? null,
-                'phone'         => $member->phone,
-                'created_at'    => $member->created_at,
+                'id'         => $member->id,
+                'name'       => $wpUser['name'] ?? null,
+                'email'      => $wpUser['email'] ?? null,
+                'phone'      => $member->phone,
+                'created_at' => date('F d, Y', strtotime($member->created_at)),
             ];
         });
 
         return new \WP_REST_Response([
             'data' => $teamMembersWithDetails,
             'pagination' => [
-                'total' => $teamMembers->total(),
-                'per_page' => $teamMembers->perPage(),
-                'current_page' => $teamMembers->currentPage(),
-                'last_page' => $teamMembers->lastPage(),
+                'total'         => $teamMembers->total(),
+                'per_page'      => $teamMembers->perPage(),
+                'current_page'  => $teamMembers->currentPage(),
+                'last_page'     => $teamMembers->lastPage(),
                 'next_page_url' => $teamMembers->nextPageUrl(),
                 'prev_page_url' => $teamMembers->previousPageUrl(),
             ],
