@@ -7,10 +7,10 @@ use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
 use WpClientManagement\Models\Task;
 
-class GetSingleTeamMember {
+class GetSingleTeamMemberProjects {
 
     private $namespace = 'wp-client-management/v1';
-    private $endpoint  = '/team-member/(?P<id>\d+)/overview';
+    private $endpoint  = '/team-member/(?P<id>\d+)/projects';
 
     protected array $rules = [
         'id' => 'required|integer|exists:eic_eic_crm_users,id',
@@ -35,8 +35,9 @@ class GetSingleTeamMember {
     {
         global $validator;
 
-        $id = $request->get_param('id');
-        
+        $id   = $request->get_param('id');
+        $page = $request->get_param('page');
+
         if(!isset($id)) {
             return new \WP_REST_Response([
                 'error' => 'Id param is required',
@@ -53,34 +54,39 @@ class GetSingleTeamMember {
             ], 400);
         }
 
-        $teamMemberData = EicCrmUser::find($id);
+        $teamMember = EicCrmUser::find($id);
 
-        $teamMemberProjects = Project::getTeamMemberProjects($teamMemberData->id, false);
-        $teamMemberTasks = Task::getTeamMemberTasks($data['id']);
-
-        $wp_user = get_user_by('id', $teamMemberData->wp_user_id);
-
-        if(!$wp_user) {
+        if(!$teamMember) {
             return new \WP_REST_Response([
-                'error' => 'User not found',
+                'error' => 'No Team Member found',
             ]);
         }
 
-        $teamMemberResponseData = [
-            'id' => $teamMemberData->id,
-            'name' => $wp_user->user_login,
-            'email' => $wp_user->user_email,
-            'phone' => $teamMemberData->phone,
-            'designation' => $teamMemberData->designation,
-            'address' => $teamMemberData->address,
-        ];
+        $projects = Project::getTeamMemberProjects($teamMember->id, $page);
+
+        $data = [];
+
+        foreach ($projects as $project) {
+
+            $data[] = [
+                'id'           => $project->id,
+                'project_name' => $project->title,
+                'priority'     => $project->priority->name,
+                'status'       => $project->status->name,
+            ];
+        }
 
         return new \WP_REST_Response([
-            'profile' => $teamMemberResponseData,
-            'bottomTab' => [
-                'projectsCount' => $teamMemberProjects->count(),
-                'tasksCount' => $teamMemberTasks->count()
-            ]
+            'projects' => $data,
+            'pagination' => [
+                'total'         => $projects->total(),
+                'per_page'      => $projects->perPage(),
+                'current_page'  => $projects->currentPage(),
+                'last_page'     => $projects->lastPage(),
+                'next_page_url' => $projects->nextPageUrl(),
+                'prev_page_url' => $projects->previousPageUrl(),
+            ],
+            
         ]);
     }
 }

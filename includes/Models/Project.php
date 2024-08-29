@@ -45,11 +45,11 @@ class Project extends Model
         return self::with('invoices','priority')->where('client_id', $id)->get();
     }
 
-    public static function getTeamMemberProjects($id)
+    public static function getTeamMemberProjects($id, $page)
     {
-        return Project::whereHas('eicCrmUsers', function ($query) use ($id) {
+        return Project::with('status', 'priority')->whereHas('eicCrmUsers', function ($query) use ($id) {
             $query->where('eic_crm_user_id', $id);
-        })->get();
+        })->paginate(20, ['*'], 'page', $page);
     }
 
     public function client() {

@@ -102,7 +102,7 @@ const PlayGround = () => {
             <button onClick={getUsers}>Click me to get all users</button> <br/><br/>
             <button onClick={getSinglePost}>Click me to get single post</button> <br/><br/>
 
-            <button onClick={getTest}>Testing</button><br/>
+            <button style={{padding: "10px",backgroundColor:"blue",color:"white",borderRadius:"5px",cursor:"pointer",border:"none"}} onClick={getTest}>Test me!</button><br/>
         </div>
     );
 };
