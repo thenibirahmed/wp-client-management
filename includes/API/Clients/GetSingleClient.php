@@ -38,6 +38,7 @@ class GetSingleClient {
         global $validator;
 
         $client_id = $request->get_param('id');
+        $page = $request->get_param('page');
 
         if(!isset($client_id)) {
             return new \WP_REST_Response([
@@ -71,13 +72,13 @@ class GetSingleClient {
             ]);
         }
 
-        $projects = Project::getClientProjects($client->id);
-        $invoices = Invoice::getClientInvoices($client->id);
-        $notes    = Note::getClientNotes($client->id);
-        $files    = File::getClientFiles($client->id);
-        $emails   = Email::getClientEmails($client->id);
+        // $projects = Project::getClientProjects($client->id);
+        // $invoices = Invoice::getClientInvoices($client->id, $page);
+        // $notes    = Note::getClientNotes($client->id, $page);
+        // $files    = File::getClientFiles($client->id, $page);
+        // $emails   = Email::getClientEmails($client->id, $page);
 
-        return new \WP_REST_Response($emails);
+        return new \WP_REST_Response("Hold on");
 
         $response = [
             'profile' => [
@@ -93,10 +94,3 @@ class GetSingleClient {
         return new \WP_REST_Response($response);
     }
 }
-
-
-    // 'organization' => $client->organization,
-    // 'designnation' => $client->designation,
-    // 'status' => $client->status,
-    // 'projects' => $client->projects,
-    // 'invoices' => $client->invoices
