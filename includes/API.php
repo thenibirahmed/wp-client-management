@@ -77,6 +77,7 @@ use WpClientManagement\API\Tasks\GetTasks;
 use WpClientManagement\API\Tasks\UpdateTask;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMember;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMemberProjects;
+use WpClientManagement\API\TeamMembers\GetSingleTeamMemberTasks;
 use WpClientManagement\API\Users\DeleteUser;
 use WpClientManagement\API\Users\GetSingleUser;
 
@@ -137,7 +138,7 @@ class API {
         new AddTeamMember();
         new GetSingleTeamMember();
         new GetSingleTeamMemberProjects();
-        
+        new GetSingleTeamMemberTasks();
         
         // Email
         new GetEmails();

@@ -24,9 +24,10 @@ class Task extends Model
         'description'
     ];
 
-    public static function getTeamMemberTasks($id)
+    public static function getTeamMemberTasks($id, $page)
     {
-        return Task::where('assigned_to', $id)->get();
+        return Task::where('assigned_to', $id)
+                ->paginate(20, ['*'], 'page', $page);
     }
 
     public function eic_crm_user() {
