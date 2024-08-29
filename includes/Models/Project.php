@@ -45,6 +45,13 @@ class Project extends Model
         return self::with('invoices','priority')->where('client_id', $id)->get();
     }
 
+    public static function getTeamMemberProjects($id)
+    {
+        return Project::whereHas('eicCrmUsers', function ($query) use ($id) {
+            $query->where('eic_crm_user_id', $id);
+        })->get();
+    }
+
     public function client() {
         return $this->belongsTo(Client::class);
     }
@@ -61,9 +68,8 @@ class Project extends Model
         return $this->hasMany(File::class);
     }
 
-    public function eicCrmUsers()
-    {
-        return $this->belongsToMany(EicCrmUser::class, 'project_eic_crm_users');
+    public function eicCrmUsers() {
+        return $this->belongsToMany(EicCrmUser::class, 'eic_project_eic_crm_users', 'project_id', 'eic_crm_user_id');
     }
 
     public function status() {
