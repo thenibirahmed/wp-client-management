@@ -93,6 +93,7 @@ class UpdateClient {
             'zip' => $data['zip'],
             'country' => $data['country'],
             'role' => $data['role'],
+            'designation' => $data['designation'],
         ]);
 
         if (isset($data['user_login']) || isset($data['user_email']) || isset($data['user_pass'])) {
@@ -116,7 +117,6 @@ class UpdateClient {
 
         $client->update([
             'organization' => $data['organization'],
-            'designation' => $data['designation'],
             'status' => $data['status'],
         ]);
 

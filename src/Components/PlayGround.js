@@ -68,15 +68,15 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/team-member/create",
-				{
-					name: "Employee",
-					email: "employee@wp.com",
-					phone: "32323",
-					designation: "codecon",
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/clients",
+				// {
+				// 	name: "Employee",
+				// 	email: "employee@wp.com",
+				// 	phone: "32323",
+				// 	designation: "codecon",
 
-				},
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
