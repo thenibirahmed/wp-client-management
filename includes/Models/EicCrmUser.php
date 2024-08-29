@@ -22,6 +22,12 @@ class EicCrmUser extends Model
         'role'
     ];
 
+    public static function getTeamMembers($page)
+    {
+        return EicCrmUser::where('role', 'team')
+                    ->paginate(20, ['*'], 'page', $page);
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }
