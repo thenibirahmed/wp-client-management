@@ -11,22 +11,22 @@ class AddTeamMember {
     private $endpoint = '/team-member/create';
 
     protected array $rules = [
-        'name' => 'required|string|unique:users,user_login',
-        'email' => 'required|email|unique:users,user_email',
-        'phone' => 'required|string',
+        'name'        => 'required|string|unique:users,user_login',
+        'email'       => 'required|email|unique:users,user_email',
+        'phone'       => 'required|string',
         'designation' => 'required|string',
     ];
 
     protected array $validationMessages = [
-        'name.required' => 'The name is required.',
-        'name.unique' => 'The user name already exists.',
-        'email.required' => 'The email is required.',
-        'email.email' => 'The email must be a valid email.',
-        'email.unique' => 'The user email already exists.',
-        'phone.required' => 'The phone is required.',
-        'phone.string' => 'The phone number must be a valid string.',
+        'name.required'        => 'The name is required.',
+        'name.unique'          => 'The user name already exists.',
+        'email.required'       => 'The email is required.',
+        'email.email'          => 'The email must be a valid email.',
+        'email.unique'         => 'The user email already exists.',
+        'phone.required'       => 'The phone is required.',
+        'phone.string'         => 'The phone number must be a valid string.',
         'designation.required' => 'The designation is required.',
-        'designation.string' => 'The phone designation must be a valid string.',
+        'designation.string'   => 'The phone designation must be a valid string.',
     ];
 
     public function __construct() {
@@ -42,8 +42,8 @@ class AddTeamMember {
 
         $data = $request->get_params();
         
-        $data['name']   = sanitize_user($data['name'], true);
-        $data['email']   = sanitize_email($data['email']);
+        $data['name']        = sanitize_user($data['name'], true);
+        $data['email']       = sanitize_email($data['email']);
         $data['phone']       = sanitize_text_field($data['phone']);
         $data['designation'] = sanitize_text_field($data['designation']);
 
@@ -60,7 +60,6 @@ class AddTeamMember {
             'user_email'    => $data['email'],
             'user_pass'     => $data['name'],
         );
-
     
         $wp_user_id = wp_insert_user($wp_user_data);
 
@@ -100,15 +99,15 @@ class AddTeamMember {
         }
 
         $member_response_data = [
-            'name'    => $wp_user->user_login,
-            'email'   => $wp_user->user_email,
-            'phone'   => $eic_crm_user->phone,
+            'name'        => $wp_user->user_login,
+            'email'       => $wp_user->user_email,
+            'phone'       => $eic_crm_user->phone,
             'designation' => $client->designation,
         ];
 
         return new \WP_REST_Response([
-            'message' => 'Team member created successfully.',
-            'client' => $member_response_data,
+            'message' => 'Team member added successfully.',
+            'client'  => $member_response_data,
         ], 201);
     }
 
