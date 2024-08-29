@@ -27,14 +27,14 @@ class GetEicCrmUsers {
         $data = [];
         foreach ($eic_crm_users as $eic_crm_user) {
             $data[] = [
-                'id' => $eic_crm_user->id,
-                'phone' => $eic_crm_user->phone,
-                'address' => $eic_crm_user->address,
-                'city' => $eic_crm_user->city,
-                'state' => $eic_crm_user->state,
-                'zip' => $eic_crm_user->zip,
-                'country' => $eic_crm_user->country,
-                'role' => $eic_crm_user->role,
+                'id'          => $eic_crm_user->id,
+                'phone'       => $eic_crm_user->phone,
+                'address'     => $eic_crm_user->address,
+                'city'        => $eic_crm_user->city,
+                'state'       => $eic_crm_user->state,
+                'zip'         => $eic_crm_user->zip,
+                'country'     => $eic_crm_user->country,
+                'role'        => $eic_crm_user->role,
                 'designation' => $eic_crm_user->designation,
             ];
         }
@@ -42,10 +42,10 @@ class GetEicCrmUsers {
         return new \WP_REST_Response([
             'data' => $data,
             'pagination' => [
-                'total' => $eic_crm_users->total(),
-                'per_page' => $eic_crm_users->perPage(),
-                'current_page' => $eic_crm_users->currentPage(),
-                'last_page' => $eic_crm_users->lastPage(),
+                'total'         => $eic_crm_users->total(),
+                'per_page'      => $eic_crm_users->perPage(),
+                'current_page'  => $eic_crm_users->currentPage(),
+                'last_page'     => $eic_crm_users->lastPage(),
                 'next_page_url' => $eic_crm_users->nextPageUrl(),
                 'prev_page_url' => $eic_crm_users->previousPageUrl(),
             ],
