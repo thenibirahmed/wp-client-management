@@ -11,34 +11,34 @@ class CreateClient {
     private $endpoint = '/client/create';
 
     protected array $rules = [
-        'user_login' => 'required|string|unique:users,user_login',
-        'user_email' => 'required|email|unique:users,user_email',
-        'phone' => 'nullable|string',
-        'address' => 'nullable|string',
-        'city' => 'nullable|string',
-        'state' => 'nullable|string',
-        'zip' => 'nullable|string',
-        'country' => 'nullable|string',
-        'role' => 'nullable|string',
+        'name'         => 'required|string|unique:users,user_login',
+        'email'        => 'required|email|unique:users,user_email',
+        'phone'        => 'nullable|string',
+        'address'      => 'nullable|string',
+        'city'         => 'nullable|string',
+        'state'        => 'nullable|string',
+        'zip'          => 'nullable|string',
+        'country'      => 'nullable|string',
+        'role'         => 'nullable|string',
         'organization' => 'nullable|string',
-        'status' => 'nullable|string',
+        'status'       => 'nullable|string',
     ];
 
     protected array $validationMessages = [
-        'user_login.required' => 'The name is required.',
-        'user_login.unique' => 'The user name already exists.',
-        'user_email.required' => 'The email is required.',
-        'user_email.email' => 'The email must be a valid email.',
-        'user_email.unique' => 'The user email already exists.',
-        'phone.string' => 'The phone number must be a valid string.',
-        'address.string' => 'The address must be a valid string.',
-        'city.string' => 'The city must be a valid string.',
-        'state.string' => 'The state must be a valid string.',
-        'zip.string' => 'The zip code must be a valid string.',
-        'country.string' => 'The country must be a valid string.',
-        'role.string' => 'The role must be a valid string.',
+        'name.required'       => 'The name is required.',
+        'name.unique'         => 'The user name already exists.',
+        'email.required'      => 'The email is required.',
+        'email.email'         => 'The email must be a valid email.',
+        'email.unique'        => 'The user email already exists.',
+        'phone.string'        => 'The phone number must be a valid string.',
+        'address.string'      => 'The address must be a valid string.',
+        'city.string'         => 'The city must be a valid string.',
+        'state.string'        => 'The state must be a valid string.',
+        'zip.string'          => 'The zip code must be a valid string.',
+        'country.string'      => 'The country must be a valid string.',
+        'role.string'         => 'The role must be a valid string.',
         'organization.string' => 'The organization must be a string.',
-        'status.string' => 'The status must be a string.',
+        'status.string'       => 'The status must be a string.',
     ];
 
     public function __construct() {
@@ -54,8 +54,8 @@ class CreateClient {
 
         $data = $request->get_params();
         
-        $data['user_login']   = sanitize_user($data['user_login'], true);
-        $data['user_email']   = sanitize_email($data['user_email']);
+        $data['name']         = sanitize_user($data['name'], true);
+        $data['email']        = sanitize_email($data['email']);
         $data['phone']        = sanitize_text_field($data['phone']);
         $data['address']      = sanitize_text_field($data['address']);
         $data['city']         = sanitize_text_field($data['city']);
@@ -73,9 +73,9 @@ class CreateClient {
         }
 
         $wp_user_data = array(
-            'user_login'    => $data['user_login'],
-            'user_email'    => $data['user_email'],
-            'user_pass'     => $data['user_login'],
+            'user_login'    => $data['name'],
+            'user_email'    => $data['email'],
+            'user_pass'     => $data['name'],
         );
 
     
@@ -83,21 +83,22 @@ class CreateClient {
 
         if (is_wp_error($wp_user_id)) {
             return new \WP_REST_Response([
-                'message' => $wp_user->get_error_message(),
+                'message' => $wp_user_id->get_error_message(),
             ]);
         }
 
         $wp_user = get_userData($wp_user_id);
 
         $eic_crm_user_data = array(
-            'wp_user_id' => intval($wp_user_id),
-            'phone'      => $data['phone'],
-            'address'    => $data['address'],
-            'city'       => $data['city'],
-            'state'      => $data['state'],
-            'zip'        => $data['zip'],
-            'country'    => $data['country'],
-            'role'       => 'admin',
+            'wp_user_id'   => intval($wp_user_id),
+            'phone'        => $data['phone'],
+            'address'      => $data['address'],
+            'city'         => $data['city'],
+            'state'        => $data['state'],
+            'zip'          => $data['zip'],
+            'country'      => $data['country'],
+            'organization' => $data['organization'],
+            'role'         => 'admin',
         );
 
         $eic_crm_user = EicCrmUser::create($eic_crm_user_data);
@@ -122,14 +123,15 @@ class CreateClient {
         }
 
         $client_response_data = [
-            'name'    => $wp_user->user_login,
-            'email'   => $wp_user->user_email,
-            'phone'   => $eic_crm_user->phone,
-            'address' => $eic_crm_user->address,
-            'country' => $eic_crm_user->country,
-            'city'    => $eic_crm_user->city,
-            'state'   => $eic_crm_user->state,
-            'zip'     => $eic_crm_user->zip,
+            'name'         => $wp_user->user_login,
+            'email'        => $wp_user->user_email,
+            'phone'        => $eic_crm_user->phone,
+            'address'      => $eic_crm_user->address,
+            'country'      => $eic_crm_user->country,
+            'city'         => $eic_crm_user->city,
+            'state'        => $eic_crm_user->state,
+            'zip'          => $eic_crm_user->zip,
+            'organization' => $client->organization
         ];
 
         return new \WP_REST_Response([
