@@ -56,7 +56,7 @@ class GetSingleTeamMember {
         $teamMemberData = EicCrmUser::find($id);
 
         $teamMemberProjects = Project::getTeamMemberProjects($teamMemberData->id, false);
-        $teamMemberTasks = Task::getTeamMemberTasks($data['id']);
+        $teamMemberTasks = Task::getTeamMemberTasks($data['id'], false);
 
         $wp_user = get_user_by('id', $teamMemberData->wp_user_id);
 

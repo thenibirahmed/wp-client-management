@@ -26,12 +26,12 @@ class GetSingleTeamMemberProjects {
     {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
-            'callback' => array($this, 'get_team_member_overview'),
+            'callback' => array($this, 'get_team_member_projects'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function get_team_member_overview(\WP_REST_Request $request)
+    public function get_team_member_projects(\WP_REST_Request $request)
     {
         global $validator;
 
