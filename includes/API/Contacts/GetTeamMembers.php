@@ -48,7 +48,7 @@ class GetTeamMembers {
                 'name'       => $wpUser['name'] ?? null,
                 'email'      => $wpUser['email'] ?? null,
                 'phone'      => $member->phone,
-                'created_at' => date('F d, Y', strtotime($member->created_at)),
+                'created_date' => date('F d, Y', strtotime($member->created_at)),
             ];
         });
 

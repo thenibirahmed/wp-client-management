@@ -28,6 +28,7 @@ use WpClientManagement\API\Users\GetUsers;
 use WpClientManagement\API\Clients\GetClients;
 use WpClientManagement\API\Clients\GetSingleClientOverview;
 use WpClientManagement\API\Clients\UpdateClient;
+use WpClientManagement\API\Contacts\AddTeamMember;
 use WpClientManagement\API\Contacts\GetTeamMembers;
 use WpClientManagement\API\DealPipelines\CreateDealPipeline;
 use WpClientManagement\API\DealPipelines\DeleteDealPipeline;
@@ -131,6 +132,7 @@ class API {
 
         // Team Member
         new GetTeamMembers();
+        new AddTeamMember();
 
         // Email
         new GetEmails();
