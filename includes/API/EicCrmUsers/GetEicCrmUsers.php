@@ -34,7 +34,8 @@ class GetEicCrmUsers {
                 'state' => $eic_crm_user->state,
                 'zip' => $eic_crm_user->zip,
                 'country' => $eic_crm_user->country,
-                'role' => $eic_crm_user->role
+                'role' => $eic_crm_user->role,
+                'designation' => $eic_crm_user->designation,
             ];
         }
 
