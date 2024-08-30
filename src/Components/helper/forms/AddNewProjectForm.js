@@ -111,7 +111,12 @@ const AddNewProjectForm = () => {
   };
 
   function onSuccessClients(data) {
-    setSelectClient(data?.clients[0]);
+    console.log();
+    if (data?.clients.length > 0) {
+      setSelectClient(data?.clients[0]);
+    } else {
+      setSelectClient({ name: "-No Client To Select-", id: null });
+    }
   }
   function onSuccessPriorities(data) {
     setSelectPriority(data?.priorities[0]);
