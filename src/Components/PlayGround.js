@@ -83,8 +83,8 @@ const PlayGround = () => {
 
   const getTest = () => {
     axios
-      .delete(
-        eicApiSettings.rest_url + "wp-client-management/v1/client/delete/1",
+      .get(
+        eicApiSettings.rest_url + "wp-client-management/v1/clients",
 
         {
           headers: {

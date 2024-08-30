@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import TabHeader from "../TabHeader";
 import EmptyTable from "../../helper/EmptyTable";
 import Modal from "../../helper/Modal";
-import AddContactClientForm from "./AddContactClientForm";
 import ContactClientTable from "../../helper/contacts/ContactClientTable";
+import AddClientForm from "../../Clients/AddClientForm";
 
 const ContactClient = () => {
   const [open, setOpen] = useState(false);
@@ -28,7 +28,7 @@ const ContactClient = () => {
         </>
       )}
       <Modal open={open} setOpen={setOpen} title="Add Client">
-        <AddContactClientForm setOpen={setOpen} />
+        <AddClientForm setOpen={setOpen} />
       </Modal>
     </React.Fragment>
   );
