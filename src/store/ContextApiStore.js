@@ -25,6 +25,10 @@ export const ContextProvider = ({ children }) => {
     team: true,
     client: false,
   });
+  const [contactTeamDetailsTabs, setContactTeamDetailsTabs] = useState({
+    project: true,
+    task: false,
+  });
 
   const [selectedViewEmail, setSelectedViewEmail] = useState("");
 
@@ -51,6 +55,8 @@ export const ContextProvider = ({ children }) => {
     setOpenTaskDetail,
     contactTabs,
     setContactTabs,
+    contactTeamDetailsTabs,
+    setContactTeamDetailsTabs,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 
 import {
+  CommentAdd02Icon,
   Delete03Icon,
   PencilEdit02Icon,
   Task01Icon,
-} from "../../../utils/icons";
-import RedCirlcle from "../../helper/RedCirlcle";
-import SkyBlueCirle from "../../helper/SkyBlueCirle";
-import YellowCirle from "../../helper/YellowCirle";
-import Pagination from "../../Clients/Pagination";
-import useCheckedHandler from "../../../utils/useCheckedItem";
-import useHashRouting from "../../../utils/useHashRouting";
+} from "../../../../utils/icons";
+import RedCirlcle from "../../../helper/RedCirlcle";
+import SkyBlueCirle from "../../../helper/SkyBlueCirle";
+import YellowCirle from "../../../helper/YellowCirle";
+import Pagination from "../../../Clients/Pagination";
+import useCheckedHandler from "../../../../utils/useCheckedItem";
+import useHashRouting from "../../../../utils/useHashRouting";
 
 const tableData = [
   {
@@ -18,9 +19,9 @@ const tableData = [
     owner: "Easin Ahmedss",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
+    tasktitle: "Analysis Request",
     dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
+    comment: 0,
     status: "To Do",
     priority: "High",
   },
@@ -29,9 +30,9 @@ const tableData = [
     owner: "Easin Ahmed",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
+    tasktitle: "Analysis Request",
     dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
+    comment: 0,
     status: "Doing",
     priority: "High",
   },
@@ -40,9 +41,9 @@ const tableData = [
     owner: "Easin Ahmed",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
+    tasktitle: "Analysis Request",
     dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
+    comment: 0,
     status: "Done",
     priority: "High",
   },
@@ -51,15 +52,15 @@ const tableData = [
     owner: "Easin Ahmed",
     image:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
+    tasktitle: "Analysis Request",
     dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
+    comment: 10,
     status: "Done",
     priority: "High",
   },
 ];
 
-const ProjectTaskTable = () => {
+const ContactTeamTaskTable = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
@@ -101,7 +102,7 @@ const ProjectTaskTable = () => {
                     scope="col"
                     className="py-3.5 uppercase   pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
                   >
-                    name
+                    Task Title
                   </th>
                   <th
                     scope="col"
@@ -119,25 +120,13 @@ const ProjectTaskTable = () => {
                     scope="col"
                     className="px-3 uppercase py-3.5 text-left text-sm font-semibold text-textColor2"
                   >
-                    Assignee to
+                    Comment
                   </th>
                   <th
                     scope="col"
                     className="px-3 py-3.5 text-left text-sm font-semibold text-textColor2"
                   >
                     STATUS
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-textColor2"
-                  >
-                    PRORITY
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-textColor2"
-                  >
-                    ACTIONS
                   </th>
                 </tr>
               </thead>
@@ -173,7 +162,7 @@ const ProjectTaskTable = () => {
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.name}
+                          {item.tasktitle}
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
@@ -194,17 +183,11 @@ const ProjectTaskTable = () => {
                         {item.dueDate}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
-                        <div className="flex items-center  gap-3">
-                          <img
-                            className="h-7 w-7 rounded-full bg-gray-50"
-                            src={item.image}
-                            alt={item.assigneeTo}
-                          />
-                          <div>
-                            <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                              {item.assigneeTo}
-                            </h3>
-                          </div>
+                        <div className="flex items-center  gap-0">
+                          <CommentAdd02Icon className="text-textColor2" />
+                          <span className="whitespace-nowrap px-3 py-4 text-[14px] text-textColor2 font-metropolis font-normal">
+                            {item.comment}
+                          </span>
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm  font-metropolis font-medium">
@@ -213,44 +196,6 @@ const ProjectTaskTable = () => {
                         >
                           {item.status}
                         </span>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
-                        <div className="flex items-center gap-2">
-                          {itemPriority === "high" ? (
-                            <RedCirlcle />
-                          ) : itemPriority === "low" ? (
-                            <SkyBlueCirle />
-                          ) : itemPriority === "medium" ? (
-                            <YellowCirle />
-                          ) : (
-                            <RedCirlcle />
-                          )}
-                          {item.priority}
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap   px-3 py-4 ">
-                        <div className="flex gap-3">
-                          <a
-                            href={`/#/projects/#/${item.id}/#/Task`}
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            <PencilEdit02Icon
-                              className="text-textColor2"
-                              width="20px"
-                              height="20px"
-                            />
-                          </a>
-                          <a
-                            href=""
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            <Delete03Icon
-                              className="text-customRed"
-                              width="20px"
-                              height="20px"
-                            />
-                          </a>
-                        </div>
                       </td>
                     </tr>
                   );
@@ -265,4 +210,4 @@ const ProjectTaskTable = () => {
   );
 };
 
-export default ProjectTaskTable;
+export default ContactTeamTaskTable;

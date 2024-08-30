@@ -14,6 +14,7 @@ import Projects from "../Components/Projects/Projects";
 import ClientDetails from "../Components/Clients/ClientDetails";
 import ProjectDetail from "../Components/Projects/ProjectDetail";
 import ProjectTaskDetails from "../Components/Projects/ProjectTask/ProjectTaskDetails";
+import ContactTeamDetails from "../Components/Contacts/Team/TeamDetails/ContactTeamDetails";
 
 export const renderComponent = (path, activeUrl) => {
   switch (path) {
@@ -44,6 +45,8 @@ export const renderComponent = (path, activeUrl) => {
       return <ProfitLoss />;
     case "contact":
       return <Contact />;
+    case `contact/#/${activeUrl}`:
+      return <ContactTeamDetails />;
     case "setting":
       return <Settings />;
     case "docs":

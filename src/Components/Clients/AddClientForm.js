@@ -26,9 +26,7 @@ const AddClientForm = ({ setOpen }) => {
   const addNewClientHandler = async (data) => {
     const sendData = {
       ...data,
-      user_pass: "12345",
       role: "admin",
-      designation: "designation",
       status: "active",
     };
     console.log(sendData);
@@ -41,13 +39,13 @@ const AddClientForm = ({ setOpen }) => {
     } catch (err) {
       console.log(err.response);
       if (err?.response?.data?.errors["email"]?.length > 0) {
-        setError("user_email", {
+        setError("email", {
           message: err?.response?.data?.errors["email"][0],
         });
       }
 
       if (err?.response?.data?.errors["name"]?.length > 0) {
-        setError("user_login", {
+        setError("name", {
           message: err?.response?.data?.errors["name"][0],
         });
       }
@@ -67,7 +65,7 @@ const AddClientForm = ({ setOpen }) => {
           <TextField
             label="Name"
             required
-            id="user_login"
+            id="name"
             type="text"
             message="*Name is required"
             placeholder="Easin"
@@ -89,7 +87,7 @@ const AddClientForm = ({ setOpen }) => {
           <TextField
             label="Email"
             required
-            id="user_email"
+            id="email"
             type="email"
             message="*Email is required"
             placeholder="easin@gmail.com"

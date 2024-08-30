@@ -158,7 +158,7 @@ const ContactTeamTable = () => {
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
                           <a
-                            href={`/#/clients/#/${item.name}`}
+                            href={`#/contact/#/${item.name}`}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon

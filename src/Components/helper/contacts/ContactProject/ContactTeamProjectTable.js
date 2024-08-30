@@ -3,14 +3,14 @@ import {
   Delete03Icon,
   PencilEdit02Icon,
   Task01Icon,
-} from "../../../utils/icons";
+} from "../../../../utils/icons";
 
-import useCheckedHandler from "../../../utils/useCheckedItem";
-import RedCirlcle from "../../helper/RedCirlcle";
-import SkyBlueCirle from "../../helper/SkyBlueCirle";
-import YellowCirle from "../../helper/YellowCirle";
-import useHashRouting from "../../../utils/useHashRouting";
-import Pagination from "../../Clients/Pagination";
+import useCheckedHandler from "../../../../utils/useCheckedItem";
+import RedCirlcle from "../../../helper/RedCirlcle";
+import SkyBlueCirle from "../../../helper/SkyBlueCirle";
+import YellowCirle from "../../../helper/YellowCirle";
+import useHashRouting from "../../../../utils/useHashRouting";
+import Pagination from "../../../Clients/Pagination";
 
 let assignee = [
   {
@@ -101,7 +101,7 @@ const tableData = [
   },
 ];
 
-const ProjectTable = () => {
+const ContactTeamProjectTable = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
   const [selectedClient, setSelectedClient] = useState([]);
@@ -143,36 +143,12 @@ const ProjectTable = () => {
                     className="py-3.5 uppercase    pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
                   >
                     Project Name
-                  </th>
-                  <th
-                    scope="col"
-                    className="py-3.5 uppercase    pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
-                  >
-                    Client Name
                   </th>{" "}
                   <th
                     scope="col"
                     className="py-3.5 uppercase    pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
                   >
                     Assignee
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-textColor2"
-                  >
-                    INVOICE
-                  </th>{" "}
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-textColor2"
-                  >
-                    REVENUE
-                  </th>{" "}
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-textColor2"
-                  >
-                    DUE
                   </th>
                   <th
                     scope="col"
@@ -185,12 +161,6 @@ const ProjectTable = () => {
                     className="px-3 py-3.5 text-left text-sm font-semibold text-textColor2"
                   >
                     STATUS
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-textColor2"
-                  >
-                    ACTIONS
                   </th>
                 </tr>
               </thead>
@@ -232,12 +202,7 @@ const ProjectTable = () => {
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
                           {item.projectName}
                         </h3>
-                      </td>{" "}
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
-                        <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.clientName}
-                        </h3>
-                      </td>{" "}
+                      </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6  ">
                         <div className="flex ">
                           <>
@@ -258,15 +223,7 @@ const ProjectTable = () => {
                           </>
                         </div>
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-semibold text-sm">
-                        ${item.invoice}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-invoiceColor font-metropolis font-semibold">
-                        ${item.revenue}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-semibold">
-                        ${item.due}
-                      </td>
+
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
                         <div className="flex items-center gap-2">
                           {itemPriority === "high" ? (
@@ -288,30 +245,6 @@ const ProjectTable = () => {
                           {item.status}
                         </span>
                       </td>
-                      <td className="whitespace-nowrap   px-3 py-4 ">
-                        <div className="flex gap-3">
-                          <a
-                            href={`#/projects/#/${item.id}`}
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            <PencilEdit02Icon
-                              className="text-textColor2"
-                              width="20px"
-                              height="20px"
-                            />
-                          </a>
-                          <a
-                            href=""
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            <Delete03Icon
-                              className="text-customRed"
-                              width="20px"
-                              height="20px"
-                            />
-                          </a>
-                        </div>
-                      </td>
                     </tr>
                   );
                 })}
@@ -325,4 +258,4 @@ const ProjectTable = () => {
   );
 };
 
-export default ProjectTable;
+export default ContactTeamProjectTable;

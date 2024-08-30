@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 
 import { useForm } from "react-hook-form";
-import TextField from "../helper/TextField";
+import TextField from "../../helper/TextField";
 
 const AddContactTeamForm = ({ setOpen }) => {
   const [imageUrl, setImageUrl] = useState("");

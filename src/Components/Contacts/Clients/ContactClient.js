@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import EmptyTable from "../helper/EmptyTable";
-import TabHeader from "./TabHeader";
-import Modal from "../helper/Modal";
+
+import TabHeader from "../TabHeader";
+import EmptyTable from "../../helper/EmptyTable";
+import Modal from "../../helper/Modal";
 import AddContactClientForm from "./AddContactClientForm";
-import ContactClientTable from "../helper/contacts/ContactClientTable";
+import ContactClientTable from "../../helper/contacts/ContactClientTable";
 
 const ContactClient = () => {
   const [open, setOpen] = useState(false);

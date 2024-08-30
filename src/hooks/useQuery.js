@@ -31,7 +31,7 @@ export const useFetchAllClients = (onError, onSuccess) => {
 
     {
       select: (data) => {
-        // console.log("allclients", data.data);
+        console.log("allclients", data.data);
 
         const clients = data?.data?.data?.map((item) => {
           return {

@@ -1,7 +1,8 @@
 import React from "react";
-import ContactTeam from "./ContactTeam";
-import ContactClient from "./ContactClient";
+import ContactTeam from "./Team/ContactTeam";
+
 import { useStoreContext } from "../../store/ContextApiStore";
+import ContactClient from "./Clients/ContactClient";
 
 const ContactTabLayout = () => {
   const { contactTabs } = useStoreContext();

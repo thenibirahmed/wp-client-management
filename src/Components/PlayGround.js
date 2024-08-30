@@ -83,25 +83,17 @@ const PlayGround = () => {
 
   const getTest = () => {
     axios
-      .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/clients",
-        // {
-        // 	name: "Employee",
-        // 	email: "employee@wp.com",
-        // 	phone: "32323",
-        // 	designation: "codecon",
+      .delete(
+        eicApiSettings.rest_url + "wp-client-management/v1/client/delete/1",
 
-        // },
         {
           headers: {
             "X-WP-Nonce": eicApiSettings.nonce,
-            // 'Content-Type' : 'application/json'
           },
         }
       )
       .then((response) => {
-        console.log(response.data);
-        setPost(response.data);
+        console.log(response);
       })
       .catch((error) => {
         console.log(
