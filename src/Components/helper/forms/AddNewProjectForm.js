@@ -7,8 +7,10 @@ import TextField from "../TextField";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { SelectTextField } from "../SelectTextField";
 import {
-  useFetchAllClients,
-  useFetchAllPriorities,
+  useFetchProjectClients,
+  useFetchProjectPriorities,
+  useFetchProjectManager,
+  useFetchProjectStatus,
 } from "../../../hooks/useQuery";
 import Skeleton from "../../Skeleton";
 import api from "../../../api/api";
@@ -44,7 +46,6 @@ const AddNewProjectForm = () => {
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
   const { setOpenProjectModal } = useStoreContext();
-
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -52,23 +53,34 @@ const AddNewProjectForm = () => {
   const [selectCurrency, setSelectCurrency] = useState(currencyLists[0]);
   const [selectStatus, setSelectStatus] = useState(statusLists[0]);
   const [selectPriority, setSelectPriority] = useState();
-  const [selectProjectManager, setSelectProjectManager] = useState(
-    projectManagerLists[0]
-  );
+  const [selectProjectManager, setSelectProjectManager] = useState();
   const [selectAssignee, setSelectAssignee] = useState(assigneeLists[0]);
   const [submitLoader, setSubmitLoader] = useState(false);
 
   const imageRef = useRef();
 
   //calling react-query Parallely for fetching data
-  const { isLoading: isLoadingClients, data: clients } = useFetchAllClients(
+  const { isLoading: isLoadingClients, data: clients } = useFetchProjectClients(
     onError,
     onSuccessClients
   );
-  const { isLoading: isLoadingPriorities, data: priorities } =
-    useFetchAllPriorities(onError, onSuccessPriorities);
 
-  const isLoading = isLoadingClients || isLoadingPriorities;
+  const { isLoading: isLoadProjectManager, data: managers } =
+    useFetchProjectManager(onError, onSuccessProjectManager);
+
+  const { isLoading: isLoadingPriorities, data: priorities } =
+    useFetchProjectPriorities(onError, onSuccessPriorities);
+
+  const { isLoading: isLoadingStatus, data: statuses } = useFetchProjectStatus(
+    onError,
+    onSuccessStatus
+  );
+
+  const isLoading =
+    isLoadingClients ||
+    isLoadingPriorities ||
+    isLoadProjectManager ||
+    isLoadingStatus;
 
   const {
     register,
@@ -113,15 +125,43 @@ const AddNewProjectForm = () => {
   };
 
   function onSuccessClients(data) {
-    console.log();
     if (data?.clients.length > 0) {
       setSelectClient(data?.clients[0]);
     } else {
       setSelectClient({ name: "-No Client To Select-", id: null });
     }
   }
+
+  function onSuccessProjectManager(data) {
+    if (data?.managers.length > 0) {
+      setSelectProjectManager(data?.managers[0]);
+    } else {
+      setSelectProjectManager({
+        name: "-No Project Manager To Select-",
+        id: null,
+      });
+    }
+  }
+
   function onSuccessPriorities(data) {
-    setSelectPriority(data?.priorities[0]);
+    if (data?.priorities.length > 0) {
+      setSelectPriority(data?.priorities[0]);
+    } else {
+      setSelectPriority({
+        name: "-No Project Priorities To Select-",
+        id: null,
+      });
+    }
+  }
+  function onSuccessStatus(data) {
+    if (data?.priorities.length > 0) {
+      setSelectStatus(data?.statuses[0]);
+    } else {
+      setSelectStatus({
+        name: "-No Status To Select-",
+        id: null,
+      });
+    }
   }
 
   function onError(err) {
@@ -162,7 +202,7 @@ const AddNewProjectForm = () => {
             label="Project Manager"
             select={selectProjectManager}
             setSelect={setSelectProjectManager}
-            lists={projectManagerLists}
+            lists={managers?.managers}
             isSubmitting={isSubmitting}
           />
         </div>
@@ -188,7 +228,7 @@ const AddNewProjectForm = () => {
             label="Status"
             select={selectStatus}
             setSelect={setSelectStatus}
-            lists={statusLists}
+            lists={statuses?.statuses}
             isSubmitting={isSubmitting}
           />
           <SelectTextField

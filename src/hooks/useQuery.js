@@ -22,27 +22,26 @@ export const useFetchClientOverView = (onError) => {
   );
 };
 
-export const useFetchAllClients = (onError, onSuccess) => {
+export const useFetchProjectClients = (onError, onSuccess) => {
   return useQuery(
-    "clients",
+    "project-clients",
     async () => {
-      return await api.get("/clients");
+      return await api.get("/select-project-client");
     },
 
     {
       select: (data) => {
-        console.log("allclients", data.data);
+        console.log("all project clients", data.data);
 
-        const clients = data?.data?.data?.map((item) => {
+        const clients = data?.data?.clients?.map((item) => {
           return {
-            id: item.client_id,
+            id: item.id,
             name: item.name,
           };
         });
 
         return {
           clients,
-          pagination: data.data.pagination,
         };
       },
       onError,
@@ -52,18 +51,47 @@ export const useFetchAllClients = (onError, onSuccess) => {
   );
 };
 
-export const useFetchAllPriorities = (onError, onSuccess) => {
+export const useFetchProjectManager = (onError, onSuccess) => {
   return useQuery(
-    "priorities",
+    "project-manager",
     async () => {
-      return await api.get("/priorities");
+      return await api.get("/select-project-manager");
+    },
+
+    {
+      select: (data) => {
+        console.log("all project managers", data.data.managers);
+
+        const managers = data?.data?.managers?.map((item) => {
+          return {
+            id: item.id,
+            name: item.name,
+          };
+        });
+
+        return {
+          managers,
+        };
+      },
+      onError,
+      onSuccess,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchProjectPriorities = (onError, onSuccess) => {
+  return useQuery(
+    "project-priority",
+    async () => {
+      return await api.get("/select-project-priority");
     },
 
     {
       select: (data) => {
         //console.log("allprorities", data.data);
 
-        const priorities = data?.data?.data?.map((item) => {
+        const priorities = data?.data?.priorities?.map((item) => {
           return {
             id: item.id,
             name: item.name,
@@ -72,7 +100,35 @@ export const useFetchAllPriorities = (onError, onSuccess) => {
 
         return {
           priorities,
-          pagination: data.data.pagination,
+        };
+      },
+      onError,
+      onSuccess,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchProjectStatus = (onError, onSuccess) => {
+  return useQuery(
+    "project-status",
+    async () => {
+      return await api.get("/select-project-status");
+    },
+
+    {
+      select: (data) => {
+        //console.log("allprorities", data.data);
+
+        const statuses = data?.data?.statuses?.map((item) => {
+          return {
+            id: item.id,
+            name: item.name,
+          };
+        });
+
+        return {
+          statuses,
         };
       },
       onError,
