@@ -79,8 +79,8 @@ class ClientOverview {
             return [
                 'client_id'     => $client->id,
                 'organization'  => $client->organization,
-                'project_count' => $client->projects_count,
-                'invoice'       => $invoices,
+                'project_count' => $client->projects_count ?? 0,
+                'invoice'       => $invoices ?? [],
                 'name'          => $wpUser['name'] ?? null,
                 'email'         => $wpUser['email'] ?? null,
             ];
