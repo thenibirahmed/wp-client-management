@@ -20,7 +20,7 @@ class SelectProjectPriority {
 
     public function select_priority_for_project()
     {
-        $projectPriorities = Priority::getPriorities('project');
+        $projectPriorities = Priority::getPriorities(Priority::TYPES['project']);
 
         $data = [];
         foreach ($projectPriorities as $priority) {
