@@ -20,82 +20,39 @@ class ProjectOverview {
         ]);
     }
 
-    public function get_project_overview(\WP_REST_Request $request)
+    public function get_project_overview()
     {
-        $page = $request->get_param('page');
+        $projects = Project::pluck('id')->toArray();
+        $invoices  = Invoice::whereIn('client_id', $projects)->get();
 
-        $projects = Project::paginate(20, ['id', 'title', 'client_id'], 'page', $page);
+        $totalInvoicesAmount = $invoices->sum('total');
+        $totalInvoiceCount = $invoices->count();
 
-        $projectids = $projects->pluck('id')->toArray();
+        $totalPaidInvoices = $invoices->where('status.type','invoice')
+                            ->where('status.name','paid');
 
-        $invoices  = Invoice::whereIn('client_id', $$projectids)
-        ->with('status')
-        ->get();
+        $totalPaidInvoiceAmount = $totalPaidInvoices->sum('total');
+        $totalPaidInvoiceCount = $totalPaidInvoices->count();
 
-        $invoiceTotalByProject = $invoices->groupBy('client_id')->map(function ($invoices) {
+        $totalUnpaidInvoiceAmount = $totalInvoicesAmount - $totalPaidInvoiceAmount;
+        $totalUnpaidInvoiceCount = $totalInvoiceCount - $totalPaidInvoiceCount;
 
-            $total  = $invoices->sum('total');
-            $paid   = $invoices->where('status.name', 'paid')->where('status.type', 'invoice')->sum('total');
-            $unpaid = $total - $paid;
-
-            return [
-                'total'    => $total,
-                'revenue'  => $paid,
-                'due'      => $unpaid,
-            ];
-        });
-
-        $totalInvoices = $invoiceTotalByProject->sum('total');
-        $totalRevenue  = $invoiceTotalByProject->sum('revenue');
-        $totalDue      = $invoiceTotalByProject->sum('due');
-
-        $clients = Client::whereIn('id', $projects->pluck('client_id')->toArray())->get();
-
-        $wp_user_ids = $clients->pluck('eic_crm_user.wp_user_id')->toArray();
-
-        $wpUsersDb = get_users([
-            'include' => $wp_user_ids,
-        ]);
-
-        $wpUsers = [];
-        foreach ($wpUsersDb as $user) {
-            $wpUsers[$user->ID] = [
-                'name'  => $user->user_login,
-                'email' => $user->user_email,
-            ];
-        }
-
-        $projectsWithDetails = $projects->map(function ($project) use ($wpUsers , $invoiceTotalByProject) {
-            $crm_user = $project->client->eic_crm_user;
-            $wp_user_id = $crm_user->wp_user_id;
-            $wp_user = $wpUsers[$wp_user_id] ?? [];
-
-            $invoices = $invoiceTotalByProject->get($project->id, [
-                'total' => 0, 'revenue' => 0, 'due' => 0
-            ]);
-
-            return [
-                'id' => $project->id,
-                'title' => $project->title,
-                'client' => [
-                    'id' => $project->client->id,
-                    'name' => $wp_user['name'] ?? '',
-                    'email' => $wp_user['email'] ?? '',
+        return new \WP_REST_Response([
+            'topBar' => [
+                'invoice' => [
+                    'total' => $totalInvoicesAmount,
+                    'count' => $totalInvoiceCount
                 ],
-                'invoice' => $invoices,
-            ];
-        });
-
-        return new \WP_REST_Response([
-            'data' => $projectsWithDetails,
+                'revenue' => [
+                    'total' => $totalPaidInvoiceAmount,
+                    'count' => $totalPaidInvoiceCount
+                ],
+                'due' => [
+                    'total' => $totalUnpaidInvoiceAmount,
+                    'count' => $totalUnpaidInvoiceCount
+                ]
+            ]
         ]);
 
-        return new \WP_REST_Response([
-            'data' => $data,
-            'total' => $projects->total(),
-            'per_page' => $projects->perPage(),
-            'current_page' => $projects->currentPage(),
-            'last_page' => $projects->lastPage(),
-        ]);
     }
 }

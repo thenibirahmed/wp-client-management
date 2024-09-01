@@ -39,7 +39,7 @@ class Project extends Model
                   ->where('name', 'in_progress');
         })->get();
     }
-    
+
     public static function getClientProjects($id)
     {
         return self::with('invoices','priority')->where('client_id', $id)->get();
