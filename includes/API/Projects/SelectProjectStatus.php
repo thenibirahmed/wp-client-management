@@ -20,7 +20,7 @@ class SelectProjectStatus {
 
     public function select_status_for_project()
     {
-        $projectStatuses = Status::getStatuses('project');
+        $projectStatuses = Status::getStatuses(Status::TYPES['project']);
 
         $data = [];
         foreach ($projectStatuses as $status) {
