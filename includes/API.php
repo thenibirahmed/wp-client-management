@@ -61,6 +61,7 @@ use WpClientManagement\API\Projects\GetSingleProject;
 use WpClientManagement\API\Projects\ProjectOverview;
 use WpClientManagement\API\Projects\SelectClientForProject;
 use WpClientManagement\API\Projects\SelectProjectManager;
+use WpClientManagement\API\Projects\SelectProjectPriority;
 use WpClientManagement\API\Projects\SelectProjectStatus;
 use WpClientManagement\API\Projects\UpdateProject;
 use WpClientManagement\API\Schedules\CreateSchedule;
@@ -188,6 +189,7 @@ class API {
         new SelectProjectManager();
         new SelectClientForProject();
         new SelectProjectStatus();
+        new SelectProjectPriority();
 
         // Schedule
         new GetSchedules();
