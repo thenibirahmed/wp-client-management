@@ -69,12 +69,18 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/team-member/10/tasks",
+				eicApiSettings.rest_url + "wp-client-management/v1/project-overview",
 				// {
-				// 	name: "Employee2",
-				// 	email: "employee2@wp.com",
-				// 	phone: "32323",
-				// 	designation: "codecon",
+				// 	title: "Test project",
+				// 	client_id: 100,
+				// 	currency: "USD",
+				// 	manager_id: 1,
+				// 	status_id: 1,
+				// 	priority_id: 1,
+				// 	start_date: "2022-01-01",
+				// 	due_date: "2022-01-31",
+				// 	budget: 1000,
+				// 	description: "Test project",
 				// },
 				{
 					headers: {
@@ -94,7 +100,7 @@ const PlayGround = () => {
 				);
 			});
 	};
-	
+
     return (
         <div>
             <h1>PlayGround</h1>
