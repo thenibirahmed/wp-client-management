@@ -59,6 +59,9 @@ use WpClientManagement\API\Projects\DeleteProject;
 use WpClientManagement\API\Projects\GetProjects;
 use WpClientManagement\API\Projects\GetSingleProject;
 use WpClientManagement\API\Projects\ProjectOverview;
+use WpClientManagement\API\Projects\SelectClientForProject;
+use WpClientManagement\API\Projects\SelectProjectManager;
+use WpClientManagement\API\Projects\SelectProjectStatus;
 use WpClientManagement\API\Projects\UpdateProject;
 use WpClientManagement\API\Schedules\CreateSchedule;
 use WpClientManagement\API\Schedules\DeleteSchedule;
@@ -139,7 +142,7 @@ class API {
         new GetSingleTeamMember();
         new GetSingleTeamMemberProjects();
         new GetSingleTeamMemberTasks();
-        
+
         // Email
         new GetEmails();
         new GetSingleEmail();
@@ -182,6 +185,9 @@ class API {
         new CreateProject();
         new UpdateProject();
         new ProjectOverview();
+        new SelectProjectManager();
+        new SelectClientForProject();
+        new SelectProjectStatus();
 
         // Schedule
         new GetSchedules();

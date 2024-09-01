@@ -29,6 +29,13 @@ class EicCrmUser extends Model
                     ->paginate(20, ['*'], 'page', $page);
     }
 
+    public static function selectManager()
+    {
+        $clientIds = Client::pluck('eic_crm_user_id')->toArray();
+
+        return self::whereNotIn('id', $clientIds)->get();
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }

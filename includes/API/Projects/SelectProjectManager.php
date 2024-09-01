@@ -2,7 +2,6 @@
 
 namespace WpClientManagement\API\Projects;
 
-use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
 
 class SelectProjectManager {
