@@ -22,6 +22,11 @@ class Status extends Model
         'invoice' => 'invoice',
     ];
 
+    public static function getStatuses($type)
+    {
+        return Status::where('type', $type)->get();
+    }
+
     public function projects() {
         return $this->hasMany(Project::class);
     }

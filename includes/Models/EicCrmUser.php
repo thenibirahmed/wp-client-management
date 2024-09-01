@@ -29,6 +29,13 @@ class EicCrmUser extends Model
                     ->paginate(20, ['*'], 'page', $page);
     }
 
+    public static function selectManager()
+    {
+        $clientIds = Client::pluck('eic_crm_user_id')->toArray();
+
+        return self::whereNotIn('id', $clientIds)->get();
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }
@@ -37,9 +44,8 @@ class EicCrmUser extends Model
         return $this->hasOne(Client::class);
     }
 
-    public function projects()
-    {
-        return $this->belongsToMany(Project::class, 'project_eic_crm_users');
+    public function projects() {
+        return $this->belongsToMany(Project::class, 'eic_project_eic_crm_users', 'eic_crm_user_id', 'project_id');
     }
 
 }

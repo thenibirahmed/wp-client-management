@@ -20,16 +20,22 @@ class Client extends Model
 
     public static function getActiveClients($page)
     {
-        return self::withCount('projects')->with(['eic_crm_user'])
-                ->whereHas('projects', function ($query)
-        {
-            $query->whereHas('status', function ($subQuery)
-            {
-                $subQuery->where('type', 'project')
-                         ->where('name', 'in_progress');
-            });
-        })->paginate(20, ['*'], 'page', $page);
+        return self::paginate(20, ['*'], 'page', $page);
     }
+
+    // Older one.
+    // public static function getActiveClients($page)
+    // {
+    //     return self::withCount('projects')->with(['eic_crm_user'])
+    //             ->whereHas('projects', function ($query)
+    //     {
+    //         $query->whereHas('status', function ($subQuery)
+    //         {
+    //             $subQuery->where('type', 'project')
+    //                      ->where('name', 'in_progress');
+    //         });
+    //     })->paginate(20, ['*'], 'page', $page);
+    // }
 
     public static function getClientData($id)
     {

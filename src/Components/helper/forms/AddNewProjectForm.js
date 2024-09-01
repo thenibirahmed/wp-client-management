@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import dayjs from "dayjs";
 import TextField from "../TextField";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { SelectTextField } from "../SelectTextField";
@@ -83,27 +83,29 @@ const AddNewProjectForm = () => {
   const addNewClientHandler = async (data) => {
     setSubmitLoader(true);
     const sendData = {
-      client_id: Number(selectClient.id), // must be integer
-      manager_id: "1", // must be integer
-      status_id: "2", //must be integer
-      priority_id: Number(selectPriority.id), //must be integer
+      client_id: 11, // must be integer
+      manager_id: 4, // must be integer
+      status_id: 1, // must be integer
+      priority_id: 1, // must be integer
       title: data.title,
       budget: 450.2, // decimal
       currency: "USD",
-      start_date: startDate, // time format
-      due_date: endDate, //time format
+      start_date: dayjs(startDate).format("YYYY-MM-DD"), // convert to MySQL date format
+      due_date: dayjs(endDate).format("YYYY-MM-DD"), // convert to MySQL date format
       description: data.description,
     };
     console.log(sendData);
-    // try {
-    //   const { data } = await api.post("/project/create", sendData);
-    // } catch (err) {
-    //   console.log(err);
-    // } finally {
-    //   setSubmitLoader(false);
-    // }
+    try {
+      const { data } = await api.post("/project/create", sendData);
 
-    //reset();
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setSubmitLoader(false);
+    }
+
+    reset();
   };
 
   const onImageUploadHandler = () => {

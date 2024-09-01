@@ -15,6 +15,11 @@ class Priority extends Model
         'type',
     ];
 
+    public static function getPriorities($type)
+    {
+        return Priority::where('type', $type)->get();
+    }
+
     public function projects() {
         return $this->hasMany(Project::class);
     }

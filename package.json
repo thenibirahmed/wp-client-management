@@ -8,6 +8,7 @@
 		"@hugeicons/react-pro": "^0.3.2",
 		"autoprefixer": "^10.4.19",
 		"axios": "^1.7.2",
+		"dayjs": "^1.11.13",
 		"react-datepicker": "^7.3.0",
 		"react-hook-form": "^7.52.1",
 		"react-hot-toast": "^2.4.1",

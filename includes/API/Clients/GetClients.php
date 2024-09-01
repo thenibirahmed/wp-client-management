@@ -30,7 +30,7 @@ class GetClients {
         $wpUsersDb = get_users([
             'include' => $wp_user_ids,
         ]);
-        
+
         $wpUsers = [];
         foreach ($wpUsersDb as $user) {
             $wpUsers[$user->ID] = [

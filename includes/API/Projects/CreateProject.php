@@ -68,18 +68,7 @@ class CreateProject {
             ], 400);
         }
 
-        $project = Project::create([
-            'client_id'    => $data['client_id'],
-            'manager_id'   => $data['manager_id'],
-            'status_id'    => $data['status_id'],
-            'priority_id'  => $data['priority_id'],
-            'title'        => $data['title'],
-            'budget'       => $data['budget'],
-            'currency'     => $data['currency'],
-            'start_date'   => $data['start_date'],
-            'due_date'     => $data['due_date'],
-            'description'  => $data['description'],
-        ]);
+        $project = Project::create($data);
 
         if(!$project) {
             return new \WP_REST_Response([

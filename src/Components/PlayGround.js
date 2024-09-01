@@ -84,16 +84,29 @@ const PlayGround = () => {
   const getTest = () => {
     axios
       .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/clients",
-
+        eicApiSettings.rest_url + "wp-client-management/v1/project-overview",
+        // {
+        // 	title: "Test project",
+        // 	client_id: 100,
+        // 	currency: "USD",
+        // 	manager_id: 1,
+        // 	status_id: 1,
+        // 	priority_id: 1,
+        // 	start_date: "2022-01-01",
+        // 	due_date: "2022-01-31",
+        // 	budget: 1000,
+        // 	description: "Test project",
+        // },
         {
           headers: {
             "X-WP-Nonce": eicApiSettings.nonce,
+            // 'Content-Type' : 'application/json'
           },
         }
       )
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
+        setPost(response.data);
       })
       .catch((error) => {
         console.log(
@@ -113,7 +126,19 @@ const PlayGround = () => {
       <button onClick={getSinglePost}>Click me to get single post</button>{" "}
       <br />
       <br />
-      <button onClick={getTest}>Testing</button>
+      <button
+        style={{
+          padding: "10px",
+          backgroundColor: "blue",
+          color: "white",
+          borderRadius: "5px",
+          cursor: "pointer",
+          border: "none",
+        }}
+        onClick={getTest}
+      >
+        Test me!
+      </button>
       <br />
     </div>
   );
