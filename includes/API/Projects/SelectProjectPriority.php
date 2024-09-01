@@ -31,7 +31,7 @@ class SelectProjectPriority {
         }
 
         return new \WP_REST_Response([
-            'data' => $data
+            'priorities' => $data
         ]);
     }
 }

@@ -9,7 +9,7 @@ class SelectClientForProject {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/select-client';
+    private $endpoint = '/select-project-client';
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
@@ -49,7 +49,7 @@ class SelectClientForProject {
         });
 
         return new \WP_REST_Response([
-            'data' => $clientWithDetails
+            'clients' => $clientWithDetails
         ]);
     }
 }

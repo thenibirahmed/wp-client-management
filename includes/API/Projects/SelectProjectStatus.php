@@ -31,7 +31,7 @@ class SelectProjectStatus {
         }
 
         return new \WP_REST_Response([
-            'data' => $data
+            'statuses' => $data
         ]);
     }
 }

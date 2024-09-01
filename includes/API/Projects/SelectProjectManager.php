@@ -47,7 +47,7 @@ class SelectProjectManager {
         });
 
         return new \WP_REST_Response([
-            'data' => $managerWithDetails
+            'managers' => $managerWithDetails
         ]);
     }
 }
