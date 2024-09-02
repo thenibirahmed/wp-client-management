@@ -1,7 +1,7 @@
 import React from "react";
 import { OvierViewItem } from "../helper/OverViewItem";
 
-const ClientOverView = ({ overViewData }) => {
+const ClientOverView = ({ topBarData }) => {
   return (
     <React.Fragment>
       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
@@ -9,24 +9,24 @@ const ClientOverView = ({ overViewData }) => {
       </h1>
       <div className="flex   w-full  sm:flex-row flex-col  sm:justify-between  items-center border border-borderColor rounded-lg">
         <OvierViewItem
-          title={overViewData?.invoice?.name}
-          amount={overViewData?.invoice?.amount}
-          invoice={overViewData?.invoice?.subText}
+          title={topBarData?.invoice?.name}
+          amount={topBarData?.invoice?.amount}
+          invoice={topBarData?.invoice?.subText}
         />
         <OvierViewItem
-          title={overViewData?.revenue?.name}
-          amount={overViewData?.revenue?.amount}
-          invoice={overViewData?.revenue?.subText}
+          title={topBarData?.revenue?.name}
+          amount={topBarData?.revenue?.amount}
+          invoice={topBarData?.revenue?.subText}
         />
         <OvierViewItem
-          title={overViewData?.due?.name}
-          amount={overViewData?.due?.amount}
-          invoice={overViewData?.due?.subText}
+          title={topBarData?.due?.name}
+          amount={topBarData?.due?.amount}
+          invoice={topBarData?.due?.subText}
         />
         <OvierViewItem
-          title={overViewData?.project?.name}
-          amount={overViewData?.project?.amount}
-          invoice={overViewData?.project?.subText}
+          title={topBarData?.project?.name}
+          amount={topBarData?.project?.amount}
+          invoice={topBarData?.project?.subText}
         />
       </div>
     </React.Fragment>

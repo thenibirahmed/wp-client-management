@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Delete03Icon, PencilEdit02Icon, Task01Icon } from "../../utils/icons";
 import useHashRouting from "../../utils/useHashRouting";
 import Pagination from "./Pagination";
-import useCheckedHandler from "../../utils/useCheckedItem";
+import useCheckedHandler, {
+  useClientCheckedHandler,
+} from "../../utils/useCheckedItem";
 
 const tableData = [
   {
@@ -55,7 +57,9 @@ const tableData = [
   },
 ];
 
-const ClientTable = () => {
+const ClientTable = ({ clientData }) => {
+  console.log("clientData = ", clientData);
+
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
   const currentPageName = window.location.pathname.split("/")[1];
@@ -65,7 +69,7 @@ const ClientTable = () => {
   const [selectedClient, setSelectedClient] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
-  const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
+  const { checkedAllClient, checkedSingleClient } = useClientCheckedHandler(
     selectedClient,
     setIsAllSelected,
     setSelectedClient
@@ -91,7 +95,7 @@ const ClientTable = () => {
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, clientData)
                       }
                       type="checkbox"
                     />
@@ -141,9 +145,9 @@ const ClientTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
+                {clientData.map((item) => {
                   const isChecked = selectedClient.some(
-                    (client) => client.id === item.id
+                    (client) => client?.client_id === item?.client_id
                   );
                   return (
                     <tr>
@@ -161,7 +165,9 @@ const ClientTable = () => {
                         <div className="flex  gap-3">
                           <img
                             className="h-8 w-8 rounded-full bg-gray-50"
-                            src={item.image}
+                            src={
+                              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            }
                             alt={item.name}
                           />
                           <div>
@@ -169,7 +175,7 @@ const ClientTable = () => {
                               {item.name}
                             </h3>
                             <span className="text-xs  text-textColor2 font-metropolis font-normal leading-3">
-                              {item.position}
+                              {item.organization}
                             </span>
                           </div>
                         </div>
@@ -178,16 +184,16 @@ const ClientTable = () => {
                         {item.email}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-normal">
-                        {item.project}
+                        {item.project_count}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
-                        ${item.invoice}
+                        ${item.invoice.total}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-invoiceColor font-metropolis font-medium">
-                        ${item.revenue}
+                        ${item.invoice.revenue}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
-                        ${item.due}
+                        ${item.invoice.due}
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">

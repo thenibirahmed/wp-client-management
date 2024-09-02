@@ -22,8 +22,8 @@ const Client = () => {
   const { setCreateInvoice, setAllTabItems } = useStoreContext();
   const [open, setOpen] = useState(false);
 
-  const { isLoading, data } = useFetchClientOverView(onError);
-  console.log(data);
+  const { isLoading, data: clientOverView } = useFetchClientOverView(onError);
+  //console.log(clientOverView);
 
   function onError(err) {
     toast.error(err?.response?.data?.message);
@@ -49,7 +49,7 @@ const Client = () => {
 
   return (
     <React.Fragment>
-      <ClientOverView overViewData={data?.topBar} />
+      <ClientOverView topBarData={clientOverView?.topBar} />
       <div className="space-y-6">
         <div className="flex md:flex-row  md:justify-between flex-col md:items-center md:gap-0 gap-4">
           <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
@@ -83,9 +83,9 @@ const Client = () => {
           </div>
         ) : (
           <React.Fragment>
-            {data.clients.length > 0 ? (
+            {clientOverView.clients.length > 0 ? (
               <>
-                <ClientTable />
+                <ClientTable clientData={clientOverView?.clients} />
               </>
             ) : (
               <>

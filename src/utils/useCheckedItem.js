@@ -40,3 +40,41 @@ const useCheckedHandler = (
 };
 
 export default useCheckedHandler;
+
+export const useClientCheckedHandler = (
+  selectedClient,
+  setIsAllSelected,
+  setSelectedClient
+) => {
+  const checkedAllClient = (checked, allClients) => {
+    if (checked) {
+      setIsAllSelected(true);
+      setSelectedClient(allClients);
+    } else {
+      setIsAllSelected(false);
+      setSelectedClient([]);
+    }
+  };
+  const checkedSingleClient = (checked, newClient) => {
+    const isItemExist = selectedClient.some(
+      (client) => client.client_id === newClient.client_id
+    );
+    if (isItemExist) {
+      const updateClient = selectedClient.filter(
+        (client) => client.client_id !== newClient.client_id
+      );
+
+      setSelectedClient(updateClient);
+    } else {
+      setSelectedClient([...selectedClient, newClient]);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedClient.length === 0) {
+      setIsAllSelected(false);
+    }
+  }, [selectedClient]);
+
+  return { checkedAllClient, checkedSingleClient };
+};

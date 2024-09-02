@@ -15,29 +15,17 @@ import {
 import Skeleton from "../../Skeleton";
 import api from "../../../api/api";
 import { Calendar02Icon } from "../../../utils/icons";
+import toast from "react-hot-toast";
+import Loaders from "../../Loaders";
 
 const currencyLists = [
-  { id: 1, name: "Select Currency" },
   { id: 2, name: "USD" },
   { id: 3, name: "EUR" },
   { id: 4, name: "JPY" },
   { id: 5, name: "GBP" },
 ];
 
-const statusLists = [
-  { id: 1, name: "Select Status" },
-  { id: 2, name: "Active" },
-  { id: 3, name: "Pending" },
-  { id: 3, name: "Completed" },
-];
-
-const projectManagerLists = [
-  { id: 1, name: "Select Project Manager" },
-  { id: 2, name: "Scrum Master" },
-  { id: 3, name: "Program Manager" },
-];
 const assigneeLists = [
-  { id: 1, name: "Select Assignee" },
   { id: 2, name: "Software Developer" },
   { id: 3, name: "UX Designer" },
 ];
@@ -51,7 +39,7 @@ const AddNewProjectForm = () => {
 
   const [selectClient, setSelectClient] = useState();
   const [selectCurrency, setSelectCurrency] = useState(currencyLists[0]);
-  const [selectStatus, setSelectStatus] = useState(statusLists[0]);
+  const [selectStatus, setSelectStatus] = useState();
   const [selectPriority, setSelectPriority] = useState();
   const [selectProjectManager, setSelectProjectManager] = useState();
   const [selectAssignee, setSelectAssignee] = useState(assigneeLists[0]);
@@ -60,21 +48,17 @@ const AddNewProjectForm = () => {
   const imageRef = useRef();
 
   //calling react-query Parallely for fetching data
-  const { isLoading: isLoadingClients, data: clients } = useFetchProjectClients(
-    onError,
-    onSuccessClients
-  );
+  const { isLoading: isLoadingClients, data: clients } =
+    useFetchProjectClients(onError);
 
   const { isLoading: isLoadProjectManager, data: managers } =
-    useFetchProjectManager(onError, onSuccessProjectManager);
+    useFetchProjectManager(onError);
 
   const { isLoading: isLoadingPriorities, data: priorities } =
-    useFetchProjectPriorities(onError, onSuccessPriorities);
+    useFetchProjectPriorities(onError);
 
-  const { isLoading: isLoadingStatus, data: statuses } = useFetchProjectStatus(
-    onError,
-    onSuccessStatus
-  );
+  const { isLoading: isLoadingStatus, data: statuses } =
+    useFetchProjectStatus(onError);
 
   const isLoading =
     isLoadingClients ||
@@ -93,76 +77,67 @@ const AddNewProjectForm = () => {
   });
 
   const addNewClientHandler = async (data) => {
+    if (
+      !selectClient?.id ||
+      !selectProjectManager?.id ||
+      !selectStatus?.id ||
+      !selectPriority?.id
+    ) {
+      return setError("This field is required*");
+    }
     setSubmitLoader(true);
     const sendData = {
-      client_id: 11, // must be integer
-      manager_id: 4, // must be integer
-      status_id: 1, // must be integer
-      priority_id: 1, // must be integer
+      client_id: selectClient?.id,
+      manager_id: selectProjectManager?.id,
+      status_id: selectStatus?.id,
+      priority_id: selectPriority?.id,
       title: data.title,
       budget: 450.2, // decimal
       currency: "USD",
-      start_date: dayjs(startDate).format("YYYY-MM-DD"), // convert to MySQL date format
-      due_date: dayjs(endDate).format("YYYY-MM-DD"), // convert to MySQL date format
-      description: data.description,
+      start_date: dayjs(startDate).format("YYYY-MM-DD"),
+      due_date: dayjs(endDate).format("YYYY-MM-DD"),
+      description: data?.description,
     };
     console.log(sendData);
     try {
       const { data } = await api.post("/project/create", sendData);
-
+      toast.success(data?.message);
+      reset();
       console.log(data);
     } catch (err) {
       console.log(err);
+      toast.error("Something went wrong");
     } finally {
       setSubmitLoader(false);
     }
-
-    reset();
   };
 
   const onImageUploadHandler = () => {
     imageRef.current.click();
   };
 
-  function onSuccessClients(data) {
-    if (data?.clients.length > 0) {
-      setSelectClient(data?.clients[0]);
+  useEffect(() => {
+    if (clients?.clients.length > 0) {
+      setSelectClient(clients?.clients[0]);
     } else {
-      setSelectClient({ name: "-No Client To Select-", id: null });
+      setSelectClient({ name: " -No Client- ", id: null });
     }
-  }
-
-  function onSuccessProjectManager(data) {
-    if (data?.managers.length > 0) {
-      setSelectProjectManager(data?.managers[0]);
+    if (managers?.managers.length > 0) {
+      setSelectProjectManager(managers?.managers[0]);
     } else {
-      setSelectProjectManager({
-        name: "-No Project Manager To Select-",
-        id: null,
-      });
+      setSelectProjectManager({ name: " -No Project Manager- ", id: null });
     }
-  }
-
-  function onSuccessPriorities(data) {
-    if (data?.priorities.length > 0) {
-      setSelectPriority(data?.priorities[0]);
+    if (priorities?.priorities.length > 0) {
+      setSelectPriority(priorities?.priorities[0]);
     } else {
-      setSelectPriority({
-        name: "-No Project Priorities To Select-",
-        id: null,
-      });
+      setSelectPriority({ name: " -No Priority- ", id: null });
     }
-  }
-  function onSuccessStatus(data) {
-    if (data?.priorities.length > 0) {
-      setSelectStatus(data?.statuses[0]);
+    if (statuses?.statuses.length > 0) {
+      setSelectStatus(statuses?.statuses[0]);
     } else {
-      setSelectStatus({
-        name: "-No Status To Select-",
-        id: null,
-      });
+      setSelectStatus({ name: " -No Status- ", id: null });
     }
-  }
+  }, [clients, managers, priorities, statuses]);
 
   function onError(err) {
     toast.error(err?.response?.data?.message);
@@ -314,6 +289,7 @@ const AddNewProjectForm = () => {
 
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button
+            disabled={submitLoader}
             onClick={() => setOpenProjectModal(false)}
             type="button"
             className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
@@ -321,10 +297,11 @@ const AddNewProjectForm = () => {
             Cancel
           </button>
           <button
+            disabled={submitLoader}
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            Save
+            {submitLoader ? <Loaders /> : "Save"}
           </button>
         </div>
       </form>

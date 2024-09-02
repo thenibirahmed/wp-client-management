@@ -20,11 +20,11 @@ export const SelectTextField = ({
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (select?.id === 1 && isSubmitting) {
+    if (!select?.id && isSubmitting) {
       setError("This field is required*");
     }
 
-    if (select?.id !== 1 && !isSubmitting) {
+    if (select?.id && !isSubmitting) {
       setError("");
     }
   }, [select, isSubmitting]);

@@ -14,6 +14,7 @@ export const useFetchClientOverView = (onError) => {
           pagination: data.data.pagination,
           topBar: data.data.topBar,
         };
+
         return sendData;
       },
       onError,
@@ -22,7 +23,7 @@ export const useFetchClientOverView = (onError) => {
   );
 };
 
-export const useFetchProjectClients = (onError, onSuccess) => {
+export const useFetchProjectClients = (onError) => {
   return useQuery(
     "project-clients",
     async () => {
@@ -31,8 +32,6 @@ export const useFetchProjectClients = (onError, onSuccess) => {
 
     {
       select: (data) => {
-        console.log("all project clients", data.data);
-
         const clients = data?.data?.clients?.map((item) => {
           return {
             id: item.id,
@@ -45,13 +44,12 @@ export const useFetchProjectClients = (onError, onSuccess) => {
         };
       },
       onError,
-      onSuccess,
       staleTime: 5000,
     }
   );
 };
 
-export const useFetchProjectManager = (onError, onSuccess) => {
+export const useFetchProjectManager = (onError) => {
   return useQuery(
     "project-manager",
     async () => {
@@ -60,8 +58,6 @@ export const useFetchProjectManager = (onError, onSuccess) => {
 
     {
       select: (data) => {
-        console.log("all project managers", data.data.managers);
-
         const managers = data?.data?.managers?.map((item) => {
           return {
             id: item.id,
@@ -74,13 +70,12 @@ export const useFetchProjectManager = (onError, onSuccess) => {
         };
       },
       onError,
-      onSuccess,
       staleTime: 5000,
     }
   );
 };
 
-export const useFetchProjectPriorities = (onError, onSuccess) => {
+export const useFetchProjectPriorities = (onError) => {
   return useQuery(
     "project-priority",
     async () => {
@@ -103,13 +98,12 @@ export const useFetchProjectPriorities = (onError, onSuccess) => {
         };
       },
       onError,
-      onSuccess,
       staleTime: 5000,
     }
   );
 };
 
-export const useFetchProjectStatus = (onError, onSuccess) => {
+export const useFetchProjectStatus = (onError) => {
   return useQuery(
     "project-status",
     async () => {
@@ -132,7 +126,7 @@ export const useFetchProjectStatus = (onError, onSuccess) => {
         };
       },
       onError,
-      onSuccess,
+
       staleTime: 5000,
     }
   );
