@@ -53,6 +53,8 @@ class GetSingleProjectOverview {
 
         $projectData = Project::getProjectData($data['id']);
 
+        $working_employee = $projectData->eicCrmUsers->count();
+
         if(!$projectData) {
             return new \WP_REST_Response([
                 'error' => 'Project not found',
@@ -78,7 +80,7 @@ class GetSingleProjectOverview {
         $totalPaidInvoiceAmount = $invoices->where('status.type', 'invoice')->where('status.name','paid')->sum('total');
         $paidInvoiceCount       = $invoices->where('status.type', 'invoice')->where('status.name','paid')->count();
 
-        $totalDueAmount = $totalInvoiceAmount - $totalPaidInvoiceAmount;
+        $totalDueAmount     = $totalInvoiceAmount - $totalPaidInvoiceAmount;
         $unpaidInvoiceCount = $totalInvoiceCount - $paidInvoiceCount;
 
         $topBar = [
@@ -96,7 +98,12 @@ class GetSingleProjectOverview {
                 'name'    => 'Total Due',
                 'amount'  => $totalDueAmount,
                 'subText' => $unpaidInvoiceCount . ($unpaidInvoiceCount == 1 ? ' invoice' : ' invoices')
-            ]
+            ],
+            "employee" => [
+                'name'    => 'Working Employee',
+                'amount'  => $working_employee,
+                'subText' => $working_employee . ($working_employee == 1 ? ' employee' : ' employees')
+            ],
         ];
 
         return new \WP_REST_Response([
