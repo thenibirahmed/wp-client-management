@@ -93,6 +93,7 @@ class GetAllProjects {
                 'id' => $project->id,
                 'project_name' => $project->title,
                 'client_name' => $wpUser['name'] ?? null,
+                'assignee' => $project->eicCrmUsers->count(),
                 'priority' => $project->priority->name,
                 'status' => $project->status->name,
                 'invoice' => $invoices['total'] ?? 0,
@@ -103,7 +104,6 @@ class GetAllProjects {
 
         return new \WP_REST_Response([
             'projects' => $projectWithDetails,
-
             'pagination' => [
                 'total' => $projects->total(),
                 'per_page' => $projects->perPage(),

@@ -82,6 +82,7 @@ use WpClientManagement\API\Tasks\UpdateTask;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMember;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMemberProjects;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMemberTasks;
+use WpClientManagement\API\TestApi;
 use WpClientManagement\API\Users\DeleteUser;
 use WpClientManagement\API\Users\GetSingleUser;
 
@@ -94,6 +95,9 @@ class API {
     }
 
     public function register_routes() {
+
+        // Test
+        new TestApi();
 
         // User
         new GetUsers();
