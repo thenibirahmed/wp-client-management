@@ -39,7 +39,7 @@ class Project extends Model
                   ->where('name', 'in_progress');
         })->get();
     }
-    
+
     public static function getClientProjects($id)
     {
         return self::with('invoices','priority')->where('client_id', $id)->get();
@@ -57,7 +57,7 @@ class Project extends Model
     }
 
     public function manager() {
-        return $this->belongsTo(EicCrmUser::class);
+        return $this->belongsTo(EicCrmUser::class, 'manager_id');
     }
 
     public function notes() {
@@ -69,7 +69,7 @@ class Project extends Model
     }
 
     public function eicCrmUsers() {
-        return $this->belongsToMany(EicCrmUser::class, 'eic_project_eic_crm_users', 'project_id', 'eic_crm_user_id');
+        return $this->belongsToMany(EicCrmUser::class, 'eic_project_eic_crm_user', 'project_id', 'eic_crm_user_id');
     }
 
     public function status() {

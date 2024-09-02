@@ -15,6 +15,12 @@ class Priority extends Model
         'type',
     ];
 
+    public CONST TYPES = [
+        'project' => 'project',
+        'task' => 'task',
+    ];
+
+
     public static function getPriorities($type)
     {
         return Priority::where('type', $type)->get();

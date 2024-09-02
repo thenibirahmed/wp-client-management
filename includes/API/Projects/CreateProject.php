@@ -76,9 +76,23 @@ class CreateProject {
             ]);
         }
 
+        $projectResponse = [
+            'id' => $project->id,
+            'title' => $project->title,
+            'description' => $project->description,
+            'client_id' => $project->client_id,
+            'manager_id' => $project->manager_id,
+            'status_id' => $project->status_id,
+            'priority_id' => $project->priority_id,
+            'budget' => $project->budget,
+            'currency' => $project->currency,
+            'start_date' => $project->start_date,
+            'due_date' => $project->due_date,
+        ];
+
         return new \WP_REST_Response([
             'message' => 'Poject created successfully.',
-            'project' => $project,
+            'project' => $projectResponse,
         ], 201);
     }
 }

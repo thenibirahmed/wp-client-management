@@ -101,7 +101,7 @@ const tableData = [
   },
 ];
 
-const ProjectTable = () => {
+const ProjectTable = ({ projectData, pagination }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
   const [selectedClient, setSelectedClient] = useState([]);
@@ -195,7 +195,7 @@ const ProjectTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
+                {projectData.map((item) => {
                   let itemStatus = item.status.toLowerCase();
                   let itemPriority = item.priority.toLowerCase();
 
@@ -214,7 +214,7 @@ const ProjectTable = () => {
                       ? "bg-customBg4 text-purple"
                       : itemStatus === "in review"
                       ? "bg-customBg5 text-customRed2"
-                      : "";
+                      : "bg-customBg1 text-green";
 
                   return (
                     <tr>
@@ -230,18 +230,18 @@ const ProjectTable = () => {
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.projectName}
+                          {item.project_name}
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.clientName}
+                          {item.client_name}
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6  ">
                         <div className="flex ">
                           <>
-                            {item.assignee.slice(0, 3).map((img, i) => {
+                            {assignee.slice(0, 3).map((img, i) => {
                               return (
                                 <img
                                   src={img.src}
@@ -253,7 +253,7 @@ const ProjectTable = () => {
                               );
                             })}
                             <div className="w-6 h-6 flex justify-center items-center bg-customBg2 border border-borderColor text-textColor2 font-metropolis rounded-full text-[8px] font-medium">
-                              +{item.assignee.length}
+                              +{assignee.length}
                             </div>
                           </>
                         </div>
@@ -269,11 +269,11 @@ const ProjectTable = () => {
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
                         <div className="flex items-center gap-2">
-                          {itemPriority === "high" ? (
+                          {itemPriority.toLowerCase() === "high" ? (
                             <RedCirlcle />
-                          ) : itemPriority === "low" ? (
+                          ) : itemPriority.toLowerCase() === "low" ? (
                             <SkyBlueCirle />
-                          ) : itemPriority === "medium" ? (
+                          ) : itemPriority.toLowerCase() === "medium" ? (
                             <YellowCirle />
                           ) : (
                             <RedCirlcle />

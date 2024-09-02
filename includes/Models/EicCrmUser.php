@@ -44,8 +44,8 @@ class EicCrmUser extends Model
         return $this->hasOne(Client::class);
     }
 
-    public function projects() {
-        return $this->belongsToMany(Project::class, 'eic_project_eic_crm_users', 'eic_crm_user_id', 'project_id');
+    public function assignedProjects() {
+        return $this->belongsToMany(Project::class, 'eic_project_eic_crm_user', 'eic_crm_user_id', 'project_id');
     }
 
 }

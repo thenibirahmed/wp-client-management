@@ -13,8 +13,11 @@ import ProjectHeader from "../helper/projects/ProjectHeader";
 import ProjectTable from "../helper/projects/ProjectTable";
 import AddNewProjectForm from "../helper/forms/AddNewProjectForm";
 import ProjectTaskDetails from "./ProjectTask/ProjectTaskDetails";
+import { useFetchAllProjects } from "../../hooks/useQuery";
+import Skeleton from "../Skeleton";
 
 const Projects = () => {
+  const [open, setOpen] = useState(false);
   const {
     openProjectModal,
     setOpenProjectModal,
@@ -22,6 +25,15 @@ const Projects = () => {
     openTaskDetail,
     setOpenTaskDetail,
   } = useStoreContext();
+
+  const { isLoading, data: projects } = useFetchAllProjects(onError);
+
+  console.log("projects = ", projects);
+
+  function onError(err) {
+    console.log(err);
+  }
+
   const dataList = [1];
 
   useEffect(() => {
@@ -47,19 +59,29 @@ const Projects = () => {
             <ProjectHeader />
 
             <React.Fragment>
-              {dataList.length > 0 ? (
-                <>
-                  <ProjectTable />
-                </>
+              {isLoading ? (
+                <Skeleton />
               ) : (
                 <>
-                  <EmptyTable
-                    Icon={UserCircle02Icon}
-                    setOpen={setOpen}
-                    title="  Clients Not Yet Registered"
-                    subtitle="Start building your client list."
-                    btnText=" Add Client"
-                  />
+                  {dataList.length > 0 ? (
+                    <>
+                      <ProjectTable
+                        projectData={projects.projects}
+                        pagination={projects.pagination}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <EmptyTable
+                        handler={() => setOpenProjectModal(true)}
+                        Icon={UserCircle02Icon}
+                        setOpen={setOpenProjectModal}
+                        title="  No Project Created Yer"
+                        subtitle="Start building your Project list"
+                        btnText=" Add Project"
+                      />
+                    </>
+                  )}
                 </>
               )}
             </React.Fragment>

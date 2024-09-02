@@ -56,7 +56,7 @@ use WpClientManagement\API\Priorities\GetSinglePriority;
 use WpClientManagement\API\Priorities\UpdatePriority;
 use WpClientManagement\API\Projects\CreateProject;
 use WpClientManagement\API\Projects\DeleteProject;
-use WpClientManagement\API\Projects\GetProjects;
+use WpClientManagement\API\Projects\GetAllProjects;
 use WpClientManagement\API\Projects\GetSingleProject;
 use WpClientManagement\API\Projects\ProjectOverview;
 use WpClientManagement\API\Projects\SelectClientForProject;
@@ -82,6 +82,7 @@ use WpClientManagement\API\Tasks\UpdateTask;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMember;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMemberProjects;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMemberTasks;
+use WpClientManagement\API\TestApi;
 use WpClientManagement\API\Users\DeleteUser;
 use WpClientManagement\API\Users\GetSingleUser;
 
@@ -94,6 +95,9 @@ class API {
     }
 
     public function register_routes() {
+
+        // Test
+        new TestApi();
 
         // User
         new GetUsers();
@@ -180,7 +184,7 @@ class API {
         new UpdatePriority();
 
         // Project
-        new GetProjects();
+        new GetAllProjects();
         new GetSingleProject();
         new DeleteProject();
         new CreateProject();

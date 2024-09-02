@@ -36,9 +36,10 @@ class Invoice extends Model
                 ->paginate(20, ['*'], 'invoice', $page);
     }
 
-    public static function getSingleClientInvoices($id)
+    public static function getAllPaidInvoices()
     {
-        return self::where('client_id',$id)
+        return self::where('status.type','invoice')
+                ->where('status.name','paid')
                 ->get();
     }
 

@@ -23,7 +23,7 @@ const Client = () => {
   const [open, setOpen] = useState(false);
 
   const { isLoading, data: clientOverView } = useFetchClientOverView(onError);
-  //console.log(clientOverView);
+  //console.log("clientOverView = ", clientOverView);
 
   function onError(err) {
     toast.error(err?.response?.data?.message);

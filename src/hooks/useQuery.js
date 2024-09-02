@@ -131,3 +131,23 @@ export const useFetchProjectStatus = (onError) => {
     }
   );
 };
+
+export const useFetchAllProjects = (onError) => {
+  return useQuery(
+    "projects",
+    async () => {
+      return await api.get("/projects");
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          projects: data.data.projects,
+          pagination: data.data.pagination,
+        };
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
