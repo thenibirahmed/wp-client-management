@@ -2,14 +2,13 @@
 
 namespace WpClientManagement\API\Projects;
 
-use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
 
 class ProjectOverview {
 
     private $namespace = 'wp-client-management/v1';
-    private $endpoint = '/project-overview';
+    private $endpoint  = '/project-overview';
 
     public function __construct()
     {
@@ -22,34 +21,43 @@ class ProjectOverview {
 
     public function get_project_overview()
     {
-        $projects = Project::pluck('id')->toArray();
-        $invoices  = Invoice::whereIn('client_id', $projects)->get();
+        $projects     = Project::pluck('id')->toArray();
+        $projectCount = count($projects);
+        $invoices     = Invoice::whereIn('client_id', $projects)->get();
 
         $totalInvoicesAmount = $invoices->sum('total');
-        $totalInvoiceCount = $invoices->count();
+        $totalInvoiceCount   = $invoices->count();
 
         $totalPaidInvoices = $invoices->where('status.type','invoice')
                             ->where('status.name','paid');
 
         $totalPaidInvoiceAmount = $totalPaidInvoices->sum('total');
-        $totalPaidInvoiceCount = $totalPaidInvoices->count();
+        $totalPaidInvoiceCount  = $totalPaidInvoices->count();
 
         $totalUnpaidInvoiceAmount = $totalInvoicesAmount - $totalPaidInvoiceAmount;
-        $totalUnpaidInvoiceCount = $totalInvoiceCount - $totalPaidInvoiceCount;
+        $totalUnpaidInvoiceCount  = $totalInvoiceCount - $totalPaidInvoiceCount;
 
         return new \WP_REST_Response([
             'topBar' => [
                 'invoice' => [
-                    'total' => $totalInvoicesAmount,
-                    'count' => $totalInvoiceCount
+                    'name'    => 'Total Invoices',
+                    'total'   => $totalInvoicesAmount,
+                    'subText' => $totalInvoiceCount . ($totalInvoiceCount == 1 ? ' invoice' : ' invoices')
                 ],
                 'revenue' => [
-                    'total' => $totalPaidInvoiceAmount,
-                    'count' => $totalPaidInvoiceCount
+                    'name'    => 'Total Revenue',
+                    'total'   => $totalPaidInvoiceAmount,
+                    'subText' => $totalPaidInvoiceCount . ($totalPaidInvoiceCount == 1 ? ' invoice' : ' invoices')
                 ],
                 'due' => [
-                    'total' => $totalUnpaidInvoiceAmount,
-                    'count' => $totalUnpaidInvoiceCount
+                    'name'    => 'Total Due',
+                    'total'   => $totalUnpaidInvoiceAmount,
+                    'subText' => $totalUnpaidInvoiceCount . ($totalUnpaidInvoiceCount == 1 ? ' invoice' : ' invoices')
+                ],
+                'projects' => [
+                    'name'    => 'Total Projects',
+                    'count'   => $projectCount,
+                    'subText' => 'Last 3 months'
                 ]
             ]
         ]);
