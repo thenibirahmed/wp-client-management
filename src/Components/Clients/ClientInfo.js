@@ -8,7 +8,7 @@ import {
 } from "../../utils/icons";
 import useHashRouting from "../../utils/useHashRouting";
 
-const ClientInfo = () => {
+const ClientInfo = ({ profile }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
@@ -24,10 +24,10 @@ const ClientInfo = () => {
         </div>
         <div>
           <h1 className="font-metropolis font-semibold  text-textColor text-3xl ">
-            {pathArray[pathArray.length - 1]}
+            {profile?.name}
           </h1>
           <span className="text-xs  text-textColor2 font-metropolis font-normal ">
-            ENGINEER
+            {profile?.organization}
           </span>
         </div>
       </div>

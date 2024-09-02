@@ -15,6 +15,7 @@ import ClientDetails from "../Components/Clients/ClientDetails";
 import ProjectDetail from "../Components/Projects/ProjectDetail";
 import ProjectTaskDetails from "../Components/Projects/ProjectTask/ProjectTaskDetails";
 import ContactTeamDetails from "../Components/Contacts/Team/TeamDetails/ContactTeamDetails";
+import Errors from "../Components/Errors";
 
 export const renderComponent = (path, activeUrl) => {
   switch (path) {
@@ -51,6 +52,8 @@ export const renderComponent = (path, activeUrl) => {
       return <Settings />;
     case "docs":
       return <Docs />;
+    case "error":
+      return <Errors />;
     default:
       return <Dashboard />;
   }

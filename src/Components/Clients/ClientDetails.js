@@ -9,6 +9,8 @@ import AddNewInvoice from "../helper/invoices/addNewInvoice/AddNewInvoice";
 import { useFetchSingleClientOverView } from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
 import useHashRouting from "../../utils/useHashRouting";
+import toast from "react-hot-toast";
+import Errors from "../Errors";
 
 const ClientDetails = () => {
   const currentPath = useHashRouting("");
@@ -18,23 +20,28 @@ const ClientDetails = () => {
   console.log("pathArray = ", pathArray);
 
   const { createInvoice } = useStoreContext();
-  const { isLoading, data: singleClientOverView } =
-    useFetchSingleClientOverView(pathArray[1], onError);
+  const {
+    isLoading,
+    data: singleClientOverView,
+    error,
+  } = useFetchSingleClientOverView(pathArray[1], onError);
 
   console.log("singleClientOverView", singleClientOverView);
 
   function onError(err) {
-    toast.error("Something went wrong Single ClientOverview");
+    toast.error(err?.response?.data?.errors?.id[0]);
     console.log(err);
   }
 
   if (isLoading) return <Skeleton />;
 
+  if (error) return <Errors message={error?.response?.data?.errors?.id[0]} />;
+
   return (
     <React.Fragment>
       {!createInvoice ? (
         <React.Fragment>
-          <ClientInfo />
+          <ClientInfo profile={singleClientOverView?.profile} />
           <ClientOverView topBarData={singleClientOverView?.topBar} />
           <div className="space-y-6">
             <Tab />

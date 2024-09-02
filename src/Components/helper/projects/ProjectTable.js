@@ -133,7 +133,7 @@ const ProjectTable = ({ projectData, pagination }) => {
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, projectData)
                       }
                       type="checkbox"
                     />

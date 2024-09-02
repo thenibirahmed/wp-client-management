@@ -2,6 +2,7 @@ import React from "react";
 import { OvierViewItem } from "../helper/OverViewItem";
 
 const ProjectOverView = ({ projectOverView, projectDetails = false }) => {
+  console.log("cus", projectOverView?.employee?.total);
   return (
     <React.Fragment>
       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
@@ -22,7 +23,7 @@ const ProjectOverView = ({ projectOverView, projectDetails = false }) => {
           <OvierViewItem
             isProject
             title={projectOverView?.employee?.name}
-            amount={projectOverView?.employee?.amount}
+            amount={projectOverView?.employee?.total}
             invoice={projectOverView?.employee?.subText}
           />
         ) : (

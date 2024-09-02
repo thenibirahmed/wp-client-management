@@ -10,14 +10,19 @@ import AddNewInvoice from "../helper/invoices/addNewInvoice/AddNewInvoice";
 import useHashRouting from "../../utils/useHashRouting";
 import { useFetchSingleProjectOverView } from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
+import toast from "react-hot-toast";
+import Errors from "../Errors";
 
 const ProjectDetail = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
   const { createInvoice } = useStoreContext();
 
-  const { isLoading, data: singleProjectOverView } =
-    useFetchSingleProjectOverView(pathArray[1], onError);
+  const {
+    isLoading,
+    data: singleProjectOverView,
+    error,
+  } = useFetchSingleProjectOverView(pathArray[1], onError);
 
   console.log("singleClientOverView", singleProjectOverView);
 
@@ -28,11 +33,15 @@ const ProjectDetail = () => {
 
   if (isLoading) return <Skeleton />;
 
+  if (error) {
+    return <Errors message={error?.response?.data?.errors?.id[0]} />;
+  }
+
   return (
     <React.Fragment>
       {!createInvoice ? (
         <React.Fragment>
-          <ProjectInfo />
+          <ProjectInfo projectHeader={singleProjectOverView.header} />
           <ProjectOverView
             projectOverView={singleProjectOverView.topBar}
             projectDetails

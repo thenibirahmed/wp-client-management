@@ -93,4 +93,9 @@ class Project extends Model
         return $this->hasMany(Invoice::class);
     }
 
+    public function tasks() {
+        return $this->hasMany(Task::class);
+    }
+
+
 }

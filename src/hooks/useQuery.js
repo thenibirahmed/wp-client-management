@@ -33,6 +33,7 @@ export const useFetchSingleClientOverView = (clientId, onError) => {
       select: (data) => {
         const sendData = {
           topBar: data.data.topBar,
+          profile: data.data.profile,
         };
 
         return sendData;
