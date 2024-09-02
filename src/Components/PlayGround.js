@@ -69,7 +69,7 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/projects",
+				eicApiSettings.rest_url + "wp-client-management/v1/project/10/overview",
 				// {
 				// 	title: "Test project",
 				// 	client_id: 100,
@@ -107,7 +107,6 @@ const PlayGround = () => {
             <button onClick={getPosts}>Click me to get all posts</button> <br/><br/>
             <button onClick={getUsers}>Click me to get all users</button> <br/><br/>
             <button onClick={getSinglePost}>Click me to get single post</button> <br/><br/>
-
             <button style={{padding: "10px",backgroundColor:"blue",color:"white",borderRadius:"5px",cursor:"pointer",border:"none"}} onClick={getTest}>Test me!</button><br/>
         </div>
     );

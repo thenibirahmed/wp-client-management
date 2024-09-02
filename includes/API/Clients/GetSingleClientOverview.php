@@ -34,7 +34,7 @@ class GetSingleClientOverview {
         global $validator;
 
         $id = $request->get_param('id');
-        
+
         if(!isset($id)) {
             return new \WP_REST_Response([
                 'error' => 'Id param is required',
@@ -50,6 +50,7 @@ class GetSingleClientOverview {
                 'errors' => $validator->errors(),
             ], 400);
         }
+
 
         $clientData = Client::getClientData($id);
         $wp_user_id = $clientData->eic_crm_user->wp_user_id;

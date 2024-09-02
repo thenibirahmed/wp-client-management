@@ -59,19 +59,49 @@ class GetSingleProjectOverview {
             ], 404);
         }
 
-        $client = get_user_by('ID', $projectData->client->eic_crm_user->wp_user_id);
+        $client  = get_user_by('ID', $projectData->client->eic_crm_user->wp_user_id);
         $manager = get_user_by('ID', $projectData->manager->wp_user_id);
 
         $projectHeader = [
-            'name' => $projectData->title,
-            'client_name' => $client->user_login,
+            'name'         => $projectData->title,
+            'client_name'  => $client->user_login,
             'manager_name' => $manager->user_login,
-            'status' => $projectData->status->name,
-            'priority' => $projectData->priority->name,
+            'status'       => $projectData->status->name,
+            'priority'     => $projectData->priority->name,
+        ];
+
+        $invoices = Invoice::getSingleProjectInvoices($id);
+
+        $totalInvoiceAmount = $invoices->sum('total');
+        $totalInvoiceCount  = $invoices->count();
+
+        $totalPaidInvoiceAmount = $invoices->where('status.type', 'invoice')->where('status.name','paid')->sum('total');
+        $paidInvoiceCount       = $invoices->where('status.type', 'invoice')->where('status.name','paid')->count();
+
+        $totalDueAmount = $totalInvoiceAmount - $totalPaidInvoiceAmount;
+        $unpaidInvoiceCount = $totalInvoiceCount - $paidInvoiceCount;
+
+        $topBar = [
+            "invoice" => [
+                'name'    => 'Total Invoice',
+                'amount'  => $totalInvoiceAmount,
+                'subText' => $totalInvoiceCount . ($totalInvoiceCount == 1 ? ' invoice' : ' invoices')
+            ],
+            "revenue" => [
+                'name'    => 'Total Revenue',
+                'amount'  => $totalPaidInvoiceAmount,
+                'subText' => $paidInvoiceCount . ($paidInvoiceCount == 1 ? ' invoice' : ' invoices')
+            ],
+            "due" => [
+                'name'    => 'Total Due',
+                'amount'  => $totalDueAmount,
+                'subText' => $unpaidInvoiceCount . ($unpaidInvoiceCount == 1 ? ' invoice' : ' invoices')
+            ]
         ];
 
         return new \WP_REST_Response([
-            'data' => $projectHeader
+            'header' => $projectHeader,
+            'topBar' => $topBar
         ]);
     }
 }

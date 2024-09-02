@@ -3,7 +3,6 @@
 namespace WpClientManagement\API\Projects;
 
 use WpClientManagement\Models\Client;
-use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
 
@@ -23,11 +22,11 @@ class GetAllProjects {
 
     public function get_all_projects(\WP_REST_Request $request) {
 
-        $page = $request->get_params('page');
+        $page        = $request->get_params('page');
 
-        $projects = Project::with('client', 'status', 'priority')->paginate(20, ['*'], 'page', $page);
+        $projects    = Project::with('client', 'status', 'priority')->paginate(20, ['*'], 'page', $page);
 
-        $clients = Client::whereHas('projects')->get();
+        $clients     = Client::whereHas('projects')->get();
 
         $wp_user_ids = $clients->pluck('eic_crm_user.wp_user_id')->toArray();
 
@@ -42,23 +41,6 @@ class GetAllProjects {
                 'email' => $user->user_email,
             ];
         }
-
-        // $projectWithDetails = $projects->map(function ($project) use ($wpUsers) {
-
-        //     $client = $project->client;
-        //     $eic_crm_users = $client->eic_crm_user;
-        //     $wpUserId = $eic_crm_users->wp_user_id;
-        //     $wpUser = $wpUsers[$wpUserId] ?? [];
-
-        //     return [
-        //         'id' => $project->id,
-        //         'title' => $project->title,
-        //         'client_name' => $wpUser['name'],
-        //         'priority' => $project->priority->name,
-        //         'status' => $project->status->name,
-        //     ];
-
-        // });
 
         $projectIds = $projects->pluck('id')->toArray();
 
@@ -80,35 +62,37 @@ class GetAllProjects {
        });
 
        $projectWithDetails = $projects->map(function ($project) use ($wpUsers, $invoiceTotalsByProject) {
-            $client = $project->client;
+            $client        = $project->client;
             $eic_crm_users = $client->eic_crm_user;
-            $wpUserId = $eic_crm_users->wp_user_id;
-            $wpUser = $wpUsers[$wpUserId] ?? [];
+            $wpUserId      = $eic_crm_users->wp_user_id;
+            $wpUser        = $wpUsers[$wpUserId] ?? [];
 
             $invoices = $invoiceTotalsByProject->get($project->id, [
-                'total' => 0, 'revenue' => 0, 'due' => 0
+                'total'   => 0,
+                'revenue' => 0,
+                'due'     => 0
             ]);
 
             return [
                 'id' => $project->id,
                 'project_name' => $project->title,
-                'client_name' => $wpUser['name'] ?? null,
-                'assignee' => $project->eicCrmUsers->count(),
-                'priority' => $project->priority->name,
-                'status' => $project->status->name,
-                'invoice' => $invoices['total'] ?? 0,
-                'revenue' => $invoices['revenue'] ?? 0,
-                'due' => $invoices['due'] ?? 0,
+                'client_name'  => $wpUser['name'] ?? null,
+                'assignee'     => $project->eicCrmUsers->count(),
+                'priority'     => $project->priority->name,
+                'status'       => $project->status->name,
+                'invoice'      => $invoices['total'] ?? 0,
+                'revenue'      => $invoices['revenue'] ?? 0,
+                'due'          => $invoices['due'] ?? 0,
             ];
        });
 
         return new \WP_REST_Response([
             'projects' => $projectWithDetails,
             'pagination' => [
-                'total' => $projects->total(),
-                'per_page' => $projects->perPage(),
-                'current_page' => $projects->currentPage(),
-                'last_page' => $projects->lastPage(),
+                'total'         => $projects->total(),
+                'per_page'      => $projects->perPage(),
+                'current_page'  => $projects->currentPage(),
+                'last_page'     => $projects->lastPage(),
                 'next_page_url' => $projects->nextPageUrl(),
                 'prev_page_url' => $projects->previousPageUrl(),
             ],
