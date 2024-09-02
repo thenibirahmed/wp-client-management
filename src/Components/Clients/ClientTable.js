@@ -58,8 +58,6 @@ const tableData = [
 ];
 
 const ClientTable = ({ clientData }) => {
-  console.log("clientData = ", clientData);
-
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
   const currentPageName = window.location.pathname.split("/")[1];
@@ -198,7 +196,7 @@ const ClientTable = ({ clientData }) => {
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
                           <a
-                            href={`#/clients/#/${item.name}`}
+                            href={`#/clients/#/${item?.client_id}`}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon

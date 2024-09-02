@@ -1,17 +1,17 @@
 <?php
-namespace WpClientManagement\API\Clients;
+namespace WpClientManagement\API\Projects;
 
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
 
-class GetSingleClientOverview {
+class GetSingleProjectOverview {
 
     private $namespace = 'wp-client-management/v1';
-    private $endpoint  = '/client/(?P<id>\d+)/overview';
+    private $endpoint  = '/project/(?P<id>\d+)/overview';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:eic_clients,id',
+        'id' => 'required|integer|exists:eic_projects,id',
     ];
 
     protected array $validationMessages = [
@@ -24,12 +24,12 @@ class GetSingleClientOverview {
     {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
-            'callback' => array($this, 'get_client_overview'),
+            'callback' => array($this, 'get_project_overview'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function get_client_overview(\WP_REST_Request $request)
+    public function get_project_overview(\WP_REST_Request $request)
     {
         global $validator;
 
@@ -51,32 +51,37 @@ class GetSingleClientOverview {
             ], 400);
         }
 
+        $projectData = Project::getProjectData($data['id']);
 
-        $clientData = Client::getClientData($id);
-        $wp_user_id = $clientData->eic_crm_user->wp_user_id;
-        $wpUser     = get_user_by('ID', $wp_user_id);
+        $working_employee = $projectData->eicCrmUsers->count();
 
-        $profile = [
-            'name'         => $wpUser->user_login,
-            'email'        => $wpUser->user_email,
-            'phone'        => $clientData->eic_crm_user->phone,
-            'address'      => $clientData->eic_crm_user->address,
-            'designation'  => $clientData->eic_crm_user->designation,
-            'organization' => $clientData->organization,
+        if(!$projectData) {
+            return new \WP_REST_Response([
+                'error' => 'Project not found',
+            ], 404);
+        }
+
+        $client  = get_user_by('ID', $projectData->client->eic_crm_user->wp_user_id);
+        $manager = get_user_by('ID', $projectData->manager->wp_user_id);
+
+        $projectHeader = [
+            'name'         => $projectData->title,
+            'client_name'  => $client->user_login,
+            'manager_name' => $manager->user_login,
+            'status'       => $projectData->status->name,
+            'priority'     => $projectData->priority->name,
         ];
 
-        $totalProjects  = Project::getClientProjects($data['id'])->count();
-        $clientInvoices = Invoice::getSingleClientInvoices($data['id']);
+        $invoices = Invoice::getSingleProjectInvoices($id);
 
-        $totalInvoiceAmount = $clientInvoices->sum('total');
-        $totalInvoiceCount  = $clientInvoices->count();
+        $totalInvoiceAmount = $invoices->sum('total');
+        $totalInvoiceCount  = $invoices->count();
 
-        $paidInvoices       = $clientInvoices->where('status.name', 'paid')->where('status.type', 'invoice');
-        $totalRevenueAmount = $paidInvoices->sum('total');
-        $paidInvoiceCount   = $paidInvoices->count();
+        $totalPaidInvoiceAmount = $invoices->where('status.type', 'invoice')->where('status.name','paid')->sum('total');
+        $paidInvoiceCount       = $invoices->where('status.type', 'invoice')->where('status.name','paid')->count();
 
+        $totalDueAmount     = $totalInvoiceAmount - $totalPaidInvoiceAmount;
         $unpaidInvoiceCount = $totalInvoiceCount - $paidInvoiceCount;
-        $totalDueAmount     = $totalInvoiceAmount - $totalRevenueAmount;
 
         $topBar = [
             "invoice" => [
@@ -86,7 +91,7 @@ class GetSingleClientOverview {
             ],
             "revenue" => [
                 'name'    => 'Total Revenue',
-                'amount'  => $totalRevenueAmount,
+                'amount'  => $totalPaidInvoiceAmount,
                 'subText' => $paidInvoiceCount . ($paidInvoiceCount == 1 ? ' invoice' : ' invoices')
             ],
             "due" => [
@@ -94,16 +99,16 @@ class GetSingleClientOverview {
                 'amount'  => $totalDueAmount,
                 'subText' => $unpaidInvoiceCount . ($unpaidInvoiceCount == 1 ? ' invoice' : ' invoices')
             ],
-            "project" => [
-                'name'    => 'Total Projects',
-                'amount'  => $totalProjects,
-                'subText' => 'last 3 months'
-            ]
+            "employee" => [
+                'name'    => 'Working Employee',
+                'amount'  => $working_employee,
+                'subText' => $working_employee . ($working_employee == 1 ? ' employee' : ' employees')
+            ],
         ];
 
         return new \WP_REST_Response([
-            'profile'    => $profile,
-            'topBar'     => $topBar
+            'header' => $projectHeader,
+            'topBar' => $topBar
         ]);
     }
 }

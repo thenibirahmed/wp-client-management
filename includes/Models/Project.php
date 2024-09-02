@@ -52,6 +52,11 @@ class Project extends Model
         })->paginate(20, ['*'], 'page', $page);
     }
 
+    public static function getProjectData($id)
+    {
+        return self::find($id);
+    }
+
     public function client() {
         return $this->belongsTo(Client::class);
     }

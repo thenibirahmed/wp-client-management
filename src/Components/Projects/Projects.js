@@ -13,7 +13,10 @@ import ProjectHeader from "../helper/projects/ProjectHeader";
 import ProjectTable from "../helper/projects/ProjectTable";
 import AddNewProjectForm from "../helper/forms/AddNewProjectForm";
 import ProjectTaskDetails from "./ProjectTask/ProjectTaskDetails";
-import { useFetchAllProjects } from "../../hooks/useQuery";
+import {
+  useFetchAllProjects,
+  useFetchProjectOverView,
+} from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
 
 const Projects = () => {
@@ -26,9 +29,12 @@ const Projects = () => {
     setOpenTaskDetail,
   } = useStoreContext();
 
-  const { isLoading, data: projects } = useFetchAllProjects(onError);
+  const { isLoading: allProjectLoader, data: projects } =
+    useFetchAllProjects(onError);
+  const { isLoading: projectOverViewLoader, data: projectOverView } =
+    useFetchProjectOverView(onError);
 
-  console.log("projects = ", projects);
+  let isLoading = allProjectLoader || projectOverViewLoader;
 
   function onError(err) {
     console.log(err);
@@ -54,7 +60,7 @@ const Projects = () => {
         <ProjectTaskDetails />
       ) : (
         <>
-          <ProjectOverView />
+          <ProjectOverView projectOverView={projectOverView?.projectOverView} />
           <div className="space-y-6">
             <ProjectHeader />
 

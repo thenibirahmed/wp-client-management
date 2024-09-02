@@ -1,4 +1,9 @@
-export const OvierViewItem = ({ title, amount, invoice }) => {
+export const OvierViewItem = ({
+  title,
+  amount,
+  invoice,
+  isProject = false,
+}) => {
   return (
     <>
       <div className="w-80 space-y-4  text-center sm:text-start  px-5 py-5">
@@ -6,11 +11,11 @@ export const OvierViewItem = ({ title, amount, invoice }) => {
           {title}
         </h3>
         <h1 className=" font-semibold font-metropolis text-3xl text-textColor ">
-          ${amount}
+          {!isProject ? "$" : ""}
+          {amount}
         </h1>
         <h6 className="font-metropolis  text-sm text-textColor2 font-normal">
           <span>{invoice} </span>
-          <span>{invoice > 1 ? "invoices" : "invoice"}</span>
         </h6>
       </div>
     </>

@@ -26,7 +26,7 @@ const Client = () => {
   //console.log("clientOverView = ", clientOverView);
 
   function onError(err) {
-    toast.error(err?.response?.data?.message);
+    toast.error("Something went wrong ClientOverview");
     console.log(err);
   }
 
@@ -46,6 +46,8 @@ const Client = () => {
   const addNewClient = () => {
     setOpen(true);
   };
+
+  if (isLoading) return <Skeleton />;
 
   return (
     <React.Fragment>
@@ -77,29 +79,23 @@ const Client = () => {
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="w-full">
-            <Skeleton />
-          </div>
-        ) : (
-          <React.Fragment>
-            {clientOverView.clients.length > 0 ? (
-              <>
-                <ClientTable clientData={clientOverView?.clients} />
-              </>
-            ) : (
-              <>
-                <EmptyTable
-                  Icon={UserCircle02Icon}
-                  handler={addNewClient}
-                  title="  Clients Not Yet Registered"
-                  subtitle="Start building your client list."
-                  btnText=" Add Client"
-                />
-              </>
-            )}
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          {clientOverView.clients.length > 0 ? (
+            <>
+              <ClientTable clientData={clientOverView?.clients} />
+            </>
+          ) : (
+            <>
+              <EmptyTable
+                Icon={UserCircle02Icon}
+                handler={addNewClient}
+                title="  Clients Not Yet Registered"
+                subtitle="Start building your client list."
+                btnText=" Add Client"
+              />
+            </>
+          )}
+        </React.Fragment>
       </div>
       <Modal open={open} setOpen={setOpen} title="Add Client">
         <AddClientForm setOpen={setOpen} />

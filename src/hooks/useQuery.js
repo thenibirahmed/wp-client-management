@@ -23,6 +23,26 @@ export const useFetchClientOverView = (onError) => {
   );
 };
 
+export const useFetchSingleClientOverView = (clientId, onError) => {
+  return useQuery(
+    ["single-client-overview", clientId],
+    async () => {
+      return await api.get(`/client/${clientId}/overview`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          topBar: data.data.topBar,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
 export const useFetchProjectClients = (onError) => {
   return useQuery(
     "project-clients",
@@ -144,6 +164,54 @@ export const useFetchAllProjects = (onError) => {
           projects: data.data.projects,
           pagination: data.data.pagination,
         };
+
+        console.log(sendData);
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchProjectOverView = (onError) => {
+  return useQuery(
+    "project-overview",
+    async () => {
+      return await api.get("/project-overview");
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          projectOverView: data.data.topBar,
+        };
+
+        console.log(sendData);
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchSingleProjectOverView = (projectId, onError) => {
+  return useQuery(
+    ["single-project-overview", projectId],
+    async () => {
+      return await api.get(`/project/${projectId}/overview`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          header: data.data.header,
+          topBar: data.data.topBar,
+        };
+
+        console.log(sendData);
+
         return sendData;
       },
       onError,
