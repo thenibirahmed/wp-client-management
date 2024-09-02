@@ -68,7 +68,7 @@ class Installer {
                         `updated_at` timestamp NULL DEFAULT NULL,
                         PRIMARY KEY (`id`)
                     ) {$collate}";
-        
+
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_emails` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
@@ -139,7 +139,7 @@ class Installer {
                         `updated_at` timestamp NULL DEFAULT NULL,
                         PRIMARY KEY (`id`)
                     ) {$collate}";
-                
+
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_projects` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `client_id` bigint UNSIGNED DEFAULT NULL,
@@ -159,7 +159,7 @@ class Installer {
                         PRIMARY KEY (`id`)
                     ) {$collate}";
 
-        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_project_eic_crm_users` (
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_project_eic_crm_user` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `project_id` bigint UNSIGNED DEFAULT NULL,
                         `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
