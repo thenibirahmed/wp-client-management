@@ -5,10 +5,16 @@ import { useForm } from "react-hook-form";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { Image02Icon } from "../../../utils/icons";
 import TextField from "../TextField";
+import toast from "react-hot-toast";
+import api from "../../../api/api";
+import useHashRouting from "../../../utils/useHashRouting";
 
 const AddNewFileForm = () => {
+  const currentPath = useHashRouting("");
+  const pathArray = currentPath?.split("/#/");
   const { setOpenFileModal } = useStoreContext();
   const [imageUrl, setImageUrl] = useState();
+  const [submitLoader, setSubmitLoader] = useState(false);
   const imageRef = useRef();
   const {
     register,
@@ -16,17 +22,34 @@ const AddNewFileForm = () => {
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-    },
     mode: "onTouched",
   });
 
-  const addNewClientHandler = (data) => {
+  const addNewFileHandler = async (data) => {
+    const projectId = pathArray[1] ? Number(pathArray[1]) : null;
+
+    if (!projectId) return toast.error("ProjectId is required");
+
+    setSubmitLoader(true);
+    const sendData = {
+      user_id: 4,
+      client_id: 13,
+      project_id: projectId,
+      title: data.title,
+      url: data.url,
+    };
     console.log(data);
-    reset();
+
+    try {
+      const { data } = await api.post("/file/create", sendData);
+      toast.success(data?.message);
+      reset();
+    } catch (err) {
+      console.log(err);
+      toast.error("Create new file failed");
+    } finally {
+      setSubmitLoader(false);
+    }
   };
 
   const onImageUploadHandler = () => {
@@ -41,7 +64,7 @@ const AddNewFileForm = () => {
 
   return (
     <div className="py-5 relative h-full ">
-      <form className="space-y-4 " onSubmit={handleSubmit(addNewClientHandler)}>
+      <form className="space-y-4 " onSubmit={handleSubmit(addNewFileHandler)}>
         <TextField
           label="Title"
           required={!imageUrl}
@@ -55,7 +78,7 @@ const AddNewFileForm = () => {
         <TextField
           label="Add URL / Upload File"
           required={!imageUrl}
-          id="ul"
+          id="url"
           type="url"
           message="*Url is required"
           placeholder="2972 Westheimer Rd. Santa Ana, Illinois 85486 "

@@ -6,42 +6,7 @@ import Pagination from "../../Clients/Pagination";
 import { Delete03Icon, ViewIcon } from "../../../utils/icons";
 import useHashRouting from "../../../utils/useHashRouting";
 
-const tableData = [
-  {
-    id: 1,
-    creator: "Easin Ahmed",
-    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    time: "july 05, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 1,
-    creator: "Jane Smith",
-    note: "Loram offers track maintenance services to passenger, freight, and transit railroads worldwide.",
-    time: "July 07, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 2,
-    creator: "John Doe",
-    note: "Loram Maintenance of Way, Inc. leases and sells railroad maintenance equipment to various railroads.",
-    time: "July 06, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 4,
-    creator: "Jack",
-    note: "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    time: "july 05, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
-
-const NoteTable = () => {
+const NoteTable = ({ noteData }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
@@ -71,7 +36,7 @@ const NoteTable = () => {
                         selectedNote.length > 0 && isAllselected ? true : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, noteData)
                       }
                       type="checkbox"
                     />
@@ -103,7 +68,7 @@ const NoteTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
+                {noteData?.map((item) => {
                   const isChecked = selectedNote.some(
                     (client) => client.id === item.id
                   );
@@ -124,7 +89,7 @@ const NoteTable = () => {
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
-                            src={item.image}
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                             alt={item.creator}
                           />
                           <div>

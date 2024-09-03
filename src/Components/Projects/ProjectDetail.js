@@ -24,8 +24,6 @@ const ProjectDetail = () => {
     error,
   } = useFetchSingleProjectOverView(pathArray[1], onError);
 
-  console.log("singleClientOverView", singleProjectOverView);
-
   function onError(err) {
     console.log(err);
   }
@@ -55,7 +53,7 @@ const ProjectDetail = () => {
           <div className="space-y-6">
             <Tab task={true} />
             <React.Fragment>
-              <ProjectDetailsLayout />
+              <ProjectDetailsLayout projectId={pathArray[1]} />
             </React.Fragment>
           </div>
         </React.Fragment>

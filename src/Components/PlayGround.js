@@ -84,18 +84,38 @@ const PlayGround = () => {
 
   const getTest = () => {
     axios
+      .get(
+        eicApiSettings.rest_url + "wp-client-management/v1/project/2/notes",
+
+        {
+          headers: {
+            "X-WP-Nonce": eicApiSettings.nonce,
+            // 'Content-Type' : 'application/json'
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setPost(response.data);
+      })
+      .catch((error) => {
+        console.log(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+
+  const createFile = () => {
+    axios
       .post(
-        eicApiSettings.rest_url + "wp-client-management/v1/note/create",
+        eicApiSettings.rest_url + "wp-client-management/v1/task/create",
         {
           user_id: 4,
+          client_id: 13,
           project_id: 2,
-          note: "Note ta check koren valovabe.",
-          // assigned_to: 1,
-          // status_id: 8,
-          // priority_id: 11,
-          // start_date: "2022-01-01",
-          // due_date: "2022-01-01",
-          // description: "The workig description",
+          title: "fisrt file",
+          url: "http://localhost:3000",
         },
         {
           headers: {
@@ -116,10 +136,11 @@ const PlayGround = () => {
       });
   };
 
-  const getNotes = () => {
+  const getFiles = () => {
     axios
       .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/project/2/notes",
+        eicApiSettings.rest_url + "wp-client-management/v1/project/2/files",
+
         {
           headers: {
             "X-WP-Nonce": eicApiSettings.nonce,
@@ -138,6 +159,62 @@ const PlayGround = () => {
         );
       });
   };
+
+  const getEmails = () => {
+    axios
+      .get(
+        eicApiSettings.rest_url + "wp-client-management/v1/project/2/emails",
+
+        {
+          headers: {
+            "X-WP-Nonce": eicApiSettings.nonce,
+            // 'Content-Type' : 'application/json'
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setPost(response.data);
+      })
+      .catch((error) => {
+        console.log(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+
+  const createEmail = () => {
+    axios
+      .post(
+        eicApiSettings.rest_url + "wp-client-management/v1/email/create",
+        {
+          user_id: 4,
+          client_id: 13,
+          project_id: 2,
+          subject: "fisrt email",
+          body: "onk din tomai dekhi na",
+          // scheduled_at: dayjs(new Date()).format("YYYY-MM-DD"),
+        },
+        {
+          headers: {
+            "X-WP-Nonce": eicApiSettings.nonce,
+            // 'Content-Type' : 'application/json'
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setPost(response.data);
+      })
+      .catch((error) => {
+        console.log(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+
   return (
     <div>
       <h1>PlayGround</h1>
@@ -171,11 +248,52 @@ const PlayGround = () => {
           cursor: "pointer",
           border: "none",
         }}
-        onClick={getNotes}
+        onClick={createFile}
       >
-        Note
+        Create File
       </button>
       <br />
+      <button
+        style={{
+          padding: "10px",
+          backgroundColor: "blue",
+          color: "white",
+          borderRadius: "5px",
+          cursor: "pointer",
+          border: "none",
+        }}
+        onClick={getFiles}
+      >
+        getFiles
+      </button>
+      <br />{" "}
+      <button
+        style={{
+          padding: "10px",
+          backgroundColor: "blue",
+          color: "white",
+          borderRadius: "5px",
+          cursor: "pointer",
+          border: "none",
+        }}
+        onClick={createEmail}
+      >
+        createEmail
+      </button>
+      <br />
+      <button
+        style={{
+          padding: "10px",
+          backgroundColor: "blue",
+          color: "white",
+          borderRadius: "5px",
+          cursor: "pointer",
+          border: "none",
+        }}
+        onClick={getEmails}
+      >
+        getEmails
+      </button>
       <br />
     </div>
   );

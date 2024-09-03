@@ -2,34 +2,34 @@
 
 namespace WpClientManagement\API\Projects;
 
-use WpClientManagement\Models\Note;
+use WpClientManagement\Models\File;
 use WpClientManagement\Models\Project;
 
-class GetProjectNotes {
+class GetProjectFiles {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint  = '/project/(?P<id>\d+)/notes';
+    private $endpoint  = '/project/(?P<id>\d+)/files';
 
     protected array $rules = [
         'id' => 'required|integer|exists:eic_projects,id',
     ];
 
     protected array $validationMessages = [
-        'id.required' => 'The Project ID is required.',
-        'id.integer'  => 'The Project ID must be an integer.',
-        'id.exists'   => 'The Project does not exist.',
+        'id.required' => 'The project ID is required.',
+        'id.integer'  => 'The project ID must be an integer.',
+        'id.exists'   => 'The project does not exist.',
     ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
-            'callback' => array($this, 'get_projects_notes'),
+            'callback' => array($this, 'get_project_notes'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function get_projects_notes(\WP_REST_Request $request) {
+    public function get_project_notes(\WP_REST_Request $request) {
         global $validator;
 
         $project_id  = $request->get_param('id');
@@ -55,19 +55,19 @@ class GetProjectNotes {
 
         if(!$project) {
             return new \WP_REST_Response([
-                'error' => 'Client does not exists.',
+                'error' => 'Project does not exists.',
             ]);
         }
 
-        $notes = Note::getProjectNotes($project->id, $page);
+        $files = File::getProjectFiles($project->id, $page);
 
-        if(!$notes) {
+        if(!$files) {
             return new \WP_REST_Response([
-                'error' => 'No notes found',
+                'error' => 'No File found',
             ]);
         }
 
-        $wp_user_ids = $notes->pluck('eic_crm_user.wp_user_id')->toArray();
+        $wp_user_ids = $files->pluck('eic_crm_user.wp_user_id')->toArray();
 
         $wpUsersDb = get_users([
             'include' => $wp_user_ids,
@@ -81,26 +81,27 @@ class GetProjectNotes {
         }
 
         $data = [];
-        foreach ($notes as $note) {
-            $wp_user_id = $note->eic_crm_user->wp_user_id;
+        foreach ($files as $file) {
+            $wp_user_id = $file->eic_crm_user->wp_user_id;
 
             $data[] = [
-                'id'      => $note->id,
-                'creator' => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
-                'note'    => $note->note,
-                'time'    => $note->created_at ? human_time_diff(strtotime($note->created_at), current_time('timestamp')) . ' ago' : null,
+                'id'         => $file->id,
+                'name'       => $file->title,
+                'created_by' => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
+                'url'        => $file->url,
+                'time'       => $file->created_at ? human_time_diff(strtotime($file->created_at), current_time('timestamp')) . ' ago' : null,
             ];
         }
 
         $response = [
-            'data'       => $data,
+            'files'       => $data,
             'pagination' => [
-                'total'         => $notes->total(),
-                'per_page'      => $notes->perPage(),
-                'current_page'  => $notes->currentPage(),
-                'last_page'     => $notes->lastPage(),
-                'next_page_url' => $notes->nextPageUrl(),
-                'prev_page_url' => $notes->previousPageUrl(),
+                'total'         => $files->total(),
+                'per_page'      => $files->perPage(),
+                'current_page'  => $files->currentPage(),
+                'last_page'     => $files->lastPage(),
+                'next_page_url' => $files->nextPageUrl(),
+                'prev_page_url' => $files->previousPageUrl(),
             ],
         ];
 

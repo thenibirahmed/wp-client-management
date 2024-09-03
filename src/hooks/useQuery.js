@@ -166,7 +166,7 @@ export const useFetchAllProjects = (onError) => {
           pagination: data.data.pagination,
         };
 
-        console.log(sendData);
+        console.log("projects", sendData);
 
         return sendData;
       },
@@ -211,7 +211,88 @@ export const useFetchSingleProjectOverView = (projectId, onError) => {
           topBar: data.data.topBar,
         };
 
-        console.log(sendData);
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchAssignee = (onError) => {
+  return useQuery(
+    ["project-assignee"],
+    async () => {
+      return await api.get(`/select-employee`);
+    },
+    {
+      select: (data) => {
+        console.log("assignee", data.data);
+        const sendData = {
+          employee: data.data.employee,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchProjectTask = (projectId, onError) => {
+  return useQuery(
+    ["project-tasks", projectId],
+    async () => {
+      return await api.get(`/project/${projectId}/tasks`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          task: data.data.tasks,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchProjectNotes = (projectId, onError) => {
+  return useQuery(
+    ["project-notes", projectId],
+    async () => {
+      return await api.get(`/project/${projectId}/notes`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          notes: data.data.data,
+          pagination: data.data.pagination,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchProjectFiles = (projectId, onError) => {
+  return useQuery(
+    ["project-files", projectId],
+    async () => {
+      return await api.get(`/project/${projectId}/files`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          files: data.data.files,
+          pagination: data.data.pagination,
+        };
 
         return sendData;
       },

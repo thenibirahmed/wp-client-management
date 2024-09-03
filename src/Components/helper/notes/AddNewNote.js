@@ -7,6 +7,10 @@ import {
   Link05Icon,
 } from "../../../utils/icons";
 import NoteTable from "./NoteTable";
+import toast from "react-hot-toast";
+import useHashRouting from "../../../utils/useHashRouting";
+import Loaders from "../../Loaders";
+import api from "../../../api/api";
 
 const AddNewNote = () => {
   return (
@@ -22,16 +26,20 @@ const AddNewNote = () => {
 export default AddNewNote;
 
 const AddNewNoteTextArea = () => {
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const currentPath = useHashRouting("");
+  const pathArray = currentPath?.split("/#/");
+  const quillRef = useRef(null);
   const [editorContent, setEditorContent] = useState("");
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
 
   const handleAttachment = () => {
-    fileInputRef.current.click(); // Trigger hidden file input for attachments
+    fileInputRef.current.click();
   };
 
   const handleImage = () => {
-    imageInputRef.current.click(); // Trigger hidden file input for images
+    imageInputRef.current.click();
   };
 
   const handleFileChange = (event) => {
@@ -72,10 +80,34 @@ const AddNewNoteTextArea = () => {
     quill.clipboard.dangerouslyPasteHTML(range.index, html);
   };
 
-  const quillRef = useRef(null);
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
+    if (!editorContent) return toast.error("Content required");
+    const projectId = pathArray[1] ? Number(pathArray[1]) : null;
+
+    if (!projectId) return toast.error("ProjectId is required");
+
+    setSubmitLoader(true);
+    const sendData = {
+      user_id: 4,
+      project_id: projectId,
+      note: editorContent,
+    };
+
+    try {
+      const { data } = await api.post("/note/create", sendData);
+      toast.success(data?.message);
+      setEditorContent("");
+    } catch (err) {
+      console.log(err);
+      toast.error("Create new note failed");
+    } finally {
+      setSubmitLoader(false);
+    }
+  };
 
   return (
-    <>
+    <form onSubmit={onSubmitHandler}>
       <ReactQuill
         ref={quillRef}
         value={editorContent}
@@ -83,7 +115,7 @@ const AddNewNoteTextArea = () => {
         modules={{
           toolbar: false,
         }}
-        className="w-full  text-textColor2 px-4 outline-none font-metropolis  font-normal text-sm  "
+        className="w-full  text-textColor2 px-4 outline-none font-metropolis  h-32 font-normal text-sm  "
         placeholder="Write text here"
       />
 
@@ -100,10 +132,11 @@ const AddNewNoteTextArea = () => {
           </button>
         </div>
         <button
+          disabled={submitLoader}
           type="submit"
           className="font-metropolis rounded-[5px] bg-customBlue text-white py-[10px] px-[12px] text-xs font-medium"
         >
-          Save Note
+          {submitLoader ? <Loaders /> : "Save Note"}
         </button>
       </div>
 
@@ -125,6 +158,6 @@ const AddNewNoteTextArea = () => {
         accept="image/*"
         multiple
       />
-    </>
+    </form>
   );
 };

@@ -10,42 +10,7 @@ import {
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import Pagination from "../../Clients/Pagination";
 
-const tableData = [
-  {
-    id: 1,
-    fileName: { name: "Note", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "May 03, 2022",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 2,
-    fileName: { name: "Task", title: "tunisian_dinar.list" },
-    uploadedBy: "Tanvir ",
-    time: "August 30, 2023",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 3,
-    fileName: { name: "My App", title: "tunisian_dinar.list" },
-    uploadedBy: "Khan",
-    time: "June 01, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 4,
-    fileName: { name: "Lists", title: "tunisian_dinar.list" },
-    uploadedBy: "Jack",
-    time: "July 07, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
-
-const FileTable = () => {
+const FileTable = ({ fileData, pagination }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
@@ -75,7 +40,7 @@ const FileTable = () => {
                         selectedFile.length > 0 && isAllselected ? true : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, fileData)
                       }
                       type="checkbox"
                     />
@@ -107,7 +72,7 @@ const FileTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
+                {fileData?.map((item) => {
                   const isChecked = selectedFile.some(
                     (client) => client.id === item.id
                   );
@@ -126,28 +91,30 @@ const FileTable = () => {
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 space-y-1 ">
                         <h3 className="text-sm   text-textColor font-metropolis font-normal ">
-                          {item.fileName.name}
+                          {item.name}
                         </h3>{" "}
                         <h6 className="text-xs  text-textColor2 font-metropolis font-normal ">
-                          {item.fileName.title}
+                          {item.url}
                         </h6>
                       </td>{" "}
                       <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
-                            src={item.image}
-                            alt={item.uploadedBy}
+                            src={
+                              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            }
+                            alt={item.created_by}
                           />
                           <div>
                             <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                              {item.uploadedBy}
+                              {item.created_by}
                             </h3>
                           </div>
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-normal">
-                        ${item.time}
+                        {item.time}
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">

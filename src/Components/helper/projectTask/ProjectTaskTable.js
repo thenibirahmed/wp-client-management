@@ -59,7 +59,7 @@ const tableData = [
   },
 ];
 
-const ProjectTaskTable = () => {
+const ProjectTaskTable = ({ taskData }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
@@ -92,7 +92,7 @@ const ProjectTaskTable = () => {
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, taskData)
                       }
                       type="checkbox"
                     />
@@ -101,7 +101,7 @@ const ProjectTaskTable = () => {
                     scope="col"
                     className="py-3.5 uppercase   pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
                   >
-                    name
+                    title
                   </th>
                   <th
                     scope="col"
@@ -142,7 +142,7 @@ const ProjectTaskTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
+                {taskData.map((item) => {
                   let itemStatus = item.status.toLowerCase();
                   let itemPriority = item.priority.toLowerCase();
 
@@ -155,7 +155,7 @@ const ProjectTaskTable = () => {
                       ? "bg-customBg3 text-red2"
                       : itemStatus === "doing"
                       ? "bg-customBg5 text-textColor"
-                      : itemStatus === "done"
+                      : itemStatus === "completed"
                       ? "bg-customBg3 text-red2"
                       : "";
 
@@ -173,14 +173,14 @@ const ProjectTaskTable = () => {
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.name}
+                          {item.title}
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
-                            src={item.image}
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                             alt={item.owner}
                           />
                           <div>
@@ -191,18 +191,18 @@ const ProjectTaskTable = () => {
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-medium">
-                        {item.dueDate}
+                        {item.due_date}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
-                            src={item.image}
-                            alt={item.assigneeTo}
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            alt={item.assigned_to}
                           />
                           <div>
                             <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                              {item.assigneeTo}
+                              {item.assigned_to}
                             </h3>
                           </div>
                         </div>

@@ -8,17 +8,17 @@ import ProjectFile from "./ProjectFile/ProjectFile";
 import ProjectEmail from "./ProjectEmail/ProjectEmail";
 import ProjectInfo from "./ProjectInfo/ProjectInfo";
 
-const ProjectDetailsLayout = () => {
+const ProjectDetailsLayout = ({ projectId }) => {
   const { allTabItems } = useStoreContext();
 
   if (allTabItems["task"]) {
-    return <ProjectTask />;
+    return <ProjectTask projectId={projectId} />;
   } else if (allTabItems["invoice"]) {
     return <ProjectInvoice />;
   } else if (allTabItems["note"]) {
-    return <ProjectNote />;
+    return <ProjectNote projectId={projectId} />;
   } else if (allTabItems["file"]) {
-    return <ProjectFile />;
+    return <ProjectFile projectId={projectId} />;
   } else if (allTabItems["email"]) {
     return <ProjectEmail />;
   } else if (allTabItems["info"]) {
