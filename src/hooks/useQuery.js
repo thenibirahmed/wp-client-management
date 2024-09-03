@@ -100,7 +100,7 @@ export const useFetchProjectPriorities = (onError) => {
   return useQuery(
     "project-priority",
     async () => {
-      return await api.get("/select-project-priority");
+      return await api.get("/select/project/priority");
     },
 
     {
@@ -128,7 +128,7 @@ export const useFetchProjectStatus = (onError) => {
   return useQuery(
     "project-status",
     async () => {
-      return await api.get("/select-project-status");
+      return await api.get("/select/project/status");
     },
 
     {

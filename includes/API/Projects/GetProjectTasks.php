@@ -1,6 +1,8 @@
 <?php
+
 namespace WpClientManagement\API\Projects;
 
+use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Project;
 
 class GetProjectTasks {
@@ -57,8 +59,44 @@ class GetProjectTasks {
             ], 404);
         }
 
+        $tasks         = $project->tasks;
+        $eic_crm_users = EicCrmUser::selectManager(false);
+
+        $wp_user_ids = $eic_crm_users->pluck('wp_user_id')->toArray();
+
+        $wpUsersDb = get_users([
+            'include' => $wp_user_ids,
+        ]);
+
+        $wpUsers = [];
+        foreach ($wpUsersDb as $user) {
+            $wpUsers[$user->ID] = [
+                'name'  => $user->user_login,
+                'email' => $user->user_email,
+            ];
+        }
+
+        $taskWithDetails = $tasks->map(function ($task) use ($wpUsers) {
+            $eic_crm_user      = $task->eic_crm_user;
+            $assigned_user     = $task->assigned_user;
+            $ownerWpUserId     = $eic_crm_user->wp_user_id;
+            $assignedWpUserId  = $assigned_user->wp_user_id;
+            $owner_wp_user     = $wpUsers[$ownerWpUserId] ?? [];
+            $assigned_wp_user  = $wpUsers[$assignedWpUserId] ?? [];
+
+            return [
+                'id'           => $task->id,
+                'title'        => $task->title,
+                'owner'        => $owner_wp_user['name'] ?? '',
+                'due_date'     => $task->due_date ? date('M d, Y', strtotime($task->due_date)) : null,
+                'assigned_to'  => $assigned_wp_user['name'] ?? '',
+                'status'       => $task->status->name,
+                'priority'     => $task->priority->name,
+            ];
+        });
+
         return new \WP_REST_Response([
-            'tasks' => $project->tasks,
+            'tasks' => $taskWithDetails,
         ]);
     }
 }

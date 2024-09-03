@@ -35,7 +35,7 @@ class Task extends Model
     }
 
     public function assigned_user() {
-        return $this->belongsTo(EicCrmUser::class,'assigned_to');
+        return $this->belongsTo(EicCrmUser::class, 'assigned_to');
     }
 
     public function status() {

@@ -53,6 +53,7 @@ use WpClientManagement\API\Priorities\CreatePriority;
 use WpClientManagement\API\Priorities\DeletePriority;
 use WpClientManagement\API\Priorities\GetPriorities;
 use WpClientManagement\API\Priorities\GetSinglePriority;
+use WpClientManagement\API\Priorities\SelectPriority;
 use WpClientManagement\API\Priorities\UpdatePriority;
 use WpClientManagement\API\Projects\CreateProject;
 use WpClientManagement\API\Projects\DeleteProject;
@@ -75,6 +76,7 @@ use WpClientManagement\API\Statuses\CreateStatus;
 use WpClientManagement\API\Statuses\DeleteStatus;
 use WpClientManagement\API\Statuses\GetSingleStatus;
 use WpClientManagement\API\Statuses\GetStatuses;
+use WpClientManagement\API\Statuses\SelectStatus;
 use WpClientManagement\API\Statuses\UpdateStatus;
 use WpClientManagement\API\Tasks\CreateTask;
 use WpClientManagement\API\Tasks\DeleteTask;
@@ -184,6 +186,7 @@ class API {
         new DeletePriority();
         new CreatePriority();
         new UpdatePriority();
+        new SelectPriority();
 
         // Project
         new GetAllProjects();
@@ -212,6 +215,7 @@ class API {
         new DeleteStatus();
         new CreateStatus();
         new UpdateStatus();
+        new SelectStatus();
 
         // Task
         new GetTasks();

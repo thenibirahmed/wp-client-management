@@ -3,6 +3,7 @@
 namespace WpClientManagement\API;
 
 use WpClientManagement\Models\Project;
+use WpClientManagement\Models\Task;
 
 class TestApi {
 
@@ -22,12 +23,12 @@ class TestApi {
 
         $page = $request->get_params('page');
 
-        $project = Project::find(2);
+        $task = Task::find(1);
 
-        $data = $project->eicCrmUsers;
+        $assigned = $task->assigned_user;
 
         return new \WP_REST_Response([
-            'data' => $data
+            'data' => $assigned
         ]);
     }
 }
