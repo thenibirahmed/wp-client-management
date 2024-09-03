@@ -60,19 +60,19 @@ class GetClientNotes {
         }
 
         $notes = Note::getClientNotes($client_id, $page);
-        
+
         if(!$notes) {
             return new \WP_REST_Response([
-                'error' => 'No Invoices found',
+                'error' => 'No Notes found',
             ]);
         }
 
         $wp_user_ids = $notes->pluck('eic_crm_user.wp_user_id')->toArray();
-        
+
         $wpUsersDb = get_users([
             'include' => $wp_user_ids,
         ]);
-        
+
         $wpUsers = [];
         foreach ($wpUsersDb as $user) {
             $wpUsers[$user->ID] = [
