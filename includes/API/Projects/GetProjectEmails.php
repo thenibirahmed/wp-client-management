@@ -2,14 +2,14 @@
 
 namespace WpClientManagement\API\Projects;
 
-use WpClientManagement\Models\Note;
+use WpClientManagement\Models\Email;
 use WpClientManagement\Models\Project;
 
-class GetProjectNotes {
+class GetProjectEmails {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint  = '/project/(?P<id>\d+)/notes';
+    private $endpoint  = '/project/(?P<id>\d+)/emails';
 
     protected array $rules = [
         'id' => 'required|integer|exists:eic_projects,id',
@@ -24,12 +24,12 @@ class GetProjectNotes {
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
-            'callback' => array($this, 'get_projects_notes'),
+            'callback' => array($this, 'get_project_emails'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function get_projects_notes(\WP_REST_Request $request) {
+    public function get_project_emails(\WP_REST_Request $request) {
         global $validator;
 
         $project_id  = $request->get_param('id');
@@ -55,19 +55,19 @@ class GetProjectNotes {
 
         if(!$project) {
             return new \WP_REST_Response([
-                'error' => 'Client does not exists.',
+                'error' => 'Project does not exists.',
             ]);
         }
 
-        $notes = Note::getProjectNotes($project->id, $page);
+        $emails = Email::getProjectEmails($project->id, $page);
 
-        if(!$notes) {
+        if(!$emails) {
             return new \WP_REST_Response([
-                'error' => 'No notes found',
+                'error' => 'No Email found',
             ]);
         }
 
-        $wp_user_ids = $notes->pluck('eic_crm_user.wp_user_id')->toArray();
+        $wp_user_ids = $emails->pluck('eic_crm_user.wp_user_id')->toArray();
 
         $wpUsersDb = get_users([
             'include' => $wp_user_ids,
@@ -81,26 +81,27 @@ class GetProjectNotes {
         }
 
         $data = [];
-        foreach ($notes as $note) {
-            $wp_user_id = $note->eic_crm_user->wp_user_id;
+        foreach ($emails as $email) {
+            $wp_user_id = $email->eic_crm_user->wp_user_id;
 
             $data[] = [
-                'id'      => $note->id,
-                'creator' => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
-                'note'    => $note->note,
-                'time'    => $note->created_at ? human_time_diff(strtotime($note->created_at), current_time('timestamp')) . ' ago' : null,
+                'id'     => $email->id,
+                'from' => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
+                'subject'   => $email->subject,
+                'body'    => $email->body,
+                'time'   => $email->created_at ? human_time_diff(strtotime($email->created_at), current_time('timestamp')) . ' ago' : null,
             ];
         }
 
         $response = [
             'data'       => $data,
             'pagination' => [
-                'total'         => $notes->total(),
-                'per_page'      => $notes->perPage(),
-                'current_page'  => $notes->currentPage(),
-                'last_page'     => $notes->lastPage(),
-                'next_page_url' => $notes->nextPageUrl(),
-                'prev_page_url' => $notes->previousPageUrl(),
+                'total'         => $emails->total(),
+                'per_page'      => $emails->perPage(),
+                'current_page'  => $emails->currentPage(),
+                'last_page'     => $emails->lastPage(),
+                'next_page_url' => $emails->nextPageUrl(),
+                'prev_page_url' => $emails->previousPageUrl(),
             ],
         ];
 

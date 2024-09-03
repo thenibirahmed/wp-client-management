@@ -23,7 +23,13 @@ class Email extends Model
     {
         return self::where('client_id', $id)
                 ->paginate(20, ['*'], 'email', $page);
-    } 
+    }
+
+    public static function getProjectEmails($id, $page)
+    {
+        return self::where('project_id', $id)
+                ->paginate(20, ['*'], 'email', $page);
+    }
 
     public function client() {
         return $this->belongsTo(Client::class);
