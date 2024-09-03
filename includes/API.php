@@ -53,6 +53,7 @@ use WpClientManagement\API\Priorities\CreatePriority;
 use WpClientManagement\API\Priorities\DeletePriority;
 use WpClientManagement\API\Priorities\GetPriorities;
 use WpClientManagement\API\Priorities\GetSinglePriority;
+use WpClientManagement\API\Priorities\SelectPriority;
 use WpClientManagement\API\Priorities\UpdatePriority;
 use WpClientManagement\API\Projects\CreateProject;
 use WpClientManagement\API\Projects\DeleteProject;
@@ -184,6 +185,7 @@ class API {
         new DeletePriority();
         new CreatePriority();
         new UpdatePriority();
+        new SelectPriority();
 
         // Project
         new GetAllProjects();
