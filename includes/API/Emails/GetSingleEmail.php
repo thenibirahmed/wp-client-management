@@ -2,9 +2,7 @@
 
 namespace WpClientManagement\API\Emails;
 
-use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Email;
-use WpClientManagement\Models\Project;
 
 class GetSingleEmail {
 
@@ -59,10 +57,16 @@ class GetSingleEmail {
             ]);
         }
 
+        $eic_crm_user = $email->eic_crm_user;
+
+        $wp_user = get_user_by('id', $eic_crm_user->wp_user_id);
+
         $response = [
-            'data' => $email,
-            'eic_crm_user' => $email->eic_crm_user,
-            'client' => $email->client,
+            'id' => $email->id,
+            'subject' => $email->subject,
+            'from' => $wp_user->user_login,
+            'body' => $email->body,
+            'date' => date('M d, Y g:iA', strtotime($email->created_at)),
         ];
 
         return new \WP_REST_Response($response);
