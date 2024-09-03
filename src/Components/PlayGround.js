@@ -1,4 +1,5 @@
 import axios from "axios";
+import dayjs from "dayjs";
 import React, { useState } from "react";
 
 const PlayGround = () => {
@@ -83,21 +84,67 @@ const PlayGround = () => {
 
   const getTest = () => {
     axios
+      .post(
+        eicApiSettings.rest_url + "wp-client-management/v1/task/create",
+        {
+          user_id: 4, //must be integer
+          assigned_to: 4, //must be integer
+          project_id: 2, // must be integer
+          title: "Fiest Task",
+          start_date: dayjs(new Date()).format("YYYY-MM-DD"), // time format
+          due_date: dayjs(new Date()).format("YYYY-MM-DD"), //time format
+          status_id: 1, //must be integer
+          priority_id: 1, //must be integer
+          description: "first task description",
+        },
+        {
+          headers: {
+            "X-WP-Nonce": eicApiSettings.nonce,
+            // 'Content-Type' : 'application/json'
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setPost(response.data);
+      })
+      .catch((error) => {
+        console.log(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+
+  const getEmployess = () => {
+    axios
       .get(
-        eicApiSettings.rest_url +
-          "wp-client-management/v1/select/project/status",
-        // {
-        // 	title: "Test project",
-        // 	client_id: 100,
-        // 	currency: "USD",
-        // 	manager_id: 1,
-        // 	status_id: 1,
-        // 	priority_id: 1,
-        // 	start_date: "2022-01-01",
-        // 	due_date: "2022-01-31",
-        // 	budget: 1000,
-        // 	description: "Test project",
-        // },
+        eicApiSettings.rest_url + "wp-client-management/v1/select-employee",
+
+        {
+          headers: {
+            "X-WP-Nonce": eicApiSettings.nonce,
+            // 'Content-Type' : 'application/json'
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setPost(response.data);
+      })
+      .catch((error) => {
+        console.log(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+
+  const getAllTasks = () => {
+    axios
+      .get(
+        eicApiSettings.rest_url + "wp-client-management/project/2/tasks",
+
         {
           headers: {
             "X-WP-Nonce": eicApiSettings.nonce,
@@ -139,6 +186,34 @@ const PlayGround = () => {
         onClick={getTest}
       >
         Test me!
+      </button>
+      <br />
+      <button
+        style={{
+          padding: "10px",
+          backgroundColor: "blue",
+          color: "white",
+          borderRadius: "5px",
+          cursor: "pointer",
+          border: "none",
+        }}
+        onClick={getEmployess}
+      >
+        get emplyess
+      </button>
+      <br />{" "}
+      <button
+        style={{
+          padding: "10px",
+          backgroundColor: "blue",
+          color: "white",
+          borderRadius: "5px",
+          cursor: "pointer",
+          border: "none",
+        }}
+        onClick={getAllTasks}
+      >
+        getAllTasks
       </button>
       <br />
     </div>

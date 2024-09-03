@@ -35,6 +35,7 @@ use WpClientManagement\API\DealPipelines\DeleteDealPipeline;
 use WpClientManagement\API\DealPipelines\UpdateDealPipeline;
 use WpClientManagement\API\EicCrmUsers\CreateEicCrmUser;
 use WpClientManagement\API\EicCrmUsers\DeleteCrmUser;
+use WpClientManagement\API\EicCrmUsers\SelectEmployee;
 use WpClientManagement\API\EicCrmUsers\UpdateEicCrmUser;
 use WpClientManagement\API\Emails\CreateEmail;
 use WpClientManagement\API\Emails\DeleteEmail;
@@ -58,6 +59,7 @@ use WpClientManagement\API\Priorities\UpdatePriority;
 use WpClientManagement\API\Projects\CreateProject;
 use WpClientManagement\API\Projects\DeleteProject;
 use WpClientManagement\API\Projects\GetAllProjects;
+use WpClientManagement\API\Projects\GetProjectNotes;
 use WpClientManagement\API\Projects\GetProjectTasks;
 use WpClientManagement\API\Projects\GetSingleProject;
 use WpClientManagement\API\Projects\GetSingleProjectOverview;
@@ -144,6 +146,7 @@ class API {
         new DeleteCrmUser();
         new CreateEicCrmUser();
         new UpdateEicCrmUser();
+        new SelectEmployee();
 
         // Team Member
         new GetTeamMembers();
@@ -201,6 +204,7 @@ class API {
         new SelectProjectPriority();
         new GetSingleProjectOverview();
         new GetProjectTasks();
+        new GetProjectNotes();
 
         // Schedule
         new GetSchedules();

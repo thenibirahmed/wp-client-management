@@ -36,6 +36,13 @@ class EicCrmUser extends Model
         return self::whereNotIn('id', $clientIds)->get();
     }
 
+    public static function getEmployee()
+    {
+        $clientIds = Client::pluck('eic_crm_user_id')->toArray();
+
+        return self::whereNotIn('id', $clientIds)->get();
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }

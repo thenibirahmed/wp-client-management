@@ -60,19 +60,20 @@ const AddNewProjectForm = () => {
     data: managers,
     error: pManagerErr,
   } = useFetchProjectManager(onError);
+  console.log("maneger", managers);
 
   const {
     isLoading: isLoadingPriorities,
     data: priorities,
     error: pPrioritiesErr,
   } = useFetchProjectPriorities(onError);
-
+  console.log("priorities", priorities);
   const {
     isLoading: isLoadingStatus,
     data: statuses,
     error: pStatusErr,
   } = useFetchProjectStatus(onError);
-
+  console.log("statuses", statuses);
   const isLoading =
     isLoadingClients ||
     isLoadingPriorities ||
