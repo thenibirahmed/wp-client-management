@@ -77,9 +77,21 @@ class CreateTask {
             ]);
         }
 
+        $response = [
+            'id'           => $task->id,
+            'title'        => $task->title,
+            'description'  => $task->description,
+            'start_date'   => $task->start_date,
+            'due_date'     => $task->due_date,
+            'assigned_to'  => $task->assigned_to,
+            'project_id'   => $task->project_id,
+            'status_id'    => $task->status_id,
+            'priority_id'  => $task->priority_id,
+        ];
+
         return new \WP_REST_Response([
             'message' => 'Task created successfully.',
-            'task' => $task,
+            'task' => $response,
         ], 201);
     }
 }
