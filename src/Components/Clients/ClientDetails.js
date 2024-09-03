@@ -26,16 +26,22 @@ const ClientDetails = () => {
     error,
   } = useFetchSingleClientOverView(pathArray[1], onError);
 
-  console.log("singleClientOverView", singleClientOverView);
-
-  function onError(err) {
-    toast.error(err?.response?.data?.errors?.id[0]);
-    console.log(err);
-  }
-
   if (isLoading) return <Skeleton />;
 
-  if (error) return <Errors message={error?.response?.data?.errors?.id[0]} />;
+  function onError(err) {
+    console.log(err);
+    toast.error("Failed to fetchClientOverView data");
+  }
+
+  if (error)
+    return (
+      <Errors
+        message={
+          error?.response?.data?.errors?.id[0] ||
+          `Failed to fetch client Overview Data for ClientId ${pathArray[1]}`
+        }
+      />
+    );
 
   return (
     <React.Fragment>

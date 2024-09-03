@@ -17,18 +17,17 @@ import AddClientForm from "./AddClientForm";
 import { useFetchClientOverView } from "../../hooks/useQuery";
 import toast from "react-hot-toast";
 import Skeleton from "../Skeleton";
+import Errors from "../Errors";
 
 const Client = () => {
   const { setCreateInvoice, setAllTabItems } = useStoreContext();
   const [open, setOpen] = useState(false);
 
-  const { isLoading, data: clientOverView } = useFetchClientOverView(onError);
-  //console.log("clientOverView = ", clientOverView);
-
-  function onError(err) {
-    toast.error("Something went wrong ClientOverview");
-    console.log(err);
-  }
+  const {
+    isLoading,
+    data: clientOverView,
+    error,
+  } = useFetchClientOverView(onError);
 
   useEffect(() => {
     setCreateInvoice(false);
@@ -47,7 +46,22 @@ const Client = () => {
     setOpen(true);
   };
 
+  function onError(err) {
+    console.log(err);
+    toast.error("Failed to fetchClientOverView data");
+  }
+
   if (isLoading) return <Skeleton />;
+
+  if (error)
+    return (
+      <Errors
+        message={
+          error?.response?.data?.errors?.id[0] ||
+          "Failed to fetch Client Overview Data"
+        }
+      />
+    );
 
   return (
     <React.Fragment>

@@ -17,6 +17,7 @@ import api from "../../../api/api";
 import { Calendar02Icon } from "../../../utils/icons";
 import toast from "react-hot-toast";
 import Loaders from "../../Loaders";
+import Errors from "../../Errors";
 
 const currencyLists = [
   { id: 2, name: "USD" },
@@ -48,17 +49,29 @@ const AddNewProjectForm = () => {
   const imageRef = useRef();
 
   //calling react-query Parallely for fetching data
-  const { isLoading: isLoadingClients, data: clients } =
-    useFetchProjectClients(onError);
+  const {
+    isLoading: isLoadingClients,
+    data: clients,
+    error: pClientErr,
+  } = useFetchProjectClients(onError);
 
-  const { isLoading: isLoadProjectManager, data: managers } =
-    useFetchProjectManager(onError);
+  const {
+    isLoading: isLoadProjectManager,
+    data: managers,
+    error: pManagerErr,
+  } = useFetchProjectManager(onError);
 
-  const { isLoading: isLoadingPriorities, data: priorities } =
-    useFetchProjectPriorities(onError);
+  const {
+    isLoading: isLoadingPriorities,
+    data: priorities,
+    error: pPrioritiesErr,
+  } = useFetchProjectPriorities(onError);
 
-  const { isLoading: isLoadingStatus, data: statuses } =
-    useFetchProjectStatus(onError);
+  const {
+    isLoading: isLoadingStatus,
+    data: statuses,
+    error: pStatusErr,
+  } = useFetchProjectStatus(onError);
 
   const isLoading =
     isLoadingClients ||
@@ -92,7 +105,7 @@ const AddNewProjectForm = () => {
       status_id: selectStatus?.id,
       priority_id: selectPriority?.id,
       title: data.title,
-      budget: 450.2, // decimal
+      budget: 450.2,
       currency: "USD",
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
       due_date: dayjs(endDate).format("YYYY-MM-DD"),
@@ -147,6 +160,9 @@ const AddNewProjectForm = () => {
   if (isLoading) {
     return <Skeleton />;
   }
+
+  if (pClientErr || pManagerErr || pPrioritiesErr || pStatusErr)
+    return <Errors message="Internal Server Error" />;
 
   return (
     <div className="py-5 relative h-full ">

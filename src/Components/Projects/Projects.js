@@ -18,6 +18,8 @@ import {
   useFetchProjectOverView,
 } from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
+import toast from "react-hot-toast";
+import Errors from "../Errors";
 
 const Projects = () => {
   const [open, setOpen] = useState(false);
@@ -29,15 +31,22 @@ const Projects = () => {
     setOpenTaskDetail,
   } = useStoreContext();
 
-  const { isLoading: allProjectLoader, data: projects } =
-    useFetchAllProjects(onError);
-  const { isLoading: projectOverViewLoader, data: projectOverView } =
-    useFetchProjectOverView(onError);
+  const {
+    isLoading: allProjectLoader,
+    data: projects,
+    error: allProjectError,
+  } = useFetchAllProjects(onError);
+  const {
+    isLoading: projectOverViewLoader,
+    data: projectOverView,
+    error: projectOverViewError,
+  } = useFetchProjectOverView(onError);
 
   let isLoading = allProjectLoader || projectOverViewLoader;
 
   function onError(err) {
     console.log(err);
+    toast.error("Failed to fetch all projects or project Overview data");
   }
 
   const dataList = [1];
@@ -53,6 +62,10 @@ const Projects = () => {
       info: false,
     });
   }, []);
+
+  if (projectOverViewError || allProjectError) {
+    return <Errors message="Internal Server Error" />;
+  }
 
   return (
     <React.Fragment>

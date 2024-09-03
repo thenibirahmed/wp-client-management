@@ -27,14 +27,20 @@ const ProjectDetail = () => {
   console.log("singleClientOverView", singleProjectOverView);
 
   function onError(err) {
-    toast.error("Something went wrong Single Project Overview");
     console.log(err);
   }
 
   if (isLoading) return <Skeleton />;
 
   if (error) {
-    return <Errors message={error?.response?.data?.errors?.id[0]} />;
+    return (
+      <Errors
+        message={
+          error?.response?.data?.errors?.id[0] ||
+          `Failed To Fetch Project Overview Data for clientId ${pathArray[1]}`
+        }
+      />
+    );
   }
 
   return (
