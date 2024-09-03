@@ -20,7 +20,7 @@ const ProjectDetailsLayout = ({ projectId }) => {
   } else if (allTabItems["file"]) {
     return <ProjectFile projectId={projectId} />;
   } else if (allTabItems["email"]) {
-    return <ProjectEmail />;
+    return <ProjectEmail projectId={projectId} />;
   } else if (allTabItems["info"]) {
     return <ProjectInfo />;
   } else {

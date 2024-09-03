@@ -27,8 +27,6 @@ const ProjectTask = ({ projectId }) => {
     toast.error(err?.response?.data?.message || "Failed To Fetch Project Task");
   }
 
-  const dataList = [1];
-
   const handler = () => {
     setOpenProjectModal(true);
   };

@@ -301,3 +301,24 @@ export const useFetchProjectFiles = (projectId, onError) => {
     }
   );
 };
+
+export const useFetchProjectEmails = (projectId, onError) => {
+  return useQuery(
+    ["project-email", projectId],
+    async () => {
+      return await api.get(`/project/${projectId}/emails`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          emails: data.data.data,
+          pagination: data.data.pagination,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};

@@ -194,7 +194,7 @@ const PlayGround = () => {
           project_id: 2,
           subject: "fisrt email",
           body: "onk din tomai dekhi na",
-          // scheduled_at: dayjs(new Date()).format("YYYY-MM-DD"),
+          scheduled_at: dayjs(new Date()).format("YYYY-MM-DD"),
         },
         {
           headers: {

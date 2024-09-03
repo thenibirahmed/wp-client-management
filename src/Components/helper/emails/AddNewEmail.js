@@ -8,14 +8,19 @@ import {
   Link05Icon,
   SignatureIcon,
 } from "../../../utils/icons";
+import useHashRouting from "../../../utils/useHashRouting";
+import toast from "react-hot-toast";
+import Loaders from "../../Loaders";
+import api from "../../../api/api";
+import dayjs from "dayjs";
 
-const AddNewEmail = () => {
+const AddNewEmail = ({ emailsData, pagination }) => {
   return (
     <div>
       <div className="border border-borderColor rounded-[8px] py-[13px] ">
         <EmailBox />
       </div>
-      <EmailTable />
+      <EmailTable emailsData={emailsData} pagination={pagination} />
     </div>
   );
 };
@@ -23,6 +28,10 @@ const AddNewEmail = () => {
 export default AddNewEmail;
 
 const EmailBox = () => {
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const [subject, setSubject] = useState();
+  const currentPath = useHashRouting("");
+  const pathArray = currentPath?.split("/#/");
   const [editorContent, setEditorContent] = useState("");
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
@@ -83,15 +92,48 @@ const EmailBox = () => {
     quill.clipboard.dangerouslyPasteHTML(range.index, signature);
   };
 
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
+    if (!editorContent) return toast.error("Content required");
+    const projectId = pathArray[1] ? Number(pathArray[1]) : null;
+
+    if (!projectId) return toast.error("ProjectId is required");
+
+    setSubmitLoader(true);
+    const sendData = {
+      client_id: 13,
+      user_id: 4,
+      project_id: projectId,
+      subject: setSubject,
+      body: editorContent,
+      scheduled_at: dayjs(new Date()).format("YYYY-MM-DD"),
+    };
+
+    try {
+      const { data } = await api.post("/email/create", sendData);
+      toast.success(data?.message);
+      setEditorContent("");
+    } catch (err) {
+      console.log(err);
+      toast.error("Email Send Failed");
+    } finally {
+      setSubmitLoader(false);
+    }
+  };
+
   return (
-    <>
+    <form onSubmit={onSubmitHandler}>
       <div className="px-4">
         <input
+          name="to"
           placeholder="To"
           type="text"
           className="w-full font-metropolis  px-1 py-1 outline-none text-textColor font-medium"
         />
         <input
+          onChange={(e) => setSubject(e.target.value)}
+          name="subject"
+          required
           placeholder="Subject"
           type="text"
           className="w-full text-textColor2 font-metropolis font-normal border-b border-t border-borderColor px-1 py-2 outline-none"
@@ -125,10 +167,11 @@ const EmailBox = () => {
           </button>
         </div>
         <button
+          disabled={submitLoader}
           type="submit"
           className="font-metropolis rounded-[5px] bg-customBlue text-white py-[10px] px-[12px] text-xs font-medium"
         >
-          Send Email
+          {submitLoader ? <Loaders /> : " Send Email"}
         </button>
       </div>
 
@@ -148,6 +191,6 @@ const EmailBox = () => {
         accept="image/*"
         multiple
       />
-    </>
+    </form>
   );
 };
