@@ -143,7 +143,7 @@ const PlayGround = () => {
   const getAllTasks = () => {
     axios
       .get(
-        eicApiSettings.rest_url + "wp-client-management/project/2/tasks",
+        eicApiSettings.rest_url + "wp-client-management/v1/project/2/tasks",
 
         {
           headers: {
