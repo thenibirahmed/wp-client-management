@@ -10,18 +10,18 @@ class CreateNote{
     private $endpoint = '/note/create';
 
     protected array $rules = [
-        'eic_crm_user_id' => 'required|exists:eic_eic_crm_users,id',
-        'project_id'      => 'nullable|exists:eic_projects,id',
-        'note'            => 'required|string',
+        'user_id'     => 'required|exists:eic_eic_crm_users,id',
+        'project_id'  => 'nullable|exists:eic_projects,id',
+        'client_id'   => 'nullable|exists:eic_clients,id',
+        'note'        => 'required|string',
     ];
 
     protected array $validationMessages = [
-        'eic_crm_user_id.required' => 'The EicCrmUser ID is required',
-        'eic_crm_user_id.exists'   => 'The EicCrmUser does not exist',
-        'client_id.required'       => 'The Client ID is required',
-        'client_id.exists'         => 'The Client does not exist',
-        'note.required'            => 'The note field is required.',
-        'note.string'              => 'The note field must be string.'
+        'user_id.required'   => 'The User ID is required',
+        'user_id.exists'     => 'The User does not exist',
+        'client_id.exists'   => 'The Client does not exist',
+        'note.required'      => 'The note field is required.',
+        'note.string'        => 'The note field must be string.'
     ];
 
     public function __construct() {
@@ -37,8 +37,8 @@ class CreateNote{
 
         $data = $request->get_params();
 
-        $data['eic_crm_user_id'] = intval($data['eic_crm_user_id'] ?? 0);
-        $data['client_id']       = intval($data['client_id'] ?? 0);
+        $data['eic_crm_user_id'] = isset($data['user_id']) ? intval($data['user_id']) : null;
+        $data['client_id']       = isset($data['client_id']) ? intval($data['client_id']) : null;
         $data['note']            = sanitize_textarea_field($data['note'] ?? '');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
@@ -49,11 +49,7 @@ class CreateNote{
             ], 400);
         }
 
-        $note = Note::create([
-            'eic_crm_user_id' => $data['eic_crm_user_id'],
-            'client_id'       => $data['client_id'],
-            'note'            => $data['note'],
-        ]);
+        $note = Note::create($data);
 
         if(!$note) {
             return new \WP_REST_Response([
@@ -61,9 +57,17 @@ class CreateNote{
             ]);
         }
 
+        $response = [
+            'id' => $note->id,
+            'note' => $note->note,
+            'client_id' => $note->client_id,
+            'project_id' => $note->project_id,
+            'user_id' => $note->eic_crm_user_id
+        ];
+
         return new \WP_REST_Response([
             'message' => 'Note created successfully.',
-            'note' => $note,
+            'note' => $response,
         ], 201);
     }
 }

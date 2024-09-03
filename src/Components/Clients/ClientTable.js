@@ -148,8 +148,16 @@ const ClientTable = ({ clientData }) => {
                     (client) => client?.client_id === item?.client_id
                   );
                   return (
-                    <tr>
-                      <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
+                    <tr
+                      className="cursor-pointer"
+                      onClick={() =>
+                        (window.location.href = `#/clients/#/${item?.client_id}`)
+                      }
+                    >
+                      <td
+                        onClick={(e) => e.stopPropagation()}
+                        className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal"
+                      >
                         <input
                           checked={isChecked}
                           onChange={(e) =>
@@ -193,7 +201,10 @@ const ClientTable = ({ clientData }) => {
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
                         ${item.invoice.due}
                       </td>
-                      <td className="whitespace-nowrap   px-3 py-4 ">
+                      <td
+                        onClick={(e) => e.stopPropagation()}
+                        className="whitespace-nowrap   px-3 py-4 "
+                      >
                         <div className="flex gap-3">
                           <a
                             href={`#/clients/#/${item?.client_id}`}
@@ -206,7 +217,7 @@ const ClientTable = ({ clientData }) => {
                             />
                           </a>
                           <a
-                            href=""
+                            href={`#/clients/#/${item?.client_id}`}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon

@@ -217,8 +217,16 @@ const ProjectTable = ({ projectData, pagination }) => {
                       : "bg-customBg1 text-green";
 
                   return (
-                    <tr>
-                      <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
+                    <tr
+                      className="cursor-pointer"
+                      onClick={() =>
+                        (window.location.href = `#/projects/#/${item.id}`)
+                      }
+                    >
+                      <td
+                        onClick={(e) => e.stopPropagation()}
+                        className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal"
+                      >
                         <input
                           checked={isChecked}
                           onChange={(e) =>

@@ -85,17 +85,17 @@ const PlayGround = () => {
   const getTest = () => {
     axios
       .post(
-        eicApiSettings.rest_url + "wp-client-management/v1/task/create",
+        eicApiSettings.rest_url + "wp-client-management/v1/note/create",
         {
-          user_id: 4, //must be integer
-          assigned_to: 4, //must be integer
-          project_id: 2, // must be integer
-          title: "Fiest Task",
-          start_date: dayjs(new Date()).format("YYYY-MM-DD"), // time format
-          due_date: dayjs(new Date()).format("YYYY-MM-DD"), //time format
-          status_id: 1, //must be integer
-          priority_id: 1, //must be integer
-          description: "first task description",
+          user_id: 4,
+          project_id: 2,
+          note: "Note ta check koren valovabe.",
+          // assigned_to: 1,
+          // status_id: 8,
+          // priority_id: 11,
+          // start_date: "2022-01-01",
+          // due_date: "2022-01-01",
+          // description: "The workig description",
         },
         {
           headers: {
@@ -116,11 +116,10 @@ const PlayGround = () => {
       });
   };
 
-  const getEmployess = () => {
+  const getNotes = () => {
     axios
       .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/select-employee",
-
+        eicApiSettings.rest_url + "wp-client-management/v1/project/2/notes",
         {
           headers: {
             "X-WP-Nonce": eicApiSettings.nonce,
@@ -139,31 +138,6 @@ const PlayGround = () => {
         );
       });
   };
-
-  const getAllTasks = () => {
-    axios
-      .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/project/2/tasks",
-
-        {
-          headers: {
-            "X-WP-Nonce": eicApiSettings.nonce,
-            // 'Content-Type' : 'application/json'
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setPost(response.data);
-      })
-      .catch((error) => {
-        console.log(
-          "Error:",
-          error.response ? error.response.data : error.message
-        );
-      });
-  };
-
   return (
     <div>
       <h1>PlayGround</h1>
@@ -187,20 +161,6 @@ const PlayGround = () => {
       >
         Test me!
       </button>
-      <br />
-      <button
-        style={{
-          padding: "10px",
-          backgroundColor: "blue",
-          color: "white",
-          borderRadius: "5px",
-          cursor: "pointer",
-          border: "none",
-        }}
-        onClick={getEmployess}
-      >
-        get emplyess
-      </button>
       <br />{" "}
       <button
         style={{
@@ -211,10 +171,11 @@ const PlayGround = () => {
           cursor: "pointer",
           border: "none",
         }}
-        onClick={getAllTasks}
+        onClick={getNotes}
       >
-        getAllTasks
+        Note
       </button>
+      <br />
       <br />
     </div>
   );
