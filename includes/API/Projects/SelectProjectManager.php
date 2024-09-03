@@ -31,7 +31,6 @@ class SelectProjectManager {
         foreach ($wpUsersDb as $user) {
             $wpUsers[$user->ID] = [
                 'name'  => $user->user_login,
-                'email' => $user->user_email,
             ];
         }
 
