@@ -68,20 +68,19 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/select-employee",
-				// {
-				// 	title: "Test project",
-				// 	client_id: 100,
-				// 	currency: "USD",
-				// 	manager_id: 1,
-				// 	status_id: 1,
-				// 	priority_id: 1,
-				// 	start_date: "2022-01-01",
-				// 	due_date: "2022-01-31",
-				// 	budget: 1000,
-				// 	description: "Test project",
-				// },
+		axios.post(
+				eicApiSettings.rest_url + "wp-client-management/v1/task/create",
+				{
+					user_id: 1,
+					project_id: 1,
+					title: "Sobkichu valovabe test koro.",
+					assigned_to: 1,
+					status_id: 8,
+					priority_id: 11,
+					start_date: "2022-01-01",
+					due_date: "2022-01-01",
+					description: "The workig description",
+				},
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,

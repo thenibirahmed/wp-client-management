@@ -10,7 +10,7 @@ class CreateTask {
     private $endpoint = '/task/create';
 
     protected array $rules = [
-        'eic_crm_user_id' => 'required|exists:eic_eic_crm_users,id',
+        'user_id' => 'required|exists:eic_eic_crm_users,id',
         'assigned_to' => 'nullable|exists:eic_eic_crm_users,id',
         'project_id' => 'required|exists:eic_projects,id',
         'title' => 'required|string',
@@ -22,8 +22,8 @@ class CreateTask {
     ];
 
     protected array $validationMessages = [
-        'eic_crm_user_id.required' => 'The user field is required.',
-        'eic_crm_user_id.exists' => 'The selected user does not exist.',
+        'user_id.required' => 'The user field is required.',
+        'user_id.exists' => 'The selected user does not exist.',
         'assigned_to.exists' => 'The assigned user does not exist.',
         'project_id.required' => 'The project field is required.',
         'project_id.exists' => 'The selected project does not exist.',
@@ -49,15 +49,17 @@ class CreateTask {
 
         $data = $request->get_params();
 
-        $data['eic_crm_user_id'] = sanitize_text_field($data['eic_crm_user_id'] ?? '');
-        $data['assigned_to'] = sanitize_text_field($data['assigned_to'] ?? '');
-        $data['project_id'] = sanitize_text_field($data['project_id'] ?? '');
+        $data['eic_crm_user_id'] = isset($data['user_id']) ? intval($data['user_id']) : 0;
+        $data['assigned_to'] = isset($data['assigned_to']) ? intval($data['assigned_to']) : 0;
+        $data['project_id'] = isset($data['project_id']) ? intval($data['project_id']) : 0;
+        $data['status_id'] = isset($data['status_id']) ? intval($data['status_id']) : 0;
+        $data['priority_id'] = isset($data['priority_id']) ? intval($data['priority_id']) : 0;
+
         $data['title'] = sanitize_text_field($data['title'] ?? '');
+        $data['description'] = sanitize_textarea_field($data['description'] ?? '');
+
         $data['start_date'] = sanitize_text_field($data['start_date'] ?? '');
         $data['due_date'] = sanitize_text_field($data['due_date'] ?? '');
-        $data['status_id'] = sanitize_text_field($data['status_id'] ?? '');
-        $data['priority_id'] = sanitize_text_field($data['priority_id'] ?? '');
-        $data['description'] = sanitize_textarea_field($data['description'] ?? '');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -67,17 +69,7 @@ class CreateTask {
             ], 400);
         }
 
-        $task = Task::create([
-            'eic_crm_user_id' => $data['eic_crm_user_id'],
-            'assigned_to' => $data['assigned_to'],
-            'project_id' => $data['project_id'],
-            'title' => $data['title'],
-            'start_date' => $data['start_date'],
-            'due_date' => $data['due_date'],
-            'status_id' => $data['status_id'],
-            'priority_id' => $data['priority_id'],
-            'description' => $data['description'],
-        ]);
+        $task = Task::create($data);
 
         if(!$task) {
             return new \WP_REST_Response([
