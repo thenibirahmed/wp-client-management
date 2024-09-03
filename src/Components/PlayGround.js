@@ -69,7 +69,7 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/select/task/priority",
+				eicApiSettings.rest_url + "wp-client-management/v1/select/invoice/status",
 				// {
 				// 	title: "Test project",
 				// 	client_id: 100,
