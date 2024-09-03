@@ -10,21 +10,21 @@ class CreateFile{
     private $endpoint = '/file/create';
 
     protected array $rules = [
-        'eic_crm_user_id' => 'required|exists:eic_eic_crm_users,id',
-        'client_id'       => 'required|exists:eic_clients,id',
-        'title'           => 'required|string',
-        // 'url'             => 'required|url',
+        'user_id'     => 'required|exists:eic_eic_crm_users,id',
+        'client_id'   => 'nullable|exists:eic_clients,id',
+        'project_id'  => 'nullable|exists:eic_projects,id',
+        'title'       => 'required|string',
+        'url'         => 'required|string',
     ];
 
     protected array $validationMessages = [
-        'eic_crm_user_id.required' => 'The EicCrmUser ID is required',
-        'eic_crm_user_id.exists'   => 'The EicCrmUser does not exist',
-        'client_id.required'       => 'The Client ID is required',
-        'client_id.exists'         => 'The Client does not exist',
-        'title.required'           => 'The Title is required',
-        'title.string'             => 'The Title must be a valid string',
-        'url.required'             => 'The URL is required',
-        'url.url'                  => 'The URL must be a valid URL',
+        'user_id.required'   => 'The User ID is required',
+        'user_id.exists'     => 'The User does not exist',
+        'client_id.required' => 'The Client ID is required',
+        'client_id.exists'   => 'The Client does not exist',
+        'title.required'     => 'The Title is required',
+        'title.string'       => 'The Title must be a valid string',
+        'url.required'       => 'The URL is required'
     ];
 
     public function __construct() {
@@ -40,8 +40,8 @@ class CreateFile{
 
         $data = $request->get_params();
 
-        $data['eic_crm_user_id'] = intval($data['eic_crm_user_id'] ?? 0);
-        $data['client_id']       = intval($data['client_id'] ?? 0);
+        $data['eic_crm_user_id'] = isset($data['user_id']) ? intval($data['user_id']) : null;
+        $data['client_id']       = isset($data['client_id']) ? intval($data['client_id']) : null;
         $data['title']           = sanitize_text_field($data['title'] ?? '');
         $data['url']             = esc_url_raw($data['url'] ?? '');
 
@@ -55,16 +55,10 @@ class CreateFile{
 
         $pathInfo = pathinfo($data['url']);
         $extension = $pathInfo['extension'];
-        
+
         $extension ? $data['type'] = $extension : $data['type'] = 'unknown';
 
-        $file = File::create([
-            'eic_crm_user_id' => $data['eic_crm_user_id'],
-            'client_id' => $data['client_id'],
-            'title' => $data['title'],
-            'url' => $data['url'],
-            'type' => $data['type'],
-        ]);
+        $file = File::create($data);
 
         if(!$file) {
             return new \WP_REST_Response([
