@@ -26,6 +26,7 @@ use WpClientManagement\API\Notes\GetSingleNote;
 use WpClientManagement\API\Posts\GetPosts;
 use WpClientManagement\API\Users\GetUsers;
 use WpClientManagement\API\Clients\GetClients;
+use WpClientManagement\API\Projects\GetProjectFiles;
 use WpClientManagement\API\Clients\GetSingleClientOverview;
 use WpClientManagement\API\Clients\UpdateClient;
 use WpClientManagement\API\Contacts\AddTeamMember;
@@ -205,6 +206,7 @@ class API {
         new GetSingleProjectOverview();
         new GetProjectTasks();
         new GetProjectNotes();
+        new GetProjectFiles();
 
         // Schedule
         new GetSchedules();

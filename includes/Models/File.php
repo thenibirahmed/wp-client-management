@@ -23,6 +23,11 @@ class File extends Model
         return self::where('client_id', $id)->paginate(20, ['*'], 'file', $page);
     }
 
+    public static function getProjectFiles($id, $page)
+    {
+        return self::where('project_id', $id)->paginate(20, ['*'], 'file', $page);
+    }
+
     public function client() {
         return $this->belongsTo(Client::class);
     }

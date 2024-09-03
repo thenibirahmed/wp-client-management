@@ -68,19 +68,19 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/note/create",
-				{
-					user_id: 1,
-					project_id: 1,
-					note: "Note ta check koren valovabe.",
-					// assigned_to: 1,
-					// status_id: 8,
-					// priority_id: 11,
-					// start_date: "2022-01-01",
-					// due_date: "2022-01-01",
-					// description: "The workig description",
-				},
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/project/1/files",
+				// {
+				// 	user_id: 1,
+				// 	project_id: 1,
+				// 	note: "Note ta check koren valovabe.",
+				// 	// assigned_to: 1,
+				// 	// status_id: 8,
+				// 	// priority_id: 11,
+				// 	// start_date: "2022-01-01",
+				// 	// due_date: "2022-01-01",
+				// 	// description: "The workig description",
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
