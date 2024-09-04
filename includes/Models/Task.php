@@ -30,6 +30,12 @@ class Task extends Model
                 ->paginate(2, ['*'], 'page', $page);
     }
 
+    public static function getProjectTask($id)
+    {
+        return self::with('eic_crm_user', 'assigned_user', 'status', 'priority')
+                ->find($id);
+    }
+
     public function eic_crm_user() {
         return $this->belongsTo(EicCrmUser::class);
     }
