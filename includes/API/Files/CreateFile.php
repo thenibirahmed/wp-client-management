@@ -40,7 +40,8 @@ class CreateFile{
 
         $data = $request->get_params();
 
-        $data['eic_crm_user_id'] = isset($data['user_id']) ? intval($data['user_id']) : null;
+        $user = wp_get_current_user();
+        $data['eic_crm_user_id'] = $user->ID;
         $data['client_id']       = isset($data['client_id']) ? intval($data['client_id']) : null;
         $data['title']           = sanitize_text_field($data['title'] ?? '');
         $data['url']             = esc_url_raw($data['url'] ?? '');

@@ -39,7 +39,8 @@ class AddTaskComment {
 
         $data = $request->get_params();
 
-        $data['eic_crm_user_id'] = isset($data['user_id']) ? intval($data['user_id']) : null;
+        $user = wp_get_current_user();
+        $data['eic_crm_user_id'] = $user->ID;
         $data['task_id'] = isset($data['task_id']) ? intval($data['task_id']) : null;
         $data['reply_to'] = isset($data['reply_to']) ? intval($data['reply_to']) : null;
         $data['comment'] = sanitize_textarea_field($data['comment']);
