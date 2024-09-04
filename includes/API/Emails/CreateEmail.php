@@ -10,22 +10,22 @@ class CreateEmail{
     private $endpoint = '/email/create';
 
     protected array $rules = [
-        'user_id'    => 'required|exists:eic_eic_crm_users,id',
-        'client_id'  => 'required|exists:eic_clients,id',
-        'project_id' => 'nullable|exists:eic_projects,id',
-        'subject'    => 'nullable|string',
-        'body'       => 'required|string',
+        'eic_crm_user_id'  => 'required|exists:eic_eic_crm_users,id',
+        'client_id'        => 'required|exists:eic_clients,id',
+        'project_id'       => 'nullable|exists:eic_projects,id',
+        'subject'          => 'nullable|string',
+        'body'             => 'required|string',
     ];
 
     protected array $validationMessages = [
-        'user_id.required'   => 'The User field is required.',
-        'user_id.exists'     => 'The selected User does not exist.',
-        'client_id.required' => 'The client field is required.',
-        'client_id.exists'   => 'The selected client does not exist.',
-        'project_id.exists'  => 'The selected project does not exist.',
-        'subject.string'     => 'The subject must be a valid string.',
-        'body.required'      => 'The body field is required.',
-        'body.string'        => 'The body must be a valid string.',
+        'eic_crm_user_id.required'  => 'The User field is required.',
+        'eic_crm_user_id.exists'    => 'The selected User does not exist.',
+        'client_id.required'        => 'The client field is required.',
+        'client_id.exists'          => 'The selected client does not exist.',
+        'project_id.exists'         => 'The selected project does not exist.',
+        'subject.string'            => 'The subject must be a valid string.',
+        'body.required'             => 'The body field is required.',
+        'body.string'               => 'The body must be a valid string.',
     ];
 
     public function __construct() {
@@ -41,7 +41,8 @@ class CreateEmail{
 
         $data = $request->get_params();
 
-        $data['eic_crm_user_id'] = isset($data['user_id']) ? intval($data['user_id']) : null;
+        $user = wp_get_current_user();
+        $data['eic_crm_user_id'] = $user->ID;
         $data['client_id']       = isset($data['client_id']) ? intval($data['client_id']) : null;
         $data['project_id']      = isset($data['project_id']) ? intval($data['project_id']) : null;
         $data['subject']         = sanitize_text_field($data['subject']);
