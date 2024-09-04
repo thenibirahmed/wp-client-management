@@ -26,7 +26,7 @@ class EicCrmUser extends Model
     public static function getTeamMembers($page)
     {
         return EicCrmUser::where('role', 'team')
-                    ->paginate(2, ['*'], 'page', $page);
+                    ->paginate(5, ['*'], 'page', $page);
     }
 
     public static function selectManager()

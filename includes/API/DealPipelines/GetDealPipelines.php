@@ -31,7 +31,7 @@ class GetDealPipelines {
     public function get_dealpipelines(\WP_REST_Request $request) {
         $page = $request->get_params('page');
 
-        $dealpipelines = DealPipeline::paginate(20, ['*'], 'page', $page);
+        $dealpipelines = DealPipeline::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($dealpipelines as $dealpipeline) {

@@ -45,7 +45,7 @@ class GetFiles {
         $page = $request->get_params('page');
 
 
-        $files = File::paginate(20, ['*'], 'page', $page);
+        $files = File::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($files as $file) {

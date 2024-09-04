@@ -22,7 +22,7 @@ class GetSchedules {
 
         $page = $request->get_params('page');
 
-        $schedules = Schedule::paginate(20, ['*'], 'page', $page);
+        $schedules = Schedule::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($schedules as $schedule) {

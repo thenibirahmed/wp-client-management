@@ -23,7 +23,7 @@ class GetClients {
     {
         $page = $request->get_params('page');
 
-        $clients = Client::paginate(20, ['*'], 'page', $page);
+        $clients = Client::paginate(5, ['*'], 'page', $page);
 
         $wp_user_ids = $clients->pluck('eic_crm_user.wp_user_id')->toArray();
 

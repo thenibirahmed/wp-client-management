@@ -22,7 +22,7 @@ class GetPriorities {
 
         $page = $request->get_params('page');
 
-        $priorities = Priority::paginate(20, ['*'], 'page', $page);
+        $priorities = Priority::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($priorities as $priority) {

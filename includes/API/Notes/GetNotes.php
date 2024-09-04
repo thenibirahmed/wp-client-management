@@ -22,7 +22,7 @@ class GetNotes {
 
         $page = $request->get_params('page');
 
-        $notes = Note::paginate(20, ['*'], 'page', $page);
+        $notes = Note::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($notes as $note) {

@@ -22,7 +22,7 @@ class GetInvoices {
 
         $page = $request->get_params('page');
 
-        $invoices = Invoice::paginate(20, ['*'], 'page', $page);
+        $invoices = Invoice::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($invoices as $invoice) {

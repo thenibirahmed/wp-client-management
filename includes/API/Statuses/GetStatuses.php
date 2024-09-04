@@ -22,7 +22,7 @@ class GetStatuses {
 
         $page = $request->get_params('page');
 
-        $statuses = Status::paginate(20, ['*'], 'page', $page);
+        $statuses = Status::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($statuses as $status) {

@@ -24,7 +24,7 @@ class GetAllProjects {
 
         $page        = $request->get_params('page');
 
-        $projects    = Project::with('client', 'status', 'priority')->paginate(2, ['*'], 'page', $page);
+        $projects    = Project::with('client', 'status', 'priority')->paginate(5, ['*'], 'page', $page);
 
         $clients     = Client::whereHas('projects')->get();
 
