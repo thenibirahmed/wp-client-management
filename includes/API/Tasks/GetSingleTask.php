@@ -57,6 +57,35 @@ class GetSingleTask {
             ]);
         }
 
+        $comments = $task->comments()->whereNull('reply_to')->get();
+
+        $wp_user_ids = $task->eic_crm_user->pluck('wp_user_id')->toArray();
+
+        $comments_users = get_users(['include' => $wp_user_ids]);
+
+        $wpUsers = [];
+        foreach ($comments_users as $user) {
+            $wpUsers[$user->ID] = [
+                'name'  => $user->user_login,
+            ];
+        }
+
+        $commentWithDetails = $comments->map(function ($comment) use ($wpUsers) {
+            $eic_crm_user = $comment->eic_crm_user;
+            $wp_user_id = $eic_crm_user->wp_user_id;
+            $wp_user = $wpUsers[$wp_user_id] ?? null;
+            return [
+                'id' => $comment->id,
+                'comment' => $comment->comment,
+                'author' => $wp_user['name'] ?? null,
+                'date' => $comment->created_at ? human_time_diff(strtotime($comment->created_at), current_time('timestamp')) . ' ago' : null,
+            ];
+        });
+
+        return new \WP_REST_Response([
+            "comments" => $commentWithDetails,
+        ]);
+
         $owner_wp_user_id = $task->eic_crm_user->wp_user_id;
         $assignee_wp_user_id = $task->assigned_user->wp_user_id;
 
