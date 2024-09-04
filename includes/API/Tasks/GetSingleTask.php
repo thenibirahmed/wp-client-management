@@ -48,7 +48,8 @@ class GetSingleTask {
             ], 400);
         }
 
-        $task = Task::find($data['id']);
+        $task = Task::with('eic_crm_user', 'assigned_user', 'status', 'priority')
+                    ->find($data['id']);
 
         if(!$task) {
             return new \WP_REST_Response([
@@ -56,10 +57,19 @@ class GetSingleTask {
             ]);
         }
 
+        $owner_wp_user_id = $task->eic_crm_user->wp_user_id;
+        $assignee_wp_user_id = $task->assigned_user->wp_user_id;
+
+        $ownerDb    = get_user_by('id',$owner_wp_user_id);
+        $assigneeDb = get_user_by('id',$assignee_wp_user_id);
+
         $response = [
-            'data' => $task,
-            'eic_crm_user' => $task->eic_crm_user,
-            'assigned_to' => $task->assigned_user,
+            'title' => $task->title,
+            'owner' => $ownerDb->user_login,
+            'assignee_to' => $assigneeDb->user_login,
+            'status' => $task->status->name,
+            'priority' => $task->priority->name,
+            'description' => $task->description
         ];
 
         return new \WP_REST_Response($response);
