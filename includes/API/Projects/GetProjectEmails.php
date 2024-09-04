@@ -85,11 +85,11 @@ class GetProjectEmails {
             $wp_user_id = $email->eic_crm_user->wp_user_id;
 
             $data[] = [
-                'id'     => $email->id,
-                'from' => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
-                'subject'   => $email->subject,
-                'body'    => $email->body,
-                'time'   => $email->created_at ? human_time_diff(strtotime($email->created_at), current_time('timestamp')) . ' ago' : null,
+                'id'       => $email->id,
+                'from'     => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
+                'subject'  => $email->subject,
+                'body'     => $email->body,
+                'time'     => $email->created_at ? human_time_diff(strtotime($email->created_at), current_time('timestamp')) . ' ago' : null,
             ];
         }
 

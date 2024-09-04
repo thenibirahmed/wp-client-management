@@ -68,22 +68,22 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/task/1",
-				// {
-				// 	user_id: 10,
-				// 	// project_id: 1,
-				// 	// client_id: 1,
-				// 	task_id: 1,
-				// 	comment: "Hi, hello",
-				// 	body: "kmn achen?",
-				// // // 	// assigned_to: 1,
-				// // // 	// status_id: 8,
-				// // // 	// priority_id: 11,
-				// // // 	// start_date: "2022-01-01",
-				// // // 	// due_date: "2022-01-01",
-				// // // 	// description: "The workig description",
-				// },
+		axios.post(
+				eicApiSettings.rest_url + "wp-client-management/v1/add-comment",
+				{
+					user_id: 10,
+					// project_id: 1,
+					// client_id: 1,
+					task_id: 1,
+					comment: "Hi, hello",
+					body: "kmn achen?",
+				// // 	// assigned_to: 1,
+				// // 	// status_id: 8,
+				// // 	// priority_id: 11,
+				// // 	// start_date: "2022-01-01",
+				// // 	// due_date: "2022-01-01",
+				// // 	// description: "The workig description",
+				},
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
