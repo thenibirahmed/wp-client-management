@@ -57,6 +57,10 @@ class GetSingleTask {
             ]);
         }
 
+        //   **********************
+
+
+
         $comments = $task->comments()->whereNull('reply_to')->get();
 
         $wp_user_ids = $task->eic_crm_user->pluck('wp_user_id')->toArray();
@@ -74,17 +78,31 @@ class GetSingleTask {
             $eic_crm_user = $comment->eic_crm_user;
             $wp_user_id = $eic_crm_user->wp_user_id;
             $wp_user = $wpUsers[$wp_user_id] ?? null;
+
+
+            $replies = $comment->where('reply_to', $comment->id)->get();
+
+            $replies = $replies->map(function ($reply) use ($wpUsers) {
+                $eic_crm_user = $reply->eic_crm_user;
+                $wp_user_id = $eic_crm_user->wp_user_id;
+                $wp_user = $wpUsers[$wp_user_id] ?? null;
+
+                return [
+                    'id'     => $reply->id,
+                    'reply'  => $reply->comment,
+                    'author' => $wp_user['name'] ?? null,
+                    'date'   => $reply->created_at ? human_time_diff(strtotime($reply->created_at), current_time('timestamp')) . ' ago' : null
+                ];
+            });
+
             return [
                 'id' => $comment->id,
                 'comment' => $comment->comment,
                 'author' => $wp_user['name'] ?? null,
                 'date' => $comment->created_at ? human_time_diff(strtotime($comment->created_at), current_time('timestamp')) . ' ago' : null,
+                'replies' => $replies
             ];
         });
-
-        return new \WP_REST_Response([
-            "comments" => $commentWithDetails,
-        ]);
 
         $owner_wp_user_id = $task->eic_crm_user->wp_user_id;
         $assignee_wp_user_id = $task->assigned_user->wp_user_id;
@@ -98,7 +116,8 @@ class GetSingleTask {
             'assignee_to' => $assigneeDb->user_login,
             'status' => $task->status->name,
             'priority' => $task->priority->name,
-            'description' => $task->description
+            'description' => $task->description,
+            'comments' => $commentWithDetails
         ];
 
         return new \WP_REST_Response($response);
