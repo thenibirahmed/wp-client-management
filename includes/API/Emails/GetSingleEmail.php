@@ -66,7 +66,7 @@ class GetSingleEmail {
             'subject' => $email->subject,
             'from' => $wp_user->user_login,
             'body' => $email->body,
-            'date' => date('M d, Y g:iA', strtotime($email->created_at)),
+            'date' => $email->created_at ? date('M d, Y g:iA', strtotime($email->created_at)) : '',
         ];
 
         return new \WP_REST_Response($response);
