@@ -8,8 +8,8 @@ import { SelectTextField } from "../SelectTextField";
 import toast from "react-hot-toast";
 import {
   useFetchAssignee,
-  useFetchProjectPriorities,
-  useFetchProjectStatus,
+  useFetchPriorities,
+  useFetchStatus,
 } from "../../../hooks/useQuery";
 import useHashRouting from "../../../utils/useHashRouting";
 import Skeleton from "../../Skeleton";
@@ -17,11 +17,6 @@ import Errors from "../../Errors";
 import dayjs from "dayjs";
 import Loaders from "../../Loaders";
 import api from "../../../api/api";
-
-const people = [
-  { id: 2, name: "Arlene Mccoy" },
-  { id: 3, name: "Devon Webb" },
-];
 
 const AddNewTaskForm = () => {
   const { setOpenProjectModal } = useStoreContext();
@@ -32,8 +27,7 @@ const AddNewTaskForm = () => {
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
   const imageRef = useRef();
-  const [selectClientName, setSelectClientName] = useState(people[0]);
-  const [selectStatus, setSelectStatus] = useState();
+
   const [selectPriority, setSelectPriority] = useState();
   const [selectAssignee, setSelectAssignee] = useState();
   const [startDate, setStartDate] = useState(new Date());
@@ -50,15 +44,9 @@ const AddNewTaskForm = () => {
     isLoading: isLoadingPriorities,
     data: priorities,
     error: pPrioritiesErr,
-  } = useFetchProjectPriorities(onError);
+  } = useFetchPriorities("project", onError);
 
-  const {
-    isLoading: isLoadingStatus,
-    data: statuses,
-    error: pStatusErr,
-  } = useFetchProjectStatus(onError);
-
-  const isLoading = isLoadingPriorities || isLoadingStatus || assigneeLoader;
+  const isLoading = isLoadingPriorities || assigneeLoader;
 
   const {
     register,
@@ -73,20 +61,18 @@ const AddNewTaskForm = () => {
   const addNewTaskHandler = async (data) => {
     const projectId = pathArray[1] ? Number(pathArray[1]) : null;
 
-    if (!selectStatus?.id || !selectPriority?.id) {
+    if (!selectPriority?.id) {
       return setError("This field is required*");
     }
     if (!projectId) return toast.error("ProjectId is required");
 
     setSubmitLoader(true);
     const sendData = {
-      user_id: 4,
       assigned_to: selectAssignee?.id,
       project_id: projectId,
       title: data.title,
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
       due_date: dayjs(endDate).format("YYYY-MM-DD"),
-      status_id: selectStatus.id,
       priority_id: selectPriority.id,
       description: data.description,
     };
@@ -114,12 +100,7 @@ const AddNewTaskForm = () => {
     } else {
       setSelectPriority({ name: " -No Priority- ", id: null });
     }
-    if (statuses?.statuses.length > 0) {
-      setSelectStatus(statuses?.statuses[0]);
-    } else {
-      setSelectStatus({ name: " -No Status- ", id: null });
-    }
-  }, [assignee, priorities, statuses]);
+  }, [assignee, priorities]);
 
   const onImageUploadHandler = () => {
     imageRef.current.click();
@@ -134,7 +115,7 @@ const AddNewTaskForm = () => {
     return <Skeleton />;
   }
 
-  if (pPrioritiesErr || pStatusErr || assigneeErr)
+  if (pPrioritiesErr || assigneeErr)
     return <Errors message="Internal Server Error" />;
 
   return (
@@ -155,29 +136,13 @@ const AddNewTaskForm = () => {
 
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <SelectTextField
-            label="User"
-            select={selectClientName}
-            setSelect={setSelectClientName}
-            lists={people}
-            isSubmitting={isSubmitting}
-          />
-          <SelectTextField
             label="Assignee"
             select={selectAssignee}
             setSelect={setSelectAssignee}
             lists={assignee?.employee}
             isSubmitting={isSubmitting}
           />
-        </div>
 
-        <div className="flex md:flex-row flex-col gap-4 w-full">
-          <SelectTextField
-            label="Status"
-            select={selectStatus}
-            setSelect={setSelectStatus}
-            lists={statuses?.statuses}
-            isSubmitting={isSubmitting}
-          />
           <SelectTextField
             label="Priority"
             select={selectPriority}

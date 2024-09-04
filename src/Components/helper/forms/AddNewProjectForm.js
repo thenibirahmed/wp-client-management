@@ -8,9 +8,9 @@ import { useStoreContext } from "../../../store/ContextApiStore";
 import { SelectTextField } from "../SelectTextField";
 import {
   useFetchProjectClients,
-  useFetchProjectPriorities,
-  useFetchProjectManager,
-  useFetchProjectStatus,
+  useFetchPriorities,
+  useFetchStatus,
+  useFetchAssignee,
 } from "../../../hooks/useQuery";
 import Skeleton from "../../Skeleton";
 import api from "../../../api/api";
@@ -59,19 +59,19 @@ const AddNewProjectForm = () => {
     isLoading: isLoadProjectManager,
     data: managers,
     error: pManagerErr,
-  } = useFetchProjectManager(onError);
+  } = useFetchAssignee(onError);
 
   const {
     isLoading: isLoadingPriorities,
     data: priorities,
     error: pPrioritiesErr,
-  } = useFetchProjectPriorities(onError);
+  } = useFetchPriorities("project", onError);
 
   const {
     isLoading: isLoadingStatus,
     data: statuses,
     error: pStatusErr,
-  } = useFetchProjectStatus(onError);
+  } = useFetchStatus("project", onError);
 
   const isLoading =
     isLoadingClients ||
@@ -135,8 +135,8 @@ const AddNewProjectForm = () => {
     } else {
       setSelectClient({ name: " -No Client- ", id: null });
     }
-    if (managers?.managers.length > 0) {
-      setSelectProjectManager(managers?.managers[0]);
+    if (managers?.employee.length > 0) {
+      setSelectProjectManager(managers?.employee[0]);
     } else {
       setSelectProjectManager({ name: " -No Project Manager- ", id: null });
     }
@@ -193,7 +193,7 @@ const AddNewProjectForm = () => {
             label="Project Manager"
             select={selectProjectManager}
             setSelect={setSelectProjectManager}
-            lists={managers?.managers}
+            lists={managers?.employee}
             isSubmitting={isSubmitting}
           />
         </div>

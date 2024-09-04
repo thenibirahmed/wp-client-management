@@ -96,11 +96,11 @@ export const useFetchProjectManager = (onError) => {
   );
 };
 
-export const useFetchProjectPriorities = (onError) => {
+export const useFetchPriorities = (type, onError) => {
   return useQuery(
     "project-priority",
     async () => {
-      return await api.get("/select/project/priority");
+      return await api.get(`/select/${type}/priority`);
     },
 
     {
@@ -124,11 +124,11 @@ export const useFetchProjectPriorities = (onError) => {
   );
 };
 
-export const useFetchProjectStatus = (onError) => {
+export const useFetchStatus = (type, onError) => {
   return useQuery(
     "project-status",
     async () => {
-      return await api.get("/select/project/status");
+      return await api.get(`/select/${type}/status`);
     },
 
     {
@@ -188,8 +188,6 @@ export const useFetchProjectOverView = (onError) => {
           projectOverView: data.data.topBar,
         };
 
-        console.log(sendData);
-
         return sendData;
       },
       onError,
@@ -227,7 +225,6 @@ export const useFetchAssignee = (onError) => {
     },
     {
       select: (data) => {
-        console.log("assignee", data.data);
         const sendData = {
           employee: data.data.employee,
         };
