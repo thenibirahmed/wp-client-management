@@ -9,6 +9,13 @@ class TaskComment extends Model
 {
     protected $table = 'eic_task_comments';
 
+    protected $fillable = [
+        'task_id',
+        'eic_crm_user_id',
+        'reply_to',
+        'comment',
+    ];
+
     public function task() {
         return $this->belongsTo(Task::class);
     }
