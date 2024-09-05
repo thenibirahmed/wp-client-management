@@ -69,15 +69,16 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/email/create",
+				eicApiSettings.rest_url + "wp-client-management/v1/add-comment",
 				{
 				// 	user_id: 10,
-				project_id: 1,
-				client_id: 1,
-				subjet: "test",
-				body: "kmn achen?",
-				// 	task_id: 1,
-				// 	comment: "Hi, hello",
+				// project_id: 1,
+				// client_id: 1,
+				// title: "file title",
+				// url: "file.pdf",
+				// note: "test",
+					task_id: 1,
+					comment: "Hi, hello",
 				// // // 	// assigned_to: 1,
 				// // // 	// status_id: 8,
 				// // // 	// priority_id: 11,

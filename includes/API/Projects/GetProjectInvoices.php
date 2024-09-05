@@ -68,8 +68,8 @@ class GetProjectInvoices {
             ]);
         }
 
-        $clientIds = $invoices->pluck('client_id')->toArray();
-        $clients = Client::whereIn('id', $clientIds)->get();
+        $clientIds   = $invoices->pluck('client_id')->toArray();
+        $clients     = Client::whereIn('id', $clientIds)->get();
 
         $wp_user_ids = $clients->pluck('eic_crm_user.wp_user_id')->toArray();
 

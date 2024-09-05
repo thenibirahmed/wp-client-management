@@ -1,6 +1,7 @@
 <?php
 namespace WpClientManagement\API\Files;
 
+use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\File;
 
 class CreateFile{
@@ -10,21 +11,21 @@ class CreateFile{
     private $endpoint = '/file/create';
 
     protected array $rules = [
-        'user_id'     => 'required|exists:eic_eic_crm_users,id',
-        'client_id'   => 'nullable|exists:eic_clients,id',
-        'project_id'  => 'nullable|exists:eic_projects,id',
-        'title'       => 'required|string',
-        'url'         => 'required|string',
+        'eic_crm_user_id'  => 'required|exists:eic_eic_crm_users,id',
+        'client_id'        => 'nullable|exists:eic_clients,id',
+        'project_id'       => 'nullable|exists:eic_projects,id',
+        'title'            => 'required|string',
+        'url'              => 'required|string',
     ];
 
     protected array $validationMessages = [
-        'user_id.required'   => 'The User ID is required',
-        'user_id.exists'     => 'The User does not exist',
-        'client_id.required' => 'The Client ID is required',
-        'client_id.exists'   => 'The Client does not exist',
-        'title.required'     => 'The Title is required',
-        'title.string'       => 'The Title must be a valid string',
-        'url.required'       => 'The URL is required'
+        'eic_crm_user_id.required'  => 'The User is invalid',
+        'eic_crm_user_id.exists'    => 'The User does not exists',
+        'client_id.required'        => 'The Client ID is required',
+        'client_id.exists'          => 'The Client does not exists',
+        'title.required'            => 'The Title is required',
+        'title.string'              => 'The Title must be a valid string',
+        'url.required'              => 'The URL is required'
     ];
 
     public function __construct() {
@@ -40,8 +41,9 @@ class CreateFile{
 
         $data = $request->get_params();
 
-        $user = wp_get_current_user();
-        $data['eic_crm_user_id'] = $user->ID;
+        $currentWpUser           = wp_get_current_user();
+        $eicCrmUserId            = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
+        $data['eic_crm_user_id'] = isset($eicCrmUserId) ? intval($eicCrmUserId) : null;
         $data['client_id']       = isset($data['client_id']) ? intval($data['client_id']) : null;
         $data['title']           = sanitize_text_field($data['title'] ?? '');
         $data['url']             = esc_url_raw($data['url'] ?? '');
