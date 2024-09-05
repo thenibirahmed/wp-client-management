@@ -69,14 +69,13 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/1/projects",
+				eicApiSettings.rest_url + "wp-client-management/v1/client/1/emails",
 				// {
 				// 	'invoice_number': 12121,
 				// 	'title': "invoice title",
 				// 	'pay_method' : "cash",
 				// 	'date': "2022-03-23",
 				// 	'due_date': "2022-03-23",
-				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
