@@ -127,6 +127,7 @@ class Installer {
                         `payment_method_id` bigint UNSIGNED DEFAULT NULL,
                         `currency_id` bigint UNSIGNED DEFAULT NULL,
                         `status_id` bigint UNSIGNED DEFAULT NULL,
+                        `sub_total` decimal(8,2) NOT NULL,
                         `total` decimal(8,2) NOT NULL,
                         `discount` decimal(8,2) DEFAULT NULL,
                         `tax` decimal(8,2) DEFAULT NULL,
