@@ -96,6 +96,14 @@ class Installer {
                         PRIMARY KEY (`id`)
                     ) {$collate}";
 
+        // billing address
+        // billing phone number
+        // billing email
+
+        // bill from address
+        // bill from phone number
+        // bill from email
+
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_invoices` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
