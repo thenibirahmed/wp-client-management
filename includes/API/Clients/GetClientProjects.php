@@ -58,7 +58,7 @@ class GetClientProjects {
             return new \WP_REST_Response([
                 'error' => 'Client does not exists.',
             ]);
-        }
+        };
 
         $projects = Project::getClientProjects($client_id, $page);
 
@@ -86,7 +86,7 @@ class GetClientProjects {
             ];
         });
 
-        $data = [];
+        $projectWithDetails = [];
         foreach ($projects as $project) {
             $invoiceData = $invoiceTotalsByProject->get($project->id, [
                 'total'   => 0,
@@ -94,11 +94,11 @@ class GetClientProjects {
                 'due'     => 0,
             ]);
 
-            $data[] = [
+            $projectWithDetails[] = [
                 'id'        => $project->id,
                 'name'      => $project->title,
-                'status'    => $project->status->name,
-                'priority'  => $project->priority->name,
+                'status'    => $project->status->name ?? '',
+                'priority'  => $project->priority->name ?? '',
                 'invoice'   => [
                     'total'   => $invoiceData['total'],
                     'revenue' => $invoiceData['revenue'],
@@ -108,7 +108,7 @@ class GetClientProjects {
         }
 
         $response = [
-            'data'       => $data,
+            'projects'   => $projectWithDetails,
             'pagination' => [
                 'total'         => $projects->total(),
                 'per_page'      => $projects->perPage(),

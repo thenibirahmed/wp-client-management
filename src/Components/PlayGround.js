@@ -68,24 +68,15 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/add-comment",
-				{
-				// 	user_id: 10,
-				// project_id: 1,
-				// client_id: 1,
-				// title: "file title",
-				// url: "file.pdf",
-				// note: "test",
-					task_id: 1,
-					comment: "Hi, hello",
-				// // // 	// assigned_to: 1,
-				// // // 	// status_id: 8,
-				// // // 	// priority_id: 11,
-				// // // 	// start_date: "2022-01-01",
-				// // // 	// due_date: "2022-01-01",
-				// // // 	// description: "The workig description",
-				},
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/client/1/projects",
+				// {
+				// 	'invoice_number': 12121,
+				// 	'title': "invoice title",
+				// 	'pay_method' : "cash",
+				// 	'date': "2022-03-23",
+				// 	'due_date': "2022-03-23",
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
