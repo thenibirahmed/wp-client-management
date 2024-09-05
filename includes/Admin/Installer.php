@@ -61,6 +61,12 @@ class Installer {
                         PRIMARY KEY (`id`)
                     ) {$collate}";
 
+        // currency table
+
+        // currency name
+        // currency symbol £, $, €
+        // currency code USD, EUR, GBP
+
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_deal_pipelines` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `name` varchar(255) NOT NULL,
