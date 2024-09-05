@@ -127,6 +127,19 @@ class Installer {
                         PRIMARY KEY (`id`)
                     ) {$collate}";
 
+        // invoice items
+
+        // eic invoice id
+        // details
+        // quantity
+        // unit price
+        // discount type // percentage or fixed
+        // discount value
+        // tax type // percentage or fixed
+        // tax value
+        // line total
+
+
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_notes` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
