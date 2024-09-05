@@ -61,6 +61,12 @@ class Installer {
                         PRIMARY KEY (`id`)
                     ) {$collate}";
 
+        // currency table
+
+        // currency name
+        // currency symbol £, $, €
+        // currency code USD, EUR, GBP
+
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_deal_pipelines` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `name` varchar(255) NOT NULL,
@@ -96,6 +102,14 @@ class Installer {
                         PRIMARY KEY (`id`)
                     ) {$collate}";
 
+        // billing address
+        // billing phone number
+        // billing email
+
+        // bill from address
+        // bill from phone number
+        // bill from email
+
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_invoices` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
@@ -119,6 +133,19 @@ class Installer {
                         `updated_at` timestamp NULL DEFAULT NULL,
                         PRIMARY KEY (`id`)
                     ) {$collate}";
+
+        // invoice items
+
+        // eic invoice id
+        // details
+        // quantity
+        // unit price
+        // discount type // percentage or fixed
+        // discount value
+        // tax type // percentage or fixed
+        // tax value
+        // line total
+
 
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_notes` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
