@@ -22,6 +22,12 @@ class GetSelectedEmployeeDetails{
     {
         $id = $request->get_param('id');
 
+        if(!$id) {
+            return new \WP_REST_Response([
+                'error' => 'Id param required',
+            ]);
+        }
+
         $employees = EicCrmUser::getTeamMembers(false);
         $employee = $employees->where('id', $id)->first();
 
