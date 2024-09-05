@@ -26,16 +26,19 @@ use WpClientManagement\API\Notes\GetSingleNote;
 use WpClientManagement\API\Posts\GetPosts;
 use WpClientManagement\API\Users\GetUsers;
 use WpClientManagement\API\Clients\GetClients;
+use WpClientManagement\API\Clients\GetSelectedClientDetails;
 use WpClientManagement\API\Projects\GetProjectFiles;
 use WpClientManagement\API\Clients\GetSingleClientOverview;
 use WpClientManagement\API\Clients\UpdateClient;
 use WpClientManagement\API\Contacts\AddTeamMember;
 use WpClientManagement\API\Contacts\GetTeamMembers;
+use WpClientManagement\API\Currencies\SelectCurrency;
 use WpClientManagement\API\DealPipelines\CreateDealPipeline;
 use WpClientManagement\API\DealPipelines\DeleteDealPipeline;
 use WpClientManagement\API\DealPipelines\UpdateDealPipeline;
 use WpClientManagement\API\EicCrmUsers\CreateEicCrmUser;
 use WpClientManagement\API\EicCrmUsers\DeleteCrmUser;
+use WpClientManagement\API\EicCrmUsers\GetSelectedEmployeeDetails;
 use WpClientManagement\API\EicCrmUsers\SelectEmployee;
 use WpClientManagement\API\EicCrmUsers\UpdateEicCrmUser;
 use WpClientManagement\API\Emails\CreateEmail;
@@ -50,6 +53,7 @@ use WpClientManagement\API\Invoices\UpdateInvoice;
 use WpClientManagement\API\Notes\CreateNote;
 use WpClientManagement\API\Notes\DeleteNote;
 use WpClientManagement\API\Notes\UpdateNote;
+use WpClientManagement\API\PaymentMethods\SelectPaymentMethod;
 use WpClientManagement\API\Posts\GetSinglePost;
 use WpClientManagement\API\Priorities\CreatePriority;
 use WpClientManagement\API\Priorities\DeletePriority;
@@ -68,6 +72,7 @@ use WpClientManagement\API\Projects\GetSingleProject;
 use WpClientManagement\API\Projects\GetSingleProjectOverview;
 use WpClientManagement\API\Projects\ProjectOverview;
 use WpClientManagement\API\Projects\SelectClientForProject;
+use WpClientManagement\API\Projects\SelectProject;
 use WpClientManagement\API\Projects\SelectProjectManager;
 use WpClientManagement\API\Projects\SelectProjectPriority;
 use WpClientManagement\API\Projects\SelectProjectStatus;
@@ -151,6 +156,7 @@ class API {
         new CreateEicCrmUser();
         new UpdateEicCrmUser();
         new SelectEmployee();
+        new GetSelectedEmployeeDetails();
 
         // Team Member
         new GetTeamMembers();
@@ -212,6 +218,8 @@ class API {
         new GetProjectFiles();
         new GetProjectEmails();
         new GetProjectInvoices();
+        new SelectProject();
+        new GetSelectedClientDetails();
 
         // Schedule
         new GetSchedules();
@@ -237,6 +245,12 @@ class API {
 
         // TaskComment
         new AddTaskComment();
+
+        // Currency
+        new SelectCurrency();
+
+        // Payment Methods
+        new SelectPaymentMethod();
 
 
     }
