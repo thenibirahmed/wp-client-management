@@ -11,10 +11,11 @@ class CreateInvoiceItem {
     private $endpoint = 'invoice-item/create';
 
     protected array $rules = [
+        'name'           => 'required|string',
         'invoice_id'     => 'required|exists:eic_invoices,id',
         'details'        => 'nullable|string',
         'quntity'        => 'nullable|integer',
-        'unit_price'     => 'nullable|numeric',
+        'unit_price'     => 'required|numeric',
         'discount_type'  => 'nullable|string',
         'discount_value' => 'nullable|numeric',
         'tax_type'       => 'nullable|string',
@@ -23,10 +24,13 @@ class CreateInvoiceItem {
     ];
 
     protected array $validationMessages = [
+        'name.required'           => 'The Name is required.',
+        'name.string'             => 'The Name must be a valid string.',
         'invoice_id.required'     => 'The Invoice ID is required.',
         'invoice_id.exists'       => 'The selected Invoice does not exist.',
         'details.string'          => 'The Details must be a valid string.',
         'quntity.integer'         => 'The Quantity must be an integer.',
+        'unit_price.required'     => 'The Unit Price is required.',
         'unit_price.numeric'      => 'The Unit Price must be a valid number.',
         'discount_type.string'    => 'The Discount Type must be a valid string.',
         'discount_value.numeric'  => 'The Discount Value must be a valid number.',
@@ -48,6 +52,7 @@ class CreateInvoiceItem {
 
         $data = $request->get_params();
 
+        $data['name'] = isset($data['name']) ? sanitize_text_field($data['name']) : null;
         $data['invoice_id'] = isset($data['invoice_id']) ? intval($data['invoice_id']) : null;
         $data['details'] = isset($data['details']) ? sanitize_text_field($data['details']) : null;
         $data['quntity'] = isset($data['quntity']) ? intval($data['quntity']) : null;
@@ -65,8 +70,6 @@ class CreateInvoiceItem {
                 'errors' => $validator->errors(),
             ], 400);
         }
-
-        return new \WP_REST_Response($data);
 
         InvoiceItem::create($data);
 

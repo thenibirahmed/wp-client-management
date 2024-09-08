@@ -51,7 +51,6 @@ class GetSingleClientOverview {
             ], 400);
         }
 
-
         $clientData = Client::getClientData($id);
         $wp_user_id = $clientData->eic_crm_user->wp_user_id;
         $wpUser     = get_user_by('ID', $wp_user_id);
@@ -65,7 +64,7 @@ class GetSingleClientOverview {
             'organization' => $clientData->organization,
         ];
 
-        $totalProjects  = Project::getClientProjects($data['id'])->count();
+        $totalProjects  = Project::getClientProjects($data['id'],false)->count();
         $clientInvoices = Invoice::getSingleClientInvoices($data['id']);
 
         $totalInvoiceAmount = $clientInvoices->sum('total');
