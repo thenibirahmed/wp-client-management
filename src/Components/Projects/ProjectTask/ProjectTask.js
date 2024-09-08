@@ -15,6 +15,8 @@ import toast from "react-hot-toast";
 
 const ProjectTask = ({ projectId }) => {
   const { openTask, setOpenTask } = useStoreContext();
+  const [selectedProjectTask, setSelectedProjectTask] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
 
   const {
     isLoading,
@@ -46,7 +48,7 @@ const ProjectTask = ({ projectId }) => {
 
   return (
     <React.Fragment>
-      <ProjectTaskHeader />
+      <ProjectTaskHeader selectedProjectTask={selectedProjectTask} />
       <React.Fragment>
         {isLoading ? (
           <Skeleton />
@@ -54,7 +56,13 @@ const ProjectTask = ({ projectId }) => {
           <>
             {projectTask?.task?.length > 0 ? (
               <>
-                <ProjectTaskTable taskData={projectTask?.task} />
+                <ProjectTaskTable
+                  taskData={projectTask?.task}
+                  selectedClient={selectedProjectTask}
+                  setSelectedClient={setSelectedProjectTask}
+                  isAllselected={isAllselected}
+                  setIsAllSelected={setIsAllSelected}
+                />
               </>
             ) : (
               <>

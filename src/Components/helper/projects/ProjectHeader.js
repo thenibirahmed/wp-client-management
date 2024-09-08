@@ -10,7 +10,14 @@ import {
 import { Search } from "../Search";
 import Filter from "../Filter";
 
-const ProjectHeader = () => {
+const ProjectHeader = ({ selectedProject, title, setOpenModal, btnTitle }) => {
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].id);
+  };
+
   const { setOpenProjectModal, allTabItems } = useStoreContext();
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
@@ -18,12 +25,16 @@ const ProjectHeader = () => {
         All Project
       </h1>
       <div className="flex sm:flex-row flex-wrap gap-5 items-center">
-        <button>
-          <Delete03Icon className="text-textColor2" />
-        </button>
-        <button>
-          <CheckmarkCircle02Icon className="text-textColor2" />
-        </button>
+        {selectedProject.length > 0 && (
+          <>
+            <button onClick={() => onDeleteAction(selectedProject)}>
+              <Delete03Icon className="text-textColor2" />
+            </button>
+            <button onClick={() => onCheckAction(selectedProject)}>
+              <CheckmarkCircle02Icon className="text-textColor2" />
+            </button>
+          </>
+        )}
         <Search />
 
         <Filter />

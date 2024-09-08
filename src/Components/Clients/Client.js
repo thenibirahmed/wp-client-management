@@ -22,6 +22,10 @@ import Errors from "../Errors";
 const Client = () => {
   const { setCreateInvoice, setAllTabItems } = useStoreContext();
   const [open, setOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
+
+  console.log("selectedClient", selectedClient);
 
   const {
     isLoading,
@@ -63,6 +67,13 @@ const Client = () => {
       />
     );
 
+  const onDeleteAction = (ids) => {
+    alert(ids[0].client_id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].client_id);
+  };
+
   return (
     <React.Fragment>
       <ClientOverView topBarData={clientOverView?.topBar} />
@@ -72,12 +83,17 @@ const Client = () => {
             All Clients
           </h1>
           <div className="flex sm:flex-row flex-wrap gap-5 items-center">
-            <button>
-              <Delete03Icon className="text-textColor2" />
-            </button>
-            <button>
-              <CheckmarkCircle02Icon className="text-textColor2" />
-            </button>
+            {selectedClient.length > 0 && (
+              <>
+                {" "}
+                <button onClick={() => onDeleteAction(selectedClient)}>
+                  <Delete03Icon className="text-textColor2" />
+                </button>
+                <button onClick={() => onCheckAction(selectedClient)}>
+                  <CheckmarkCircle02Icon className="text-textColor2" />
+                </button>
+              </>
+            )}
             <ClientSearchInput />
             <button
               onClick={() => setOpen(true)}
@@ -96,7 +112,13 @@ const Client = () => {
         <React.Fragment>
           {clientOverView.clients.length > 0 ? (
             <>
-              <ClientTable clientData={clientOverView?.clients} />
+              <ClientTable
+                clientData={clientOverView?.clients}
+                selectedClient={selectedClient}
+                setSelectedClient={setSelectedClient}
+                isAllselected={isAllselected}
+                setIsAllSelected={setIsAllSelected}
+              />
             </>
           ) : (
             <>

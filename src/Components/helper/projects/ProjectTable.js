@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  Delete03Icon,
-  PencilEdit02Icon,
-  Task01Icon,
-} from "../../../utils/icons";
+import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import RedCirlcle from "../../helper/RedCirlcle";
@@ -38,82 +34,24 @@ let assignee = [
     src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
 ];
-const tableData = [
-  {
-    id: 1,
 
-    projectName: "The",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "Completed",
-    priority: "High",
-  },
-  {
-    id: 2,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "On Hold",
-    priority: "Low",
-  },
-  {
-    id: 3,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "Cancelled",
-    priority: "Medium",
-  },
-  {
-    id: 4,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "In progress",
-    priority: "Low",
-  },
-  {
-    id: 5,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "In Review",
-    priority: "Low",
-  },
-];
-
-const ProjectTable = ({ projectData, pagination }) => {
+const ProjectTable = ({
+  projectData,
+  pagination,
+  selectedProject,
+  setSelectedProject,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
-  const [selectedClient, setSelectedClient] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
 
   const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
-    selectedClient,
+    selectedProject,
     setIsAllSelected,
-    setSelectedClient
+    setSelectedProject
   );
 
-  console.log(selectedClient);
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -128,7 +66,7 @@ const ProjectTable = ({ projectData, pagination }) => {
                   >
                     <input
                       checked={
-                        selectedClient.length > 0 && isAllselected
+                        selectedProject.length > 0 && isAllselected
                           ? true
                           : false
                       }
@@ -199,7 +137,7 @@ const ProjectTable = ({ projectData, pagination }) => {
                   let itemStatus = item.status.toLowerCase();
                   let itemPriority = item.priority.toLowerCase();
 
-                  const isChecked = selectedClient.some(
+                  const isChecked = selectedProject.some(
                     (client) => client.id === item.id
                   );
 

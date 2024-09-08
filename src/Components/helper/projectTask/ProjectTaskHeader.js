@@ -10,20 +10,34 @@ import { useStoreContext } from "../../../store/ContextApiStore";
 import Filter from "../../helper/Filter";
 import { Search } from "../../helper/Search";
 
-const ProjectTaskHeader = () => {
+const ProjectTaskHeader = ({ selectedProjectTask }) => {
   const { openTask, setOpenTask } = useStoreContext();
+
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].id);
+  };
+
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
         Task
       </h1>
       <div className="flex sm:flex-row flex-wrap gap-5 items-center">
-        <button>
-          <Delete03Icon className="text-textColor2" />
-        </button>
-        <button>
-          <CheckmarkCircle02Icon className="text-textColor2" />
-        </button>
+        {selectedProjectTask?.length > 0 && (
+          <>
+            {" "}
+            <button onClick={() => onDeleteAction(selectedProjectTask)}>
+              <Delete03Icon className="text-textColor2" />
+            </button>
+            <button onClick={() => onCheckAction(selectedProjectTask)}>
+              <CheckmarkCircle02Icon className="text-textColor2" />
+            </button>
+          </>
+        )}
+
         <Filter />
         <Search />
         <button

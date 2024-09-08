@@ -22,14 +22,15 @@ import toast from "react-hot-toast";
 import Errors from "../Errors";
 
 const Projects = () => {
-  const [open, setOpen] = useState(false);
   const {
     openProjectModal,
     setOpenProjectModal,
     setAllTabItems,
     openTaskDetail,
-    setOpenTaskDetail,
   } = useStoreContext();
+
+  const [selectedProject, setSelectedProject] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
 
   const {
     isLoading: allProjectLoader,
@@ -37,7 +38,9 @@ const Projects = () => {
     error: allProjectError,
     refetch,
   } = useFetchAllProjects(onError);
+
   console.log("projects = ", projects);
+
   const {
     isLoading: projectOverViewLoader,
     data: projectOverView,
@@ -50,8 +53,6 @@ const Projects = () => {
     console.log(err);
     toast.error("Failed to fetch all projects or project Overview data");
   }
-
-  const dataList = [1];
 
   useEffect(() => {
     setAllTabItems({
@@ -77,18 +78,22 @@ const Projects = () => {
         <>
           <ProjectOverView projectOverView={projectOverView?.projectOverView} />
           <div className="space-y-6">
-            <ProjectHeader />
+            <ProjectHeader selectedProject={selectedProject} />
 
             <React.Fragment>
               {isLoading ? (
                 <Skeleton />
               ) : (
                 <>
-                  {dataList.length > 0 ? (
+                  {projects.projects.length > 0 ? (
                     <>
                       <ProjectTable
                         projectData={projects.projects}
                         pagination={projects.pagination}
+                        selectedProject={selectedProject}
+                        setSelectedProject={setSelectedProject}
+                        isAllselected={isAllselected}
+                        setIsAllSelected={setIsAllSelected}
                       />
                     </>
                   ) : (

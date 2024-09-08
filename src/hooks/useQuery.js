@@ -14,6 +14,7 @@ export const useFetchClientOverView = (onError) => {
           pagination: data.data.pagination,
           topBar: data.data.topBar,
         };
+        console.log("clients = ", sendData);
 
         return sendData;
       },
@@ -48,7 +49,7 @@ export const useFetchProjectClients = (onError) => {
   return useQuery(
     "project-clients",
     async () => {
-      return await api.get("/select-project-client");
+      return await api.get("/select-client");
     },
 
     {

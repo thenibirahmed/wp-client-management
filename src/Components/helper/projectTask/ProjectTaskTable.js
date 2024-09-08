@@ -12,59 +12,15 @@ import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import useHashRouting from "../../../utils/useHashRouting";
 
-const tableData = [
-  {
-    id: 1,
-    owner: "Easin Ahmedss",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
-    dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
-    status: "To Do",
-    priority: "High",
-  },
-  {
-    id: 2,
-    owner: "Easin Ahmed",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
-    dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
-    status: "Doing",
-    priority: "High",
-  },
-  {
-    id: 3,
-    owner: "Easin Ahmed",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
-    dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
-    status: "Done",
-    priority: "High",
-  },
-  {
-    id: 4,
-    owner: "Easin Ahmed",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
-    dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
-    status: "Done",
-    priority: "High",
-  },
-];
-
-const ProjectTaskTable = ({ taskData }) => {
+const ProjectTaskTable = ({
+  taskData,
+  selectedClient,
+  setSelectedClient,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
-
-  const [selectedClient, setSelectedClient] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedClient,

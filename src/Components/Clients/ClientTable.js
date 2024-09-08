@@ -4,15 +4,16 @@ import useHashRouting from "../../utils/useHashRouting";
 import Pagination from "./Pagination";
 import { useClientCheckedHandler } from "../../utils/useCheckedItem";
 
-const ClientTable = ({ clientData }) => {
+const ClientTable = ({
+  clientData,
+  selectedClient,
+  setSelectedClient,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
   const currentPageName = window.location.pathname.split("/")[1];
-
-  console.log("currentPath =", currentPath);
-  console.log("path = ", pathArray);
-  const [selectedClient, setSelectedClient] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
 
   const { checkedAllClient, checkedSingleClient } = useClientCheckedHandler(
     selectedClient,
@@ -20,7 +21,6 @@ const ClientTable = ({ clientData }) => {
     setSelectedClient
   );
 
-  console.log(selectedClient);
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
