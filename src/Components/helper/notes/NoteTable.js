@@ -36,7 +36,7 @@ const NoteTable = ({
                   >
                     <input
                       checked={
-                        selectedNote.length > 0 && isAllselected ? true : false
+                        selectedNote?.length > 0 && isAllselected ? true : false
                       }
                       onChange={(e) =>
                         checkedAllClient(e.target.checked, noteData)

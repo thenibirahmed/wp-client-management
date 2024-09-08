@@ -14,11 +14,11 @@ import Loaders from "../../Loaders";
 import api from "../../../api/api";
 import dayjs from "dayjs";
 
-const AddNewEmail = ({ emailsData, pagination }) => {
+const AddNewEmail = ({ emailsData, pagination, refetch }) => {
   return (
     <div>
       <div className="border border-borderColor rounded-[8px] py-[13px] ">
-        <EmailBox />
+        <EmailBox refetch={refetch} />
       </div>
       <EmailTable emailsData={emailsData} pagination={pagination} />
     </div>
@@ -27,7 +27,7 @@ const AddNewEmail = ({ emailsData, pagination }) => {
 
 export default AddNewEmail;
 
-const EmailBox = () => {
+const EmailBox = ({ refetch }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
   const [subject, setSubject] = useState();
   const currentPath = useHashRouting("");
@@ -111,6 +111,7 @@ const EmailBox = () => {
     try {
       const { data } = await api.post("/email/create", sendData);
       toast.success(data?.message);
+      await refetch();
       setEditorContent("");
     } catch (err) {
       console.log(err);

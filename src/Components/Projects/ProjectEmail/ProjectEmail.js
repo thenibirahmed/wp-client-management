@@ -19,6 +19,7 @@ const ProjectEmail = ({ projectId }) => {
     isLoading,
     data: projectEmail,
     error,
+    refetch,
   } = useFetchProjectEmails(projectId, onError);
 
   function onError(err) {
@@ -53,6 +54,7 @@ const ProjectEmail = ({ projectId }) => {
           <AddNewEmail
             emailsData={projectEmail?.emails}
             pagination={projectEmail?.pagination}
+            refetch={refetch}
           />
         </React.Fragment>
       ) : (

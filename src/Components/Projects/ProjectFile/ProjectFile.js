@@ -22,6 +22,7 @@ const ProjectFile = ({ projectId }) => {
     isLoading,
     data: projectFiles,
     error,
+    refetch,
   } = useFetchProjectFiles(projectId, onError);
 
   const handler = () => {
@@ -80,7 +81,7 @@ const ProjectFile = ({ projectId }) => {
         )}
       </React.Fragment>
       <Modal open={openFileModal} setOpen={setOpenFileModal} title="Add File">
-        <AddNewFileForm />
+        <AddNewFileForm refetch={refetch} />
       </Modal>
     </React.Fragment>
   );

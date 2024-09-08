@@ -21,6 +21,7 @@ const ProjectNote = ({ projectId = { projectId } }) => {
     isLoading,
     data: projectNotes,
     error,
+    refetch,
   } = useFetchProjectNotes(projectId, onError);
 
   function onError(err) {
@@ -65,7 +66,14 @@ const ProjectNote = ({ projectId = { projectId } }) => {
 
       {createNote ? (
         <React.Fragment>
-          <AddNewNote />
+          <AddNewNote
+            noteData={projectNotes?.notes}
+            selectedNote={selectedNote}
+            setSelectedNote={setSelectedNote}
+            isAllselected={isAllselected}
+            setIsAllSelected={setIsAllSelected}
+            refetch={refetch}
+          />
         </React.Fragment>
       ) : (
         <React.Fragment>

@@ -12,20 +12,33 @@ import useHashRouting from "../../../utils/useHashRouting";
 import Loaders from "../../Loaders";
 import api from "../../../api/api";
 
-const AddNewNote = () => {
+const AddNewNote = ({
+  noteData,
+  selectedNote,
+  setSelectedNote,
+  isAllselected,
+  setIsAllSelected,
+  refetch,
+}) => {
   return (
     <div>
       <div className="border border-borderColor rounded-[8px] py-[13px]">
-        <AddNewNoteTextArea />
+        <AddNewNoteTextArea refetch={refetch} />
       </div>
-      <NoteTable />
+      <NoteTable
+        noteData={noteData}
+        selectedNote={selectedNote}
+        setSelectedNote={setSelectedNote}
+        isAllselected={isAllselected}
+        setIsAllSelected={setIsAllSelected}
+      />
     </div>
   );
 };
 
 export default AddNewNote;
 
-const AddNewNoteTextArea = () => {
+const AddNewNoteTextArea = ({ refetch }) => {
   const [submitLoader, setSubmitLoader] = useState(false);
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
@@ -96,6 +109,7 @@ const AddNewNoteTextArea = () => {
     try {
       const { data } = await api.post("/note/create", sendData);
       toast.success(data?.message);
+      await refetch();
       setEditorContent("");
     } catch (err) {
       console.log(err);

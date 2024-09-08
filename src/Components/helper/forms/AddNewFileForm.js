@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import api from "../../../api/api";
 import useHashRouting from "../../../utils/useHashRouting";
 
-const AddNewFileForm = () => {
+const AddNewFileForm = ({ refetch }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
   const { setOpenFileModal } = useStoreContext();
@@ -41,6 +41,7 @@ const AddNewFileForm = () => {
     try {
       const { data } = await api.post("/file/create", sendData);
       toast.success(data?.message);
+      await refetch();
       reset();
     } catch (err) {
       console.log(err);
