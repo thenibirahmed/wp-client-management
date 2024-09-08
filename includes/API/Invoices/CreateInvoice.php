@@ -1,7 +1,9 @@
 <?php
 namespace WpClientManagement\API\Invoices;
 
+use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Invoice;
+use WpClientManagement\Models\Project;
 
 class CreateInvoice {
 
@@ -10,52 +12,67 @@ class CreateInvoice {
     private $endpoint = '/invoice/create';
 
     protected array $rules = [
-        'eic_crm_user_id' => 'required|exists:eic_eic_crm_users,id',
-        'project_id' => 'nullable|exists:eic_projects,id',
-        'client_id' => 'nullable|exists:eic_clients,id',
-        'code' => 'required|integer',
-        'type' => 'required|string',
-        'title' => 'required|string',
-        'date' => 'required|date',
-        'due_date' => 'nullable|date',
-        'items' => 'nullable|json',
-        'note' => 'required|string',
-        'billing_address' => 'required|string',
-        'status' => 'required|string',
-        'total' => 'required|numeric',
-        'discount' => 'nullable|numeric',
-        'tax' => 'nullable|numeric',
-        'fee' => 'nullable|numeric',
+        'eic_crm_user_id'          => 'required|exists:eic_eic_crm_users,id',
+        'project_id'               => 'nullable|exists:eic_projects,id',
+        'client_id'                => 'nullable|exists:eic_clients,id',
+        'currency_id'              => 'nullable|exists:eic_currencies,id',
+        'payment_method_id'        => 'nullable|exists:eic_payment_methods,id',
+        'status_id'                => 'nullable|exists:eic_statuses,id',
+        'code'                     => 'required|integer',
+        'type'                     => 'nullable|string',
+        'title'                    => 'required|string',
+        'date'                     => 'required|date',
+        'due_date'                 => 'nullable|date',
+        'bill_from_address'        => 'nullable|string',
+        'bill_from_phone_number'   => 'nullable|string',
+        'bill_from_email'          => 'nullable|email',
+        'items'                    => 'nullable|json',
+        'billing_address'          => 'required|string',
+        'billing_phone_number'     => 'required|string',
+        'billing_email'            => 'required|email',
+        'note'                     => 'nullable|string',
+        'sub_total'                => 'required|numeric',
+        'total'                    => 'required|numeric',
+        'discount'                 => 'nullable|numeric',
+        'tax'                      => 'nullable|numeric',
+        'fee'                      => 'nullable|numeric',
     ];
 
     protected array $validationMessages = [
-        'eic_crm_user_id.required' => 'The EicCrmUser ID is required.',
-        'eic_crm_user_id.exists' => 'The selected EicCrmUser does not exist.',
-        'project_id.exists' => 'The selected Project does not exist.',
-        'client_id.exists' => 'The selected Client does not exist.',
-        'code.required' => 'The Code is required.',
-        'code.integer' => 'The Code must be an integer.',
-        'type.required' => 'The Type is required.',
-        'type.string' => 'The Type must be a valid string.',
-        'title.required' => 'The Title is required.',
-        'title.string' => 'The Title must be a valid string.',
-        'date.required' => 'The Date is required.',
-        'date.date' => 'The Date must be a valid date.',
-        'due_date.date' => 'The Due Date must be a valid date.',
-        'items.json' => 'The Items must be a valid JSON string.',
-        'note.required' => 'The Note is required.',
-        'note.string' => 'The Note must be a valid string.',
-        'billing_address.required' => 'The Billing Address is required.',
-        'billing_address.string' => 'The Billing Address must be a valid string.',
-        'status.required' => 'The Status is required.',
-        'status.string' => 'The Status must be a valid string.',
-        'total.required' => 'The Total is required.',
-        'total.numeric' => 'The Total must be a valid number.',
-        'discount.numeric' => 'The Discount must be a valid number.',
-        'tax.numeric' => 'The Tax must be a valid number.',
-        'fee.numeric' => 'The Fee must be a valid number.',
+        'eic_crm_user_id.required'       => 'The EicCrmUser is required.',
+        'eic_crm_user_id.exists'         => 'The selected EicCrmUser does not exist.',
+        'project_id.exists'              => 'The selected Project does not exist.',
+        'client_id.exists'               => 'The selected Client does not exist.',
+        'currency_id.exists'             => 'The selected Currency does not exist.',
+        'payment_method_id.exists'       => 'The selected Payment Method does not exist.',
+        'code.required'                  => 'The Code is required.',
+        'code.integer'                   => 'The Code must be an integer.',
+        'type.string'                    => 'The Type must be a valid string.',
+        'title.required'                 => 'The Title is required.',
+        'title.string'                   => 'The Title must be a valid string.',
+        'date.required'                  => 'The Date is required.',
+        'date.date'                      => 'The Date must be a valid date.',
+        'due_date.date'                  => 'The Due Date must be a valid date.',
+        'bill_from_address.string'       => 'The Bill From Address must be a valid string.',
+        'bill_from_phone_number.string'  => 'The Bill From Phone Number must be a valid string.',
+        'bill_from_email.email'          => 'The Bill From Email must be a valid email address.',
+        'items.json'                     => 'The Items must be a valid JSON string.',
+        'billing_address.required'       => 'The Billing Address is required.',
+        'billing_address.string'         => 'The Billing Address must be a valid string.',
+        'biling_phone_number.required'   => 'The Billing Phone Number is required.',
+        'biling_phone_number.string'     => 'The Billing Phone Number must be a valid string.',
+        'billing_email.required'         => 'The Billing Email is required.',
+        'billing_email.email'            => 'The Billing Email must be a valid email address.',
+        'note.string'                    => 'The Note must be a valid string.',
+        'status_id.exists'               => 'The Status does not exist.',
+        'sub_total.required'             => 'The Sub total is required.',
+        'sub_total.numeric'              => 'The Sub total must be a valid number.',
+        'total.required'                 => 'The Total is required.',
+        'total.numeric'                  => 'The Total must be a valid number.',
+        'discount.numeric'               => 'The Discount must be a valid number.',
+        'tax.numeric'                    => 'The Tax must be a valid number.',
+        'fee.numeric'                    => 'The Fee must be a valid number.',
     ];
-
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
@@ -70,23 +87,32 @@ class CreateInvoice {
 
         $data = $request->get_params();
 
-        $data['eic_crm_user_id'] = intval($data['eic_crm_user_id'] ?? 0);
-        $data['project_id'] = intval($data['project_id'] ?? 0);
-        $data['client_id'] = intval($data['client_id'] ?? 0);
-        $data['code'] = sanitize_text_field($data['code'] ?? '');
-        $data['type'] = sanitize_text_field($data['type'] ?? '');
-        $data['title'] = sanitize_text_field($data['title'] ?? '');
-        $data['date'] = sanitize_text_field($data['date'] ?? '');
-        $data['due_date'] = sanitize_text_field($data['due_date'] ?? '');
-        $data['items'] = isset($data['items']) ? json_encode(array_map('sanitize_text_field', json_decode($data['items'], true) ?? [])) : json_encode([]);
-        $data['note'] = sanitize_textarea_field($data['note'] ?? '');
-        $data['billing_address'] = sanitize_textarea_field($data['billing_address'] ?? '');
-        $data['status'] = sanitize_text_field($data['status'] ?? '');
-        $data['total'] = floatval($data['total'] ?? 0.0);
-        $data['discount'] = floatval($data['discount'] ?? 0.0);
-        $data['tax'] = floatval($data['tax'] ?? 0.0);
-        $data['fee'] = floatval($data['fee'] ?? 0.0);
+        $currentWpUser              = wp_get_current_user();
+        $eicCrmUserId               = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
+        $data['eic_crm_user_id']    = isset($eicCrmUserId) ? intval($eicCrmUserId) : null;
+        $data['project_id']         = isset($data['project_id']) ? intval($data['project_id']) : null;
+        $data['client_id']          = isset($data['client_id']) ? intval($data['client_id']) : null;
+        $data['status_id']          = isset($data['status_id']) ? intval($data['status_id']) : null;
+        $data['currency_id']        = isset($data['currency_id']) ? intval($data['currency_id']) : null;
+        $data['payment_method_id']  = isset($data['payment_method_id']) ? intval($data['payment_method_id']) : null;
+        $data['status_id']          = isset($data['status_id']) ? intval($data['status_id']) : null;
+        $data['code']               = sanitize_text_field($data['code'] ?? '');
+        $data['type']               = sanitize_text_field($data['type'] ?? '');
+        $data['title']              = sanitize_text_field($data['title'] ?? '');
+        $data['date']               = sanitize_text_field($data['date'] ?? '');
+        $data['due_date']           = sanitize_text_field($data['due_date'] ?? '');
+        $data['items']              = isset($data['items']) ? json_encode(array_map('sanitize_text_field', json_decode($data['items'], true) ?? [])) : json_encode([]);
+        $data['note']               = sanitize_textarea_field($data['note'] ?? '');
+        $data['billing_address']    = sanitize_textarea_field($data['billing_address'] ?? '');
+        $data['sub_total']          = floatval($data['sub_total'] ?? 0.0);
+        $data['total']              = floatval($data['total'] ?? 0.0);
+        $data['discount']           = floatval($data['discount'] ?? 0.0);
+        $data['tax']                = floatval($data['tax'] ?? 0.0);
+        $data['fee']                = floatval($data['fee'] ?? 0.0);
 
+        if (isset($data['project_id']) && !isset($data['client_id'])) {
+            $data['client_id'] = Project::where('id', $data['project_id'])->pluck('client_id')->first();
+        }
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -96,24 +122,7 @@ class CreateInvoice {
             ], 400);
         }
 
-        $invoice = Invoice::create([
-            'eic_crm_user_id' => $data['eic_crm_user_id'],
-            'project_id' => $data['project_id'],
-            'client_id' => $data['client_id'],
-            'code' => $data['code'],
-            'type' => $data['type'],
-            'title' => $data['title'],
-            'date' => $data['date'],
-            'due_date' => $data['date'],
-            'items' => $data['items'],
-            'note' => $data['note'],
-            'billing_address' => $data['billing_address'],
-            'status' => $data['status'],
-            'total' => $data['total'],
-            'discount' => $data['discount'],
-            'tax' => $data['tax'],
-            'fee' => $data['fee']
-        ]);
+        $invoice = Invoice::create($data);
 
         if(!$invoice) {
             return new \WP_REST_Response([

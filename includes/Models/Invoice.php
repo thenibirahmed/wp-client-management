@@ -14,6 +14,9 @@ class Invoice extends Model
         'eic_crm_user_id',
         'project_id',
         'client_id',
+        'currency_id',
+        'payment_method_id',
+        'status_id',
         'code',
         'type',
         'title',
@@ -27,7 +30,7 @@ class Invoice extends Model
         'bill_from_address',
         'bill_from_phone_number',
         'bill_from_email',
-        'status',
+        'sub_total',
         'total',
         'discount',
         'tax',
@@ -66,6 +69,11 @@ class Invoice extends Model
         return self::where('status.type','invoice')
                 ->where('status.name','paid')
                 ->get();
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 
     public function eic_crm_user()
