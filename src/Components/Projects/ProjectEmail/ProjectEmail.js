@@ -8,6 +8,7 @@ import EmailHeader from "../../helper/emails/EmailHeader";
 import { useFetchProjectEmails } from "../../../hooks/useQuery";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
+import EmptyTable from "../../helper/EmptyTable";
 
 const ProjectEmail = ({ projectId }) => {
   const { createEmail, setCreateEmail } = useStoreContext();

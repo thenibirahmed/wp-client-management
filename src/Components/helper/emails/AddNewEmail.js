@@ -102,7 +102,6 @@ const EmailBox = () => {
     setSubmitLoader(true);
     const sendData = {
       client_id: 13,
-      user_id: 4,
       project_id: projectId,
       subject: setSubject,
       body: editorContent,
