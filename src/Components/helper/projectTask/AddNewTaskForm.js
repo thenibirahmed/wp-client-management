@@ -123,7 +123,7 @@ const AddNewTaskForm = () => {
       <form className="space-y-4 " onSubmit={handleSubmit(addNewTaskHandler)}>
         <div>
           <TextField
-            label="Project Title"
+            label="Title"
             required
             id="title"
             type="text"

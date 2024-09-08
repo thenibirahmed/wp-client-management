@@ -85,117 +85,20 @@ const PlayGround = () => {
   const getTest = () => {
     axios
       .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/project/2/notes",
-
-        {
-          headers: {
-            "X-WP-Nonce": eicApiSettings.nonce,
-            // 'Content-Type' : 'application/json'
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setPost(response.data);
-      })
-      .catch((error) => {
-        console.log(
-          "Error:",
-          error.response ? error.response.data : error.message
-        );
-      });
-  };
-
-  const createFile = () => {
-    axios
-      .post(
-        eicApiSettings.rest_url + "wp-client-management/v1/task/create",
-        {
-          user_id: 4,
-          client_id: 13,
-          project_id: 2,
-          title: "fisrt file",
-          url: "http://localhost:3000",
-        },
-        {
-          headers: {
-            "X-WP-Nonce": eicApiSettings.nonce,
-            // 'Content-Type' : 'application/json'
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setPost(response.data);
-      })
-      .catch((error) => {
-        console.log(
-          "Error:",
-          error.response ? error.response.data : error.message
-        );
-      });
-  };
-
-  const getFiles = () => {
-    axios
-      .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/project/2/files",
-
-        {
-          headers: {
-            "X-WP-Nonce": eicApiSettings.nonce,
-            // 'Content-Type' : 'application/json'
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setPost(response.data);
-      })
-      .catch((error) => {
-        console.log(
-          "Error:",
-          error.response ? error.response.data : error.message
-        );
-      });
-  };
-
-  const getEmails = () => {
-    axios
-      .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/project/2/emails",
-
-        {
-          headers: {
-            "X-WP-Nonce": eicApiSettings.nonce,
-            // 'Content-Type' : 'application/json'
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setPost(response.data);
-      })
-      .catch((error) => {
-        console.log(
-          "Error:",
-          error.response ? error.response.data : error.message
-        );
-      });
-  };
-
-  const createEmail = () => {
-    axios
-      .post(
-        eicApiSettings.rest_url + "wp-client-management/v1/email/create",
-        {
-          user_id: 4,
-          client_id: 13,
-          project_id: 2,
-          subject: "fisrt email",
-          body: "onk din tomai dekhi na",
-          scheduled_at: dayjs(new Date()).format("YYYY-MM-DD"),
-        },
+        eicApiSettings.rest_url + "wp-client-management/v1/project/1/invoices",
+        // {
+        // 	user_id: 1,
+        // 	project_id: 1,
+        // 	client_id: 1,
+        // 	subject: "Hi, hello",
+        // 	body: "kmn achen?",
+        // // 	// assigned_to: 1,
+        // // 	// status_id: 8,
+        // // 	// priority_id: 11,
+        // // 	// start_date: "2022-01-01",
+        // // 	// due_date: "2022-01-01",
+        // // 	// description: "The workig description",
+        // },
         {
           headers: {
             "X-WP-Nonce": eicApiSettings.nonce,

@@ -50,6 +50,12 @@ class Invoice extends Model
                 ->get();
     }
 
+    public static function getPorjectInvoices($id, $page)
+    {
+        return self::where('project_id', $id)
+                    ->paginate(2, ['*'] , 'invoice', $page);
+    }
+
     public static function getAllPaidInvoices()
     {
         return self::where('status.type','invoice')

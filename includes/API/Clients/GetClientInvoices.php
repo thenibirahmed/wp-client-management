@@ -70,7 +70,7 @@ class GetClientInvoices {
         $data = [];
         foreach($invoices as $invoice) {
             $data[] = [
-                'id'             => $invoice->id,      
+                'id'             => $invoice->id,
                 'code'           => $invoice->code,
                 'project'        => $invoice->project->title,
                 'amount'         => $invoice->total,
@@ -81,7 +81,7 @@ class GetClientInvoices {
         };
 
         $response = [
-            'data'       => $data,
+            'invoices'   => $data,
             'pagination' => [
                 'total'         => $invoices->total(),
                 'per_page'      => $invoices->perPage(),
