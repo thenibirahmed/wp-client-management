@@ -72,10 +72,10 @@ const PlayGround = () => {
 				eicApiSettings.rest_url + "wp-client-management/v1/task/create",
 				{
 					project_id: 1,
-					status_id: 8,
+					title: "my next title",
+					assigned_to: 1,
+					description: "my next description",
 					priority_id: 11,
-					// client_id: 1,
-					title: 'finally it\'s working.'
 				},
 				{
 					headers: {
