@@ -69,11 +69,11 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/note/create",
+				eicApiSettings.rest_url + "wp-client-management/v1/task/create",
 				{
 					project_id: 1,
-					client_id: 1,
-					note: 'Samim note.'
+					// client_id: 1,
+					title: 'Samim note.'
 				},
 				{
 					headers: {

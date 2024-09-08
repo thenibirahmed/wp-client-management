@@ -11,7 +11,7 @@ class CreateTask {
     private $endpoint = '/task/create';
 
     protected array $rules = [
-        'eic_crm_user_id'=> 'required|exists:eic_eic_crm_users,id',
+        'eic_crm_user_id'=> 'nullable|exists:eic_eic_crm_users,id',
         'assigned_to'    => 'nullable|exists:eic_eic_crm_users,id',
         'project_id'     => 'required|exists:eic_projects,id',
         'title'          => 'required|string',
@@ -23,7 +23,6 @@ class CreateTask {
     ];
 
     protected array $validationMessages = [
-        'eic_crm_user_id.required'  => 'The user field is required.',
         'eic_crm_user_id.exists'    => 'The selected user does not exist.',
         'assigned_to.exists'        => 'The assigned user does not exist.',
         'project_id.required'       => 'The project field is required.',
@@ -52,11 +51,11 @@ class CreateTask {
 
         $currentWpUser           = wp_get_current_user();
         $eicCrmUserId            = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
-        $data['eic_crm_user_id'] = isset($eicCrmUserId) ? intval($eicCrmUserId) : 0;
-        $data['assigned_to']     = isset($data['assigned_to']) ? intval($data['assigned_to']) : 0;
-        $data['project_id']      = isset($data['project_id']) ? intval($data['project_id']) : 0;
-        $data['status_id']       = isset($data['status_id']) ? intval($data['status_id']) : 0;
-        $data['priority_id']     = isset($data['priority_id']) ? intval($data['priority_id']) : 0;
+        $data['eic_crm_user_id'] = isset($eicCrmUserId) ? intval($eicCrmUserId) : null;
+        $data['assigned_to']     = isset($data['assigned_to']) ? intval($data['assigned_to']) : null;
+        $data['project_id']      = isset($data['project_id']) ? intval($data['project_id']) : null;
+        $data['status_id']       = isset($data['status_id']) ? intval($data['status_id']) : null;
+        $data['priority_id']     = isset($data['priority_id']) ? intval($data['priority_id']) : null;
         $data['title']           = sanitize_text_field($data['title'] ?? '');
         $data['description']     = sanitize_textarea_field($data['description'] ?? '');
         $data['start_date']      = sanitize_text_field($data['start_date'] ?? '');
@@ -69,6 +68,8 @@ class CreateTask {
                 'errors' => $validator->errors(),
             ], 400);
         }
+
+        return new \WP_REST_Response($data);
 
         $task = Task::create($data);
 
