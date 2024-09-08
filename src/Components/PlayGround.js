@@ -69,28 +69,11 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/invoice/create",
+				eicApiSettings.rest_url + "wp-client-management/v1/note/create",
 				{
-					'project_id': 2,
-					'code': 12121,
-					'type': '',
-					'title': "invoice title",
-					'status_id': 6,
-					'date': "2022-03-23",
-					'due_date': "2022-03-23",
-					'bill_from_address' : "bill from address",
-					'bill_from_phone_number' : "bill from phone number",
-					'bill_from_email' : "bill@bill.com",
-					'billing_address' : "biling address",
-					'billing_phone_number' : "biling phone number",
-					'billing_email' : "billing@billing.com",
-					'payment_method_id': 1,
-					'currency_id': 1,
-					'sub_total': 1000,
-					'total': 1000,
-					'discount': 0,
-					'tax': 0,
-					'fee': 0,
+					project_id: 1,
+					client_id: 1,
+					note: 'test note'
 				},
 				{
 					headers: {

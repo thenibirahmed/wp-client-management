@@ -47,6 +47,7 @@ use WpClientManagement\API\Emails\UpdateEmail;
 use WpClientManagement\API\Files\CreateFile;
 use WpClientManagement\API\Files\DeleteFile;
 use WpClientManagement\API\Files\UpdateFile;
+use WpClientManagement\API\InvoiceItems\CreateInvoiceItem;
 use WpClientManagement\API\Invoices\CreateInvoice;
 use WpClientManagement\API\Invoices\DeleteInvoice;
 use WpClientManagement\API\Invoices\UpdateInvoice;
@@ -185,6 +186,7 @@ class API {
         new DeleteInvoice();
         new CreateInvoice();
         new UpdateInvoice();
+        new CreateInvoiceItem();
 
         // Note
         new GetNotes();
