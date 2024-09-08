@@ -12,7 +12,7 @@ class CreateInvoice {
     private $endpoint = '/invoice/create';
 
     protected array $rules = [
-        'eic_crm_user_id'          => 'required|exists:eic_eic_crm_users,id',
+        'eic_crm_user_id'          => 'nullable|exists:eic_eic_crm_users,id',
         'project_id'               => 'nullable|exists:eic_projects,id',
         'client_id'                => 'nullable|exists:eic_clients,id',
         'currency_id'              => 'nullable|exists:eic_currencies,id',
@@ -39,7 +39,6 @@ class CreateInvoice {
     ];
 
     protected array $validationMessages = [
-        'eic_crm_user_id.required'       => 'The EicCrmUser is required.',
         'eic_crm_user_id.exists'         => 'The selected EicCrmUser does not exist.',
         'project_id.exists'              => 'The selected Project does not exist.',
         'client_id.exists'               => 'The selected Client does not exist.',
