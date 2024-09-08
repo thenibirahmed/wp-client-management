@@ -1,61 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Delete03Icon, PencilEdit02Icon, Task01Icon } from "../../utils/icons";
+import React, { useState } from "react";
+import { Delete03Icon, PencilEdit02Icon } from "../../utils/icons";
 import useHashRouting from "../../utils/useHashRouting";
 import Pagination from "./Pagination";
-import useCheckedHandler, {
-  useClientCheckedHandler,
-} from "../../utils/useCheckedItem";
-
-const tableData = [
-  {
-    id: 1,
-    name: "Easin",
-    position: "CEO",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    email: "easin@gmail.com",
-    project: "02",
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-  },
-  {
-    id: 2,
-    name: "Tanvir",
-    position: "CEO",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    email: "tanvir@gmail.com",
-    project: "03",
-    invoice: 3200,
-    revenue: 25,
-    due: 77,
-  },
-  {
-    id: 3,
-    name: "Jack",
-    position: "Developer",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    email: "jack@gmail.com",
-    project: "15",
-    invoice: 1300,
-    revenue: 800,
-    due: 180,
-  },
-  {
-    id: 4,
-    name: "Roy",
-    position: "CEO",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    email: "roy@gmail.com",
-    project: "40",
-    invoice: 4700,
-    revenue: 77,
-    due: 77,
-  },
-];
+import { useClientCheckedHandler } from "../../utils/useCheckedItem";
 
 const ClientTable = ({ clientData }) => {
   const currentPath = useHashRouting("");

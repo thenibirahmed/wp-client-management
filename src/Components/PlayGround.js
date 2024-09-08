@@ -85,11 +85,29 @@ const PlayGround = () => {
   const getTest = () => {
     axios
       .post(
-        eicApiSettings.rest_url + "wp-client-management/v1/note/create",
+        eicApiSettings.rest_url + "wp-client-management/v1/invoice/create",
         {
-          project_id: 1,
-          client_id: 1,
-          note: "test note",
+          project_id: 10, // must be pre-selected from "/select-project"
+          title: "First Invoice",
+          invoice_number: "test",
+          payment_method_id: 4, // this will come from the "/select-payment-method" endpoint
+          currency_id: 1, // this will come from the "/select-currency" endpoint
+          date: dayjs(new Date()).format("YYYY-MM-DD"),
+          due_data: dayjs(new Date()).format("YYYY-MM-DD"),
+          billing_address: "good", // this will come from "/client/{id}/details"
+          billing_phone_number: "test", // "/client/{id}/details"
+          billing_email: "test@gmail.com", // "/client/{id}/details"
+          bill_from_address: "graeta", // this will come from "/employee/{id}/details"
+          bill_from_phone_number: "yty", // "/client/{id}/details"
+          bill_from_email: "ttets", // "/client/{id}/details"
+          note: "great",
+
+          // below data will come after the calculation of Invoice item ,
+          sub_total: 450,
+          total: 120,
+          discount: 10,
+          tax: 10,
+          fee: 10,
         },
         {
           headers: {
@@ -133,63 +151,7 @@ const PlayGround = () => {
       >
         Test me!
       </button>
-      <br />{" "}
-      <button
-        style={{
-          padding: "10px",
-          backgroundColor: "blue",
-          color: "white",
-          borderRadius: "5px",
-          cursor: "pointer",
-          border: "none",
-        }}
-        onClick={createFile}
-      >
-        Create File
-      </button>
-      <br />
-      <button
-        style={{
-          padding: "10px",
-          backgroundColor: "blue",
-          color: "white",
-          borderRadius: "5px",
-          cursor: "pointer",
-          border: "none",
-        }}
-        onClick={getFiles}
-      >
-        getFiles
-      </button>
-      <br />{" "}
-      <button
-        style={{
-          padding: "10px",
-          backgroundColor: "blue",
-          color: "white",
-          borderRadius: "5px",
-          cursor: "pointer",
-          border: "none",
-        }}
-        onClick={createEmail}
-      >
-        createEmail
-      </button>
-      <br />
-      <button
-        style={{
-          padding: "10px",
-          backgroundColor: "blue",
-          color: "white",
-          borderRadius: "5px",
-          cursor: "pointer",
-          border: "none",
-        }}
-        onClick={getEmails}
-      >
-        getEmails
-      </button>
-      <br />
+      <br /> <br />
     </div>
   );
 };

@@ -32,8 +32,6 @@ const AddNewFileForm = () => {
 
     setSubmitLoader(true);
     const sendData = {
-      user_id: 4,
-      client_id: 13,
       project_id: projectId,
       title: data.title,
       url: data.url,

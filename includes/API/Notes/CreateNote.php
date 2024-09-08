@@ -18,11 +18,11 @@ class CreateNote{
     ];
 
     protected array $validationMessages = [
-        'user_id.required'   => 'The User is invalid',
-        'user_id.exists'     => 'The User does not exist',
-        'client_id.exists'   => 'The Client does not exist',
-        'note.required'      => 'The note field is required.',
-        'note.string'        => 'The note field must be string.'
+        'eic_crm_user_id.required'   => 'The User is invalid',
+        'eic_crm_user_id.exists'     => 'The User does not exist',
+        'client_id.exists'           => 'The Client does not exist',
+        'note.required'              => 'The note field is required.',
+        'note.string'                => 'The note field must be string.'
     ];
 
     public function __construct() {
