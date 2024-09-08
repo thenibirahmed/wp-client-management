@@ -8,10 +8,9 @@ class InvoiceItem extends Model
     protected $table = 'eic_invoice_items';
 
     protected $fillable = [
-        'name',
         'invoice_id',
         'details',
-        'quntity',
+        'quantity',
         'unit_price',
         'discount_type',
         'discount_value',

@@ -8,7 +8,7 @@ class SelectClientForProject {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/select-project-client';
+    private $endpoint = '/select-client';
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [

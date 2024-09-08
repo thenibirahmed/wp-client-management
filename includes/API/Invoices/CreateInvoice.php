@@ -18,7 +18,7 @@ class CreateInvoice {
         'currency_id'              => 'nullable|exists:eic_currencies,id',
         'payment_method_id'        => 'nullable|exists:eic_payment_methods,id',
         'status_id'                => 'nullable|exists:eic_statuses,id',
-        'code'                     => 'required|integer',
+        'invoice_number'           => 'required|integer',
         'type'                     => 'nullable|string',
         'title'                    => 'required|string',
         'date'                     => 'required|date',
@@ -45,8 +45,8 @@ class CreateInvoice {
         'client_id.exists'               => 'The selected Client does not exist.',
         'currency_id.exists'             => 'The selected Currency does not exist.',
         'payment_method_id.exists'       => 'The selected Payment Method does not exist.',
-        'code.required'                  => 'The Code is required.',
-        'code.integer'                   => 'The Code must be an integer.',
+        'invoice_number.required'        => 'The Code is required.',
+        'invoice_number.integer'         => 'The Code must be an integer.',
         'type.string'                    => 'The Type must be a valid string.',
         'title.required'                 => 'The Title is required.',
         'title.string'                   => 'The Title must be a valid string.',
@@ -87,28 +87,34 @@ class CreateInvoice {
 
         $data = $request->get_params();
 
-        $currentWpUser              = wp_get_current_user();
-        $eicCrmUserId               = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
-        $data['eic_crm_user_id']    = isset($eicCrmUserId) ? intval($eicCrmUserId) : null;
-        $data['project_id']         = isset($data['project_id']) ? intval($data['project_id']) : null;
-        $data['client_id']          = isset($data['client_id']) ? intval($data['client_id']) : null;
-        $data['status_id']          = isset($data['status_id']) ? intval($data['status_id']) : null;
-        $data['currency_id']        = isset($data['currency_id']) ? intval($data['currency_id']) : null;
-        $data['payment_method_id']  = isset($data['payment_method_id']) ? intval($data['payment_method_id']) : null;
-        $data['status_id']          = isset($data['status_id']) ? intval($data['status_id']) : null;
-        $data['code']               = sanitize_text_field($data['code'] ?? '');
-        $data['type']               = sanitize_text_field($data['type'] ?? '');
-        $data['title']              = sanitize_text_field($data['title'] ?? '');
-        $data['date']               = sanitize_text_field($data['date'] ?? '');
-        $data['due_date']           = sanitize_text_field($data['due_date'] ?? '');
-        $data['items']              = isset($data['items']) ? json_encode(array_map('sanitize_text_field', json_decode($data['items'], true) ?? [])) : json_encode([]);
-        $data['note']               = sanitize_textarea_field($data['note'] ?? '');
-        $data['billing_address']    = sanitize_textarea_field($data['billing_address'] ?? '');
-        $data['sub_total']          = floatval($data['sub_total'] ?? 0.0);
-        $data['total']              = floatval($data['total'] ?? 0.0);
-        $data['discount']           = floatval($data['discount'] ?? 0.0);
-        $data['tax']                = floatval($data['tax'] ?? 0.0);
-        $data['fee']                = floatval($data['fee'] ?? 0.0);
+        $currentWpUser                  = wp_get_current_user();
+        $eicCrmUserId                   = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
+        $data['eic_crm_user_id']        = isset($eicCrmUserId) ? intval($eicCrmUserId) : null;
+        $data['project_id']             = isset($data['project_id']) ? intval($data['project_id']) : null;
+        $data['client_id']              = isset($data['client_id']) ? intval($data['client_id']) : null;
+        $data['status_id']              = isset($data['status_id']) ? intval($data['status_id']) : null;
+        $data['currency_id']            = isset($data['currency_id']) ? intval($data['currency_id']) : null;
+        $data['payment_method_id']      = isset($data['payment_method_id']) ? intval($data['payment_method_id']) : null;
+        $data['status_id']              = isset($data['status_id']) ? intval($data['status_id']) : null;
+        $data['code']                   = sanitize_text_field($data['invoice_number'] ?? '');
+        $data['type']                   = sanitize_text_field($data['type'] ?? '');
+        $data['title']                  = sanitize_text_field($data['title'] ?? '');
+        $data['date']                   = sanitize_text_field($data['date'] ?? '');
+        $data['due_date']               = sanitize_text_field($data['due_date'] ?? '');
+        $data['items']                  = isset($data['items']) ? json_encode(array_map('sanitize_text_field', json_decode($data['items'], true) ?? [])) :
+                                         json_encode([]);
+        $data['note']                   = sanitize_textarea_field($data['note'] ?? '');
+        $data['billing_address']        = sanitize_textarea_field($data['billing_address'] ?? '');
+        $data['billing_phone_number']   = sanitize_textarea_field($data['billing_phone_number'] ?? '');
+        $data['billing_email']          = sanitize_textarea_field($data['billing_email'] ?? '');
+        $data['bill_from_address']      = sanitize_textarea_field($data['bill_from_address'] ?? '');
+        $data['bill_from_phone_number'] = sanitize_textarea_field($data['bill_from_phone_number'] ?? '');
+        $data['bill_from_email']        = sanitize_textarea_field($data['bill_from_email'] ?? '');
+        $data['sub_total']              = floatval($data['sub_total'] ?? 0.0);
+        $data['total']                  = floatval($data['total'] ?? 0.0);
+        $data['discount']               = floatval($data['discount'] ?? 0.0);
+        $data['tax']                    = floatval($data['tax'] ?? 0.0);
+        $data['fee']                    = floatval($data['fee'] ?? 0.0);
 
         if (isset($data['project_id']) && !isset($data['client_id'])) {
             $data['client_id'] = Project::where('id', $data['project_id'])->pluck('client_id')->first();
