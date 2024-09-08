@@ -15,9 +15,9 @@ class GetProjectTasks {
     ];
 
     protected array $validationMessages = [
-        'id.required' => 'The client ID is required.',
-        'id.integer'  => 'The client ID must be an integer.',
-        'id.exists'   => 'The client does not exist.',
+        'id.required' => 'The Project ID is required.',
+        'id.integer'  => 'The Project ID must be an integer.',
+        'id.exists'   => 'The Project does not exist.',
     ];
 
     public function __construct()

@@ -31,7 +31,7 @@ const assigneeLists = [
   { id: 3, name: "UX Designer" },
 ];
 
-const AddNewProjectForm = () => {
+const AddNewProjectForm = ({ refetch }) => {
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
   const { setOpenProjectModal } = useStoreContext();
@@ -100,11 +100,11 @@ const AddNewProjectForm = () => {
     }
     setSubmitLoader(true);
     const sendData = {
-      client_id: selectClient?.id,
+      title: data.title,
       manager_id: selectProjectManager?.id,
+      client_id: selectClient?.id,
       status_id: selectStatus?.id,
       priority_id: selectPriority?.id,
-      title: data.title,
       budget: 450.2,
       currency: "USD",
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
@@ -115,6 +115,7 @@ const AddNewProjectForm = () => {
     try {
       const { data } = await api.post("/project/create", sendData);
       toast.success(data?.message);
+      await refetch();
       reset();
       console.log(data);
     } catch (err) {

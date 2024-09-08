@@ -18,7 +18,7 @@ import dayjs from "dayjs";
 import Loaders from "../../Loaders";
 import api from "../../../api/api";
 
-const AddNewTaskForm = () => {
+const AddNewTaskForm = ({ refetch }) => {
   const { setOpenProjectModal } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -68,18 +68,19 @@ const AddNewTaskForm = () => {
 
     setSubmitLoader(true);
     const sendData = {
+      title: data.title,
       assigned_to: selectAssignee?.id,
       project_id: projectId,
-      title: data.title,
+      priority_id: selectPriority.id,
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
       due_date: dayjs(endDate).format("YYYY-MM-DD"),
-      priority_id: selectPriority.id,
       description: data.description,
     };
 
     try {
       const { data } = await api.post("/task/create", sendData);
       toast.success(data?.message);
+      await refetch();
       reset();
     } catch (err) {
       console.log(err);

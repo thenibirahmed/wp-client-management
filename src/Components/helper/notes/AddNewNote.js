@@ -89,7 +89,6 @@ const AddNewNoteTextArea = () => {
 
     setSubmitLoader(true);
     const sendData = {
-      user_id: 4,
       project_id: projectId,
       note: editorContent,
     };

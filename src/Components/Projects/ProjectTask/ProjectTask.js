@@ -20,6 +20,7 @@ const ProjectTask = ({ projectId }) => {
     isLoading,
     data: projectTask,
     error,
+    refetch,
   } = useFetchProjectTask(projectId, onError);
 
   function onError(err) {
@@ -70,7 +71,7 @@ const ProjectTask = ({ projectId }) => {
         )}
       </React.Fragment>
       <Modal open={openTask} setOpen={setOpenTask} title="Add Task">
-        <AddNewTaskForm />
+        <AddNewTaskForm refetch={refetch} />
       </Modal>
     </React.Fragment>
   );

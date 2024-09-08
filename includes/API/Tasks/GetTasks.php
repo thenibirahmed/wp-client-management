@@ -22,7 +22,7 @@ class GetTasks {
 
         $page = $request->get_params('page');
 
-        $tasks = Task::paginate(20, ['*'], 'page', $page);
+        $tasks = Task::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($tasks as $task) {

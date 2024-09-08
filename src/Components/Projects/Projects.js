@@ -35,7 +35,9 @@ const Projects = () => {
     isLoading: allProjectLoader,
     data: projects,
     error: allProjectError,
+    refetch,
   } = useFetchAllProjects(onError);
+  console.log("projects = ", projects);
   const {
     isLoading: projectOverViewLoader,
     data: projectOverView,
@@ -111,7 +113,7 @@ const Projects = () => {
             setOpen={setOpenProjectModal}
             title="Add Project"
           >
-            <AddNewProjectForm />
+            <AddNewProjectForm refetch={refetch} />
           </Modal>
         </>
       )}

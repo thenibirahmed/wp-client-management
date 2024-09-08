@@ -84,21 +84,30 @@ const PlayGround = () => {
 
   const getTest = () => {
     axios
-      .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/project/1/invoices",
-        // {
-        // 	user_id: 1,
-        // 	project_id: 1,
-        // 	client_id: 1,
-        // 	subject: "Hi, hello",
-        // 	body: "kmn achen?",
-        // // 	// assigned_to: 1,
-        // // 	// status_id: 8,
-        // // 	// priority_id: 11,
-        // // 	// start_date: "2022-01-01",
-        // // 	// due_date: "2022-01-01",
-        // // 	// description: "The workig description",
-        // },
+      .post(
+        eicApiSettings.rest_url + "wp-client-management/v1/invoice/create",
+        {
+          project_id: 2,
+          code: 12121,
+          type: "",
+          title: "invoice title",
+          status_id: 6,
+          date: "2022-03-23",
+          due_date: "2022-03-23",
+          bill_from_address: "bill from address",
+          bill_from_phone_number: "bill from phone number",
+          bill_from_email: "bill@bill.com",
+          billing_address: "biling address",
+          billing_phone_number: "biling phone number",
+          billing_email: "billing@billing.com",
+          payment_method_id: 1,
+          currency_id: 1,
+          sub_total: 1000,
+          total: 1000,
+          discount: 0,
+          tax: 0,
+          fee: 0,
+        },
         {
           headers: {
             "X-WP-Nonce": eicApiSettings.nonce,

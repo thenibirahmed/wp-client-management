@@ -27,7 +27,13 @@ class Task extends Model
     public static function getTeamMemberTasks($id, $page)
     {
         return Task::where('assigned_to', $id)
-                ->paginate(2, ['*'], 'page', $page);
+                ->paginate(5, ['*'], 'page', $page);
+    }
+
+    public static function getProjectTask($id)
+    {
+        return self::with('eic_crm_user', 'assigned_user', 'status', 'priority')
+                ->find($id);
     }
 
     public function eic_crm_user() {

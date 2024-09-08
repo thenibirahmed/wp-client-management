@@ -12,7 +12,7 @@ class GetInvoices {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE, // GET
+            'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_invoices'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -22,7 +22,7 @@ class GetInvoices {
 
         $page = $request->get_params('page');
 
-        $invoices = Invoice::paginate(20, ['*'], 'page', $page);
+        $invoices = Invoice::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($invoices as $invoice) {

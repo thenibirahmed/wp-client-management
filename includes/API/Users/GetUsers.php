@@ -21,7 +21,7 @@ class GetUsers {
     public function get_users(\WP_REST_Request $request) {
         $page = $request->get_params('page');
 
-        $users = User::paginate(20, ['*'], 'page', $page);
+        $users = User::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($users as $user) {

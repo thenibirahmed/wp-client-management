@@ -61,6 +61,16 @@ class Installer {
                         PRIMARY KEY (`id`)
                     ) {$collate}";
 
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_currencies` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `name` varchar(255) NOT NULL,
+                        `symbol` varchar(255) NOT NULL,
+                        `code` varchar(255) NOT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_deal_pipelines` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `name` varchar(255) NOT NULL,
@@ -108,9 +118,16 @@ class Installer {
                         `due_date` date DEFAULT NULL,
                         `items` json DEFAULT NULL,
                         `note` text COLLATE utf8mb4_unicode_ci,
-                        `billing_address` text COLLATE utf8mb4_unicode_ci,
+                        `billing_address` text COLLATE utf8mb4_unicode_ci NULL,
+                        `billing_phone_number` VARCHAR(255) NULL,
+                        `billing_email` VARCHAR(255) NULL,
+                        `bill_from_address` text COLLATE utf8mb4_unicode_ci,
+                        `bill_from_phone_number` VARCHAR(255) NOT NULL,
+                        `bill_from_email` VARCHAR(255) NOT NULL,
                         `payment_method_id` bigint UNSIGNED DEFAULT NULL,
+                        `currency_id` bigint UNSIGNED DEFAULT NULL,
                         `status_id` bigint UNSIGNED DEFAULT NULL,
+                        `sub_total` decimal(8,2) NOT NULL,
                         `total` decimal(8,2) NOT NULL,
                         `discount` decimal(8,2) DEFAULT NULL,
                         `tax` decimal(8,2) DEFAULT NULL,
@@ -119,6 +136,24 @@ class Installer {
                         `updated_at` timestamp NULL DEFAULT NULL,
                         PRIMARY KEY (`id`)
                     ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_invoice_items` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `invoice_id` bigint UNSIGNED DEFAULT NULL,
+                        `details` text COLLATE utf8mb4_unicode_ci,
+                        `quantity` int DEFAULT 1,
+                        `unit_price` decimal(10,2) NOT NULL,
+                        `discount_type` varchar(20) NULL,
+                        `discount_value` decimal(10,2) NULL,
+                        `tax_type` varchar(20) NULL,
+                        `tax_value` decimal(10,2) NULL,
+                        `line_total` decimal(10,2) DEFAULT 0.00,
+                        `name` varchar(255) NOT NULL,
+                        `created_at` timestamp NULL DEFAULT NULL,
+                        `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
 
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_notes` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -149,7 +184,6 @@ class Installer {
                         `priority_id` bigint UNSIGNED DEFAULT NULL,
                         `title` varchar(255) NOT NULL,
                         `budget` decimal(8,2) NOT NULL DEFAULT '0.00',
-                        `currency` varchar(255) DEFAULT NULL,
                         `start_date` datetime DEFAULT NULL,
                         `due_date` datetime DEFAULT NULL,
                         `description` varchar(255) DEFAULT NULL,

@@ -22,7 +22,7 @@ class GetEicCrmUsers {
 
         $page = $request->get_params('page');
 
-        $eic_crm_users = EicCrmUser::paginate(20, ['*'], 'page', $page);
+        $eic_crm_users = EicCrmUser::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($eic_crm_users as $eic_crm_user) {

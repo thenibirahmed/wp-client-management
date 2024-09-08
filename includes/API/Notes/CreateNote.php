@@ -1,6 +1,7 @@
 <?php
 namespace WpClientManagement\API\Notes;
 
+use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Note;
 
 class CreateNote{
@@ -10,14 +11,14 @@ class CreateNote{
     private $endpoint = '/note/create';
 
     protected array $rules = [
-        'user_id'     => 'required|exists:eic_eic_crm_users,id',
-        'project_id'  => 'nullable|exists:eic_projects,id',
-        'client_id'   => 'nullable|exists:eic_clients,id',
-        'note'        => 'required|string',
+        'eic_crm_user_id'   => 'required|exists:eic_eic_crm_users,id',
+        'project_id'        => 'nullable|exists:eic_projects,id',
+        'client_id'         => 'nullable|exists:eic_clients,id',
+        'note'              => 'required|string',
     ];
 
     protected array $validationMessages = [
-        'user_id.required'   => 'The User ID is required',
+        'user_id.required'   => 'The User is invalid',
         'user_id.exists'     => 'The User does not exist',
         'client_id.exists'   => 'The Client does not exist',
         'note.required'      => 'The note field is required.',
@@ -37,7 +38,9 @@ class CreateNote{
 
         $data = $request->get_params();
 
-        $data['eic_crm_user_id'] = isset($data['user_id']) ? intval($data['user_id']) : null;
+        $currentWpUser           = wp_get_current_user();
+        $eicCrmUserId            = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
+        $data['eic_crm_user_id'] = isset($eicCrmUserId) ? intval($eicCrmUserId) : null;
         $data['client_id']       = isset($data['client_id']) ? intval($data['client_id']) : null;
         $data['note']            = sanitize_textarea_field($data['note'] ?? '');
 

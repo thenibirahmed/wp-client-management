@@ -14,6 +14,9 @@ class Invoice extends Model
         'eic_crm_user_id',
         'project_id',
         'client_id',
+        'currency_id',
+        'payment_method_id',
+        'status_id',
         'code',
         'type',
         'title',
@@ -22,7 +25,12 @@ class Invoice extends Model
         'items',
         'note',
         'billing_address',
-        'status',
+        'billing_phone_number',
+        'billing_email',
+        'bill_from_address',
+        'bill_from_phone_number',
+        'bill_from_email',
+        'sub_total',
         'total',
         'discount',
         'tax',
@@ -33,7 +41,7 @@ class Invoice extends Model
     {
         return self::with(['status','project','paymentMethod'])
                 ->where('client_id',$id)
-                ->paginate(2, ['*'], 'invoice', $page);
+                ->paginate(5, ['*'], 'invoice', $page);
     }
 
     public static function getSingleClientInvoices($id)
@@ -53,7 +61,7 @@ class Invoice extends Model
     public static function getPorjectInvoices($id, $page)
     {
         return self::where('project_id', $id)
-                    ->paginate(2, ['*'] , 'invoice', $page);
+                    ->paginate(5, ['*'] , 'invoice', $page);
     }
 
     public static function getAllPaidInvoices()
@@ -61,6 +69,11 @@ class Invoice extends Model
         return self::where('status.type','invoice')
                 ->where('status.name','paid')
                 ->get();
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, 'currency_id');
     }
 
     public function eic_crm_user()

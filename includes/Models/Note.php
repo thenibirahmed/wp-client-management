@@ -20,14 +20,14 @@ class Note extends Model
     {
         return self::with('eic_crm_user')
                     ->where('client_id',$id)
-                    ->paginate(2, ['*'], 'note', $page);
+                    ->paginate(5, ['*'], 'note', $page);
     }
 
     public static function getProjectNotes($id, $page)
     {
         return self::with('eic_crm_user')
                     ->where('project_id',$id)
-                    ->paginate(2, ['*'], 'note', $page);
+                    ->paginate(5, ['*'], 'note', $page);
     }
 
     public function eic_crm_user() {

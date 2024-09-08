@@ -10,30 +10,30 @@ class CreateTask {
     private $endpoint = '/task/create';
 
     protected array $rules = [
-        'user_id' => 'required|exists:eic_eic_crm_users,id',
-        'assigned_to' => 'nullable|exists:eic_eic_crm_users,id',
-        'project_id' => 'required|exists:eic_projects,id',
-        'title' => 'required|string',
-        'start_date' => 'nullable|date',
-        'due_date' => 'nullable|date',
-        'status_id' => 'nullable|exists:eic_statuses,id',
-        'priority_id' => 'nullable|exists:eic_priorities,id',
-        'description' => 'nullable|string',
+        'user_id'       => 'required|exists:eic_eic_crm_users,id',
+        'assigned_to'   => 'nullable|exists:eic_eic_crm_users,id',
+        'project_id'    => 'required|exists:eic_projects,id',
+        'title'         => 'required|string',
+        'start_date'    => 'nullable|date',
+        'due_date'      => 'nullable|date',
+        'status_id'     => 'nullable|exists:eic_statuses,id',
+        'priority_id'   => 'nullable|exists:eic_priorities,id',
+        'description'   => 'nullable|string',
     ];
 
     protected array $validationMessages = [
-        'user_id.required' => 'The user field is required.',
-        'user_id.exists' => 'The selected user does not exist.',
-        'assigned_to.exists' => 'The assigned user does not exist.',
-        'project_id.required' => 'The project field is required.',
-        'project_id.exists' => 'The selected project does not exist.',
-        'title.required' => 'The title field is required.',
-        'title.string' => 'The title must be a valid string.',
-        'start_date.date' => 'The start date must be a valid date.',
-        'due_date.date' => 'The due date must be a valid date.',
-        'status_id.exists' => 'The selected status does not exist.',
-        'priority_id.exists' => 'The selected priority does not exist.',
-        'description.string' => 'The description must be a valid string.',
+        'user_id.required'      => 'The user field is required.',
+        'user_id.exists'        => 'The selected user does not exist.',
+        'assigned_to.exists'    => 'The assigned user does not exist.',
+        'project_id.required'   => 'The project field is required.',
+        'project_id.exists'     => 'The selected project does not exist.',
+        'title.required'        => 'The title field is required.',
+        'title.string'          => 'The title must be a valid string.',
+        'start_date.date'       => 'The start date must be a valid date.',
+        'due_date.date'         => 'The due date must be a valid date.',
+        'status_id.exists'      => 'The selected status does not exist.',
+        'priority_id.exists'    => 'The selected priority does not exist.',
+        'description.string'    => 'The description must be a valid string.',
     ];
 
     public function __construct() {
@@ -49,17 +49,16 @@ class CreateTask {
 
         $data = $request->get_params();
 
-        $data['eic_crm_user_id'] = isset($data['user_id']) ? intval($data['user_id']) : 0;
-        $data['assigned_to'] = isset($data['assigned_to']) ? intval($data['assigned_to']) : 0;
-        $data['project_id'] = isset($data['project_id']) ? intval($data['project_id']) : 0;
-        $data['status_id'] = isset($data['status_id']) ? intval($data['status_id']) : 0;
-        $data['priority_id'] = isset($data['priority_id']) ? intval($data['priority_id']) : 0;
-
-        $data['title'] = sanitize_text_field($data['title'] ?? '');
-        $data['description'] = sanitize_textarea_field($data['description'] ?? '');
-
-        $data['start_date'] = sanitize_text_field($data['start_date'] ?? '');
-        $data['due_date'] = sanitize_text_field($data['due_date'] ?? '');
+        $user = wp_get_current_user();
+        $data['eic_crm_user_id'] = $user->ID;
+        $data['assigned_to']     = isset($data['assigned_to']) ? intval($data['assigned_to']) : 0;
+        $data['project_id']      = isset($data['project_id']) ? intval($data['project_id']) : 0;
+        $data['status_id']       = isset($data['status_id']) ? intval($data['status_id']) : 0;
+        $data['priority_id']     = isset($data['priority_id']) ? intval($data['priority_id']) : 0;
+        $data['title']           = sanitize_text_field($data['title'] ?? '');
+        $data['description']     = sanitize_textarea_field($data['description'] ?? '');
+        $data['start_date']      = sanitize_text_field($data['start_date'] ?? '');
+        $data['due_date']        = sanitize_text_field($data['due_date'] ?? '');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

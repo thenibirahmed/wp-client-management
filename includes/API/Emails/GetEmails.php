@@ -43,7 +43,7 @@ class GetEmails {
         $page = $request->get_params('page');
 
 
-        $emails = Email::paginate(20, ['*'], 'page', $page);
+        $emails = Email::paginate(5, ['*'], 'page', $page);
 
         $data = [];
         foreach ($emails as $email) {

@@ -40,16 +40,18 @@ class Project extends Model
         })->get();
     }
 
-    public static function getClientProjects($id)
+    public static function getClientProjects($id, $page)
     {
-        return self::with('invoices','priority')->where('client_id', $id)->get();
+        return self::with('invoices','priority')
+                ->where('client_id', $id)
+                ->paginate(5, ['*'], 'page', $page);
     }
 
     public static function getTeamMemberProjects($id, $page)
     {
         return Project::with('status', 'priority')->whereHas('eicCrmUsers', function ($query) use ($id) {
             $query->where('eic_crm_user_id', $id);
-        })->paginate(2, ['*'], 'page', $page);
+        })->paginate(5, ['*'], 'page', $page);
     }
 
     public static function getProjectData($id)
