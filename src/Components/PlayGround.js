@@ -89,8 +89,8 @@ const PlayGround = () => {
         {
           project_id: 10, // must be pre-selected from "/select-project"
           title: "First Invoice",
-          invoice_number: "test",
-          payment_method_id: 4, // this will come from the "/select-payment-method" endpoint
+          invoice_number: 1,
+          payment_method_id: 1, // this will come from the "/select-payment-method" endpoint
           currency_id: 1, // this will come from the "/select-currency" endpoint
           date: dayjs(new Date()).format("YYYY-MM-DD"),
           due_data: dayjs(new Date()).format("YYYY-MM-DD"),

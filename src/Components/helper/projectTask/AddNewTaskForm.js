@@ -71,9 +71,9 @@ const AddNewTaskForm = ({ refetch }) => {
       title: data.title,
       assigned_to: selectAssignee?.id,
       project_id: projectId,
-      priority_id: selectPriority.id,
-      start_date: dayjs(startDate).format("YYYY-MM-DD"),
-      due_date: dayjs(endDate).format("YYYY-MM-DD"),
+      //priority_id: selectPriority.id,
+      //start_date: dayjs(startDate).format("YYYY-MM-DD"),
+      //due_date: dayjs(endDate).format("YYYY-MM-DD"),
       description: data.description,
     };
 
