@@ -27,7 +27,7 @@ const ClientEmails = () => {
         <React.Fragment>
           {dataList.length > 0 ? (
             <>
-              <EmailTable />
+              <EmailTable emailsData={[]} />
             </>
           ) : (
             <>

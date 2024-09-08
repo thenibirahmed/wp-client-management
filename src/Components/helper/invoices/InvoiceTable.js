@@ -54,14 +54,14 @@ const tableData = [
   },
 ];
 
-const InvoiceTable = () => {
+const InvoiceTable = ({
+  selectedInvoices,
+  setSelectedInvoices,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
-
-  const [selectedInvoices, setSelectedInvoices] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
-
-  console.log(selectedInvoices);
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedInvoices,
@@ -83,7 +83,7 @@ const InvoiceTable = () => {
                   >
                     <input
                       checked={
-                        selectedInvoices.length > 0 && isAllselected
+                        selectedInvoices?.length > 0 && isAllselected
                           ? true
                           : false
                       }

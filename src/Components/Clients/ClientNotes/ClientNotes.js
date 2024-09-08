@@ -1,24 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 
 import EmptyTable from "../../helper/EmptyTable";
 import { useStoreContext } from "../../../store/ContextApiStore";
-
 import NoteTable from "../../helper/notes/NoteTable";
-import NoteHeader from "../../helper/notes/NoteHeader";
 import AddNewNote from "../../helper/notes/AddNewNote";
 import { Task01Icon } from "../../../utils/icons";
+import ProjectHeader from "../../helper/projects/ProjectHeader";
 
 const ClientNotes = () => {
   const { createNote, setCreateNote } = useStoreContext();
+
+  const [selectedNote, setSelectedNote] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
 
   const dataList = [1];
 
   const handler = () => {
     setCreateNote(true);
   };
+
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].id);
+  };
+
   return (
     <React.Fragment>
-      <NoteHeader />
+      <ProjectHeader
+        selectedProject={selectedNote}
+        title="Notes"
+        setOpenModal={setCreateNote}
+        btnTitle="Add Note"
+        onDeleteAction={onDeleteAction}
+        onCheckAction={onCheckAction}
+      />
 
       {createNote ? (
         <React.Fragment>
@@ -28,7 +45,13 @@ const ClientNotes = () => {
         <React.Fragment>
           {dataList.length > 0 ? (
             <>
-              <NoteTable />
+              <NoteTable
+                noteData={[]}
+                selectedNote={selectedNote}
+                setSelectedNote={setSelectedNote}
+                isAllselected={isAllselected}
+                setIsAllSelected={setIsAllSelected}
+              />
             </>
           ) : (
             <>

@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 
 import EmptyTable from "../../helper/EmptyTable";
-import { Invoice01Icon, Task01Icon } from "../../../utils/icons";
+import { Task01Icon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
-
 import Modal from "../../helper/Modal";
 import ProjectTaskTable from "../../helper/projectTask/ProjectTaskTable";
-import ProjectTaskHeader from "../../helper/projectTask/ProjectTaskHeader";
 import AddNewTaskForm from "../../helper/projectTask/AddNewTaskForm";
 import { useFetchProjectTask } from "../../../hooks/useQuery";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 import toast from "react-hot-toast";
+import ProjectHeader from "../../helper/projects/ProjectHeader";
 
 const ProjectTask = ({ projectId }) => {
   const { openTask, setOpenTask } = useStoreContext();
@@ -34,6 +33,13 @@ const ProjectTask = ({ projectId }) => {
     setOpenProjectModal(true);
   };
 
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].id);
+  };
+
   if (error) {
     console.log("project task error", error?.response?.data?.errors);
     return (
@@ -48,7 +54,15 @@ const ProjectTask = ({ projectId }) => {
 
   return (
     <React.Fragment>
-      <ProjectTaskHeader selectedProjectTask={selectedProjectTask} />
+      <ProjectHeader
+        selectedProject={selectedProjectTask}
+        title="Task"
+        setOpenModal={setOpenTask}
+        btnTitle="Add Task"
+        onDeleteAction={onDeleteAction}
+        onCheckAction={onCheckAction}
+      />
+
       <React.Fragment>
         {isLoading ? (
           <Skeleton />

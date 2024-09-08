@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FileAddIcon } from "../../../utils/icons";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
@@ -15,6 +15,9 @@ import Skeleton from "../../Skeleton";
 const ProjectFile = ({ projectId }) => {
   const { openFileModal, setOpenFileModal } = useStoreContext();
 
+  const [selectedFile, setSelectedFile] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
+
   const {
     isLoading,
     data: projectFiles,
@@ -24,7 +27,6 @@ const ProjectFile = ({ projectId }) => {
   const handler = () => {
     setOpenFileModal(true);
   };
-  const dataList = [0];
 
   function onError(err) {
     console.log(err);
@@ -57,6 +59,10 @@ const ProjectFile = ({ projectId }) => {
                 <FileTable
                   fileData={projectFiles?.files}
                   pagination={projectFiles?.pagination}
+                  selectedFile={selectedFile}
+                  setSelectedFile={setSelectedFile}
+                  isAllselected={isAllselected}
+                  setIsAllSelected={setIsAllSelected}
                 />
               </>
             ) : (

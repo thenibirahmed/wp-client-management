@@ -66,6 +66,13 @@ const Projects = () => {
     });
   }, []);
 
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].id);
+  };
+
   if (projectOverViewError || allProjectError) {
     return <Errors message="Internal Server Error" />;
   }
@@ -78,8 +85,14 @@ const Projects = () => {
         <>
           <ProjectOverView projectOverView={projectOverView?.projectOverView} />
           <div className="space-y-6">
-            <ProjectHeader selectedProject={selectedProject} />
-
+            <ProjectHeader
+              selectedProject={selectedProject}
+              title="All Project"
+              setOpenModal={setOpenProjectModal}
+              btnTitle="Add Project"
+              onDeleteAction={onDeleteAction}
+              onCheckAction={onCheckAction}
+            />
             <React.Fragment>
               {isLoading ? (
                 <Skeleton />

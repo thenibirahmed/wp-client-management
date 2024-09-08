@@ -31,7 +31,7 @@ const useCheckedHandler = (
   };
 
   useEffect(() => {
-    if (selectedClient.length === 0) {
+    if (selectedClient?.length === 0) {
       setIsAllSelected(false);
     }
   }, [selectedClient]);

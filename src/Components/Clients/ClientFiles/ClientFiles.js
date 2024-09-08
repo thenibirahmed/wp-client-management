@@ -21,7 +21,7 @@ const ClientFiles = () => {
       <FileHeader />
       {dataList.length > 0 ? (
         <>
-          <FileTable />
+          <FileTable fileData={[]} />
         </>
       ) : (
         <>

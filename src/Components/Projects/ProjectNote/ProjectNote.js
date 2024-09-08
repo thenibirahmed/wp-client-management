@@ -1,26 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 
 import EmptyTable from "../../helper/EmptyTable";
 import { useStoreContext } from "../../../store/ContextApiStore";
-
 import NoteTable from "../../helper/notes/NoteTable";
-import NoteHeader from "../../helper/notes/NoteHeader";
 import AddNewNote from "../../helper/notes/AddNewNote";
 import { Task01Icon } from "../../../utils/icons";
 import { useFetchProjectNotes } from "../../../hooks/useQuery";
 import Errors from "../../Errors";
 import toast from "react-hot-toast";
 import Skeleton from "../../Skeleton";
+import ProjectHeader from "../../helper/projects/ProjectHeader";
 
 const ProjectNote = ({ projectId = { projectId } }) => {
   const { createNote, setCreateNote } = useStoreContext();
+
+  const [selectedNote, setSelectedNote] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
+
   const {
     isLoading,
     data: projectNotes,
     error,
   } = useFetchProjectNotes(projectId, onError);
-
-  const dataList = [1];
 
   function onError(err) {
     console.log(err);
@@ -43,9 +44,24 @@ const ProjectNote = ({ projectId = { projectId } }) => {
   const handler = () => {
     setCreateNote(true);
   };
+
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].id);
+  };
+
   return (
     <React.Fragment>
-      <NoteHeader />
+      <ProjectHeader
+        selectedProject={selectedNote}
+        title="Notes"
+        setOpenModal={setCreateNote}
+        btnTitle="Add Note"
+        onDeleteAction={onDeleteAction}
+        onCheckAction={onCheckAction}
+      />
 
       {createNote ? (
         <React.Fragment>
@@ -60,7 +76,13 @@ const ProjectNote = ({ projectId = { projectId } }) => {
               {" "}
               {projectNotes?.notes?.length > 0 ? (
                 <>
-                  <NoteTable noteData={projectNotes?.notes} />
+                  <NoteTable
+                    noteData={projectNotes?.notes}
+                    selectedNote={selectedNote}
+                    setSelectedNote={setSelectedNote}
+                    isAllselected={isAllselected}
+                    setIsAllSelected={setIsAllSelected}
+                  />
                 </>
               ) : (
                 <>

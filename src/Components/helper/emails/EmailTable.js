@@ -98,7 +98,9 @@ const EmailTable = ({ emailsData, pagination }) => {
                   >
                     <input
                       checked={
-                        selectedEmail.length > 0 && isAllselected ? true : false
+                        selectedEmail?.length > 0 && isAllselected
+                          ? true
+                          : false
                       }
                       onChange={(e) =>
                         checkedAllClient(e.target.checked, emailsData)

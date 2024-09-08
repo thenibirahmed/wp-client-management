@@ -10,12 +10,16 @@ import {
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import Pagination from "../../Clients/Pagination";
 
-const FileTable = ({ fileData, pagination }) => {
+const FileTable = ({
+  fileData,
+  pagination,
+  selectedFile,
+  setSelectedFile,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
-
-  const [selectedFile, setSelectedFile] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedFile,
@@ -37,7 +41,7 @@ const FileTable = ({ fileData, pagination }) => {
                   >
                     <input
                       checked={
-                        selectedFile.length > 0 && isAllselected ? true : false
+                        selectedFile?.length > 0 && isAllselected ? true : false
                       }
                       onChange={(e) =>
                         checkedAllClient(e.target.checked, fileData)

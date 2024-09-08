@@ -6,12 +6,15 @@ import Pagination from "../../Clients/Pagination";
 import { Delete03Icon, ViewIcon } from "../../../utils/icons";
 import useHashRouting from "../../../utils/useHashRouting";
 
-const NoteTable = ({ noteData }) => {
+const NoteTable = ({
+  noteData,
+  selectedNote,
+  setSelectedNote,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
-
-  const [selectedNote, setSelectedNote] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedNote,

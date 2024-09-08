@@ -11,17 +11,41 @@ import AddNewClientProjectForm from "../../helper/forms/AddNewClientProjectForm"
 
 const ClientProject = () => {
   const { openProjectModal, setOpenProjectModal } = useStoreContext();
+
+  const [selectedProject, setSelectedProject] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
+
   const dataList = [1];
 
   const handler = () => {
     setOpenProjectModal(true);
   };
+
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].id);
+  };
+
   return (
     <React.Fragment>
-      <ProjectHeader />
-      {dataList.length > 0 ? (
+      <ProjectHeader
+        selectedProject={selectedProject}
+        title="All Project"
+        setOpenModal={setOpenProjectModal}
+        btnTitle="Add Project"
+        onDeleteAction={onDeleteAction}
+        onCheckAction={onCheckAction}
+      />
+      {dataList?.length > 0 ? (
         <>
-          <ClientProjectTable />
+          <ClientProjectTable
+            selectedClient={selectedProject}
+            setSelectedClient={setSelectedProject}
+            isAllselected={isAllselected}
+            setIsAllSelected={setIsAllSelected}
+          />
         </>
       ) : (
         <>
