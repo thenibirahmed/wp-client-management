@@ -99,7 +99,7 @@ const PlayGround = () => {
           billing_email: "test@gmail.com", // "/client/{id}/details"
           bill_from_address: "graeta", // this will come from "/employee/{id}/details"
           bill_from_phone_number: "yty", // "/client/{id}/details"
-          bill_from_email: "ttets", // "/client/{id}/details"
+          bill_from_email: "test@gmail.com", // "/client/{id}/details"
           note: "great",
 
           // below data will come after the calculation of Invoice item ,

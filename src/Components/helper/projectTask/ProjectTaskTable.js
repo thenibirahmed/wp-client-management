@@ -142,9 +142,12 @@ const ProjectTaskTable = ({ taskData }) => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {taskData.map((item) => {
-                  let itemStatus = item.status.toLowerCase();
-                  let itemPriority = item.priority.toLowerCase();
+                {taskData?.map((item) => {
+                  // let itemStatus = item?.status?.toLowerCase();
+                  // let itemPriority = item?.priority?.toLowerCase();
+
+                  let itemStatus = item?.status;
+                  let itemPriority = item?.priority;
 
                   const isChecked = selectedClient.some(
                     (client) => client.id === item.id

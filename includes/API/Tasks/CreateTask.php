@@ -51,15 +51,15 @@ class CreateTask {
 
         $currentWpUser           = wp_get_current_user();
         $eicCrmUserId            = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
-        $data['eic_crm_user_id'] = isset($eicCrmUserId) ? intval($eicCrmUserId) : '';
+        $data['eic_crm_user_id'] = isset($eicCrmUserId) ? intval($eicCrmUserId) : null;
         $data['assigned_to']     = isset($data['assigned_to']) ? intval($data['assigned_to']) : null;
         $data['project_id']      = isset($data['project_id']) ? intval($data['project_id']) : null;
         $data['status_id']       = isset($data['status_id']) ? intval($data['status_id']) : null;
         $data['priority_id']     = isset($data['priority_id']) ? intval($data['priority_id']) : null;
         $data['title']           = sanitize_text_field($data['title'] ?? '');
         $data['description']     = sanitize_textarea_field($data['description'] ?? '');
-        $data['start_date'] = isset($data['start_date']) ? sanitize_text_field($data['start_date']) : null;
-        $data['due_date']   = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
+        $data['start_date']      = isset($data['start_date']) ? sanitize_text_field($data['start_date']) : null;
+        $data['due_date']        = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -67,9 +67,7 @@ class CreateTask {
             return new \WP_REST_Response([
                 'errors' => $validator->errors(),
             ], 400);
-        }
-
-        // return new \WP_REST_Response($data);
+        };
 
         $task = Task::create([
             'eic_crm_user_id' => $data['eic_crm_user_id'],
