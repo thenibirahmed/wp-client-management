@@ -1,6 +1,7 @@
 <?php
 namespace WpClientManagement\API\Tasks;
 
+use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Task;
 
 class CreateTask {
@@ -49,8 +50,9 @@ class CreateTask {
 
         $data = $request->get_params();
 
-        $user = wp_get_current_user();
-        $data['eic_crm_user_id'] = $user->ID;
+        $currentWpUser           = wp_get_current_user();
+        $eicCrmUserId            = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
+        $data['eic_crm_user_id'] = isset($eicCrmUserId) ? intval($eicCrmUserId) : 0;
         $data['assigned_to']     = isset($data['assigned_to']) ? intval($data['assigned_to']) : 0;
         $data['project_id']      = isset($data['project_id']) ? intval($data['project_id']) : 0;
         $data['status_id']       = isset($data['status_id']) ? intval($data['status_id']) : 0;

@@ -73,7 +73,7 @@ const PlayGround = () => {
 				{
 					project_id: 1,
 					client_id: 1,
-					note: 'test note'
+					note: 'Samim note.'
 				},
 				{
 					headers: {
