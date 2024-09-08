@@ -11,7 +11,7 @@ class CreateEmail{
     private $endpoint = '/email/create';
 
     protected array $rules = [
-        'eic_crm_user_id'  => 'required|exists:eic_eic_crm_users,id',
+        'eic_crm_user_id'  => 'nullable|exists:eic_eic_crm_users,id',
         'client_id'        => 'required|exists:eic_clients,id',
         'project_id'       => 'nullable|exists:eic_projects,id',
         'subject'          => 'nullable|string',
