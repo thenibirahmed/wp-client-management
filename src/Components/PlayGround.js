@@ -68,9 +68,9 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/invoice-item/create",
-				{
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/client/1/overview",
+				// {
 					// project_id: 1,
 					// date: "2022-09-18",
 					// billing_address: "my next address",
@@ -85,10 +85,10 @@ const PlayGround = () => {
 					// priority_id: 11,
 					// sub_total: 1,
 					// total: 1,
-					unit_price: 1,
-					name: 'tst',
-					invoice_id: 1,
-				},
+					// unit_price: 1,
+					// name: 'tst',
+					// invoice_id: 1,
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
