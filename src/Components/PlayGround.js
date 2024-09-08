@@ -69,13 +69,22 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/task/create",
+				eicApiSettings.rest_url + "wp-client-management/v1/invoice/create",
 				{
 					project_id: 1,
+					date: "2022-09-18",
+					billing_address: "my next address",
+					billing_phone_number: 525225,
+					billing_email: 'billing@eic.com',
+					invoice_number: 454545,
+					bill_from_phone_number: 525225,
+					bill_from_email: 'billing@eic.com',
 					title: "my next title",
 					assigned_to: 1,
 					description: "my next description",
 					priority_id: 11,
+					sub_total: 1,
+					total: 1,
 				},
 				{
 					headers: {

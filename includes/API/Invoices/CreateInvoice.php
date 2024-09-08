@@ -24,10 +24,10 @@ class CreateInvoice {
         'date'                     => 'required|date',
         'due_date'                 => 'nullable|date',
         'bill_from_address'        => 'nullable|string',
-        'bill_from_phone_number'   => 'nullable|string',
-        'bill_from_email'          => 'nullable|email',
+        'bill_from_phone_number'   => 'required|string',
+        'bill_from_email'          => 'required|email',
         'items'                    => 'nullable|json',
-        'billing_address'          => 'required|string',
+        'billing_address'          => 'nullable|string',
         'billing_phone_number'     => 'required|string',
         'billing_email'            => 'required|email',
         'note'                     => 'nullable|string',
@@ -44,8 +44,9 @@ class CreateInvoice {
         'client_id.exists'               => 'The selected Client does not exist.',
         'currency_id.exists'             => 'The selected Currency does not exist.',
         'payment_method_id.exists'       => 'The selected Payment Method does not exist.',
-        'invoice_number.required'        => 'The Code is required.',
-        'invoice_number.integer'         => 'The Code must be an integer.',
+        'status_id.exists'               => 'The selected Status does not exist.',
+        'invoice_number.required'        => 'The Invoice Number is required.',
+        'invoice_number.integer'         => 'The Invoice Number must be an integer.',
         'type.string'                    => 'The Type must be a valid string.',
         'title.required'                 => 'The Title is required.',
         'title.string'                   => 'The Title must be a valid string.',
@@ -53,25 +54,26 @@ class CreateInvoice {
         'date.date'                      => 'The Date must be a valid date.',
         'due_date.date'                  => 'The Due Date must be a valid date.',
         'bill_from_address.string'       => 'The Bill From Address must be a valid string.',
+        'bill_from_phone_number.required'=> 'The Bill From Phone Number is required.',
         'bill_from_phone_number.string'  => 'The Bill From Phone Number must be a valid string.',
+        'bill_from_email.required'       => 'The Bill From Email is required.',
         'bill_from_email.email'          => 'The Bill From Email must be a valid email address.',
         'items.json'                     => 'The Items must be a valid JSON string.',
-        'billing_address.required'       => 'The Billing Address is required.',
         'billing_address.string'         => 'The Billing Address must be a valid string.',
-        'biling_phone_number.required'   => 'The Billing Phone Number is required.',
-        'biling_phone_number.string'     => 'The Billing Phone Number must be a valid string.',
+        'billing_phone_number.required'  => 'The Billing Phone Number is required.',
+        'billing_phone_number.string'    => 'The Billing Phone Number must be a valid string.',
         'billing_email.required'         => 'The Billing Email is required.',
         'billing_email.email'            => 'The Billing Email must be a valid email address.',
         'note.string'                    => 'The Note must be a valid string.',
-        'status_id.exists'               => 'The Status does not exist.',
-        'sub_total.required'             => 'The Sub total is required.',
-        'sub_total.numeric'              => 'The Sub total must be a valid number.',
+        'sub_total.required'             => 'The Sub Total is required.',
+        'sub_total.numeric'              => 'The Sub Total must be a valid number.',
         'total.required'                 => 'The Total is required.',
         'total.numeric'                  => 'The Total must be a valid number.',
         'discount.numeric'               => 'The Discount must be a valid number.',
         'tax.numeric'                    => 'The Tax must be a valid number.',
         'fee.numeric'                    => 'The Fee must be a valid number.',
     ];
+
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
@@ -98,8 +100,8 @@ class CreateInvoice {
         $data['code']                   = sanitize_text_field($data['invoice_number'] ?? '');
         $data['type']                   = sanitize_text_field($data['type'] ?? '');
         $data['title']                  = sanitize_text_field($data['title'] ?? '');
-        $data['date']                   = sanitize_text_field($data['date'] ?? '');
-        $data['due_date']               = sanitize_text_field($data['due_date'] ?? '');
+        $data['date']                   = isset($data['date']) ? sanitize_text_field($data['date']) : date('Y-m-d');
+        $data['due_date']               = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
         $data['items']                  = isset($data['items']) ? json_encode(array_map('sanitize_text_field', json_decode($data['items'], true) ?? [])) :
                                          json_encode([]);
         $data['note']                   = sanitize_textarea_field($data['note'] ?? '');
