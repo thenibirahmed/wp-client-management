@@ -41,7 +41,7 @@ class Invoice extends Model
     {
         return self::with(['status','project','paymentMethod'])
                 ->where('client_id',$id)
-                ->paginate(5, ['*'], 'invoice', $page);
+                ->paginate(2, ['*'], 'invoice', $page);
     }
 
     public static function getSingleClientInvoices($id)
