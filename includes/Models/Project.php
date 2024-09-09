@@ -44,7 +44,7 @@ class Project extends Model
     {
         return self::with('invoices','priority')
                 ->where('client_id', $id)
-                ->paginate(5, ['*'], 'page', $page);
+                ->paginate(5, ['*'], 'project', $page);
     }
 
     public static function getTeamMemberProjects($id, $page)
