@@ -27,7 +27,7 @@ class Note extends Model
     {
         return self::with('eic_crm_user')
                     ->where('project_id',$id)
-                    ->paginate(5, ['*'], 'note', $page);
+                    ->paginate(3, ['*'], 'note', $page);
     }
 
     public function eic_crm_user() {

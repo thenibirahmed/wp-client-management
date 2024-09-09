@@ -46,6 +46,8 @@ const ProjectTable = ({
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
+  console.log("pagination projects", pagination);
+
   const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
     selectedProject,
     setIsAllSelected,

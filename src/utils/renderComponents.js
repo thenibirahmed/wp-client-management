@@ -17,13 +17,15 @@ import ProjectTaskDetails from "../Components/Projects/ProjectTask/ProjectTaskDe
 import ContactTeamDetails from "../Components/Contacts/Team/TeamDetails/ContactTeamDetails";
 import Errors from "../Components/Errors";
 
-export const renderComponent = (path, activeUrl) => {
+export const renderComponent = (path, activeUrl, paginationUrl) => {
   switch (path) {
     case "clients":
       return <Client />;
     case `clients/#/${activeUrl}`:
       return <ClientDetails />;
     case "projects":
+      return <Projects />;
+    case `projects/?${paginationUrl}`:
       return <Projects />;
 
     case `projects/#/${activeUrl}/#/Task`:

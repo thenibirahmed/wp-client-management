@@ -33,7 +33,8 @@ class GetProjectTasks {
     {
         global $validator;
 
-        $id = $request->get_param('id');
+        $id   = $request->get_param('id');
+        $page = $request->get_param('task');
 
         if(!isset($id)) {
             return new \WP_REST_Response([
@@ -59,7 +60,7 @@ class GetProjectTasks {
             ], 404);
         }
 
-        $tasks         = $project->tasks;
+        $tasks         = $project->tasks()->paginate(5, ['*'], 'task', $page);
         $eic_crm_users = EicCrmUser::selectManager(false);
 
         $wp_user_ids = $eic_crm_users->pluck('wp_user_id')->toArray();
@@ -97,6 +98,14 @@ class GetProjectTasks {
 
         return new \WP_REST_Response([
             'tasks' => $taskWithDetails,
+            'pagination' => [
+                'total'         => $tasks->total(),
+                'per_page'      => $tasks->perPage(),
+                'current_page'  => $tasks->currentPage(),
+                'last_page'     => $tasks->lastPage(),
+                'next_page_url' => $tasks->nextPageUrl(),
+                'prev_page_url' => $tasks->previousPageUrl(),
+            ],
         ]);
     }
 }

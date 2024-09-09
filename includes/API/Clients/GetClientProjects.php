@@ -34,7 +34,7 @@ class GetClientProjects {
         global $validator;
 
         $client_id  = $request->get_param('id');
-        $page       = $request->get_param('page');
+        $page       = $request->get_param('project');
 
         if(!isset($client_id)) {
             return new \WP_REST_Response([

@@ -131,7 +131,7 @@ const PlayGround = () => {
   const emplyee = () => {
     axios
       .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/client/12/details",
+        eicApiSettings.rest_url + "wp-client-management/v1/project/19/invoices",
 
         {
           headers: {

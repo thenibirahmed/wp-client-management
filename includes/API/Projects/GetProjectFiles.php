@@ -33,7 +33,7 @@ class GetProjectFiles {
         global $validator;
 
         $project_id  = $request->get_param('id');
-        $page        = $request->get_param('page');
+        $page        = $request->get_param('file');
 
         if(!isset($project_id)) {
             return new \WP_REST_Response([
@@ -59,7 +59,7 @@ class GetProjectFiles {
             ]);
         }
 
-        $files = File::getProjectFiles($project->id, $page);
+        $files = File::getProjeEctFiles($project->id, $page);
 
         if(!$files) {
             return new \WP_REST_Response([

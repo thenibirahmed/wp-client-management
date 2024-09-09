@@ -154,11 +154,12 @@ export const useFetchStatus = (type, onError) => {
   );
 };
 
-export const useFetchAllProjects = (onError) => {
+export const useFetchAllProjects = (pageinationUrl, onError) => {
   return useQuery(
     "projects",
     async () => {
-      return await api.get("/projects");
+      const finalQuery = pageinationUrl ? pageinationUrl : "page=1";
+      return await api.get(`/projects/?${finalQuery}`);
     },
     {
       select: (data) => {
@@ -248,6 +249,27 @@ export const useFetchProjectTask = (projectId, onError) => {
       select: (data) => {
         const sendData = {
           task: data.data.tasks,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchProjectInvoice = (projectId, onError) => {
+  return useQuery(
+    ["project-invoice", projectId],
+    async () => {
+      return await api.get(`/project/${projectId}/invoices`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          invoices: data.data.invoices,
+          pagination: data.data.pagination,
         };
 
         return sendData;

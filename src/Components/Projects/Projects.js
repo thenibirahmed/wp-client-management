@@ -20,6 +20,7 @@ import {
 import Skeleton from "../Skeleton";
 import toast from "react-hot-toast";
 import Errors from "../Errors";
+import useHashRouting from "../../utils/useHashRouting";
 
 const Projects = () => {
   const {
@@ -28,6 +29,9 @@ const Projects = () => {
     setAllTabItems,
     openTaskDetail,
   } = useStoreContext();
+  const currentPath = useHashRouting("");
+  const getPaginationUrl = currentPath?.split("?")[1];
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "page=1";
 
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
@@ -37,9 +41,20 @@ const Projects = () => {
     data: projects,
     error: allProjectError,
     refetch,
-  } = useFetchAllProjects(onError);
+  } = useFetchAllProjects(paginationUrl, onError);
 
-  console.log("projects = ", projects);
+  //console.log("projects = ", projects);
+  console.log("paginationUrl = ", paginationUrl);
+
+  useEffect(() => {
+    const refertchProject = async () => {
+      await refetch();
+    };
+
+    if (paginationUrl) {
+      refertchProject();
+    }
+  }, [paginationUrl]);
 
   const {
     isLoading: projectOverViewLoader,

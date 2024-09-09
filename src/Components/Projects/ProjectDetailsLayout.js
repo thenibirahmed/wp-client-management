@@ -14,7 +14,7 @@ const ProjectDetailsLayout = ({ projectId }) => {
   if (allTabItems["task"]) {
     return <ProjectTask projectId={projectId} />;
   } else if (allTabItems["invoice"]) {
-    return <ProjectInvoice />;
+    return <ProjectInvoice projectId={projectId} />;
   } else if (allTabItems["note"]) {
     return <ProjectNote projectId={projectId} />;
   } else if (allTabItems["file"]) {

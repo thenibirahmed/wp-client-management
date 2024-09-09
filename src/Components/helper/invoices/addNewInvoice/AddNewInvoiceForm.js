@@ -18,12 +18,19 @@ import {
 import Skeleton from "../../../Skeleton";
 import Errors from "../../../Errors";
 import toast from "react-hot-toast";
+import useSubtotal from "../../../../hooks/useSubtotal";
+import Loaders from "../../../Loaders";
+import api from "../../../../api/api";
 
-const AddNewInvoiceForm = () => {
+const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
   const { setCreateInvoice } = useStoreContext();
+
+  const { subtotal, totalDiscount, totalTax, finalAmount } =
+    useSubtotal(invoiceItem);
 
   const datePickerInvoiceRef = useRef(null);
   const datePickerDueRef = useRef(null);
+  const [submitLoader, setSubmitLoader] = useState(false);
 
   const [selectClient, setSelectClient] = useState();
   const [selectEmplyoee, setSelectEmployee] = useState();
@@ -117,38 +124,34 @@ const AddNewInvoiceForm = () => {
     }
     setSubmitLoader(true);
     const sendData = {
-      project_id: selectedProject?.id, // must be pre-selected from "/select-project"
+      project_id: selectedProject?.id,
       title: data.title,
-      invoice_number: data.invoice,
-      payment_method_id: selectPayMethod?.id, // this will come from the "/select-payment-method" endpoint
-      currency_id: selectCurrency?.id, // this will come from the "/select-currency" endpoint
+      invoice_number: Number(data.invoicenumber),
+      payment_method_id: selectPayMethod?.id,
+      currency_id: selectCurrency?.id,
       date: dayjs(invoiceDate).format("YYYY-MM-DD"),
       due_data: dayjs(dueDate).format("YYYY-MM-DD"),
-      billing_address: client?.clientDetails?.address, // this will come from "/client/{id}/details"
-      billing_phone_number: "1452", // "/client/{id}/details"
-      billing_email: client?.clientDetails?.email, // "/client/{id}/details"
-      bill_from_address: emplyoee?.employeeDetails?.address, // this will come from "/employee/{id}/details"
-      bill_from_phone_number: "45424", // "/client/{id}/details"
-      bill_from_email: emplyoee?.employeeDetails?.email, // "/client/{id}/details"
-      note: "test",
-
-      // below data will come after the calculation of Invoice item ,
-      sub_total: 450,
-      total: 120,
-      discount: 10,
-      tax: 10,
+      billing_address: client?.clientDetails?.address,
+      billing_phone_number: "1452",
+      billing_email: client?.clientDetails?.email,
+      bill_from_address: emplyoee?.employeeDetails?.address,
+      bill_from_phone_number: "45424",
+      bill_from_email: emplyoee?.employeeDetails?.email,
+      note: noteText,
+      sub_total: subtotal,
+      total: finalAmount,
+      discount: totalDiscount,
+      tax: totalTax,
       fee: 10,
     };
     console.log(sendData);
     try {
-      const { data } = await api.post("/project/create", sendData);
+      const { data } = await api.post("/invoice/create", sendData);
       toast.success(data?.message);
-      await refetch();
       reset();
-      console.log(data);
     } catch (err) {
       console.log(err);
-      toast.error("Something went wrong");
+      toast.error(err?.response?.data?.errors || "Something went wrong");
     } finally {
       setSubmitLoader(false);
     }
@@ -236,10 +239,11 @@ const AddNewInvoiceForm = () => {
               Save and Send
             </button>
             <button
+              disabled={submitLoader}
               type="submit"
               className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
             >
-              Save
+              {submitLoader ? <Loaders /> : "Save"}
             </button>
           </div>
         </div>

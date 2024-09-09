@@ -21,9 +21,9 @@ class GetClients {
 
     public function get_clients(\WP_REST_Request $request)
     {
-        $page = $request->get_params('page');
+        $page = $request->get_param('page');
 
-        $clients = Client::paginate(5, ['*'], 'page', $page);
+        $clients = Client::paginate(2, ['*'], 'page', $page);
 
         $wp_user_ids = $clients->pluck('eic_crm_user.wp_user_id')->toArray();
 

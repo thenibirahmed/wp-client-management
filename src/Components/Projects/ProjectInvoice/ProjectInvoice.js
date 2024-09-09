@@ -5,12 +5,26 @@ import InvoiceTable from "../../helper/invoices/InvoiceTable";
 import EmptyTable from "../../helper/EmptyTable";
 import { Invoice01Icon } from "../../../utils/icons";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
+import { useFetchProjectInvoice } from "../../../hooks/useQuery";
+import Skeleton from "../../Skeleton";
 
-const ProjectInvoice = () => {
+const ProjectInvoice = ({ projectId }) => {
   const { setCreateInvoice } = useStoreContext();
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
   const dataList = [1];
+
+  const {
+    isLoading: invoiceLoader,
+    data: invoiceList,
+    error: inoiceErr,
+    refetch,
+  } = useFetchProjectInvoice(projectId, onError);
+
+  function onError(err) {
+    console.log(err);
+    toast.error("Failed to fetch all project Invoice Data");
+  }
 
   const handler = () => {
     setCreateInvoice(true);
@@ -34,14 +48,22 @@ const ProjectInvoice = () => {
       />
 
       {dataList.length > 0 ? (
-        <>
-          <InvoiceTable
-            selectedInvoices={selectedInvoices}
-            setSelectedInvoices={setSelectedInvoices}
-            isAllselected={isAllselected}
-            setIsAllSelected={setIsAllSelected}
-          />
-        </>
+        <React.Fragment>
+          {invoiceLoader ? (
+            <Skeleton />
+          ) : (
+            <>
+              <InvoiceTable
+                invoiceList={invoiceList?.invoices}
+                pagination={invoiceList?.pagination}
+                selectedInvoices={selectedInvoices}
+                setSelectedInvoices={setSelectedInvoices}
+                isAllselected={isAllselected}
+                setIsAllSelected={setIsAllSelected}
+              />
+            </>
+          )}
+        </React.Fragment>
       ) : (
         <>
           <EmptyTable

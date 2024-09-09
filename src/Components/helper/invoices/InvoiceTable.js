@@ -55,6 +55,7 @@ const tableData = [
 ];
 
 const InvoiceTable = ({
+  invoiceList,
   selectedInvoices,
   setSelectedInvoices,
   isAllselected,
@@ -88,7 +89,7 @@ const InvoiceTable = ({
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, invoiceList)
                       }
                       type="checkbox"
                     />
@@ -138,8 +139,8 @@ const InvoiceTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
-                  let itemStatus = item.status.toLowerCase();
+                {invoiceList?.map((item) => {
+                  let itemStatus = item.status;
 
                   const isChecked = selectedInvoices.some(
                     (client) => client.id === item.id
@@ -156,7 +157,7 @@ const InvoiceTable = ({
                       ? "bg-customBg4 text-purple"
                       : itemStatus === "in review"
                       ? "bg-customBg5 text-customRed2"
-                      : "";
+                      : "bg-customBg4 text-purple";
 
                   return (
                     <tr>
@@ -172,11 +173,11 @@ const InvoiceTable = ({
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.invoiceId}
+                          {item.invvoice_id}
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-normal text-sm">
-                        {item.clientName}
+                        {item.client_name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-semibold text-sm">
                         ${item.total}
@@ -189,10 +190,10 @@ const InvoiceTable = ({
                         </span>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-normal text-sm">
-                        {item.payMethod}
+                        {item.payment_method}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-normal text-sm">
-                        {item.dueDate}
+                        {item.due_date}
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">

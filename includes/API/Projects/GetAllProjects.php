@@ -22,7 +22,7 @@ class GetAllProjects {
 
     public function get_all_projects(\WP_REST_Request $request) {
 
-        $page        = $request->get_params('page');
+        $page        = $request->get_param('page');
 
         $projects    = Project::with('client', 'status', 'priority')->paginate(5, ['*'], 'page', $page);
 

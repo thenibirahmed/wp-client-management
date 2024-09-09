@@ -20,7 +20,7 @@ class Client extends Model
 
     public static function getActiveClients($page)
     {
-        return self::paginate(5, ['*'], 'page', $page);
+        return self::paginate(3, ['*'], 'page', $page);
     }
 
     // Older one.
