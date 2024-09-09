@@ -53,9 +53,9 @@ class CreateProject {
         $data['priority_id']  = isset($data['priority_id']) ? intval($data['priority_id']) : null;
         $data['title']        = sanitize_text_field($data['title'] ?? '');
         $data['budget']       = isset($data['budget']) ? floatval($data['budget']) : null;
-        $data['start_date']   = sanitize_text_field($data['start_date'] ?? '');
-        $data['due_date']     = sanitize_text_field($data['due_date'] ?? '');
-        $data['description']  = sanitize_textarea_field($data['description'] ?? '');
+        $data['start_date']   = isset($data['start_date']) ? sanitize_text_field($data['start_date']) : '';
+        $data['due_date']     = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : '';
+        $data['description']  = isset($data['description']) ? sanitize_textarea_field($data['description']) : '';
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -74,16 +74,16 @@ class CreateProject {
         }
 
         $projectResponse = [
-            'id' => $project->id,
-            'title' => $project->title,
-            'description' => $project->description,
-            'client_id' => $project->client_id,
-            'manager_id' => $project->manager_id,
-            'status_id' => $project->status_id,
-            'priority_id' => $project->priority_id,
-            'budget' => $project->budget,
-            'start_date' => $project->start_date,
-            'due_date' => $project->due_date,
+            'id'           => $project->id,
+            'title'        => $project->title,
+            'description'  => $project->description,
+            'client_id'    => $project->client_id,
+            'manager_id'   => $project->manager_id,
+            'status_id'    => $project->status_id,
+            'priority_id'  => $project->priority_id,
+            'budget'       => $project->budget,
+            'start_date'   => $project->start_date,
+            'due_date'     => $project->due_date,
         ];
 
         return new \WP_REST_Response([

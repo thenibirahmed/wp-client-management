@@ -69,17 +69,25 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/project/create",
+				eicApiSettings.rest_url + "wp-client-management/v1/client/create",
 				{
-					title: "Srabon pro",
-					manager_id: 14,
-					client_id: 13,
-					budget: 20000,
-					status_id: 1,
-					priority_id: 7,
-					start_date: "2022-01-01",
-					due_date: "2022-01-01",
-					description: "Srabon pro description",
+					name: 'new1',
+					email: 'xkZxu@1example.com',
+					phone: '1234567890',
+					// title: "Srabon pro",
+					// manager_id: 14,
+					// client_id: 13,
+					// subject: 'Srabon pro',
+					// body: 'Srabon pro description',
+					// title: "Srabon pro",
+					// url: "https://www.google.com/",
+					// budget: 20000,
+					// status_id: 1,
+					// priority_id: 7,
+					// start_date: "2022-01-01",
+					// due_date: "2022-01-01",
+					// description: "Srabon pro description",
+
 				},
 				{
 					headers: {
