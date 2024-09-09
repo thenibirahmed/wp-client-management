@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from "react";
-
 import { useForm } from "react-hook-form";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
@@ -8,6 +7,7 @@ import TextField from "../TextField";
 import toast from "react-hot-toast";
 import api from "../../../api/api";
 import useHashRouting from "../../../utils/useHashRouting";
+import Loaders from "../../Loaders";
 
 const AddNewFileForm = ({ refetch }) => {
   const currentPath = useHashRouting("");
@@ -117,10 +117,11 @@ const AddNewFileForm = ({ refetch }) => {
             Cancel
           </button>
           <button
+            disabled={submitLoader}
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            Save
+            {submitLoader ? <Loaders /> : "Save"}
           </button>
         </div>
       </form>

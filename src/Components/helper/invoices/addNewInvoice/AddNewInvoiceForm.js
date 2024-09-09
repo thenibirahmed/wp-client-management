@@ -1,47 +1,219 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import dayjs from "dayjs";
+import DatePicker from "react-datepicker";
+import { Calendar02Icon } from "../../../../utils/icons";
 import TextField from "../../TextField";
 import { useStoreContext } from "../../../../store/ContextApiStore";
 import { SelectTextField } from "../../SelectTextField";
+import {
+  useFetchAssignee,
+  useFetchClientDetails,
+  useFetchEmployeeDetails,
+  useFetchProjectClients,
+  useFetchSelectCurrency,
+  useFetchSelectPaymentMethod,
+  useFetchSelectProjects,
+} from "../../../../hooks/useQuery";
+import Skeleton from "../../../Skeleton";
+import Errors from "../../../Errors";
+import toast from "react-hot-toast";
 
 const AddNewInvoiceForm = () => {
   const { setCreateInvoice } = useStoreContext();
-  const people = [
-    { id: 1, name: "Client Name" },
-    { id: 2, name: "Arlene Mccoy" },
-    { id: 3, name: "Devon Webb" },
-  ];
-  const currencyLists = [
-    { id: 1, name: "Select Currency" },
-    { id: 2, name: "USD" },
-    { id: 3, name: "EUR" },
-    { id: 4, name: "JPY" },
-    { id: 5, name: "GBP" },
-  ];
-  const payMethodLists = [
-    { id: 1, name: "Select PayMethod" },
-    { id: 2, name: "Paypal" },
-    { id: 3, name: "Bkash" },
-  ];
 
-  const [selectClientName, setSelectClientName] = useState(people[0]);
-  const [selectCurrency, setSelectCurrency] = useState(currencyLists[0]);
-  const [selectPayMethod, setSelectPayMethod] = useState(payMethodLists[0]);
+  const datePickerInvoiceRef = useRef(null);
+  const datePickerDueRef = useRef(null);
+
+  const [selectClient, setSelectClient] = useState();
+  const [selectEmplyoee, setSelectEmployee] = useState();
+  const [selectedProject, setSelectedProject] = useState();
+  const [selectCurrency, setSelectCurrency] = useState();
+  const [selectPayMethod, setSelectPayMethod] = useState();
+
+  const [invoiceDate, setInvoiceDate] = useState(new Date());
+  const [dueDate, setDueDate] = useState(new Date());
+
+  const {
+    isLoading: isLoadingSelectProject,
+    data: projectsLists,
+    error: selectProjectErr,
+  } = useFetchSelectProjects(onError);
+
+  const {
+    isLoading: isLoadingSelectCurrency,
+    data: currencyLists,
+    error: selecturrencyErr,
+  } = useFetchSelectCurrency(onError);
+
+  const {
+    isLoading: isLoadingPayMethod,
+    data: paymentMethod,
+    error: paymentErr,
+  } = useFetchSelectPaymentMethod(onError);
+
+  const {
+    isLoading: isLoadingProClient,
+    data: clientLists,
+    error: projectClientErr,
+  } = useFetchProjectClients(onError);
+
+  const {
+    isLoading: isLoadProjectManager,
+    data: employeeLists,
+    error: pManagerErr,
+  } = useFetchAssignee(onError);
+
+  const {
+    isLoading: isLoadingCliDetails,
+    data: client,
+    error: pClientErr,
+  } = useFetchClientDetails(selectClient?.id, onError);
+
+  const {
+    isLoading: isLoadingEmpDetails,
+    data: emplyoee,
+    error: pEmplyeeErr,
+  } = useFetchEmployeeDetails(selectEmplyoee?.id, onError);
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched",
+    defaultValues: {
+      cemail: client?.clientDetails?.email,
+      caddress: client?.clientDetails?.address,
+      cphone: "0157",
+    },
   });
 
-  const addNewInvoiceHandler = (data) => {
-    console.log(data);
-    reset();
+  useEffect(() => {
+    if (client?.clientDetails) {
+      setValue("cemail", client?.clientDetails?.email);
+      setValue("caddress", client?.clientDetails?.address);
+      setValue("cphone", "01275757");
+    }
+  }, [client]);
+  useEffect(() => {
+    if (emplyoee?.employeeDetails) {
+      setValue("email", emplyoee?.employeeDetails?.email);
+      setValue("address", emplyoee?.employeeDetails?.address);
+      setValue("phone", "01275757");
+    }
+  }, [emplyoee]);
+
+  const addNewInvoiceHandler = async (data) => {
+    if (
+      !selectClient?.id ||
+      !selectedProject?.id ||
+      !selectCurrency?.id ||
+      !selectPayMethod?.id
+    ) {
+      return setError("This field is required*");
+    }
+    setSubmitLoader(true);
+    const sendData = {
+      project_id: selectedProject?.id, // must be pre-selected from "/select-project"
+      title: data.title,
+      invoice_number: data.invoice,
+      payment_method_id: selectPayMethod?.id, // this will come from the "/select-payment-method" endpoint
+      currency_id: selectCurrency?.id, // this will come from the "/select-currency" endpoint
+      date: dayjs(invoiceDate).format("YYYY-MM-DD"),
+      due_data: dayjs(dueDate).format("YYYY-MM-DD"),
+      billing_address: client?.clientDetails?.address, // this will come from "/client/{id}/details"
+      billing_phone_number: "1452", // "/client/{id}/details"
+      billing_email: client?.clientDetails?.email, // "/client/{id}/details"
+      bill_from_address: emplyoee?.employeeDetails?.address, // this will come from "/employee/{id}/details"
+      bill_from_phone_number: "45424", // "/client/{id}/details"
+      bill_from_email: emplyoee?.employeeDetails?.email, // "/client/{id}/details"
+      note: "test",
+
+      // below data will come after the calculation of Invoice item ,
+      sub_total: 450,
+      total: 120,
+      discount: 10,
+      tax: 10,
+      fee: 10,
+    };
+    console.log(sendData);
+    try {
+      const { data } = await api.post("/project/create", sendData);
+      toast.success(data?.message);
+      await refetch();
+      reset();
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    } finally {
+      setSubmitLoader(false);
+    }
   };
 
+  useEffect(() => {
+    if (projectsLists?.projects?.length > 0) {
+      setSelectedProject(projectsLists?.projects[0]);
+    } else {
+      setSelectedProject({ name: " -No Project- ", id: null });
+    }
+
+    if (currencyLists?.currency?.length > 0) {
+      setSelectCurrency(currencyLists?.currency[0]);
+    } else {
+      setSelectCurrency({ name: " -No Currency- ", id: null });
+    }
+    if (paymentMethod?.method?.length > 0) {
+      setSelectPayMethod(paymentMethod?.method[0]);
+    } else {
+      setSelectPayMethod({ name: " -No Payment Method- ", id: null });
+    }
+
+    if (clientLists?.clients?.length > 0) {
+      setSelectClient(clientLists?.clients[0]);
+    } else {
+      setSelectClient({ name: " -No Client- ", id: null });
+    }
+
+    if (employeeLists?.employee?.length > 0) {
+      setSelectEmployee(employeeLists?.employee[0]);
+    } else {
+      setSelectEmployee({
+        name: " -No Payment Method- ",
+        id: null,
+        employeeLists,
+      });
+    }
+  }, [clientLists, projectsLists, currencyLists, paymentMethod, employeeLists]);
+
+  function onError(err) {
+    toast.error(err?.response?.data?.message || "Internal Server Error");
+    console.log(err);
+  }
+  const isLoading =
+    isLoadingSelectProject ||
+    isLoadingSelectCurrency ||
+    isLoadProjectManager ||
+    isLoadingPayMethod ||
+    isLoadingProClient;
+
+  // isLoadingCliDetails ||
+  // isLoadingEmpDetails;
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
+  if (
+    pClientErr ||
+    pManagerErr ||
+    selectProjectErr ||
+    selecturrencyErr ||
+    paymentErr
+  )
+    return <Errors message="Internal Server Error" />;
   return (
     <form onSubmit={handleSubmit(addNewInvoiceHandler)}>
       <React.Fragment>
@@ -76,7 +248,7 @@ const AddNewInvoiceForm = () => {
       <div className="py-5 relative h-full ">
         <div className="space-y-5 ">
           <div className="flex md:flex-row flex-col gap-4 w-full">
-            <div className="md:w-[30%]">
+            <div className="md:w-[25%]">
               <TextField
                 label="Invoice Number"
                 required
@@ -90,14 +262,23 @@ const AddNewInvoiceForm = () => {
             </div>
             <div className="flex-1">
               <TextField
-                label="Organization"
+                label="Invoice Title"
                 required
-                id="organization"
+                id="title"
                 type="text"
-                message="*Organization is required"
-                placeholder="Organization"
+                message="*Title is required"
+                placeholder="Invoice Title"
                 register={register}
                 errors={errors}
+              />
+            </div>
+            <div className="flex-1">
+              <SelectTextField
+                label="Project Title"
+                select={selectedProject}
+                setSelect={setSelectedProject}
+                lists={projectsLists?.projects}
+                isSubmitting={isSubmitting}
               />
             </div>
           </div>
@@ -106,30 +287,64 @@ const AddNewInvoiceForm = () => {
               label="Currency"
               select={selectCurrency}
               setSelect={setSelectCurrency}
-              lists={currencyLists}
+              lists={currencyLists?.currency}
               isSubmitting={isSubmitting}
-            />{" "}
+            />
             <SelectTextField
               label="Pay Method"
               select={selectPayMethod}
               setSelect={setSelectPayMethod}
-              lists={payMethodLists}
-              isSubmitting={isSubmitting}
-            />{" "}
-            <SelectTextField
-              label="Currency"
-              select={selectPayMethod}
-              setSelect={setSelectPayMethod}
-              lists={payMethodLists}
-              isSubmitting={isSubmitting}
-            />{" "}
-            <SelectTextField
-              label="Currency"
-              select={selectPayMethod}
-              setSelect={setSelectPayMethod}
-              lists={payMethodLists}
+              lists={paymentMethod?.method}
               isSubmitting={isSubmitting}
             />
+            <React.Fragment>
+              <div className="flex flex-col gap-2 w-full   ">
+                <label className="font-medium text-sm  font-metropolis text-textColor">
+                  Due Date
+                </label>
+                <div
+                  className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}
+                >
+                  <DatePicker
+                    ref={datePickerDueRef}
+                    className="font-metropolis text-sm text-textColor w-full outline-none"
+                    selected={dueDate}
+                    onChange={(date) => setDueDate(date)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => datePickerDueRef.current.setFocus()}
+                    className="absolute right-0 top-0 bottom-0 m-auto"
+                  >
+                    <Calendar02Icon />
+                  </button>
+                </div>
+              </div>
+            </React.Fragment>
+            <React.Fragment>
+              <div className="flex flex-col gap-2 w-full   ">
+                <label className="font-medium text-sm  font-metropolis text-textColor">
+                  Invoice Date
+                </label>
+                <div
+                  className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}
+                >
+                  <DatePicker
+                    ref={datePickerInvoiceRef}
+                    className="font-metropolis text-sm text-textColor w-full outline-none"
+                    selected={invoiceDate}
+                    onChange={(date) => setInvoiceDate(date)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => datePickerInvoiceRef.current.setFocus()}
+                    className="absolute right-0 top-0 bottom-0 m-auto"
+                  >
+                    <Calendar02Icon />
+                  </button>
+                </div>
+              </div>
+            </React.Fragment>
           </div>
           <div className="flex md:flex-row flex-col gap-4 w-full">
             <React.Fragment>
@@ -141,9 +356,9 @@ const AddNewInvoiceForm = () => {
                 <div className="space-y-4  pt-4">
                   <SelectTextField
                     label="Name"
-                    select={selectClientName}
-                    setSelect={setSelectClientName}
-                    lists={people}
+                    select={selectEmplyoee}
+                    setSelect={setSelectEmployee}
+                    lists={employeeLists?.employee}
                     isSubmitting={isSubmitting}
                   />
                   <TextField
@@ -199,15 +414,16 @@ const AddNewInvoiceForm = () => {
                 <div className="space-y-4  pt-4">
                   <SelectTextField
                     label="Name"
-                    select={selectClientName}
-                    setSelect={setSelectClientName}
-                    lists={people}
+                    value={client?.clientDetails?.name}
+                    select={selectClient}
+                    setSelect={setSelectClient}
+                    lists={clientLists?.clients}
                     isSubmitting={isSubmitting}
                   />
                   <TextField
-                    label="Client Billing Address"
+                    label="Billing Address"
                     required
-                    id="address"
+                    id="caddress"
                     type="text"
                     message="This field is required*"
                     placeholder="1234 Eco Street, San Francisco CA 94103"
@@ -221,7 +437,7 @@ const AddNewInvoiceForm = () => {
                       <TextField
                         label="Phone Number"
                         required
-                        id="phone"
+                        id="cphone"
                         type="number"
                         message="This field is required*"
                         placeholder="+11 123 456 7899"
@@ -235,7 +451,7 @@ const AddNewInvoiceForm = () => {
                       <TextField
                         label="Email Address"
                         required
-                        id="email"
+                        id="cemail"
                         type="email"
                         message="This field is required*"
                         placeholder="example@example.com"

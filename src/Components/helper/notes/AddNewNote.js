@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import useHashRouting from "../../../utils/useHashRouting";
 import Loaders from "../../Loaders";
 import api from "../../../api/api";
+import { useStoreContext } from "../../../store/ContextApiStore";
 
 const AddNewNote = ({
   noteData,
@@ -39,6 +40,7 @@ const AddNewNote = ({
 export default AddNewNote;
 
 const AddNewNoteTextArea = ({ refetch }) => {
+  const { setCreateNote } = useStoreContext();
   const [submitLoader, setSubmitLoader] = useState(false);
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
@@ -111,6 +113,7 @@ const AddNewNoteTextArea = ({ refetch }) => {
       toast.success(data?.message);
       await refetch();
       setEditorContent("");
+      setCreateNote(false);
     } catch (err) {
       console.log(err);
       toast.error("Create new note failed");
@@ -144,13 +147,24 @@ const AddNewNoteTextArea = ({ refetch }) => {
             <Image02Icon className="text-textColor2" />
           </button>
         </div>
-        <button
-          disabled={submitLoader}
-          type="submit"
-          className="font-metropolis rounded-[5px] bg-customBlue text-white py-[10px] px-[12px] text-xs font-medium"
-        >
-          {submitLoader ? <Loaders /> : "Save Note"}
-        </button>
+        <div className="flex gap-3">
+          {" "}
+          <button
+            onClick={() => setCreateNote(false)}
+            disabled={submitLoader}
+            type="button"
+            className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
+          >
+            Cancel
+          </button>
+          <button
+            disabled={submitLoader}
+            type="submit"
+            className="font-metropolis rounded-[5px] bg-customBlue text-white py-[10px] px-[12px] text-xs font-medium"
+          >
+            {submitLoader ? <Loaders /> : "Save Note"}
+          </button>
+        </div>
       </div>
 
       {/* Hidden file input for attachments */}

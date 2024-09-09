@@ -128,6 +128,30 @@ const PlayGround = () => {
       });
   };
 
+  const emplyee = () => {
+    axios
+      .get(
+        eicApiSettings.rest_url + "wp-client-management/v1/client/12/details",
+
+        {
+          headers: {
+            "X-WP-Nonce": eicApiSettings.nonce,
+            // 'Content-Type' : 'application/json'
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setPost(response.data);
+      })
+      .catch((error) => {
+        console.log(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+
   return (
     <div>
       <h1>PlayGround</h1>
@@ -138,20 +162,9 @@ const PlayGround = () => {
       <button onClick={getSinglePost}>Click me to get single post</button>{" "}
       <br />
       <br />
-      <button
-        style={{
-          padding: "10px",
-          backgroundColor: "blue",
-          color: "white",
-          borderRadius: "5px",
-          cursor: "pointer",
-          border: "none",
-        }}
-        onClick={getTest}
-      >
-        Test me!
-      </button>
-      <br /> <br />
+      <button onClick={getTest}>Test me!</button>
+      <br /> <button onClick={emplyee}>Emplyee</button>
+      <br />
     </div>
   );
 };

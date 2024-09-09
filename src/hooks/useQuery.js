@@ -320,3 +320,103 @@ export const useFetchProjectEmails = (projectId, onError) => {
     }
   );
 };
+
+export const useFetchSelectProjects = (onError) => {
+  return useQuery(
+    "select-projects",
+    async () => {
+      return await api.get("/select-project");
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          projects: data.data.projects,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+export const useFetchSelectCurrency = (onError) => {
+  return useQuery(
+    "select-currency",
+    async () => {
+      return await api.get("/select-currency");
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          currency: data.data.currencies,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+export const useFetchSelectPaymentMethod = (onError) => {
+  return useQuery(
+    "select-payment-method",
+    async () => {
+      return await api.get("/select-payment-method");
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          method: data.data.payment_methods,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchEmployeeDetails = (emplyoeeId, onError) => {
+  return useQuery(
+    ["employee-details", emplyoeeId],
+    async () => {
+      return await api.get(`/employee/${emplyoeeId}/details`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          employeeDetails: data.data.employee_details,
+        };
+
+        return sendData;
+      },
+      enabled: !!emplyoeeId,
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchClientDetails = (clientId, onError) => {
+  return useQuery(
+    ["client-details", clientId],
+    async () => {
+      return await api.get(`/client/${clientId}/details`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          clientDetails: data.data.client_details,
+        };
+
+        return sendData;
+      },
+      enabled: !!clientId,
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
