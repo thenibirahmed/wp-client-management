@@ -68,12 +68,15 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/create",
-				{
-					name: 'new1',
-					email: 'xkZxu@1example.com',
-					phone: '1234567890',
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/task/1",
+				// {
+					// task_id: 1,
+					// reply_to: 9,
+					// comment: "No disting."
+					// name: 'new1',
+					// email: 'xkZxu@1example.com',
+					// phone: '1234567890',
 					// title: "Srabon pro",
 					// manager_id: 14,
 					// client_id: 13,
@@ -88,7 +91,7 @@ const PlayGround = () => {
 					// due_date: "2022-01-01",
 					// description: "Srabon pro description",
 
-				},
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
