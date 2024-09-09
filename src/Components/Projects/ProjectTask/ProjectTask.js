@@ -72,6 +72,7 @@ const ProjectTask = ({ projectId }) => {
               <>
                 <ProjectTaskTable
                   taskData={projectTask?.task}
+                  pagination={projectTask?.pagination}
                   selectedClient={selectedProjectTask}
                   setSelectedClient={setSelectedProjectTask}
                   isAllselected={isAllselected}

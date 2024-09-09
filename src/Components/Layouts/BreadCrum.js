@@ -3,15 +3,21 @@ import useHashRouting from "../../utils/useHashRouting";
 
 function extractContent(str) {
   return str
-    .split(/[\/#]+/)
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+    .split(/[\/#?=]+/) // Split on '/', '#', '?', or '=' characters
+    .filter(Boolean) // Remove empty elements
+    .map((word, index, arr) => {
+      if (index === arr.length - 2) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }
+      return word;
+    });
 }
-
 const BreadCrum = () => {
   const currentPath = useHashRouting("");
 
+  console.log("breadcrum main ", currentPath);
   const breadcrum = extractContent(currentPath);
+  console.log("breadcrum ", breadcrum);
   return (
     <nav aria-label="Breadcrumb" className="flex font-metropolis">
       <ol role="list" className="flex items-center space-x-2">

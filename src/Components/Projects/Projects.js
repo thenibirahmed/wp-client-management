@@ -43,9 +43,6 @@ const Projects = () => {
     refetch,
   } = useFetchAllProjects(paginationUrl, onError);
 
-  //console.log("projects = ", projects);
-  console.log("paginationUrl = ", paginationUrl);
-
   useEffect(() => {
     const refertchProject = async () => {
       await refetch();

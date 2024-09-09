@@ -265,7 +265,7 @@ const ProjectTable = ({
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination pagination={pagination} />
           </div>
         </div>
       </div>

@@ -247,8 +247,10 @@ export const useFetchProjectTask = (projectId, onError) => {
     },
     {
       select: (data) => {
+        console.log("task Data", data.data);
         const sendData = {
           task: data.data.tasks,
+          pagination: data.data.pagination,
         };
 
         return sendData;
@@ -292,6 +294,7 @@ export const useFetchProjectNotes = (projectId, onError) => {
           notes: data.data.data,
           pagination: data.data.pagination,
         };
+        console.log("projectNote", sendData);
 
         return sendData;
       },
@@ -309,6 +312,7 @@ export const useFetchProjectFiles = (projectId, onError) => {
     },
     {
       select: (data) => {
+        console.log("profect files", data.data);
         const sendData = {
           files: data.data.files,
           pagination: data.data.pagination,

@@ -14,6 +14,7 @@ import useHashRouting from "../../../utils/useHashRouting";
 
 const ProjectTaskTable = ({
   taskData,
+  pagination,
   selectedClient,
   setSelectedClient,
   isAllselected,
@@ -216,7 +217,7 @@ const ProjectTaskTable = ({
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination pagination={pagination} />
           </div>
         </div>
       </div>
