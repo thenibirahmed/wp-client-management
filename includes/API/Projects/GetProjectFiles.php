@@ -59,7 +59,9 @@ class GetProjectFiles {
             ]);
         }
 
-        $files = File::getProjeEctFiles($project->id, $page);
+        $files = File::getProjectFiles($project->id, $page);
+
+        return new \WP_REST_Response($files);
 
         if(!$files) {
             return new \WP_REST_Response([
