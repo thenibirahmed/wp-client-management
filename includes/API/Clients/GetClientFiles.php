@@ -33,7 +33,7 @@ class GetClientFiles {
         global $validator;
 
         $client_id  = $request->get_param('id');
-        $page       = $request->get_param('page');
+        $page       = $request->get_param('file');
 
         if(!isset($client_id)) {
             return new \WP_REST_Response([
@@ -60,7 +60,7 @@ class GetClientFiles {
         }
 
         $files = File::getClientFiles($client_id, $page);
-        
+
         if(!$files) {
             return new \WP_REST_Response([
                 'error' => 'No File found',
@@ -68,11 +68,11 @@ class GetClientFiles {
         }
 
         $wp_user_ids = $files->pluck('eic_crm_user.wp_user_id')->toArray();
-        
+
         $wpUsersDb = get_users([
             'include' => $wp_user_ids,
         ]);
-        
+
         $wpUsers = [];
         foreach ($wpUsersDb as $user) {
             $wpUsers[$user->ID] = [

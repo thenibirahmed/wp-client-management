@@ -20,7 +20,7 @@ class File extends Model
 
     public static function getClientFiles($id, $page)
     {
-        return self::where('client_id', $id)->paginate(5, ['*'], 'file', $page);
+        return self::where('client_id', $id)->paginate(3, ['*'], 'file', $page);
     }
 
     public static function getProjectFiles($id, $page)
