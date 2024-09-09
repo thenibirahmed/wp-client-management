@@ -1,7 +1,7 @@
 <?php
+
 namespace WpClientManagement\API\Projects;
 
-use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
 
