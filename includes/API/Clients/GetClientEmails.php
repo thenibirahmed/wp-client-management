@@ -33,7 +33,7 @@ class GetClientEmails {
         global $validator;
 
         $client_id  = $request->get_param('id');
-        $page       = $request->get_param('page');
+        $page       = $request->get_param('email');
 
         if(!isset($client_id)) {
             return new \WP_REST_Response([
@@ -68,11 +68,11 @@ class GetClientEmails {
         }
 
         $wp_user_ids = $emails->pluck('eic_crm_user.wp_user_id')->toArray();
-        
+
         $wpUsersDb = get_users([
             'include' => $wp_user_ids,
         ]);
-        
+
         $wpUsers = [];
         foreach ($wpUsersDb as $user) {
             $wpUsers[$user->ID] = [
@@ -94,7 +94,7 @@ class GetClientEmails {
         }
 
         $response = [
-            'data'       => $data,
+            'emails'     => $data,
             'pagination' => [
                 'total'         => $emails->total(),
                 'per_page'      => $emails->perPage(),
