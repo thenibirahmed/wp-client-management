@@ -20,6 +20,7 @@ const ProjectInvoice = ({ projectId }) => {
     error: inoiceErr,
     refetch,
   } = useFetchProjectInvoice(projectId, onError);
+  console.log("project invoice", invoiceList);
 
   function onError(err) {
     console.log(err);

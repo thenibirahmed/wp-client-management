@@ -47,8 +47,8 @@ class CreateEmail{
         $data['eic_crm_user_id'] = isset($eicCrmUserId) ? intval($eicCrmUserId) : null;
         $data['client_id']       = isset($data['client_id']) ? intval($data['client_id']) : null;
         $data['project_id']      = isset($data['project_id']) ? intval($data['project_id']) : null;
-        $data['subject']         = sanitize_text_field($data['subject']);
-        $data['body']            = sanitize_text_field($data['body']);
+        $data['subject']         = isset($data['subject']) ? sanitize_text_field($data['subject']) : '';
+        $data['body']            = isset($data['body']) ? sanitize_textarea_field($data['body']) : '';
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

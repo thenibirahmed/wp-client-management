@@ -13,7 +13,7 @@ class AddTaskComment {
     protected array $rules = [
         'eic_crm_user_id' => 'required|exists:eic_eic_crm_users,id',
         'task_id'         => 'required|exists:eic_tasks,id',
-        'reply_to'        => 'nullable|exists:eic_tasks,id',
+        'reply_to'        => 'nullable|exists:eic_task_comments,id',
         'comment'         => 'required|string',
     ];
 

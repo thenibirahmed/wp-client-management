@@ -53,16 +53,16 @@ class CreateClient {
         global $validator;
 
         $data = $request->get_params();
-        
+
         $data['name']         = sanitize_user($data['name'], true);
         $data['email']        = sanitize_email($data['email']);
-        $data['phone']        = sanitize_text_field($data['phone']);
-        $data['address']      = sanitize_text_field($data['address']);
-        $data['city']         = sanitize_text_field($data['city']);
-        $data['state']        = sanitize_text_field($data['state']);
-        $data['zip']          = sanitize_text_field($data['zip']);
-        $data['country']      = sanitize_text_field($data['country']);
-        $data['organization'] = sanitize_text_field($data['organization']);
+        $data['phone']        = isset($data['phone']) ? sanitize_text_field($data['phone']) : '';
+        $data['address']      = isset($data['address']) ? sanitize_text_field($data['address']) : '';
+        $data['city']         = isset($data['city']) ? sanitize_text_field($data['city']) : '';
+        $data['state']        = isset($data['state']) ? sanitize_text_field($data['state']) : '';
+        $data['zip']          = isset($data['zip']) ? sanitize_text_field($data['zip']) : '';
+        $data['country']      = isset($data['country']) ? sanitize_text_field($data['country']) : '';
+        $data['organization'] = isset($data['organization']) ? sanitize_text_field($data['organization']) : '';
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -78,7 +78,7 @@ class CreateClient {
             'user_pass'     => $data['name'],
         );
 
-    
+
         $wp_user_id = wp_insert_user($wp_user_data);
 
         if (is_wp_error($wp_user_id)) {
