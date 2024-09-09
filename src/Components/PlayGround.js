@@ -68,27 +68,19 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/1/emails?email=2",
-				// {
-					// project_id: 1,
-					// date: "2022-09-18",
-					// billing_address: "my next address",
-					// billing_phone_number: 525225,
-					// billing_email: 'billing@eic.com',
-					// invoice_number: 454545,
-					// bill_from_phone_number: 525225,
-					// bill_from_email: 'billing@eic.com',
-					// title: "my next title",
-					// assigned_to: 1,
-					// description: "my next description",
-					// priority_id: 11,
-					// sub_total: 1,
-					// total: 1,
-					// unit_price: 1,
-					// name: 'tst',
-					// invoice_id: 1,
-				// },
+		axios.post(
+				eicApiSettings.rest_url + "wp-client-management/v1/project/create",
+				{
+					title: "Srabon pro",
+					manager_id: 14,
+					client_id: 13,
+					budget: 20000,
+					status_id: 1,
+					priority_id: 7,
+					start_date: "2022-01-01",
+					due_date: "2022-01-01",
+					description: "Srabon pro description",
+				},
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,

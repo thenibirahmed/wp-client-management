@@ -16,7 +16,6 @@ class CreateProject {
         'priority_id'      => 'nullable|exists:eic_priorities,id',
         'title'            => 'required|string',
         'budget'           => 'nullable|numeric',
-        'currency'         => 'nullable|string',
         'start_date'       => 'nullable|date',
         'due_date'         => 'nullable|date',
         'description'      => 'nullable|string',
@@ -30,7 +29,6 @@ class CreateProject {
         'title.required'      => 'The title is required.',
         'title.string'        => 'The title must be a string.',
         'budget.numeric'      => 'The budget must be a numeric value.',
-        'currency.string'     => 'The currency must be a string.',
         'start_date.date'     => 'The start date must be in the format.',
         'due_date.date'       => 'The due date must be in the format.',
         'description.string'  => 'The description must be a string.',
@@ -55,7 +53,6 @@ class CreateProject {
         $data['priority_id']  = isset($data['priority_id']) ? intval($data['priority_id']) : null;
         $data['title']        = sanitize_text_field($data['title'] ?? '');
         $data['budget']       = isset($data['budget']) ? floatval($data['budget']) : null;
-        $data['currency']     = sanitize_text_field($data['currency'] ?? '');
         $data['start_date']   = sanitize_text_field($data['start_date'] ?? '');
         $data['due_date']     = sanitize_text_field($data['due_date'] ?? '');
         $data['description']  = sanitize_textarea_field($data['description'] ?? '');
@@ -85,7 +82,6 @@ class CreateProject {
             'status_id' => $project->status_id,
             'priority_id' => $project->priority_id,
             'budget' => $project->budget,
-            'currency' => $project->currency,
             'start_date' => $project->start_date,
             'due_date' => $project->due_date,
         ];
