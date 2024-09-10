@@ -51,7 +51,7 @@ class Project extends Model
     {
         return Project::with('status', 'priority')->whereHas('eicCrmUsers', function ($query) use ($id) {
             $query->where('eic_crm_user_id', $id);
-        })->paginate(1, ['*'], 'project', $page);
+        })->paginate(3, ['*'], 'project', $page);
     }
 
     public static function getProjectData($id)

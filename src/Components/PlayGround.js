@@ -69,7 +69,7 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/team-member/1/projects ",
+				eicApiSettings.rest_url + "wp-client-management/v1/team-member/1/tasks",
 				// {
 					// task_id: 1,
 					// reply_to: 9,

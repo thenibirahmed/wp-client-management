@@ -73,7 +73,6 @@ class GetSingleTask {
             $wp_user_id   = $eic_crm_user->wp_user_id;
             $wp_user      = $wpUsers[$wp_user_id] ?? null;
 
-
             $replies = $comment->where('reply_to', $comment->id)->get();
 
             $replies = $replies->map(function ($reply) use ($wpUsers) {
