@@ -89,6 +89,10 @@ const Projects = () => {
     return <Errors message="Internal Server Error" />;
   }
 
+  if (isLoading) {
+    return <Skeleton />;
+  }
+
   return (
     <React.Fragment>
       {openTaskDetail ? (
@@ -106,33 +110,27 @@ const Projects = () => {
               onCheckAction={onCheckAction}
             />
             <React.Fragment>
-              {isLoading ? (
-                <Skeleton />
+              {projects.projects.length > 0 ? (
+                <>
+                  <ProjectTable
+                    projectData={projects.projects}
+                    pagination={projects.pagination}
+                    selectedProject={selectedProject}
+                    setSelectedProject={setSelectedProject}
+                    isAllselected={isAllselected}
+                    setIsAllSelected={setIsAllSelected}
+                  />
+                </>
               ) : (
                 <>
-                  {projects.projects.length > 0 ? (
-                    <>
-                      <ProjectTable
-                        projectData={projects.projects}
-                        pagination={projects.pagination}
-                        selectedProject={selectedProject}
-                        setSelectedProject={setSelectedProject}
-                        isAllselected={isAllselected}
-                        setIsAllSelected={setIsAllSelected}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <EmptyTable
-                        handler={() => setOpenProjectModal(true)}
-                        Icon={UserCircle02Icon}
-                        setOpen={setOpenProjectModal}
-                        title="  No Project Created Yer"
-                        subtitle="Start building your Project list"
-                        btnText=" Add Project"
-                      />
-                    </>
-                  )}
+                  <EmptyTable
+                    handler={() => setOpenProjectModal(true)}
+                    Icon={UserCircle02Icon}
+                    setOpen={setOpenProjectModal}
+                    title="  No Project Created Yer"
+                    subtitle="Start building your Project list"
+                    btnText=" Add Project"
+                  />
                 </>
               )}
             </React.Fragment>

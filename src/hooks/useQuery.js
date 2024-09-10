@@ -252,11 +252,11 @@ export const useFetchProjectTask = (projectId, pageinationUrl, onError) => {
   );
 };
 
-export const useFetchProjectInvoice = (projectId, onError) => {
+export const useFetchProjectInvoice = (projectId, paginationUrl, onError) => {
   return useQuery(
     ["project-invoice", projectId],
     async () => {
-      return await api.get(`/project/${projectId}/invoices`);
+      return await api.get(`/project/${projectId}/invoices/?${paginationUrl}`);
     },
     {
       select: (data) => {

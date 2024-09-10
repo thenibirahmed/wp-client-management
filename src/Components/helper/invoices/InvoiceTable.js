@@ -56,6 +56,8 @@ const tableData = [
 
 const InvoiceTable = ({
   invoiceList,
+  projectId,
+  pagination,
   selectedInvoices,
   setSelectedInvoices,
   isAllselected,
@@ -224,7 +226,12 @@ const InvoiceTable = ({
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug="projects"
+              query="/?invoice"
+              projectId={projectId}
+            />
           </div>
         </div>
       </div>

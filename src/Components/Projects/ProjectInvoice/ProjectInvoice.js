@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
 import InvoiceTable from "../../helper/invoices/InvoiceTable";
@@ -7,20 +7,34 @@ import { Invoice01Icon } from "../../../utils/icons";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import { useFetchProjectInvoice } from "../../../hooks/useQuery";
 import Skeleton from "../../Skeleton";
+import useHashRouting from "../../../utils/useHashRouting";
 
 const ProjectInvoice = ({ projectId }) => {
   const { setCreateInvoice } = useStoreContext();
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
-  const dataList = [1];
+
+  const currentPath = useHashRouting("");
+  const getPaginationUrl = currentPath?.split("?")[1];
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "invoice=1";
 
   const {
     isLoading: invoiceLoader,
     data: invoiceList,
     error: inoiceErr,
     refetch,
-  } = useFetchProjectInvoice(projectId, onError);
+  } = useFetchProjectInvoice(projectId, paginationUrl, onError);
   console.log("project invoice", invoiceList);
+
+  useEffect(() => {
+    const refetchHandler = async () => {
+      await refetch();
+    };
+
+    if (paginationUrl) {
+      refetchHandler();
+    }
+  }, [paginationUrl]);
 
   function onError(err) {
     console.log(err);
@@ -37,6 +51,17 @@ const ProjectInvoice = ({ projectId }) => {
     alert(ids[0].id);
   };
 
+  if (inoiceErr) {
+    return (
+      <Errors
+        message={
+          inoiceErr?.response?.data?.errors ||
+          `Failed To Fetch Project inoice for projectId ${projectId}`
+        }
+      />
+    );
+  }
+
   return (
     <React.Fragment>
       <ProjectHeader
@@ -48,7 +73,7 @@ const ProjectInvoice = ({ projectId }) => {
         onCheckAction={onCheckAction}
       />
 
-      {dataList.length > 0 ? (
+      {invoiceList?.invoices.length > 0 ? (
         <React.Fragment>
           {invoiceLoader ? (
             <Skeleton />
@@ -57,6 +82,7 @@ const ProjectInvoice = ({ projectId }) => {
               <InvoiceTable
                 invoiceList={invoiceList?.invoices}
                 pagination={invoiceList?.pagination}
+                projectId={projectId}
                 selectedInvoices={selectedInvoices}
                 setSelectedInvoices={setSelectedInvoices}
                 isAllselected={isAllselected}

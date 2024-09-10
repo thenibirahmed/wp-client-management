@@ -130,7 +130,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
       payment_method_id: selectPayMethod?.id,
       currency_id: selectCurrency?.id,
       date: dayjs(invoiceDate).format("YYYY-MM-DD"),
-      due_data: dayjs(dueDate).format("YYYY-MM-DD"),
+      due_date: dayjs(dueDate).format("YYYY-MM-DD"),
       billing_address: client?.clientDetails?.address,
       billing_phone_number: "1452",
       billing_email: client?.clientDetails?.email,
