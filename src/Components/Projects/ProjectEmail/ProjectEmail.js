@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useStoreContext } from "../../../store/ContextApiStore";
 
 import { Mail02Icon } from "../../../utils/icons";
@@ -9,18 +9,31 @@ import { useFetchProjectEmails } from "../../../hooks/useQuery";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 import EmptyTable from "../../helper/EmptyTable";
+import useHashRouting from "../../../utils/useHashRouting";
 
 const ProjectEmail = ({ projectId }) => {
   const { createEmail, setCreateEmail } = useStoreContext();
 
-  const dataList = [1];
+  const currentPath = useHashRouting("");
+  const getPaginationUrl = currentPath?.split("?")[1];
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "file=1";
 
   const {
     isLoading,
     data: projectEmail,
     error,
     refetch,
-  } = useFetchProjectEmails(projectId, onError);
+  } = useFetchProjectEmails(projectId, paginationUrl, onError);
+
+  useEffect(() => {
+    const refetchHandler = async () => {
+      await refetch();
+    };
+
+    if (paginationUrl) {
+      refetchHandler();
+    }
+  }, [paginationUrl]);
 
   function onError(err) {
     console.log(err);
@@ -70,6 +83,7 @@ const ProjectEmail = ({ projectId }) => {
                   <EmailTable
                     emailsData={projectEmail?.emails}
                     pagination={projectEmail?.pagination}
+                    projectId={projectId}
                   />
                 </>
               ) : (

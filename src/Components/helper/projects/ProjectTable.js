@@ -265,7 +265,11 @@ const ProjectTable = ({
                 })}
               </tbody>
             </table>
-            <Pagination pagination={pagination} />
+            <Pagination
+              pagination={pagination}
+              slug="projects"
+              query="/?page"
+            />
           </div>
         </div>
       </div>

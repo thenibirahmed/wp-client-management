@@ -61,8 +61,6 @@ class GetProjectFiles {
 
         $files = File::getProjectFiles($project->id, $page);
 
-        return new \WP_REST_Response($files);
-
         if(!$files) {
             return new \WP_REST_Response([
                 'error' => 'No File found',

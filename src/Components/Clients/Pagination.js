@@ -5,10 +5,23 @@ const defaultValue = {
   last_page: null,
   prev_page_url: null,
   next_page_url: null,
+  slug: "projects",
+  query: "/?page",
+  projectId: null,
 };
 
-const Pagination = ({ pagination = defaultValue }) => {
+const Pagination = ({ pagination = defaultValue, slug, query, projectId }) => {
   const { current_page, last_page, prev_page_url, next_page_url } = pagination;
+  const nextPageNumber = next_page_url?.split("=")[1];
+  const prevPgeNumber = prev_page_url?.split("=")[1];
+
+  const prevPageUrl = projectId
+    ? `#/${slug}/#/${projectId}${query}=${prevPgeNumber}`
+    : `#/${slug}${query}=${prevPgeNumber}`;
+
+  const nextPageUrl = projectId
+    ? `#/${slug}/#/${projectId}${query}=${nextPageNumber}`
+    : `#/${slug}${query}=${nextPageNumber}`;
 
   const renderPageNumbers = () => {
     const pages = [];
@@ -44,7 +57,11 @@ const Pagination = ({ pagination = defaultValue }) => {
       return (
         <a
           key={index}
-          href={`#/projects/?page=${page}`}
+          href={
+            projectId
+              ? `#/${slug}/#/${projectId}${query}=${page}`
+              : `#/${slug}${query}=${page}`
+          }
           className={`relative inline-flex items-center px-4 py-2 text-sm font-medium font-metropolis ${
             page === current_page
               ? "bg-customBg6 text-customBlue ring-borderColor"
@@ -82,7 +99,7 @@ const Pagination = ({ pagination = defaultValue }) => {
             className="isolate inline-flex -space-x-px rounded-md shadow-sm"
           >
             <a
-              href={prev_page_url ? `#/projects${prev_page_url}` : null}
+              href={prev_page_url ? prevPageUrl : null}
               className={`relative inline-flex items-center rounded-l-md px-2 py-2 ring-1 ring-inset focus:z-20 focus:outline-offset-0 ${
                 prev_page_url
                   ? "text-gray-400 ring-gray-300 hover:bg-gray-50"
@@ -104,7 +121,7 @@ const Pagination = ({ pagination = defaultValue }) => {
             {renderPageNumbers()}
 
             <a
-              href={next_page_url ? `#/projects${next_page_url}` : null}
+              href={next_page_url ? nextPageUrl : null}
               className={`relative inline-flex items-center rounded-r-md px-2 py-2 ring-1 ring-inset focus:z-20 focus:outline-offset-0 ${
                 next_page_url
                   ? "text-gray-400 ring-gray-300 hover:bg-gray-50"

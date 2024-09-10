@@ -13,6 +13,7 @@ import Pagination from "../../Clients/Pagination";
 const FileTable = ({
   fileData,
   pagination,
+  projectId,
   selectedFile,
   setSelectedFile,
   isAllselected,
@@ -149,7 +150,12 @@ const FileTable = ({
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug="projects"
+              query="/?file"
+              projectId={projectId}
+            />
           </div>
         </div>
       </div>

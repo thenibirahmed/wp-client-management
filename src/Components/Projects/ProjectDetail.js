@@ -13,16 +13,23 @@ import Skeleton from "../Skeleton";
 import toast from "react-hot-toast";
 import Errors from "../Errors";
 
+const extractProjectId = (url) => {
+  const match = url.match(/projects\/#\/(\d+)/);
+  return match ? match[1] : null;
+};
+
 const ProjectDetail = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
   const { createInvoice } = useStoreContext();
 
+  const projectId = extractProjectId(currentPath);
+
   const {
     isLoading,
     data: singleProjectOverView,
     error,
-  } = useFetchSingleProjectOverView(pathArray[1], onError);
+  } = useFetchSingleProjectOverView(projectId, onError);
 
   function onError(err) {
     console.log(err);
@@ -35,7 +42,7 @@ const ProjectDetail = () => {
       <Errors
         message={
           error?.response?.data?.errors?.id[0] ||
-          `Failed To Fetch Project Overview Data for clientId ${pathArray[1]}`
+          `Failed To Fetch Project Overview Data for clientId ${projectId}`
         }
       />
     );
@@ -53,7 +60,7 @@ const ProjectDetail = () => {
           <div className="space-y-6">
             <Tab task={true} />
             <React.Fragment>
-              <ProjectDetailsLayout projectId={pathArray[1]} />
+              <ProjectDetailsLayout projectId={projectId} />
             </React.Fragment>
           </div>
         </React.Fragment>

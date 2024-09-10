@@ -27,6 +27,7 @@ const Sidebar = () => {
   const [navigation, setNavigation] = useState(navigationItems);
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
+  const pathArray2 = currentPath?.split("/")[0];
 
   const onNavigationItemHandler = (currentItem) => {
     setNavigation(
@@ -81,7 +82,8 @@ const Sidebar = () => {
 
         return {
           ...item,
-          current: pathArray.includes(item.link),
+          current:
+            pathArray.includes(item.link) || pathArray2.includes(item.link),
         };
       })
     );

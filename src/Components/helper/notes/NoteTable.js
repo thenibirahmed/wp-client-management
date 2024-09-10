@@ -8,6 +8,8 @@ import useHashRouting from "../../../utils/useHashRouting";
 
 const NoteTable = ({
   noteData,
+  projectId,
+  pagination,
   selectedNote,
   setSelectedNote,
   isAllselected,
@@ -137,7 +139,12 @@ const NoteTable = ({
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug="projects"
+              query="/?note"
+              projectId={projectId}
+            />
           </div>
         </div>
       </div>

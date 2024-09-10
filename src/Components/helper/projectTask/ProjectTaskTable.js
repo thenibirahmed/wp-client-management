@@ -13,6 +13,7 @@ import useCheckedHandler from "../../../utils/useCheckedItem";
 import useHashRouting from "../../../utils/useHashRouting";
 
 const ProjectTaskTable = ({
+  projectId,
   taskData,
   pagination,
   selectedClient,
@@ -217,7 +218,12 @@ const ProjectTaskTable = ({
                 })}
               </tbody>
             </table>
-            <Pagination pagination={pagination} />
+            <Pagination
+              pagination={pagination}
+              slug="projects"
+              query="/?task"
+              projectId={projectId}
+            />
           </div>
         </div>
       </div>

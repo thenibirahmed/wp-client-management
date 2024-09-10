@@ -56,7 +56,7 @@ const tableData = [
   },
 ];
 
-const EmailTable = ({ emailsData, pagination }) => {
+const EmailTable = ({ emailsData, pagination, projectId }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
@@ -208,7 +208,12 @@ const EmailTable = ({ emailsData, pagination }) => {
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug="projects"
+              query="/?email"
+              projectId={projectId}
+            />
           </div>
         </div>
         <Modal

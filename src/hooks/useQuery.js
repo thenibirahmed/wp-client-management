@@ -14,7 +14,6 @@ export const useFetchClientOverView = (onError) => {
           pagination: data.data.pagination,
           topBar: data.data.topBar,
         };
-        console.log("clients = ", sendData);
 
         return sendData;
       },
@@ -106,8 +105,6 @@ export const useFetchPriorities = (type, onError) => {
 
     {
       select: (data) => {
-        //console.log("allprorities", data.data);
-
         const priorities = data?.data?.priorities?.map((item) => {
           return {
             id: item.id,
@@ -134,8 +131,6 @@ export const useFetchStatus = (type, onError) => {
 
     {
       select: (data) => {
-        //console.log("allprorities", data.data);
-
         const statuses = data?.data?.statuses?.map((item) => {
           return {
             id: item.id,
@@ -158,8 +153,7 @@ export const useFetchAllProjects = (pageinationUrl, onError) => {
   return useQuery(
     "projects",
     async () => {
-      const finalQuery = pageinationUrl ? pageinationUrl : "page=1";
-      return await api.get(`/projects/?${finalQuery}`);
+      return await api.get(`/projects/?${pageinationUrl}`);
     },
     {
       select: (data) => {
@@ -167,8 +161,6 @@ export const useFetchAllProjects = (pageinationUrl, onError) => {
           projects: data.data.projects,
           pagination: data.data.pagination,
         };
-
-        console.log("projects", sendData);
 
         return sendData;
       },
@@ -239,15 +231,14 @@ export const useFetchAssignee = (onError) => {
   );
 };
 
-export const useFetchProjectTask = (projectId, onError) => {
+export const useFetchProjectTask = (projectId, pageinationUrl, onError) => {
   return useQuery(
     ["project-tasks", projectId],
     async () => {
-      return await api.get(`/project/${projectId}/tasks`);
+      return await api.get(`/project/${projectId}/tasks/?${pageinationUrl}`);
     },
     {
       select: (data) => {
-        console.log("task Data", data.data);
         const sendData = {
           task: data.data.tasks,
           pagination: data.data.pagination,
@@ -282,11 +273,11 @@ export const useFetchProjectInvoice = (projectId, onError) => {
   );
 };
 
-export const useFetchProjectNotes = (projectId, onError) => {
+export const useFetchProjectNotes = (projectId, pageinationUrl, onError) => {
   return useQuery(
     ["project-notes", projectId],
     async () => {
-      return await api.get(`/project/${projectId}/notes`);
+      return await api.get(`/project/${projectId}/notes/?${pageinationUrl}`);
     },
     {
       select: (data) => {
@@ -294,7 +285,6 @@ export const useFetchProjectNotes = (projectId, onError) => {
           notes: data.data.data,
           pagination: data.data.pagination,
         };
-        console.log("projectNote", sendData);
 
         return sendData;
       },
@@ -304,15 +294,14 @@ export const useFetchProjectNotes = (projectId, onError) => {
   );
 };
 
-export const useFetchProjectFiles = (projectId, onError) => {
+export const useFetchProjectFiles = (projectId, pageinationUrl, onError) => {
   return useQuery(
     ["project-files", projectId],
     async () => {
-      return await api.get(`/project/${projectId}/files`);
+      return await api.get(`/project/${projectId}/files/?${pageinationUrl}`);
     },
     {
       select: (data) => {
-        console.log("profect files", data.data);
         const sendData = {
           files: data.data.files,
           pagination: data.data.pagination,
@@ -326,11 +315,11 @@ export const useFetchProjectFiles = (projectId, onError) => {
   );
 };
 
-export const useFetchProjectEmails = (projectId, onError) => {
+export const useFetchProjectEmails = (projectId, pageinationUrl, onError) => {
   return useQuery(
     ["project-email", projectId],
     async () => {
-      return await api.get(`/project/${projectId}/emails`);
+      return await api.get(`/project/${projectId}/emails/?${pageinationUrl}`);
     },
     {
       select: (data) => {

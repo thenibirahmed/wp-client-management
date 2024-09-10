@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import EmptyTable from "../../helper/EmptyTable";
 import { useStoreContext } from "../../../store/ContextApiStore";
@@ -10,6 +10,7 @@ import Errors from "../../Errors";
 import toast from "react-hot-toast";
 import Skeleton from "../../Skeleton";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
+import useHashRouting from "../../../utils/useHashRouting";
 
 const ProjectNote = ({ projectId = { projectId } }) => {
   const { createNote, setCreateNote } = useStoreContext();
@@ -17,12 +18,26 @@ const ProjectNote = ({ projectId = { projectId } }) => {
   const [selectedNote, setSelectedNote] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
+  const currentPath = useHashRouting("");
+  const getPaginationUrl = currentPath?.split("?")[1];
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "note=1";
+
   const {
     isLoading,
     data: projectNotes,
     error,
     refetch,
-  } = useFetchProjectNotes(projectId, onError);
+  } = useFetchProjectNotes(projectId, paginationUrl, onError);
+
+  useEffect(() => {
+    const refetchHandler = async () => {
+      await refetch();
+    };
+
+    if (paginationUrl) {
+      refetchHandler();
+    }
+  }, [paginationUrl]);
 
   function onError(err) {
     console.log(err);
@@ -86,6 +101,8 @@ const ProjectNote = ({ projectId = { projectId } }) => {
                 <>
                   <NoteTable
                     noteData={projectNotes?.notes}
+                    projectId={projectId}
+                    pagination={projectNotes?.pagination}
                     selectedNote={selectedNote}
                     setSelectedNote={setSelectedNote}
                     isAllselected={isAllselected}

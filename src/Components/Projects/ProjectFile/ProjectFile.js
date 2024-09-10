@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FileAddIcon } from "../../../utils/icons";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
@@ -11,6 +11,7 @@ import AddNewFileForm from "../../helper/forms/AddNewFileForm";
 import { useFetchProjectFiles } from "../../../hooks/useQuery";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
+import useHashRouting from "../../../utils/useHashRouting";
 
 const ProjectFile = ({ projectId }) => {
   const { openFileModal, setOpenFileModal } = useStoreContext();
@@ -18,12 +19,26 @@ const ProjectFile = ({ projectId }) => {
   const [selectedFile, setSelectedFile] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
+  const currentPath = useHashRouting("");
+  const getPaginationUrl = currentPath?.split("?")[1];
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "file=1";
+
   const {
     isLoading,
     data: projectFiles,
     error,
     refetch,
-  } = useFetchProjectFiles(projectId, onError);
+  } = useFetchProjectFiles(projectId, paginationUrl, onError);
+
+  useEffect(() => {
+    const refetchHandler = async () => {
+      await refetch();
+    };
+
+    if (paginationUrl) {
+      refetchHandler();
+    }
+  }, [paginationUrl]);
 
   const handler = () => {
     setOpenFileModal(true);
@@ -59,6 +74,7 @@ const ProjectFile = ({ projectId }) => {
               <>
                 <FileTable
                   fileData={projectFiles?.files}
+                  projectId={projectId}
                   pagination={projectFiles?.pagination}
                   selectedFile={selectedFile}
                   setSelectedFile={setSelectedFile}

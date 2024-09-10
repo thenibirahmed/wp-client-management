@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import EmptyTable from "../../helper/EmptyTable";
 import { Task01Icon } from "../../../utils/icons";
@@ -11,18 +11,32 @@ import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 import toast from "react-hot-toast";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
+import useHashRouting from "../../../utils/useHashRouting";
 
 const ProjectTask = ({ projectId }) => {
   const { openTask, setOpenTask } = useStoreContext();
   const [selectedProjectTask, setSelectedProjectTask] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
+  const currentPath = useHashRouting("");
+  const getPaginationUrl = currentPath?.split("?")[1];
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "task=1";
 
   const {
     isLoading,
     data: projectTask,
     error,
     refetch,
-  } = useFetchProjectTask(projectId, onError);
+  } = useFetchProjectTask(projectId, paginationUrl, onError);
+
+  useEffect(() => {
+    const refetchHandler = async () => {
+      await refetch();
+    };
+
+    if (paginationUrl) {
+      refetchHandler();
+    }
+  }, [paginationUrl]);
 
   function onError(err) {
     console.log(err);
@@ -72,6 +86,7 @@ const ProjectTask = ({ projectId }) => {
               <>
                 <ProjectTaskTable
                   taskData={projectTask?.task}
+                  projectId={projectId}
                   pagination={projectTask?.pagination}
                   selectedClient={selectedProjectTask}
                   setSelectedClient={setSelectedProjectTask}
