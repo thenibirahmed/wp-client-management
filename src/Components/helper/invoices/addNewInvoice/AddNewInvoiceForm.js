@@ -2,10 +2,17 @@ import React, { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
+
 import { Calendar02Icon } from "../../../../utils/icons";
 import TextField from "../../TextField";
 import { useStoreContext } from "../../../../store/ContextApiStore";
 import { SelectTextField } from "../../SelectTextField";
+import Skeleton from "../../../Skeleton";
+import Errors from "../../../Errors";
+import toast from "react-hot-toast";
+import useSubtotal from "../../../../hooks/useSubtotal";
+import Loaders from "../../../Loaders";
+import api from "../../../../api/api";
 import {
   useFetchAssignee,
   useFetchClientDetails,
@@ -15,12 +22,6 @@ import {
   useFetchSelectPaymentMethod,
   useFetchSelectProjects,
 } from "../../../../hooks/useQuery";
-import Skeleton from "../../../Skeleton";
-import Errors from "../../../Errors";
-import toast from "react-hot-toast";
-import useSubtotal from "../../../../hooks/useSubtotal";
-import Loaders from "../../../Loaders";
-import api from "../../../../api/api";
 
 const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
   const { setCreateInvoice } = useStoreContext();
@@ -71,17 +72,23 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
     error: pManagerErr,
   } = useFetchAssignee(onError);
 
-  const {
-    isLoading: isLoadingCliDetails,
-    data: client,
-    error: pClientErr,
-  } = useFetchClientDetails(selectClient?.id, onError);
+  const { isLoading: isLoadingCliDetails, data: client } =
+    useFetchClientDetails(selectClient?.id, onClientErr);
 
-  const {
-    isLoading: isLoadingEmpDetails,
-    data: emplyoee,
-    error: pEmplyeeErr,
-  } = useFetchEmployeeDetails(selectEmplyoee?.id, onError);
+  const { isLoading: isLoadingEmpDetails, data: emplyoee } =
+    useFetchEmployeeDetails(selectEmplyoee?.id, onEmployeeError);
+
+  function onClientErr(err) {
+    toast.error(
+      err?.response?.data?.errors || "Failed to fetch client address"
+    );
+  }
+
+  function onEmployeeError(err) {
+    toast.error(
+      err?.response?.data?.errors || "Failed to fetch employee address"
+    );
+  }
 
   const {
     register,
@@ -91,27 +98,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched",
-    defaultValues: {
-      cemail: client?.clientDetails?.email,
-      caddress: client?.clientDetails?.address,
-      cphone: "0157",
-    },
   });
-
-  useEffect(() => {
-    if (client?.clientDetails) {
-      setValue("cemail", client?.clientDetails?.email);
-      setValue("caddress", client?.clientDetails?.address);
-      setValue("cphone", "01275757");
-    }
-  }, [client]);
-  useEffect(() => {
-    if (emplyoee?.employeeDetails) {
-      setValue("email", emplyoee?.employeeDetails?.email);
-      setValue("address", emplyoee?.employeeDetails?.address);
-      setValue("phone", "01275757");
-    }
-  }, [emplyoee]);
 
   const addNewInvoiceHandler = async (data) => {
     if (
@@ -144,7 +131,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
       tax: totalTax,
       fee: 10,
     };
-    console.log(sendData);
+
     try {
       const { data } = await api.post("/invoice/create", sendData);
       toast.success(data?.message);
@@ -156,6 +143,22 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
       setSubmitLoader(false);
     }
   };
+
+  useEffect(() => {
+    if (client?.clientDetails) {
+      setValue("cemail", client?.clientDetails?.email);
+      setValue("caddress", client?.clientDetails?.address);
+      setValue("cphone", "01275757");
+    }
+  }, [client]);
+
+  useEffect(() => {
+    if (emplyoee?.employeeDetails) {
+      setValue("email", emplyoee?.employeeDetails?.email);
+      setValue("address", emplyoee?.employeeDetails?.address);
+      setValue("phone", "01275757");
+    }
+  }, [emplyoee]);
 
   useEffect(() => {
     if (projectsLists?.projects?.length > 0) {
@@ -203,19 +206,10 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
     isLoadingPayMethod ||
     isLoadingProClient;
 
-  // isLoadingCliDetails ||
-  // isLoadingEmpDetails;
-
   if (isLoading) {
     return <Skeleton />;
   }
-  if (
-    pClientErr ||
-    pManagerErr ||
-    selectProjectErr ||
-    selecturrencyErr ||
-    paymentErr
-  )
+  if (pManagerErr || selectProjectErr || selecturrencyErr || paymentErr)
     return <Errors message="Internal Server Error" />;
   return (
     <form onSubmit={handleSubmit(addNewInvoiceHandler)}>
@@ -353,8 +347,8 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
           <div className="flex md:flex-row flex-col gap-4 w-full">
             <React.Fragment>
               <div className="flex-1 border border-borderColor rounded-[8px] p-[16px]">
-                <h1 className="font-semibold font-metropolis pb-[12px]  border-b-[1px]  border-b-borderColor  text-textColor">
-                  Bill From
+                <h1 className="font-semibold font-metropolis pb-[12px] flex gap-4 items-center  border-b-[1px]  border-b-borderColor  text-textColor">
+                  Bill From {isLoadingEmpDetails ? <Loaders /> : null}
                 </h1>
 
                 <div className="space-y-4  pt-4">
@@ -375,6 +369,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
                     register={register}
                     errors={errors}
                     className="text-textColor"
+                    disabled
                   />
                   <div className="flex md:flex-row flex-col gap-2">
                     <div className="flex-1">
@@ -389,6 +384,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
                         register={register}
                         errors={errors}
                         className="text-textColor"
+                        disabled
                       />
                     </div>
                     <div className="flex-1">
@@ -403,6 +399,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
                         register={register}
                         errors={errors}
                         className="text-textColor"
+                        disabled
                       />
                     </div>
                   </div>
@@ -411,8 +408,8 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
             </React.Fragment>
             <React.Fragment>
               <div className="flex-1 border border-borderColor rounded-[8px] p-[16px]">
-                <h1 className="font-semibold font-metropolis pb-[12px]  border-b-[1px]  border-b-borderColor  text-textColor">
-                  Bill To
+                <h1 className="font-semibold font-metropolis pb-[12px] flex gap-4 items-center  border-b-[1px]  border-b-borderColor  text-textColor">
+                  Bill To {isLoadingCliDetails ? <Loaders /> : null}
                 </h1>
 
                 <div className="space-y-4  pt-4">
@@ -434,6 +431,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
                     register={register}
                     errors={errors}
                     className="text-textColor"
+                    disabled
                   />
                   <div className="flex md:flex-row flex-col gap-2">
                     <div className="flex-1">
@@ -448,6 +446,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
                         register={register}
                         errors={errors}
                         className="text-textColor"
+                        disabled
                       />
                     </div>
                     <div className="flex-1">
@@ -462,6 +461,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
                         register={register}
                         errors={errors}
                         className="text-textColor"
+                        disabled
                       />
                     </div>
                   </div>

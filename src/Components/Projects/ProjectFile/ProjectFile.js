@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { FileAddIcon } from "../../../utils/icons";
 
+import { FileAddIcon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import EmptyTable from "../../helper/EmptyTable";
 import Modal from "../../helper/Modal";
-
 import FileTable from "../../helper/files/FileTable";
 import FileHeader from "../../helper/files/FileHeader";
 import AddNewFileForm from "../../helper/forms/AddNewFileForm";
@@ -97,7 +96,7 @@ const ProjectFile = ({ projectId }) => {
         )}
       </React.Fragment>
       <Modal open={openFileModal} setOpen={setOpenFileModal} title="Add File">
-        <AddNewFileForm refetch={refetch} />
+        <AddNewFileForm refetch={refetch} setOpen={setOpenFileModal} />
       </Modal>
     </React.Fragment>
   );

@@ -1,24 +1,25 @@
 import React, { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+
 import EmailTable from "./EmailTable";
+import useHashRouting from "../../../utils/useHashRouting";
+import toast from "react-hot-toast";
+import Loaders from "../../Loaders";
+import api from "../../../api/api";
+import dayjs from "dayjs";
 import {
   Attachment02Icon,
   Image02Icon,
   Link05Icon,
   SignatureIcon,
 } from "../../../utils/icons";
-import useHashRouting from "../../../utils/useHashRouting";
-import toast from "react-hot-toast";
-import Loaders from "../../Loaders";
-import api from "../../../api/api";
-import dayjs from "dayjs";
 
-const AddNewEmail = ({ emailsData, pagination, refetch }) => {
+const AddNewEmail = ({ emailsData, pagination, refetch, setOpen }) => {
   return (
     <div>
       <div className="border border-borderColor rounded-[8px] py-[13px] ">
-        <EmailBox refetch={refetch} />
+        <EmailBox refetch={refetch} setOpen={setOpen} />
       </div>
       <EmailTable emailsData={emailsData} pagination={pagination} />
     </div>
@@ -27,15 +28,46 @@ const AddNewEmail = ({ emailsData, pagination, refetch }) => {
 
 export default AddNewEmail;
 
-const EmailBox = ({ refetch }) => {
-  const [submitLoader, setSubmitLoader] = useState(false);
-  const [subject, setSubject] = useState();
+const EmailBox = ({ refetch, setOpen }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
+
   const [editorContent, setEditorContent] = useState("");
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const [subject, setSubject] = useState();
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const quillRef = useRef(null);
+
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
+    if (!editorContent) return toast.error("Content required");
+    const projectId = pathArray[1] ? Number(pathArray[1]) : null;
+
+    if (!projectId) return toast.error("ProjectId is required");
+
+    setSubmitLoader(true);
+    const sendData = {
+      client_id: 13,
+      project_id: projectId,
+      subject: setSubject,
+      body: editorContent,
+      scheduled_at: dayjs(new Date()).format("YYYY-MM-DD"),
+    };
+
+    try {
+      const { data } = await api.post("/email/create", sendData);
+      toast.success(data?.message);
+      await refetch();
+      setOpen(false);
+      setEditorContent("");
+    } catch (err) {
+      console.log(err);
+      toast.error("Email Send Failed");
+    } finally {
+      setSubmitLoader(false);
+    }
+  };
 
   const handleAttachment = () => {
     fileInputRef.current.click();
@@ -90,35 +122,6 @@ const EmailBox = ({ refetch }) => {
     const quill = quillRef.current.getEditor();
     const range = quill.getSelection();
     quill.clipboard.dangerouslyPasteHTML(range.index, signature);
-  };
-
-  const onSubmitHandler = async (event) => {
-    event.preventDefault();
-    if (!editorContent) return toast.error("Content required");
-    const projectId = pathArray[1] ? Number(pathArray[1]) : null;
-
-    if (!projectId) return toast.error("ProjectId is required");
-
-    setSubmitLoader(true);
-    const sendData = {
-      client_id: 13,
-      project_id: projectId,
-      subject: setSubject,
-      body: editorContent,
-      scheduled_at: dayjs(new Date()).format("YYYY-MM-DD"),
-    };
-
-    try {
-      const { data } = await api.post("/email/create", sendData);
-      toast.success(data?.message);
-      await refetch();
-      setEditorContent("");
-    } catch (err) {
-      console.log(err);
-      toast.error("Email Send Failed");
-    } finally {
-      setSubmitLoader(false);
-    }
   };
 
   return (

@@ -24,7 +24,6 @@ const ProjectInvoice = ({ projectId }) => {
     error: inoiceErr,
     refetch,
   } = useFetchProjectInvoice(projectId, paginationUrl, onError);
-  console.log("project invoice", invoiceList);
 
   useEffect(() => {
     const refetchHandler = async () => {
@@ -36,11 +35,6 @@ const ProjectInvoice = ({ projectId }) => {
     }
   }, [paginationUrl]);
 
-  function onError(err) {
-    console.log(err);
-    toast.error("Failed to fetch all project Invoice Data");
-  }
-
   const handler = () => {
     setCreateInvoice(true);
   };
@@ -50,6 +44,11 @@ const ProjectInvoice = ({ projectId }) => {
   const onCheckAction = (ids) => {
     alert(ids[0].id);
   };
+
+  function onError(err) {
+    console.log(err);
+    toast.error("Failed to fetch all project Invoice Data");
+  }
 
   if (inoiceErr) {
     return (

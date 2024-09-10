@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 import EmptyTable from "../helper/EmptyTable";
-
 import ProjectOverView from "./ProjectOverView";
-
 import { UserCircle02Icon } from "../../utils/icons";
-
 import Modal from "../helper/Modal";
 import { useStoreContext } from "../../store/ContextApiStore";
-
 import ProjectHeader from "../helper/projects/ProjectHeader";
 import ProjectTable from "../helper/projects/ProjectTable";
 import AddNewProjectForm from "../helper/forms/AddNewProjectForm";
@@ -141,7 +137,10 @@ const Projects = () => {
             setOpen={setOpenProjectModal}
             title="Add Project"
           >
-            <AddNewProjectForm refetch={refetch} />
+            <AddNewProjectForm
+              refetch={refetch}
+              setOpen={setOpenProjectModal}
+            />
           </Modal>
         </>
       )}

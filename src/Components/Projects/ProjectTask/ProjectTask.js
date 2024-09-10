@@ -17,6 +17,7 @@ const ProjectTask = ({ projectId }) => {
   const { openTask, setOpenTask } = useStoreContext();
   const [selectedProjectTask, setSelectedProjectTask] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
+
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "task=1";
@@ -38,11 +39,6 @@ const ProjectTask = ({ projectId }) => {
     }
   }, [paginationUrl]);
 
-  function onError(err) {
-    console.log(err);
-    toast.error(err?.response?.data?.message || "Failed To Fetch Project Task");
-  }
-
   const handler = () => {
     setOpenProjectModal(true);
   };
@@ -53,6 +49,11 @@ const ProjectTask = ({ projectId }) => {
   const onCheckAction = (ids) => {
     alert(ids[0].id);
   };
+
+  function onError(err) {
+    console.log(err);
+    toast.error(err?.response?.data?.message || "Failed To Fetch Project Task");
+  }
 
   if (error) {
     console.log("project task error", error?.response?.data?.errors);
@@ -109,7 +110,7 @@ const ProjectTask = ({ projectId }) => {
         )}
       </React.Fragment>
       <Modal open={openTask} setOpen={setOpenTask} title="Add Task">
-        <AddNewTaskForm refetch={refetch} />
+        <AddNewTaskForm refetch={refetch} setOpen={setOpenTask} />
       </Modal>
     </React.Fragment>
   );

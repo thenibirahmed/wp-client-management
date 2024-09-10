@@ -11,6 +11,7 @@ import {
   useFetchPriorities,
   useFetchStatus,
   useFetchAssignee,
+  useFetchSelectCurrency,
 } from "../../../hooks/useQuery";
 import Skeleton from "../../Skeleton";
 import api from "../../../api/api";
@@ -19,34 +20,20 @@ import toast from "react-hot-toast";
 import Loaders from "../../Loaders";
 import Errors from "../../Errors";
 
-const currencyLists = [
-  { id: 2, name: "USD" },
-  { id: 3, name: "EUR" },
-  { id: 4, name: "JPY" },
-  { id: 5, name: "GBP" },
-];
-
-const assigneeLists = [
-  { id: 2, name: "Software Developer" },
-  { id: 3, name: "UX Designer" },
-];
-
-const AddNewProjectForm = ({ refetch }) => {
+const AddNewProjectForm = ({ refetch, setOpen }) => {
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
+  const imageRef = useRef();
   const { setOpenProjectModal } = useStoreContext();
+
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
   const [selectClient, setSelectClient] = useState();
-  const [selectCurrency, setSelectCurrency] = useState(currencyLists[0]);
+  const [selectCurrency, setSelectCurrency] = useState();
   const [selectStatus, setSelectStatus] = useState();
   const [selectPriority, setSelectPriority] = useState();
   const [selectProjectManager, setSelectProjectManager] = useState();
-  const [selectAssignee, setSelectAssignee] = useState(assigneeLists[0]);
   const [submitLoader, setSubmitLoader] = useState(false);
-
-  const imageRef = useRef();
 
   //calling react-query Parallely for fetching data
   const {
@@ -73,11 +60,11 @@ const AddNewProjectForm = ({ refetch }) => {
     error: pStatusErr,
   } = useFetchStatus("project", onError);
 
-  const isLoading =
-    isLoadingClients ||
-    isLoadingPriorities ||
-    isLoadProjectManager ||
-    isLoadingStatus;
+  const {
+    isLoading: isLoadingSelectCurrency,
+    data: currencyLists,
+    error: selecturrencyErr,
+  } = useFetchSelectCurrency(onError);
 
   const {
     register,
@@ -89,12 +76,13 @@ const AddNewProjectForm = ({ refetch }) => {
     mode: "onTouched",
   });
 
-  const addNewClientHandler = async (data) => {
+  const addNewProjectHandler = async (data) => {
     if (
       !selectClient?.id ||
       !selectProjectManager?.id ||
       !selectStatus?.id ||
-      !selectPriority?.id
+      !selectPriority?.id ||
+      !selectCurrency?.id
     ) {
       return setError("This field is required*");
     }
@@ -111,13 +99,13 @@ const AddNewProjectForm = ({ refetch }) => {
       due_date: dayjs(endDate).format("YYYY-MM-DD"),
       description: data?.description,
     };
-    console.log(sendData);
+
     try {
       const { data } = await api.post("/project/create", sendData);
       toast.success(data?.message);
       await refetch();
       reset();
-      console.log(data);
+      setOpen(false);
     } catch (err) {
       console.log(err);
       toast.error("Something went wrong");
@@ -151,7 +139,20 @@ const AddNewProjectForm = ({ refetch }) => {
     } else {
       setSelectStatus({ name: " -No Status- ", id: null });
     }
-  }, [clients, managers, priorities, statuses]);
+
+    if (currencyLists?.currency.length > 0) {
+      setSelectCurrency(currencyLists?.currency[0]);
+    } else {
+      setSelectCurrency({ name: " -No Currency- ", id: null });
+    }
+  }, [clients, managers, priorities, statuses, currencyLists]);
+
+  const isLoading =
+    isLoadingClients ||
+    isLoadingPriorities ||
+    isLoadProjectManager ||
+    isLoadingStatus ||
+    isLoadingSelectCurrency;
 
   function onError(err) {
     toast.error(err?.response?.data?.message);
@@ -162,12 +163,21 @@ const AddNewProjectForm = ({ refetch }) => {
     return <Skeleton />;
   }
 
-  if (pClientErr || pManagerErr || pPrioritiesErr || pStatusErr)
+  if (
+    pClientErr ||
+    pManagerErr ||
+    pPrioritiesErr ||
+    pStatusErr ||
+    selecturrencyErr
+  )
     return <Errors message="Internal Server Error" />;
 
   return (
     <div className="py-5 relative h-full ">
-      <form className="space-y-4 " onSubmit={handleSubmit(addNewClientHandler)}>
+      <form
+        className="space-y-4 "
+        onSubmit={handleSubmit(addNewProjectHandler)}
+      >
         <div>
           <TextField
             label="Project Title"
@@ -198,19 +208,19 @@ const AddNewProjectForm = ({ refetch }) => {
             isSubmitting={isSubmitting}
           />
         </div>
-        <div className="flex md:flex-row flex-col gap-4 w-full">
-          <SelectTextField
+        <div className=" w-full">
+          {/* <SelectTextField
             label="Assignee"
             select={selectAssignee}
             setSelect={setSelectAssignee}
             lists={assigneeLists}
             isSubmitting={isSubmitting}
-          />
+          /> */}
           <SelectTextField
             label="Currency"
             select={selectCurrency}
             setSelect={setSelectCurrency}
-            lists={currencyLists}
+            lists={currencyLists?.currency}
             isSubmitting={isSubmitting}
           />
         </div>

@@ -1,58 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import useHashRouting from "../../../utils/useHashRouting";
-import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
-
 import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
-
-const tableData = [
-  {
-    id: 1,
-    invoiceId: "Inv-1231",
-    clientName: "Easin Tanvir",
-    total: 3500,
-    status: "Completed",
-    payMethod: "Cash",
-    dueDate: "July 05, 2024",
-  },
-  {
-    id: 2,
-    invoiceId: "Inv-1232",
-    clientName: "John Doe",
-    total: 4500,
-    status: "On Hold",
-    payMethod: "Credit Card",
-    dueDate: "July 06, 2024",
-  },
-  {
-    id: 3,
-    invoiceId: "Inv-1233",
-    clientName: "Jane Smith",
-    total: 2500,
-    status: "Cancelled",
-    payMethod: "Bank Transfer",
-    dueDate: "July 07, 2024",
-  },
-  {
-    id: 4,
-    invoiceId: "Inv-1234",
-    clientName: "Alice Johnson",
-    total: 5500,
-    status: "In progress",
-    payMethod: "Paypal",
-    dueDate: "July 08, 2024",
-  },
-  {
-    id: 5,
-    invoiceId: "Inv-1235",
-    clientName: "Bob Brown",
-    total: 1500,
-    status: "In Review",
-    payMethod: "Cash",
-    dueDate: "July 09, 2024",
-  },
-];
+import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 
 const InvoiceTable = ({
   invoiceList,
@@ -63,9 +14,6 @@ const InvoiceTable = ({
   isAllselected,
   setIsAllSelected,
 }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedInvoices,
     setIsAllSelected,

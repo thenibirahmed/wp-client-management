@@ -4,6 +4,7 @@ export const OvierViewItem = ({
   invoice,
   isProject = false,
 }) => {
+  const convertedAmount = Number(amount).toFixed(2);
   return (
     <>
       <div className="w-80 space-y-4  text-center sm:text-start  px-5 py-5">
@@ -12,7 +13,7 @@ export const OvierViewItem = ({
         </h3>
         <h1 className=" font-semibold font-metropolis text-3xl text-textColor ">
           {!isProject ? "$" : ""}
-          {amount}
+          {isProject ? amount : convertedAmount}
         </h1>
         <h6 className="font-metropolis  text-sm text-textColor2 font-normal">
           <span>{invoice} </span>

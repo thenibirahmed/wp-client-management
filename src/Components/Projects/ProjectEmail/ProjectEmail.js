@@ -42,6 +42,10 @@ const ProjectEmail = ({ projectId }) => {
     );
   }
 
+  const handler = () => {
+    setCreateEmail(true);
+  };
+
   if (error) {
     console.log("project task error", error?.response?.data?.errors);
     return (
@@ -54,10 +58,6 @@ const ProjectEmail = ({ projectId }) => {
     );
   }
 
-  const handler = () => {
-    setCreateEmail(true);
-  };
-
   return (
     <React.Fragment>
       <EmailHeader />
@@ -68,6 +68,7 @@ const ProjectEmail = ({ projectId }) => {
             emailsData={projectEmail?.emails}
             pagination={projectEmail?.pagination}
             refetch={refetch}
+            setOpen={setCreateEmail}
           />
         </React.Fragment>
       ) : (

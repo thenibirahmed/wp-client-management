@@ -12,7 +12,9 @@ const ProjectHeader = ({
   selectedProject,
   title,
   setOpenModal,
+  openModal,
   btnTitle,
+  cancelTitle,
   onDeleteAction,
   onCheckAction,
 }) => {
@@ -35,17 +37,33 @@ const ProjectHeader = ({
         <Search />
 
         <Filter />
-        <button
-          onClick={() => setOpenModal(true)}
-          type="button"
-          className="inline-flex items-center gap-x-1.5 rounded-md bg-customBlue px-5 py-[10px] text-sm font-semibold text-white shadow-sm  hover:text-gray-200 "
-        >
-          <Task01Icon
-            aria-hidden="true"
-            className="text-white hover:text-gray-200 h-[16px] w-[16px]"
-          />
-          {btnTitle}
-        </button>
+
+        {openModal ? (
+          <>
+            <button
+              onClick={() => setOpenModal(false)}
+              type="button"
+              className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
+            >
+              {cancelTitle}
+            </button>
+          </>
+        ) : (
+          <>
+            {" "}
+            <button
+              onClick={() => setOpenModal(true)}
+              type="button"
+              className="inline-flex items-center gap-x-1.5 rounded-md bg-customBlue px-5 py-[11px] text-sm font-semibold text-white shadow-sm  hover:text-gray-200 "
+            >
+              <Task01Icon
+                aria-hidden="true"
+                className="text-white hover:text-gray-200 h-[16px] w-[16px]"
+              />
+              {btnTitle}
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

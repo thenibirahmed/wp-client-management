@@ -1,17 +1,18 @@
 import React, { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import {
-  Attachment02Icon,
-  Image02Icon,
-  Link05Icon,
-} from "../../../utils/icons";
+
+import { useStoreContext } from "../../../store/ContextApiStore";
 import NoteTable from "./NoteTable";
 import toast from "react-hot-toast";
 import useHashRouting from "../../../utils/useHashRouting";
 import Loaders from "../../Loaders";
 import api from "../../../api/api";
-import { useStoreContext } from "../../../store/ContextApiStore";
+import {
+  Attachment02Icon,
+  Image02Icon,
+  Link05Icon,
+} from "../../../utils/icons";
 
 const AddNewNote = ({
   noteData,
@@ -20,34 +21,63 @@ const AddNewNote = ({
   isAllselected,
   setIsAllSelected,
   refetch,
-}) => {
-  return (
-    <div>
-      <div className="border border-borderColor rounded-[8px] py-[13px]">
-        <AddNewNoteTextArea refetch={refetch} />
-      </div>
-      <NoteTable
-        noteData={noteData}
-        selectedNote={selectedNote}
-        setSelectedNote={setSelectedNote}
-        isAllselected={isAllselected}
-        setIsAllSelected={setIsAllSelected}
-      />
+  setOpen,
+}) => (
+  <div>
+    <div className="border border-borderColor rounded-[8px] py-[13px]">
+      <AddNewNoteTextArea refetch={refetch} setOpen={setOpen} />
     </div>
-  );
-};
+    <NoteTable
+      noteData={noteData}
+      selectedNote={selectedNote}
+      setSelectedNote={setSelectedNote}
+      isAllselected={isAllselected}
+      setIsAllSelected={setIsAllSelected}
+    />
+  </div>
+);
 
 export default AddNewNote;
 
-const AddNewNoteTextArea = ({ refetch }) => {
+const AddNewNoteTextArea = ({ refetch, setOpen }) => {
+  const fileInputRef = useRef(null);
+  const imageInputRef = useRef(null);
+
   const { setCreateNote } = useStoreContext();
+  const [editorContent, setEditorContent] = useState("");
   const [submitLoader, setSubmitLoader] = useState(false);
+
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
   const quillRef = useRef(null);
-  const [editorContent, setEditorContent] = useState("");
-  const fileInputRef = useRef(null);
-  const imageInputRef = useRef(null);
+
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
+    if (!editorContent) return toast.error("Content required");
+    const projectId = pathArray[1] ? Number(pathArray[1]) : null;
+
+    if (!projectId) return toast.error("ProjectId is required");
+
+    setSubmitLoader(true);
+    const sendData = {
+      project_id: projectId,
+      note: editorContent,
+    };
+
+    try {
+      const { data } = await api.post("/note/create", sendData);
+      toast.success(data?.message);
+      await refetch();
+      setEditorContent("");
+      setCreateNote(false);
+      setOpen(false);
+    } catch (err) {
+      console.log(err);
+      toast.error("Create new note failed");
+    } finally {
+      setSubmitLoader(false);
+    }
+  };
 
   const handleAttachment = () => {
     fileInputRef.current.click();
@@ -95,33 +125,6 @@ const AddNewNoteTextArea = ({ refetch }) => {
     quill.clipboard.dangerouslyPasteHTML(range.index, html);
   };
 
-  const onSubmitHandler = async (event) => {
-    event.preventDefault();
-    if (!editorContent) return toast.error("Content required");
-    const projectId = pathArray[1] ? Number(pathArray[1]) : null;
-
-    if (!projectId) return toast.error("ProjectId is required");
-
-    setSubmitLoader(true);
-    const sendData = {
-      project_id: projectId,
-      note: editorContent,
-    };
-
-    try {
-      const { data } = await api.post("/note/create", sendData);
-      toast.success(data?.message);
-      await refetch();
-      setEditorContent("");
-      setCreateNote(false);
-    } catch (err) {
-      console.log(err);
-      toast.error("Create new note failed");
-    } finally {
-      setSubmitLoader(false);
-    }
-  };
-
   return (
     <form onSubmit={onSubmitHandler}>
       <ReactQuill
@@ -147,16 +150,7 @@ const AddNewNoteTextArea = ({ refetch }) => {
             <Image02Icon className="text-textColor2" />
           </button>
         </div>
-        <div className="flex gap-3">
-          {" "}
-          <button
-            onClick={() => setCreateNote(false)}
-            disabled={submitLoader}
-            type="button"
-            className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
-          >
-            Cancel
-          </button>
+        <div>
           <button
             disabled={submitLoader}
             type="submit"
@@ -167,7 +161,6 @@ const AddNewNoteTextArea = ({ refetch }) => {
         </div>
       </div>
 
-      {/* Hidden file input for attachments */}
       <input
         type="file"
         ref={fileInputRef}
@@ -176,7 +169,6 @@ const AddNewNoteTextArea = ({ refetch }) => {
         multiple
       />
 
-      {/* Hidden file input for images */}
       <input
         type="file"
         ref={imageInputRef}

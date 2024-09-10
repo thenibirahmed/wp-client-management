@@ -5,14 +5,14 @@ import { useStoreContext } from "../../../store/ContextApiStore";
 import NoteTable from "../../helper/notes/NoteTable";
 import AddNewNote from "../../helper/notes/AddNewNote";
 import { Task01Icon } from "../../../utils/icons";
-import { useFetchProjectNotes } from "../../../hooks/useQuery";
 import Errors from "../../Errors";
 import toast from "react-hot-toast";
 import Skeleton from "../../Skeleton";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import useHashRouting from "../../../utils/useHashRouting";
+import { useFetchProjectNotes } from "../../../hooks/useQuery";
 
-const ProjectNote = ({ projectId = { projectId } }) => {
+const ProjectNote = ({ projectId }) => {
   const { createNote, setCreateNote } = useStoreContext();
 
   const [selectedNote, setSelectedNote] = useState([]);
@@ -29,6 +29,13 @@ const ProjectNote = ({ projectId = { projectId } }) => {
     refetch,
   } = useFetchProjectNotes(projectId, paginationUrl, onError);
 
+  function onError(err) {
+    console.log(err);
+    toast.error(
+      err?.response?.data?.message || "Failed To Fetch Project Notes"
+    );
+  }
+
   useEffect(() => {
     const refetchHandler = async () => {
       await refetch();
@@ -38,24 +45,6 @@ const ProjectNote = ({ projectId = { projectId } }) => {
       refetchHandler();
     }
   }, [paginationUrl]);
-
-  function onError(err) {
-    console.log(err);
-    toast.error(
-      err?.response?.data?.message || "Failed To Fetch Project Notes"
-    );
-  }
-
-  if (error) {
-    return (
-      <Errors
-        message={
-          error?.response?.data?.errors ||
-          `Failed To Fetch Project Notes for projectId ${projectId}`
-        }
-      />
-    );
-  }
 
   const handler = () => {
     setCreateNote(true);
@@ -68,13 +57,26 @@ const ProjectNote = ({ projectId = { projectId } }) => {
     alert(ids[0].id);
   };
 
+  if (error) {
+    return (
+      <Errors
+        message={
+          error?.response?.data?.errors ||
+          `Failed To Fetch Project Notes for projectId ${projectId}`
+        }
+      />
+    );
+  }
+
   return (
     <React.Fragment>
       <ProjectHeader
         selectedProject={selectedNote}
         title="Notes"
         setOpenModal={setCreateNote}
+        openModal={createNote}
         btnTitle="Add Note"
+        cancelTitle="Cancel"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
       />
@@ -88,6 +90,7 @@ const ProjectNote = ({ projectId = { projectId } }) => {
             isAllselected={isAllselected}
             setIsAllSelected={setIsAllSelected}
             refetch={refetch}
+            setOpen={setCreateNote}
           />
         </React.Fragment>
       ) : (

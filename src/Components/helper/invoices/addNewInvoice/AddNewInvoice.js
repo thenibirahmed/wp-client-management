@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 
 import AddNewInvoiceForm from "./AddNewInvoiceForm";
 import InvoiceItemTable from "./InvoiceItemTable";
 import AddInvoiceNote from "./AddInvoiceNote";
-import { useFetchProjectInvoice } from "../../../../hooks/useQuery";
 
 const AddNewInvoice = () => {
   const [invoiceItem, setInvoiceItems] = useState([]);

@@ -1,32 +1,28 @@
 import React, { useRef, useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import DatePicker from "react-datepicker";
+
+import api from "../../../api/api";
 import { Calendar02Icon } from "../../../utils/icons";
 import TextField from "../TextField";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { SelectTextField } from "../SelectTextField";
-import toast from "react-hot-toast";
-import {
-  useFetchAssignee,
-  useFetchPriorities,
-  useFetchStatus,
-} from "../../../hooks/useQuery";
+import { useFetchAssignee, useFetchPriorities } from "../../../hooks/useQuery";
 import useHashRouting from "../../../utils/useHashRouting";
 import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
-import dayjs from "dayjs";
 import Loaders from "../../Loaders";
-import api from "../../../api/api";
+import dayjs from "dayjs";
 
-const AddNewTaskForm = ({ refetch }) => {
+const AddNewTaskForm = ({ refetch, setOpen }) => {
   const { setOpenProjectModal } = useStoreContext();
-
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
   const imageRef = useRef();
+
+  const currentPath = useHashRouting("");
+  const pathArray = currentPath?.split("/#/");
 
   const [selectPriority, setSelectPriority] = useState();
   const [selectAssignee, setSelectAssignee] = useState();
@@ -45,8 +41,6 @@ const AddNewTaskForm = ({ refetch }) => {
     data: priorities,
     error: pPrioritiesErr,
   } = useFetchPriorities("project", onError);
-
-  const isLoading = isLoadingPriorities || assigneeLoader;
 
   const {
     register,
@@ -71,9 +65,9 @@ const AddNewTaskForm = ({ refetch }) => {
       title: data.title,
       assigned_to: selectAssignee?.id,
       project_id: projectId,
-      //priority_id: selectPriority.id,
-      //start_date: dayjs(startDate).format("YYYY-MM-DD"),
-      //due_date: dayjs(endDate).format("YYYY-MM-DD"),
+      priority_id: selectPriority.id,
+      start_date: dayjs(startDate).format("YYYY-MM-DD"),
+      due_date: dayjs(endDate).format("YYYY-MM-DD"),
       description: data.description,
     };
 
@@ -81,6 +75,7 @@ const AddNewTaskForm = ({ refetch }) => {
       const { data } = await api.post("/task/create", sendData);
       toast.success(data?.message);
       await refetch();
+      setOpen(false);
       reset();
     } catch (err) {
       console.log(err);
@@ -111,6 +106,8 @@ const AddNewTaskForm = ({ refetch }) => {
     toast.error(err?.response?.data?.message);
     console.log(err);
   }
+
+  const isLoading = isLoadingPriorities || assigneeLoader;
 
   if (isLoading) {
     return <Skeleton />;

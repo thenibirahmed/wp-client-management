@@ -9,13 +9,15 @@ import api from "../../../api/api";
 import useHashRouting from "../../../utils/useHashRouting";
 import Loaders from "../../Loaders";
 
-const AddNewFileForm = ({ refetch }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
+const AddNewFileForm = ({ refetch, setOpen }) => {
   const { setOpenFileModal } = useStoreContext();
   const [imageUrl, setImageUrl] = useState();
   const [submitLoader, setSubmitLoader] = useState(false);
   const imageRef = useRef();
+
+  const currentPath = useHashRouting("");
+  const pathArray = currentPath?.split("/#/");
+
   const {
     register,
     handleSubmit,
@@ -42,6 +44,7 @@ const AddNewFileForm = ({ refetch }) => {
       const { data } = await api.post("/file/create", sendData);
       toast.success(data?.message);
       await refetch();
+      setOpen(false);
       reset();
     } catch (err) {
       console.log(err);
