@@ -21,7 +21,7 @@ class GetTeamMembers {
 
     public function get_team_members(\WP_REST_Request $request)
     {
-        $page        = $request->get_params('page');
+        $page        = $request->get_param('page');
 
         $teamMembers = EicCrmUser::getTeamMembers($page);
 
@@ -30,7 +30,7 @@ class GetTeamMembers {
         $wpUsersDb   = get_users([
             'include' => $wp_user_ids,
         ]);
-        
+
         $wpUsers = [];
         foreach ($wpUsersDb as $user) {
             $wpUsers[$user->ID] = [
