@@ -94,7 +94,7 @@ class GetClientFiles {
         }
 
         $response = [
-            'data'       => $data,
+            'files'      => $data,
             'pagination' => [
                 'total'         => $files->total(),
                 'per_page'      => $files->perPage(),

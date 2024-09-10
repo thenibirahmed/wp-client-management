@@ -69,29 +69,17 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/team-member/1/tasks",
+				eicApiSettings.rest_url + "wp-client-management/v1/team-member/1/overview",
 				// {
-					// task_id: 1,
-					// reply_to: 9,
-					// comment: "No disting."
-					// name: 'disting',
-					// email: 'disting@disting.com',
-					// phone: '1234567890',
-					// designation: "disting disting"
-					// title: "Srabon pro",
-					// manager_id: 14,
-					// client_id: 13,
-					// subject: 'Srabon pro',
-					// body: 'Srabon pro description',
-					// title: "Srabon pro",
-					// url: "https://www.google.com/",
-					// budget: 20000,
-					// status_id: 1,
-					// priority_id: 7,
-					// start_date: "2022-01-01",
-					// due_date: "2022-01-01",
-					// description: "Srabon pro description",
-
+				// 	name: 'Showebbai',
+				// 	email: 'showebbai@wp.com',
+				// 	phone: '454465',
+				// 	address: 'kamarpara',
+				// 	city: 'barisal',
+				// 	state: 'barisal',
+				// 	country: 'bari',
+				// 	zip: '25252',
+				// 	organization: 'codecstasy',
 				// },
 				{
 					headers: {
