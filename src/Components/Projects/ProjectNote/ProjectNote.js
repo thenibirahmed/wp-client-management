@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import EmptyTable from "../../helper/EmptyTable";
 import { useStoreContext } from "../../../store/ContextApiStore";
@@ -11,6 +11,7 @@ import Skeleton from "../../Skeleton";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useFetchProjectNotes } from "../../../hooks/useQuery";
+import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectNote = ({ projectId }) => {
   const { createNote, setCreateNote } = useStoreContext();
@@ -36,15 +37,7 @@ const ProjectNote = ({ projectId }) => {
     );
   }
 
-  useEffect(() => {
-    const refetchHandler = async () => {
-      await refetch();
-    };
-
-    if (paginationUrl) {
-      refetchHandler();
-    }
-  }, [paginationUrl]);
+  useRefetch(paginationUrl, refetch);
 
   const handler = () => {
     setCreateNote(true);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
 import InvoiceTable from "../../helper/invoices/InvoiceTable";
@@ -8,6 +8,7 @@ import ProjectHeader from "../../helper/projects/ProjectHeader";
 import { useFetchProjectInvoice } from "../../../hooks/useQuery";
 import Skeleton from "../../Skeleton";
 import useHashRouting from "../../../utils/useHashRouting";
+import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectInvoice = ({ projectId }) => {
   const { setCreateInvoice } = useStoreContext();
@@ -25,15 +26,7 @@ const ProjectInvoice = ({ projectId }) => {
     refetch,
   } = useFetchProjectInvoice(projectId, paginationUrl, onError);
 
-  useEffect(() => {
-    const refetchHandler = async () => {
-      await refetch();
-    };
-
-    if (paginationUrl) {
-      refetchHandler();
-    }
-  }, [paginationUrl]);
+  useRefetch(paginationUrl, refetch);
 
   const handler = () => {
     setCreateInvoice(true);

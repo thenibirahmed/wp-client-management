@@ -11,6 +11,7 @@ import { useFetchProjectFiles } from "../../../hooks/useQuery";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 import useHashRouting from "../../../utils/useHashRouting";
+import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectFile = ({ projectId }) => {
   const { openFileModal, setOpenFileModal } = useStoreContext();
@@ -29,15 +30,7 @@ const ProjectFile = ({ projectId }) => {
     refetch,
   } = useFetchProjectFiles(projectId, paginationUrl, onError);
 
-  useEffect(() => {
-    const refetchHandler = async () => {
-      await refetch();
-    };
-
-    if (paginationUrl) {
-      refetchHandler();
-    }
-  }, [paginationUrl]);
+  useRefetch(paginationUrl, refetch);
 
   const handler = () => {
     setOpenFileModal(true);

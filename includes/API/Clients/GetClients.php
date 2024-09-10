@@ -56,6 +56,7 @@ class GetClients {
                 'zip'          => $eicCrmUser->zip,
                 'designation'  => $eicCrmUser->designation,
                 'organization' => $client->organization,
+                'created_at'   => $client->created_at ? date('F d, Y', strtotime($client->created_at)) : '',
             ];
         });
 

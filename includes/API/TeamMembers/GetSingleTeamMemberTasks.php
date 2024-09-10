@@ -1,10 +1,8 @@
 <?php
+
 namespace WpClientManagement\API\TeamMembers;
 
-use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
-use WpClientManagement\Models\Invoice;
-use WpClientManagement\Models\Project;
 use WpClientManagement\Models\Task;
 
 class GetSingleTeamMemberTasks {
@@ -36,7 +34,7 @@ class GetSingleTeamMemberTasks {
         global $validator;
 
         $id   = $request->get_param('id');
-        $page = $request->get_param('page');
+        $page = $request->get_param('task');
 
         if(!isset($id)) {
             return new \WP_REST_Response([
@@ -63,20 +61,40 @@ class GetSingleTeamMemberTasks {
         }
 
         $tasks = Task::getTeamMemberTasks($id, $page);
+        $eic_crm_user_ids = $tasks->pluck('eic_crm_user_id');
 
-        $data = [];
+        $eic_crm_users = EicCrmUser::whereIn('id',$eic_crm_user_ids)->get();
 
-        foreach ($tasks as $task) {
+        $wp_user_ids = $eic_crm_users->pluck('wp_user_id')->toArray();
 
-            $data[] = [
-                'id'           => $task->id,
-                'task_title' => $task->title,
-                'owner'     => $task->eic_crm_usre,
+        $wpUsersDb = get_users([
+            'include' => $wp_user_ids,
+        ]);
+
+        $wpUsers = [];
+        foreach ($wpUsersDb as $user) {
+            $wpUsers[$user->ID] = [
+                'name'  => $user->user_login,
             ];
         }
 
+        $taskWithDetails = $tasks->map(function ($task) use ($wpUsers) {
+            $eic_crm_user      = $task->eic_crm_user;
+            $WpUserId  = $eic_crm_user->wp_user_id;
+            $owner_wp_user     = $wpUsers[$WpUserId] ?? [];
+            return [
+                'id'            => $task->id,
+                'title'         => $task->title,
+                'owner'         => $owner_wp_user['name'] ?? '',
+                'due_date'      => $task->due_date ? date('M d, Y', strtotime($task->due_date)) : null,
+                'status'        => $task->status->name,
+                'priority'      => $task->priority->name,
+                'comment_count' => $task->comments->count(),
+            ];
+        });
+
         return new \WP_REST_Response([
-            'projects' => $data,
+            'tasks' => $taskWithDetails,
             'pagination' => [
                 'total'         => $tasks->total(),
                 'per_page'      => $tasks->perPage(),
@@ -85,7 +103,7 @@ class GetSingleTeamMemberTasks {
                 'next_page_url' => $tasks->nextPageUrl(),
                 'prev_page_url' => $tasks->previousPageUrl(),
             ],
-            
+
         ]);
     }
 }

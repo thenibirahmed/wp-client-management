@@ -10,6 +10,7 @@ import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 import EmptyTable from "../../helper/EmptyTable";
 import useHashRouting from "../../../utils/useHashRouting";
+import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectEmail = ({ projectId }) => {
   const { createEmail, setCreateEmail } = useStoreContext();
@@ -25,15 +26,7 @@ const ProjectEmail = ({ projectId }) => {
     refetch,
   } = useFetchProjectEmails(projectId, paginationUrl, onError);
 
-  useEffect(() => {
-    const refetchHandler = async () => {
-      await refetch();
-    };
-
-    if (paginationUrl) {
-      refetchHandler();
-    }
-  }, [paginationUrl]);
+  useRefetch(paginationUrl, refetch);
 
   function onError(err) {
     console.log(err);

@@ -21,6 +21,10 @@ export const renderComponent = (path, activeUrl, paginationUrl) => {
   switch (path) {
     case "clients":
       return <Client />;
+
+    case `clients/?${paginationUrl}`:
+      return <Client />;
+
     case `clients/#/${activeUrl}`:
       return <ClientDetails />;
     case "projects":

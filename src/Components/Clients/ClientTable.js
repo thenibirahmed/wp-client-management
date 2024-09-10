@@ -6,14 +6,13 @@ import { useClientCheckedHandler } from "../../utils/useCheckedItem";
 
 const ClientTable = ({
   clientData,
+  pagination,
   selectedClient,
   setSelectedClient,
   isAllselected,
   setIsAllSelected,
 }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-  const currentPageName = window.location.pathname.split("/")[1];
+  console.log("cli pagi", pagination);
 
   const { checkedAllClient, checkedSingleClient } = useClientCheckedHandler(
     selectedClient,
@@ -180,7 +179,7 @@ const ClientTable = ({
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination pagination={pagination} slug="clients" query="/?page" />
           </div>
         </div>
       </div>

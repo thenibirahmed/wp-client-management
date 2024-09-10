@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 import TextField from "../helper/TextField";
 import api from "../../api/api";
-import toast from "react-hot-toast";
 import Loaders from "../Loaders";
 
-const AddClientForm = ({ setOpen }) => {
+const AddClientForm = ({ setOpen, refetch }) => {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +34,9 @@ const AddClientForm = ({ setOpen }) => {
       setLoading(true);
       const { data: res } = await api.post("/client/create", sendData);
       toast.success(res?.message);
+      await refetch();
       reset();
+      setOpen(false);
     } catch (err) {
       console.log(err.response);
       if (err?.response?.data?.errors["email"]?.length > 0) {

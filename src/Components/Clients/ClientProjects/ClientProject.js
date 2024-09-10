@@ -1,19 +1,32 @@
 import React, { useState } from "react";
+
 import ClientProjectTable from "./ClientProjectTable";
 import EmptyTable from "../../helper/EmptyTable";
 import { Invoice01Icon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import Modal from "../../helper/Modal";
-
 import ProjectHeader from "../../helper/projects/ProjectHeader";
-
 import AddNewClientProjectForm from "../../helper/forms/AddNewClientProjectForm";
+import { useFetchClientProject } from "../../../hooks/useQuery";
+import toast from "react-hot-toast";
 
-const ClientProject = () => {
+const ClientProject = ({ clientId }) => {
   const { openProjectModal, setOpenProjectModal } = useStoreContext();
 
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
+
+  const {
+    isLoading,
+    data: projectTask,
+    error,
+    refetch,
+  } = useFetchClientProject(clientId, onError);
+
+  function onError(err) {
+    console.log(err);
+    toast.error(err?.response?.data?.message || "Failed To Fetch Project Task");
+  }
 
   const dataList = [1];
 

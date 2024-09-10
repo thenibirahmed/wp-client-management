@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import EmptyTable from "../../helper/EmptyTable";
 import { Task01Icon } from "../../../utils/icons";
@@ -12,6 +12,7 @@ import Skeleton from "../../Skeleton";
 import toast from "react-hot-toast";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import useHashRouting from "../../../utils/useHashRouting";
+import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectTask = ({ projectId }) => {
   const { openTask, setOpenTask } = useStoreContext();
@@ -29,15 +30,7 @@ const ProjectTask = ({ projectId }) => {
     refetch,
   } = useFetchProjectTask(projectId, paginationUrl, onError);
 
-  useEffect(() => {
-    const refetchHandler = async () => {
-      await refetch();
-    };
-
-    if (paginationUrl) {
-      refetchHandler();
-    }
-  }, [paginationUrl]);
+  useRefetch(paginationUrl, refetch);
 
   const handler = () => {
     setOpenProjectModal(true);

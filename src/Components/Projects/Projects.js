@@ -17,6 +17,7 @@ import Skeleton from "../Skeleton";
 import toast from "react-hot-toast";
 import Errors from "../Errors";
 import useHashRouting from "../../utils/useHashRouting";
+import { useRefetch } from "../../hooks/useRefetch";
 
 const Projects = () => {
   const {
@@ -39,15 +40,7 @@ const Projects = () => {
     refetch,
   } = useFetchAllProjects(paginationUrl, onError);
 
-  useEffect(() => {
-    const refertchProject = async () => {
-      await refetch();
-    };
-
-    if (paginationUrl) {
-      refertchProject();
-    }
-  }, [paginationUrl]);
+  useRefetch(paginationUrl, refetch);
 
   const {
     isLoading: projectOverViewLoader,

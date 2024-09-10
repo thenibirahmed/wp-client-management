@@ -1,11 +1,11 @@
 import { useQuery } from "react-query";
 import api from "../api/api";
 
-export const useFetchClientOverView = (onError) => {
+export const useFetchClientOverView = (pageinationUrl, onError) => {
   return useQuery(
     "client-overview",
     async () => {
-      return await api.get("/client-overview");
+      return await api.get(`/client-overview/?${pageinationUrl}`);
     },
     {
       select: (data) => {
@@ -37,6 +37,29 @@ export const useFetchSingleClientOverView = (clientId, onError) => {
         };
 
         return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchClientProject = (clientId, onError) => {
+  return useQuery(
+    ["client-project", clientId],
+    async () => {
+      return await api.get(`/client/${clientId}/project`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          clients: data.data.clients,
+          pagination: data.data.pagination,
+          topBar: data.data.topBar,
+        };
+        console.log("client pro", data.data);
+
+        return data;
       },
       onError,
       staleTime: 5000,

@@ -36,7 +36,7 @@ class GetSingleTeamMemberProjects {
         global $validator;
 
         $id   = $request->get_param('id');
-        $page = $request->get_param('page');
+        $page = $request->get_param('project');
 
         if(!isset($id)) {
             return new \WP_REST_Response([
@@ -73,6 +73,7 @@ class GetSingleTeamMemberProjects {
                 'project_name' => $project->title,
                 'priority'     => $project->priority->name,
                 'status'       => $project->status->name,
+                'assignee'     => $project->eicCrmUsers->count(),
             ];
         }
 
@@ -86,7 +87,7 @@ class GetSingleTeamMemberProjects {
                 'next_page_url' => $projects->nextPageUrl(),
                 'prev_page_url' => $projects->previousPageUrl(),
             ],
-            
+
         ]);
     }
 }

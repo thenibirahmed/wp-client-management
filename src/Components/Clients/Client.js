@@ -18,20 +18,27 @@ import { useFetchClientOverView } from "../../hooks/useQuery";
 import toast from "react-hot-toast";
 import Skeleton from "../Skeleton";
 import Errors from "../Errors";
+import useHashRouting from "../../utils/useHashRouting";
+import { useRefetch } from "../../hooks/useRefetch";
 
 const Client = () => {
+  const currentPath = useHashRouting("");
+  const getPaginationUrl = currentPath?.split("?")[1];
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "page=1";
+
   const { setCreateInvoice, setAllTabItems } = useStoreContext();
   const [open, setOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
-  console.log("selectedClient", selectedClient);
-
   const {
     isLoading,
     data: clientOverView,
     error,
-  } = useFetchClientOverView(onError);
+    refetch,
+  } = useFetchClientOverView(paginationUrl, onError);
+
+  useRefetch(paginationUrl, refetch);
 
   useEffect(() => {
     setCreateInvoice(false);
@@ -114,6 +121,7 @@ const Client = () => {
             <>
               <ClientTable
                 clientData={clientOverView?.clients}
+                pagination={clientOverView?.pagination}
                 selectedClient={selectedClient}
                 setSelectedClient={setSelectedClient}
                 isAllselected={isAllselected}
@@ -134,7 +142,7 @@ const Client = () => {
         </React.Fragment>
       </div>
       <Modal open={open} setOpen={setOpen} title="Add Client">
-        <AddClientForm setOpen={setOpen} />
+        <AddClientForm setOpen={setOpen} refetch={refetch} />
       </Modal>
     </React.Fragment>
   );

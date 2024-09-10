@@ -12,19 +12,23 @@ import useHashRouting from "../../utils/useHashRouting";
 import toast from "react-hot-toast";
 import Errors from "../Errors";
 
+const extractProjectId = (url) => {
+  const match = url.match(/clients\/#\/(\d+)/);
+  return match ? match[1] : null;
+};
+
 const ClientDetails = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
-  console.log("currentPath", currentPath);
-  console.log("pathArray = ", pathArray);
+  const clientId = extractProjectId(currentPath);
 
   const { createInvoice } = useStoreContext();
   const {
     isLoading,
     data: singleClientOverView,
     error,
-  } = useFetchSingleClientOverView(pathArray[1], onError);
+  } = useFetchSingleClientOverView(clientId, onError);
 
   if (isLoading) return <Skeleton />;
 
@@ -38,7 +42,7 @@ const ClientDetails = () => {
       <Errors
         message={
           error?.response?.data?.errors?.id[0] ||
-          `Failed to fetch client Overview Data for ClientId ${pathArray[1]}`
+          `Failed to fetch client Overview Data for ClientId ${clientId}`
         }
       />
     );
@@ -52,7 +56,7 @@ const ClientDetails = () => {
           <div className="space-y-6">
             <Tab />
             <React.Fragment>
-              <ClientDetailsLayout />
+              <ClientDetailsLayout clientId={clientId} />
             </React.Fragment>
           </div>
         </React.Fragment>
