@@ -69,14 +69,15 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/clients",
+				eicApiSettings.rest_url + "wp-client-management/v1/team-member/1/projects ",
 				// {
 					// task_id: 1,
 					// reply_to: 9,
 					// comment: "No disting."
-					// name: 'new1',
-					// email: 'xkZxu@1example.com',
+					// name: 'disting',
+					// email: 'disting@disting.com',
 					// phone: '1234567890',
+					// designation: "disting disting"
 					// title: "Srabon pro",
 					// manager_id: 14,
 					// client_id: 13,
