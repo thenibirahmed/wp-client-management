@@ -9,26 +9,34 @@ import ProjectHeader from "../../helper/projects/ProjectHeader";
 import AddNewClientProjectForm from "../../helper/forms/AddNewClientProjectForm";
 import { useFetchClientProject } from "../../../hooks/useQuery";
 import toast from "react-hot-toast";
+import { useRefetch } from "../../../hooks/useRefetch";
+import useHashRouting from "../../../utils/useHashRouting";
+import Errors from "../../Errors";
+import Skeleton from "../../Skeleton";
 
 const ClientProject = ({ clientId }) => {
   const { openProjectModal, setOpenProjectModal } = useStoreContext();
+
+  const currentPath = useHashRouting("");
+  const getPaginationUrl = currentPath?.split("?")[1];
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "project=1";
 
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
   const {
     isLoading,
-    data: projectTask,
+    data: clientProjects,
     error,
     refetch,
-  } = useFetchClientProject(clientId, onError);
+  } = useFetchClientProject(clientId, paginationUrl, onError);
+
+  useRefetch(paginationUrl, refetch);
 
   function onError(err) {
     console.log(err);
     toast.error(err?.response?.data?.message || "Failed To Fetch Project Task");
   }
-
-  const dataList = [1];
 
   const handler = () => {
     setOpenProjectModal(true);
@@ -41,6 +49,20 @@ const ClientProject = ({ clientId }) => {
     alert(ids[0].id);
   };
 
+  if (isLoading) return <Skeleton />;
+
+  if (error) {
+    console.log("project task error", error?.response?.data?.errors);
+    return (
+      <Errors
+        message={
+          error?.response?.data?.errors ||
+          `Failed To Fetch Client Project Data for clientId ${clientId}`
+        }
+      />
+    );
+  }
+
   return (
     <React.Fragment>
       <ProjectHeader
@@ -51,13 +73,16 @@ const ClientProject = ({ clientId }) => {
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
       />
-      {dataList?.length > 0 ? (
+      {clientProjects?.projects?.length > 0 ? (
         <>
           <ClientProjectTable
             selectedClient={selectedProject}
             setSelectedClient={setSelectedProject}
             isAllselected={isAllselected}
             setIsAllSelected={setIsAllSelected}
+            projectData={clientProjects?.projects}
+            pagination={clientProjects?.pagination}
+            clientId={clientId}
           />
         </>
       ) : (

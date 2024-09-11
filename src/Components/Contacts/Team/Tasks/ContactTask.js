@@ -6,11 +6,12 @@ import EmptyTable from "../../../helper/EmptyTable";
 import toast from "react-hot-toast";
 import Skeleton from "../../../Skeleton";
 import { UserCircle02Icon } from "../../../../utils/icons";
+import { useRefetch } from "../../../../hooks/useRefetch";
 
 const ContactTask = ({ teamId }) => {
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
-  const paginationUrl = getPaginationUrl ? getPaginationUrl : "project=1";
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "task=1";
 
   const {
     isLoading,
@@ -18,7 +19,7 @@ const ContactTask = ({ teamId }) => {
     error,
     refetch,
   } = useFetchSingleTeamTasks(teamId, paginationUrl, onError);
-
+  useRefetch(paginationUrl, refetch);
   function onError(err) {
     console.log(err);
     toast.error(err?.response?.data?.errors || "Failed to fetch task data");
@@ -26,7 +27,7 @@ const ContactTask = ({ teamId }) => {
   if (isLoading) return <Skeleton />;
   return (
     <React.Fragment>
-      {taskLists?.team?.length > 0 ? (
+      {taskLists?.task?.length > 0 ? (
         <>
           {" "}
           <ContactTeamTaskTable

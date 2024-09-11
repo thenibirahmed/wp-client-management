@@ -67,6 +67,9 @@ const ClientProjectTable = ({
   setSelectedClient,
   isAllselected,
   setIsAllSelected,
+  projectData,
+  pagination,
+  clientId,
 }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
@@ -146,9 +149,9 @@ const ClientProjectTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
-                  let itemStatus = item.status.toLowerCase();
-                  let itemPriority = item.priority.toLowerCase();
+                {projectData?.map((item) => {
+                  let itemStatus = item.status;
+                  let itemPriority = item.priority;
 
                   const isChecked = selectedClient.some(
                     (client) => client.id === item.id
@@ -185,13 +188,13 @@ const ClientProjectTable = ({
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
-                        ${item.invoice}
+                        ${item.invoice.due}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-invoiceColor font-metropolis font-medium">
-                        ${item.revenue}
+                        ${item.invoice.revenue}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
-                        ${item.due}
+                        ${item.invoice.due}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm  font-metropolis font-medium">
                         <span
@@ -243,7 +246,12 @@ const ClientProjectTable = ({
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug="clients"
+              query="/?project"
+              projectId={clientId}
+            />
           </div>
         </div>
       </div>

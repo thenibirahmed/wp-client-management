@@ -6,14 +6,34 @@ import NoteTable from "../../helper/notes/NoteTable";
 import AddNewNote from "../../helper/notes/AddNewNote";
 import { Task01Icon } from "../../../utils/icons";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
+import { useFetchProjectNotes } from "../../../hooks/useQuery";
+import useHashRouting from "../../../utils/useHashRouting";
 
-const ClientNotes = () => {
+const ClientNotes = ({ clientId }) => {
   const { createNote, setCreateNote } = useStoreContext();
 
   const [selectedNote, setSelectedNote] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
   const dataList = [1];
+
+  const currentPath = useHashRouting("");
+  const getPaginationUrl = currentPath?.split("?")[1];
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "note=1";
+
+  const {
+    isLoading,
+    data: clientNotes,
+    error,
+    refetch,
+  } = useFetchProjectNotes(clientId, paginationUrl, "client", onError);
+
+  function onError(err) {
+    console.log(err);
+    toast.error(
+      err?.response?.data?.message || "Failed To Fetch Project Notes"
+    );
+  }
 
   const handler = () => {
     setCreateNote(true);
@@ -39,14 +59,27 @@ const ClientNotes = () => {
 
       {createNote ? (
         <React.Fragment>
-          <AddNewNote />
+          <AddNewNote
+            noteData={clientNotes?.notes}
+            selectedNote={selectedNote}
+            setSelectedNote={setSelectedNote}
+            isAllselected={isAllselected}
+            setIsAllSelected={setIsAllSelected}
+            refetch={refetch}
+            setOpen={setCreateNote}
+            projectId={clientId}
+            pagination={clientNotes?.pagination}
+            type="client"
+          />
         </React.Fragment>
       ) : (
         <React.Fragment>
           {dataList.length > 0 ? (
             <>
               <NoteTable
-                noteData={[]}
+                noteData={clientNotes?.notes}
+                projectId={clientId}
+                pagination={clientNotes?.pagination}
                 selectedNote={selectedNote}
                 setSelectedNote={setSelectedNote}
                 isAllselected={isAllselected}

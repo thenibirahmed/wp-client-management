@@ -60,10 +60,7 @@ const tableData = [
   },
 ];
 
-const ContactTeamTaskTable = ({ taskLists }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-
+const ContactTeamTaskTable = ({ taskLists, pagination, teamId }) => {
   const [selectedClient, setSelectedClient] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
@@ -131,9 +128,9 @@ const ContactTeamTaskTable = ({ taskLists }) => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
-                  let itemStatus = item.status.toLowerCase();
-                  let itemPriority = item.priority.toLowerCase();
+                {taskLists?.map((item) => {
+                  let itemStatus = item.status;
+                  let itemPriority = item.priority;
 
                   const isChecked = selectedClient.some(
                     (client) => client.id === item.id
@@ -162,14 +159,16 @@ const ContactTeamTaskTable = ({ taskLists }) => {
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.tasktitle}
+                          {item.title}
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
-                            src={item.image}
+                            src={
+                              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            }
                             alt={item.owner}
                           />
                           <div>
@@ -180,13 +179,13 @@ const ContactTeamTaskTable = ({ taskLists }) => {
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-medium">
-                        {item.dueDate}
+                        {item.due_date}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
                         <div className="flex items-center  gap-0">
                           <CommentAdd02Icon className="text-textColor2" />
                           <span className="whitespace-nowrap px-3 py-4 text-[14px] text-textColor2 font-metropolis font-normal">
-                            {item.comment}
+                            {item.comment_count}
                           </span>
                         </div>
                       </td>
@@ -202,7 +201,12 @@ const ContactTeamTaskTable = ({ taskLists }) => {
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              projectId={teamId}
+              pagination={pagination}
+              slug="contact"
+              query="/?task"
+            />
           </div>
         </div>
       </div>

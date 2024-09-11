@@ -44,23 +44,22 @@ export const useFetchSingleClientOverView = (clientId, onError) => {
   );
 };
 
-export const useFetchClientProject = (clientId, onError) => {
+export const useFetchClientProject = (clientId, paginationUrl, onError) => {
   return useQuery(
-    ["client-project", clientId],
+    ["client-projects", clientId],
     async () => {
-      return await api.get(`/client/${clientId}/project`);
+      return await api.get(`/client/${clientId}/projects/?${paginationUrl}`);
     },
     {
       select: (data) => {
         const sendData = {
-          clients: data.data.clients,
+          projects: data.data.projects,
           pagination: data.data.pagination,
-          topBar: data.data.topBar,
         };
-        console.log("client pro", data.data);
 
-        return data;
+        return sendData;
       },
+      enabled: !!clientId,
       onError,
       staleTime: 5000,
     }
@@ -296,14 +295,15 @@ export const useFetchProjectInvoice = (projectId, paginationUrl, onError) => {
   );
 };
 
-export const useFetchProjectNotes = (projectId, pageinationUrl, onError) => {
+export const useFetchProjectNotes = (id, pageinationUrl, type, onError) => {
   return useQuery(
-    ["project-notes", projectId],
+    ["project-notes", id],
     async () => {
-      return await api.get(`/project/${projectId}/notes/?${pageinationUrl}`);
+      return await api.get(`/${type}/${id}/notes/?${pageinationUrl}`);
     },
     {
       select: (data) => {
+        console.log("client note", data.data);
         const sendData = {
           notes: data.data.data,
           pagination: data.data.pagination,
@@ -311,6 +311,7 @@ export const useFetchProjectNotes = (projectId, pageinationUrl, onError) => {
 
         return sendData;
       },
+      enabled: !!id,
       onError,
       staleTime: 5000,
     }
@@ -494,6 +495,7 @@ export const useFetchSingleTeamOverview = (teamId, onError) => {
 
         return sendData;
       },
+      enabled: !!teamId,
       onError,
       staleTime: 5000,
     }
@@ -508,13 +510,15 @@ export const useFetchSingleTeamProject = (teamId, paginationUrl, onError) => {
     },
     {
       select: (data) => {
+        console.log("projectTask", data.data);
         const sendData = {
-          team: data.data.data,
+          team: data.data.projects,
           pagination: data.data.pagination,
         };
 
         return sendData;
       },
+      enabled: !!teamId,
       onError,
       staleTime: 5000,
     }
@@ -530,12 +534,13 @@ export const useFetchSingleTeamTasks = (teamId, paginationUrl, onError) => {
     {
       select: (data) => {
         const sendData = {
-          task: data.data.data,
+          task: data.data.tasks,
           pagination: data.data.pagination,
         };
 
         return sendData;
       },
+      enabled: !!teamId,
       onError,
       staleTime: 5000,
     }

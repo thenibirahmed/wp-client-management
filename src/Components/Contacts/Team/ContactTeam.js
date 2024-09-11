@@ -12,10 +12,12 @@ import { useFetchContactTeamMembers } from "../../../hooks/useQuery";
 import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
 import { UserCircle02Icon } from "../../../utils/icons";
+import ProjectHeader from "../../helper/projects/ProjectHeader";
 
 const ContactTeam = () => {
   const [open, setOpen] = useState(false);
-
+  const [selectedClient, setSelectedClient] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "page=1";
@@ -33,14 +35,28 @@ const ContactTeam = () => {
     console.log(err);
     toast.error(err?.response?.data?.errors, "Failed to fetch team members");
   }
-
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].id);
+  };
   if (allTeamError) {
     return <Errors message="Internal Server Error" />;
   }
 
   return (
     <React.Fragment>
-      <TabHeader setOpen={setOpen} btn="Add Member" />
+      <ProjectHeader
+        selectedProject={selectedClient}
+        title="Team"
+        setOpenModal={setOpen}
+        btnTitle="Add Member"
+        onDeleteAction={onDeleteAction}
+        onCheckAction={onCheckAction}
+        filter={false}
+      />
+
       <React.Fragment>
         {teamLoader ? (
           <Skeleton />
@@ -51,6 +67,10 @@ const ContactTeam = () => {
                 <ContactTeamTable
                   teamLists={teamMemberLists?.team}
                   pagination={teamMemberLists?.pagination}
+                  selectedClient={selectedClient}
+                  setSelectedClient={setSelectedClient}
+                  isAllselected={isAllselected}
+                  setIsAllSelected={setIsAllSelected}
                 />
               </>
             ) : (

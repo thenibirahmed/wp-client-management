@@ -16,6 +16,8 @@ const ContactProject = ({ teamId }) => {
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "project=1";
 
+  console.log(teamId, "teamId");
+
   const {
     isLoading,
     data: teamLists,

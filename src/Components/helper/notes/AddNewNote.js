@@ -5,7 +5,6 @@ import "react-quill/dist/quill.snow.css";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import NoteTable from "./NoteTable";
 import toast from "react-hot-toast";
-import useHashRouting from "../../../utils/useHashRouting";
 import Loaders from "../../Loaders";
 import api from "../../../api/api";
 import {
@@ -22,13 +21,23 @@ const AddNewNote = ({
   setIsAllSelected,
   refetch,
   setOpen,
+  projectId,
+  pagination,
+  type,
 }) => (
   <div>
     <div className="border border-borderColor rounded-[8px] py-[13px]">
-      <AddNewNoteTextArea refetch={refetch} setOpen={setOpen} />
+      <AddNewNoteTextArea
+        refetch={refetch}
+        setOpen={setOpen}
+        projectId={projectId}
+        type={type}
+      />
     </div>
     <NoteTable
       noteData={noteData}
+      projectId={projectId}
+      pagination={pagination}
       selectedNote={selectedNote}
       setSelectedNote={setSelectedNote}
       isAllselected={isAllselected}
@@ -39,7 +48,7 @@ const AddNewNote = ({
 
 export default AddNewNote;
 
-const AddNewNoteTextArea = ({ refetch, setOpen }) => {
+const AddNewNoteTextArea = ({ refetch, setOpen, projectId, type }) => {
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
 
@@ -47,22 +56,24 @@ const AddNewNoteTextArea = ({ refetch, setOpen }) => {
   const [editorContent, setEditorContent] = useState("");
   const [submitLoader, setSubmitLoader] = useState(false);
 
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
   const quillRef = useRef(null);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     if (!editorContent) return toast.error("Content required");
-    const projectId = pathArray[1] ? Number(pathArray[1]) : null;
 
     if (!projectId) return toast.error("ProjectId is required");
 
     setSubmitLoader(true);
     const sendData = {
-      project_id: projectId,
       note: editorContent,
     };
+
+    if (type === "project") {
+      sendData.project_id = projectId;
+    } else {
+      sendData.client_id = projectId;
+    }
 
     try {
       const { data } = await api.post("/note/create", sendData);

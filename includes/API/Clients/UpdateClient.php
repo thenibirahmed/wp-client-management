@@ -12,31 +12,34 @@ class UpdateClient {
     private $endpoint = '/client/update/(?P<id>\d+)';
 
     protected array $rules = [
-        'wp_user_id' => 'nullable|integer',
-        'phone' => 'nullable|string',
-        'address' => 'nullable|string',
-        'city' => 'nullable|string',
-        'state' => 'nullable|string',
-        'zip' => 'nullable|string',
-        'country' => 'nullable|string',
-        'role' => 'nullable|string',
+        'name'         => 'required|string|unique:users,user_login',
+        'email'        => 'required|email|unique:users,user_email',
+        'phone'        => 'nullable|string',
+        'address'      => 'nullable|string',
+        'city'         => 'nullable|string',
+        'state'        => 'nullable|string',
+        'zip'          => 'nullable|string',
+        'country'      => 'nullable|string',
+        'role'         => 'nullable|string',
         'organization' => 'nullable|string',
-        'designation' => 'nullable|string',
-        'status' => 'nullable|string',
+        'status'       => 'nullable|string',
     ];
 
     protected array $validationMessages = [
-        'wp_user_id.integer' => 'The wp_user_id must be an integer.',
-        'phone.string' => 'The phone number must be a valid string.',
-        'address.string' => 'The address must be a valid string.',
-        'city.string' => 'The city must be a valid string.',
-        'state.string' => 'The state must be a valid string.',
-        'zip.string' => 'The zip code must be a valid string.',
-        'country.string' => 'The country must be a valid string.',
-        'role.string' => 'The role must be a valid string.',
+        'name.required'       => 'The name is required.',
+        'name.unique'         => 'The user name already exists.',
+        'email.required'      => 'The email is required.',
+        'email.email'         => 'The email must be a valid email.',
+        'email.unique'        => 'The user email already exists.',
+        'phone.string'        => 'The phone number must be a valid string.',
+        'address.string'      => 'The address must be a valid string.',
+        'city.string'         => 'The city must be a valid string.',
+        'state.string'        => 'The state must be a valid string.',
+        'zip.string'          => 'The zip code must be a valid string.',
+        'country.string'      => 'The country must be a valid string.',
+        'role.string'         => 'The role must be a valid string.',
         'organization.string' => 'The organization must be a string.',
-        'designation.string' => 'The designation must be a string.',
-        'status.string' => 'The status must be a string.',
+        'status.string'       => 'The status must be a string.',
     ];
 
     public function __construct() {
@@ -53,19 +56,15 @@ class UpdateClient {
         $data = $request->get_params();
         $id = $request->get_param('id');
 
-        $data['user_login']   = isset($data['user_login']) ? sanitize_user($data['user_login'], true) : null;
-        $data['user_email']   = isset($data['user_email']) ? sanitize_email($data['user_email']) : null;
-        $data['user_pass']    = isset($data['user_pass']) ? sanitize_text_field($data['user_pass']) : null;
-        $data['phone']        = sanitize_text_field($data['phone']);
-        $data['address']      = sanitize_text_field($data['address']);
-        $data['city']         = sanitize_text_field($data['city']);
-        $data['state']        = sanitize_text_field($data['state']);
-        $data['zip']          = sanitize_text_field($data['zip']);
-        $data['country']      = sanitize_text_field($data['country']);
-        $data['role']         = sanitize_text_field($data['role']);
-        $data['organization'] = sanitize_text_field($data['organization']);
-        $data['designation']  = sanitize_text_field($data['designation']);
-        $data['status']       = sanitize_text_field($data['status']);
+        $data['name']         = isset($data['name']) ? sanitize_text_field($data['name']) : '';
+        $data['email']        = isset($data['email']) ? sanitize_email($data['email']) : '';
+        $data['phone']        = isset($data['phone']) ? sanitize_text_field($data['phone']) : '';
+        $data['address']      = isset($data['address']) ? sanitize_text_field($data['address']) : '';
+        $data['city']         = isset($data['city']) ? sanitize_text_field($data['city']) : '';
+        $data['state']        = isset($data['state']) ? sanitize_text_field($data['state']) : '';
+        $data['zip']          = isset($data['zip']) ? sanitize_text_field($data['zip']) : '';
+        $data['country']      = isset($data['country']) ? sanitize_text_field($data['country']) : '';
+        $data['organization'] = isset($data['organization']) ? sanitize_text_field($data['organization']) : '';
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -74,6 +73,8 @@ class UpdateClient {
                 'errors' => $validator->errors(),
             ], 400);
         }
+
+        return new \WP_REST_Response($data);
 
         $client = Client::find($id);
 

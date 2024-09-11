@@ -28,7 +28,7 @@ const ProjectNote = ({ projectId }) => {
     data: projectNotes,
     error,
     refetch,
-  } = useFetchProjectNotes(projectId, paginationUrl, onError);
+  } = useFetchProjectNotes(projectId, paginationUrl, "project", onError);
 
   function onError(err) {
     console.log(err);
@@ -84,6 +84,9 @@ const ProjectNote = ({ projectId }) => {
             setIsAllSelected={setIsAllSelected}
             refetch={refetch}
             setOpen={setCreateNote}
+            projectId={projectId}
+            pagination={projectNotes?.pagination}
+            type="project"
           />
         </React.Fragment>
       ) : (

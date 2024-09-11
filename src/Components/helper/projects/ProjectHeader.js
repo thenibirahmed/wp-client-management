@@ -17,6 +17,7 @@ const ProjectHeader = ({
   cancelTitle,
   onDeleteAction,
   onCheckAction,
+  filter = true,
 }) => {
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
@@ -35,8 +36,7 @@ const ProjectHeader = ({
           </>
         )}
         <Search />
-
-        <Filter />
+        {filter && <Filter />}
 
         {openModal ? (
           <>

@@ -4,10 +4,14 @@ import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 
-const ContactTeamTable = ({ teamLists, pagination }) => {
-  const [selectedClient, setSelectedClient] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
-
+const ContactTeamTable = ({
+  teamLists,
+  pagination,
+  selectedClient,
+  setSelectedClient,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
     selectedClient,
     setIsAllSelected,
