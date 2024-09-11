@@ -69,17 +69,17 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.put(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/update/10",
+				eicApiSettings.rest_url + "wp-client-management/v1/project/update/3",
 				{
-					name: 'rayrio',
-					email: 'ray@update.com',
-					phone: '000000',
-					address: 'updatedxx',
-					city: 'updatedxx',
-					state: 'updatedxx',
-					country: 'updatedxx',
-					zip: '25252',
-					organization: 'codecstasyxx',
+					client_id: 1,
+					manager_id: 1,
+					status_id: 1,
+					priority_id: 7,
+					title: "updated test",
+					budget: 1000,
+					start_date: "2022-01-01",
+					due_date: "2022-01-01",
+					description: "updated test description",
 				},
 				{
 					headers: {
