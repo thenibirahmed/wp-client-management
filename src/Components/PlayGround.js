@@ -68,9 +68,9 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/team-member/1/overview",
-				// {
+		axios.put(
+				eicApiSettings.rest_url + "wp-client-management/v1/client/update/2000",
+				{
 				// 	name: 'Showebbai',
 				// 	email: 'showebbai@wp.com',
 				// 	phone: '454465',
@@ -80,7 +80,7 @@ const PlayGround = () => {
 				// 	country: 'bari',
 				// 	zip: '25252',
 				// 	organization: 'codecstasy',
-				// },
+				},
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,

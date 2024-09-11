@@ -41,7 +41,7 @@ class AddTeamMember {
         global $validator;
 
         $data = $request->get_params();
-        
+
         $data['name']        = sanitize_user($data['name'], true);
         $data['email']       = sanitize_email($data['email']);
         $data['phone']       = sanitize_text_field($data['phone']);
@@ -60,7 +60,7 @@ class AddTeamMember {
             'user_email'    => $data['email'],
             'user_pass'     => $data['name'],
         );
-    
+
         $wp_user_id = wp_insert_user($wp_user_data);
 
         if (is_wp_error($wp_user_id)) {
@@ -75,7 +75,7 @@ class AddTeamMember {
             'wp_user_id' => intval($wp_user_id),
             'phone'      => $data['phone'],
             'designation' => $data['designation'],
-            'role'       => 'team',
+            'role'       => 'admin',
         );
 
         $eic_crm_user = EicCrmUser::create($eic_crm_user_data);
