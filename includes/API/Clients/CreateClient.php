@@ -98,7 +98,6 @@ class CreateClient {
             'zip'          => $data['zip'],
             'country'      => $data['country'],
             'organization' => $data['organization'],
-            'role'         => 'admin',
         );
 
         $eic_crm_user = EicCrmUser::create($eic_crm_user_data);

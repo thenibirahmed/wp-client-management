@@ -69,17 +69,17 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.put(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/update/2000",
+				eicApiSettings.rest_url + "wp-client-management/v1/client/update/10",
 				{
-				// 	name: 'Showebbai',
-				// 	email: 'showebbai@wp.com',
-				// 	phone: '454465',
-				// 	address: 'kamarpara',
-				// 	city: 'barisal',
-				// 	state: 'barisal',
-				// 	country: 'bari',
-				// 	zip: '25252',
-				// 	organization: 'codecstasy',
+					name: 'rayrio',
+					email: 'ray@update.com',
+					phone: '000000',
+					address: 'updatedxx',
+					city: 'updatedxx',
+					state: 'updatedxx',
+					country: 'updatedxx',
+					zip: '25252',
+					organization: 'codecstasyxx',
 				},
 				{
 					headers: {
