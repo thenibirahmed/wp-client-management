@@ -1,49 +1,10 @@
-import React, { useState, useEffect } from "react";
-import {
-  Delete03Icon,
-  PencilEdit02Icon,
-  Task01Icon,
-} from "../../../utils/icons";
-import useHashRouting from "../../../utils/useHashRouting";
+import React, { useState } from "react";
+
+import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 
-const tableData = [
-  {
-    id: 1,
-    name: "Easin",
-    email: "easin@gmail.com",
-    phone: "(405) 555-0128",
-    position: "CEO",
-    createdDate: "May 9, 2014",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 2,
-    name: "Tanvir",
-    email: "tanvir@gmail.com",
-    position: "CEO",
-    phone: "(405) 555-0128",
-    createdDate: "May 9, 2014",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 2,
-    name: "Tanvir",
-    email: "tanvir@gmail.com",
-    position: "CEO",
-    phone: "(405) 555-0128",
-    createdDate: "May 9, 2014",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
-
-const ContactTeamTable = () => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
+const ContactTeamTable = ({ teamLists, pagination }) => {
   const [selectedClient, setSelectedClient] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
@@ -53,7 +14,6 @@ const ContactTeamTable = () => {
     setSelectedClient
   );
 
-  console.log(selectedClient);
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -73,7 +33,7 @@ const ContactTeamTable = () => {
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, teamLists)
                       }
                       type="checkbox"
                     />
@@ -111,13 +71,21 @@ const ContactTeamTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
+                {teamLists?.map((item) => {
                   const isChecked = selectedClient.some(
                     (client) => client.id === item.id
                   );
                   return (
-                    <tr>
-                      <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
+                    <tr
+                      className="cursor-pointer"
+                      onClick={() =>
+                        (window.location.href = `#/contact/#/${item.id}`)
+                      }
+                    >
+                      <td
+                        onClick={(e) => e.stopPropagation()}
+                        className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal"
+                      >
                         <input
                           checked={isChecked}
                           onChange={(e) =>
@@ -132,7 +100,9 @@ const ContactTeamTable = () => {
                         <div className="flex  gap-3">
                           <img
                             className="h-8 w-8 rounded-full bg-gray-50"
-                            src={item.image}
+                            src={
+                              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            }
                             alt={item.name}
                           />
                           <div>
@@ -140,7 +110,7 @@ const ContactTeamTable = () => {
                               {item.name}
                             </h3>
                             <span className="text-xs  text-textColor2 font-metropolis font-normal leading-3">
-                              {item.position}
+                              {item.designation}
                             </span>
                           </div>
                         </div>
@@ -152,7 +122,7 @@ const ContactTeamTable = () => {
                         {item.phone}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-normal">
-                        {item.createdDate}
+                        {item.created_date}
                       </td>
 
                       <td className="whitespace-nowrap   px-3 py-4 ">
@@ -184,7 +154,7 @@ const ContactTeamTable = () => {
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination pagination={pagination} slug="contact" query="/?page" />
           </div>
         </div>
       </div>

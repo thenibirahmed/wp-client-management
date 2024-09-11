@@ -2,28 +2,56 @@ import React, { useRef, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import TextField from "../../helper/TextField";
+import api from "../../../api/api";
+import toast from "react-hot-toast";
+import Loaders from "../../Loaders";
 
-const AddContactTeamForm = ({ setOpen }) => {
+const AddContactTeamForm = ({ setOpen, refetch }) => {
   const [imageUrl, setImageUrl] = useState("");
+  const [submitLoader, setSubmitLoader] = useState(false);
 
   const imageRef = useRef();
   const {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-    },
     mode: "onTouched",
   });
 
-  const addNewClientHandler = (data) => {
-    console.log(data);
-    reset();
+  const addNewClientHandler = async (data) => {
+    setSubmitLoader(true);
+    const sendData = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      designation: data.designation,
+    };
+
+    try {
+      const { data } = await api.post("/team-member/create", sendData);
+      toast.success(data?.message);
+      await refetch();
+      reset();
+      setOpen(false);
+    } catch (err) {
+      console.log(err);
+      if (err?.response?.data?.errors["email"]?.length > 0) {
+        setError("email", {
+          message: err?.response?.data?.errors["email"][0],
+        });
+      }
+
+      if (err?.response?.data?.errors["name"]?.length > 0) {
+        setError("name", {
+          message: err?.response?.data?.errors["name"][0],
+        });
+      }
+    } finally {
+      setSubmitLoader(false);
+    }
   };
 
   const onImageUploadHandler = () => {
@@ -103,6 +131,7 @@ const AddContactTeamForm = ({ setOpen }) => {
         </div>
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button
+            disabled={submitLoader}
             onClick={() => setOpen(false)}
             type="button"
             className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
@@ -110,10 +139,11 @@ const AddContactTeamForm = ({ setOpen }) => {
             Cancel
           </button>
           <button
+            disabled={submitLoader}
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            Save
+            {submitLoader ? <Loaders /> : "Save"}
           </button>
         </div>
       </form>

@@ -37,7 +37,7 @@ class CreateInvoice {
         'tax'                      => 'nullable|numeric',
         'fee'                      => 'nullable|numeric',
     ];
-
+ 
     protected array $validationMessages = [
         'eic_crm_user_id.exists'         => 'The selected EicCrmUser does not exist.',
         'project_id.exists'              => 'The selected Project does not exist.',

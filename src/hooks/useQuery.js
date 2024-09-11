@@ -5,7 +5,7 @@ export const useFetchClientOverView = (pageinationUrl, onError) => {
   return useQuery(
     "client-overview",
     async () => {
-      return await api.get(`/client-overview/?${pageinationUrl}`);
+      return await api.get(`/clients-overview/?${pageinationUrl}`);
     },
     {
       select: (data) => {
@@ -453,6 +453,89 @@ export const useFetchClientDetails = (clientId, onError) => {
         return sendData;
       },
       enabled: !!clientId,
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+export const useFetchContactTeamMembers = (paginationUrl, onError) => {
+  return useQuery(
+    "contact-team-members",
+    async () => {
+      return await api.get(`/team-members/?${paginationUrl}`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          team: data.data.data,
+          pagination: data.data.pagination,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchSingleTeamOverview = (teamId, onError) => {
+  return useQuery(
+    ["single-team-overview", teamId],
+    async () => {
+      return await api.get(`/team-member/${teamId}/overview`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          profile: data.data.profile,
+          bottomTab: data.data.bottomTab,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchSingleTeamProject = (teamId, paginationUrl, onError) => {
+  return useQuery(
+    ["single-team-projects", teamId],
+    async () => {
+      return await api.get(`/team-member/${teamId}/projects/?${paginationUrl}`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          team: data.data.data,
+          pagination: data.data.pagination,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchSingleTeamTasks = (teamId, paginationUrl, onError) => {
+  return useQuery(
+    ["single-team-tasks", teamId],
+    async () => {
+      return await api.get(`/team-member/${teamId}/tasks/?${paginationUrl}`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          task: data.data.data,
+          pagination: data.data.pagination,
+        };
+
+        return sendData;
+      },
       onError,
       staleTime: 5000,
     }

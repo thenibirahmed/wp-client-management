@@ -52,6 +52,8 @@ export const renderComponent = (path, activeUrl, paginationUrl) => {
       return <ProfitLoss />;
     case "contact":
       return <Contact />;
+    case `contact/?${paginationUrl}`:
+      return <Contact />;
     case `contact/#/${activeUrl}`:
       return <ContactTeamDetails />;
     case "setting":

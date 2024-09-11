@@ -74,12 +74,12 @@ const Projects = () => {
     alert(ids[0].id);
   };
 
-  if (projectOverViewError || allProjectError) {
-    return <Errors message="Internal Server Error" />;
-  }
-
   if (isLoading) {
     return <Skeleton />;
+  }
+
+  if (projectOverViewError || allProjectError) {
+    return <Errors message="Internal Server Error" />;
   }
 
   return (

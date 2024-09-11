@@ -131,7 +131,31 @@ const PlayGround = () => {
   const emplyee = () => {
     axios
       .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/project/19/invoices",
+        eicApiSettings.rest_url + "wp-client-management/v1/team-members",
+
+        {
+          headers: {
+            "X-WP-Nonce": eicApiSettings.nonce,
+            // 'Content-Type' : 'application/json'
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setPost(response.data);
+      })
+      .catch((error) => {
+        console.log(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+  const overview = () => {
+    axios
+      .get(
+        eicApiSettings.rest_url +
+          "wp-client-management/v1/team-member/7/projects",
 
         {
           headers: {
@@ -164,6 +188,8 @@ const PlayGround = () => {
       <br />
       <button onClick={getTest}>Test me!</button>
       <br /> <button onClick={emplyee}>Emplyee</button>
+      <br />
+      <br /> <button onClick={overview}>overview</button>
       <br />
     </div>
   );

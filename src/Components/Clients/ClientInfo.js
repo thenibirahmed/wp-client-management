@@ -7,10 +7,22 @@ import {
   PencilEdit02Icon,
 } from "../../utils/icons";
 import useHashRouting from "../../utils/useHashRouting";
+import { useFetchSingleTeamOverview } from "../../hooks/useQuery";
+import Skeleton from "../Skeleton";
 
-const ClientInfo = ({ profile }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
+const ClientInfo = ({ profile, teamId }) => {
+  const {
+    isLoading,
+    data: teamOverView,
+    error,
+  } = useFetchSingleTeamOverview(teamId, onError);
+
+  function onError(err) {
+    console.log(err);
+    toast.error("Failed to fetch all projects or project Overview data");
+  }
+
+  if (isLoading) return <Skeleton />;
 
   return (
     <div className="flex sm:flex-row flex-col sm:gap-0 gap-4 justify-between sm:items-center   pb-5 border-b border-b-borderColor">
@@ -24,10 +36,10 @@ const ClientInfo = ({ profile }) => {
         </div>
         <div>
           <h1 className="font-metropolis font-semibold  text-textColor text-3xl ">
-            {profile?.name}
+            {teamOverView?.profile?.name}
           </h1>
           <span className="text-xs  text-textColor2 font-metropolis font-normal ">
-            {profile?.organization}
+            {teamOverView?.profile?.designation}
           </span>
         </div>
       </div>

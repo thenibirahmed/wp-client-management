@@ -60,7 +60,7 @@ const tableData = [
   },
 ];
 
-const ContactTeamTaskTable = () => {
+const ContactTeamTaskTable = ({ taskLists }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 

@@ -101,7 +101,7 @@ const tableData = [
   },
 ];
 
-const ContactTeamProjectTable = () => {
+const ContactTeamProjectTable = ({ teamLists, pagination }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
   const [selectedClient, setSelectedClient] = useState([]);
