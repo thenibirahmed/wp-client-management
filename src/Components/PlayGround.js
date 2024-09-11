@@ -68,13 +68,11 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.put(
-				eicApiSettings.rest_url + "wp-client-management/v1/file/update/3",
+		axios.post(
+				eicApiSettings.rest_url + "wp-client-management/v1/note/create",
 				{
-					client_id: 1,
 					project_id: 1,
-					title: 'updated file ilu ilu ilu',
-					url: 'https://www.google.com.jpg',
+					
 				},
 				{
 					headers: {
