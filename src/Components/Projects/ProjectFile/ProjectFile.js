@@ -28,7 +28,7 @@ const ProjectFile = ({ projectId }) => {
     data: projectFiles,
     error,
     refetch,
-  } = useFetchProjectFiles(projectId, paginationUrl, onError);
+  } = useFetchProjectFiles(projectId, paginationUrl, "project", onError);
 
   useRefetch(paginationUrl, refetch);
 
@@ -72,6 +72,7 @@ const ProjectFile = ({ projectId }) => {
                   setSelectedFile={setSelectedFile}
                   isAllselected={isAllselected}
                   setIsAllSelected={setIsAllSelected}
+                  slug="projects"
                 />
               </>
             ) : (
@@ -89,7 +90,12 @@ const ProjectFile = ({ projectId }) => {
         )}
       </React.Fragment>
       <Modal open={openFileModal} setOpen={setOpenFileModal} title="Add File">
-        <AddNewFileForm refetch={refetch} setOpen={setOpenFileModal} />
+        <AddNewFileForm
+          refetch={refetch}
+          setOpen={setOpenFileModal}
+          type="project"
+          id={projectId}
+        />
       </Modal>
     </React.Fragment>
   );

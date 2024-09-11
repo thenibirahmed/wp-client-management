@@ -56,7 +56,7 @@ const tableData = [
   },
 ];
 
-const EmailTable = ({ emailsData, pagination, projectId }) => {
+const EmailTable = ({ emailsData, pagination, projectId, slug }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
@@ -210,7 +210,7 @@ const EmailTable = ({ emailsData, pagination, projectId }) => {
             </table>
             <Pagination
               pagination={pagination}
-              slug="projects"
+              slug={slug}
               query="/?email"
               projectId={projectId}
             />

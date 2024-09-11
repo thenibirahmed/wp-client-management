@@ -3,7 +3,7 @@ function truncateText(text) {
 
   if (textLegth < 65) return text;
 
-  return text.substring(0, 65) + "...";
+  return text?.substring(0, 65) + "...";
 }
 
 export default truncateText;

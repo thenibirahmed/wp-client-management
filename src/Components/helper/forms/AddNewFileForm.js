@@ -6,17 +6,13 @@ import { Image02Icon } from "../../../utils/icons";
 import TextField from "../TextField";
 import toast from "react-hot-toast";
 import api from "../../../api/api";
-import useHashRouting from "../../../utils/useHashRouting";
 import Loaders from "../../Loaders";
 
-const AddNewFileForm = ({ refetch, setOpen }) => {
+const AddNewFileForm = ({ refetch, setOpen, type, id }) => {
   const { setOpenFileModal } = useStoreContext();
   const [imageUrl, setImageUrl] = useState();
   const [submitLoader, setSubmitLoader] = useState(false);
   const imageRef = useRef();
-
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
 
   const {
     register,
@@ -28,17 +24,17 @@ const AddNewFileForm = ({ refetch, setOpen }) => {
   });
 
   const addNewFileHandler = async (data) => {
-    const projectId = pathArray[1] ? Number(pathArray[1]) : null;
-
-    if (!projectId) return toast.error("ProjectId is required");
-
     setSubmitLoader(true);
     const sendData = {
-      project_id: projectId,
       title: data.title,
       url: data.url,
     };
-    console.log(data);
+
+    if (type === "project") {
+      sendData.project_id = id;
+    } else {
+      sendData.client_id = id;
+    }
 
     try {
       const { data } = await api.post("/file/create", sendData);

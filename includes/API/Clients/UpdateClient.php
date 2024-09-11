@@ -11,19 +11,21 @@ class UpdateClient {
 
     private $endpoint = '/client/update/(?P<id>\d+)';
 
-    protected array $rules = [
-        'name'         => 'required|string|unique:users,user_login',
-        'email'        => 'required|email|unique:users,user_email',
-        'phone'        => 'nullable|string',
-        'address'      => 'nullable|string',
-        'city'         => 'nullable|string',
-        'state'        => 'nullable|string',
-        'zip'          => 'nullable|string',
-        'country'      => 'nullable|string',
-        'role'         => 'nullable|string',
-        'organization' => 'nullable|string',
-        'status'       => 'nullable|string',
-    ];
+    protected function rules($clientId) {
+        return [
+            'name'         => 'required|string|unique:users,user_login,' . $clientId,
+            'email'        => 'required|email|unique:users,user_email,' . $clientId,
+            'phone'        => 'nullable|string',
+            'address'      => 'nullable|string',
+            'city'         => 'nullable|string',
+            'state'        => 'nullable|string',
+            'zip'          => 'nullable|string',
+            'country'      => 'nullable|string',
+            'role'         => 'nullable|string',
+            'organization' => 'nullable|string',
+            'status'       => 'nullable|string',
+        ];
+    }
 
     protected array $validationMessages = [
         'name.required'       => 'The name is required.',
@@ -54,7 +56,7 @@ class UpdateClient {
         global $validator;
 
         $data = $request->get_params();
-        $id = $request->get_param('id');
+        $id   = $request->get_param('id');
 
         $data['name']         = isset($data['name']) ? sanitize_text_field($data['name']) : '';
         $data['email']        = isset($data['email']) ? sanitize_email($data['email']) : '';
@@ -66,7 +68,23 @@ class UpdateClient {
         $data['country']      = isset($data['country']) ? sanitize_text_field($data['country']) : '';
         $data['organization'] = isset($data['organization']) ? sanitize_text_field($data['organization']) : '';
 
-        $validator = $validator->make($data, $this->rules, $this->validationMessages);
+        $client = Client::find($id);
+
+        if (!$client) {
+            return new \WP_REST_Response([
+                'errors' => 'Client not found.',
+            ], 404);
+        }
+
+        $eic_crm_user = EicCrmUser::find($client->eic_crm_user_id);
+
+        if (!$eic_crm_user) {
+            return new \WP_REST_Response([
+                'errors' => 'User data not found.',
+            ], 404);
+        }
+
+        $validator = $validator->make($data, $this->rules($eic_crm_user->wp_user_id), $this->validationMessages);
 
         if ($validator->fails()) {
             return new \WP_REST_Response([
@@ -74,40 +92,23 @@ class UpdateClient {
             ], 400);
         }
 
-        return new \WP_REST_Response($data);
-
-        $client = Client::find($id);
-
-        if (!$client) {
-            return new \WP_REST_Response([
-                'error' => 'Client not found.',
-            ], 404);
-        }
-
-        $eic_crm_user = EicCrmUser::find($client->eic_crm_user_id);
-
         $eic_crm_user->update([
-            'phone' => $data['phone'],
-            'address' => $data['address'],
-            'city' => $data['city'],
-            'state' => $data['state'],
-            'zip' => $data['zip'],
-            'country' => $data['country'],
-            'role' => $data['role'],
-            'designation' => $data['designation'],
+            'phone'        => $data['phone'],
+            'address'      => $data['address'],
+            'city'         => $data['city'],
+            'state'        => $data['state'],
+            'zip'          => $data['zip'],
+            'country'      => $data['country'],
+            'organization' => $data['organization']
         ]);
 
-        if (isset($data['user_login']) || isset($data['user_email']) || isset($data['user_pass'])) {
-            $wp_user_data = [
+        if (isset($data['name']) || isset($data['email'])) {
+
+            $wp_user = wp_update_user(array(
                 'ID' => $eic_crm_user->wp_user_id,
-                'user_login' => $data['user_login'] ?? null,
-                'user_email' => $data['user_email'] ?? null,
-                'user_pass' => $data['user_pass'] ?? null,
-            ];
-
-            $wp_user_data = array_filter($wp_user_data);
-
-            $wp_user = wp_update_user($wp_user_data);
+                'user_login' => $data['name'] ?? null,
+                'user_email' => $data['email'] ?? null,
+            ));
 
             if (is_wp_error($wp_user)) {
                 return new \WP_REST_Response([
@@ -117,13 +118,11 @@ class UpdateClient {
         }
 
         $client->update([
-            'organization' => $data['organization'],
-            'status' => $data['status'],
+            'organization' => $data['organization']
         ]);
 
         return new \WP_REST_Response([
             'message' => 'Client updated successfully.',
-            'client' => $client,
         ], 200);
     }
 

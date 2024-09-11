@@ -18,6 +18,7 @@ const FileTable = ({
   setSelectedFile,
   isAllselected,
   setIsAllSelected,
+  slug,
 }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
@@ -152,7 +153,7 @@ const FileTable = ({
             </table>
             <Pagination
               pagination={pagination}
-              slug="projects"
+              slug={slug}
               query="/?file"
               projectId={projectId}
             />

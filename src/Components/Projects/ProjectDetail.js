@@ -10,7 +10,6 @@ import AddNewInvoice from "../helper/invoices/addNewInvoice/AddNewInvoice";
 import useHashRouting from "../../utils/useHashRouting";
 import { useFetchSingleProjectOverView } from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
-import toast from "react-hot-toast";
 import Errors from "../Errors";
 
 const extractProjectId = (url) => {

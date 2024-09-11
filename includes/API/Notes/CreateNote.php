@@ -42,6 +42,7 @@ class CreateNote{
         $eicCrmUserId            = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
         $data['eic_crm_user_id'] = isset($eicCrmUserId) ? intval($eicCrmUserId) : null;
         $data['client_id']       = isset($data['client_id']) ? intval($data['client_id']) : null;
+        $data['project_id']      = isset($data['project_id']) ? intval($data['project_id']) : null;
         $data['note']            = sanitize_textarea_field($data['note'] ?? '');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
@@ -61,16 +62,15 @@ class CreateNote{
         }
 
         $response = [
-            'id' => $note->id,
-            'note' => $note->note,
-            'client_id' => $note->client_id,
-            'project_id' => $note->project_id,
-            'user_id' => $note->eic_crm_user_id
+            'id'          => $note->id,
+            'note'        => $note->note,
+            'client_id'   => $note->client_id,
+            'project_id'  => $note->project_id,
         ];
 
         return new \WP_REST_Response([
             'message' => 'Note created successfully.',
-            'note' => $response,
+            'note'    => $response,
         ], 201);
     }
 }

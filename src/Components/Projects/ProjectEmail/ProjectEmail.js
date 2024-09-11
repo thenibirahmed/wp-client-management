@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useStoreContext } from "../../../store/ContextApiStore";
+import React from "react";
 
+import { useStoreContext } from "../../../store/ContextApiStore";
 import { Mail02Icon } from "../../../utils/icons";
 import EmailTable from "../../helper/emails/EmailTable";
 import AddNewEmail from "../../helper/emails/AddNewEmail";
@@ -17,14 +17,14 @@ const ProjectEmail = ({ projectId }) => {
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
-  const paginationUrl = getPaginationUrl ? getPaginationUrl : "file=1";
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "email=1";
 
   const {
     isLoading,
     data: projectEmail,
     error,
     refetch,
-  } = useFetchProjectEmails(projectId, paginationUrl, onError);
+  } = useFetchProjectEmails(projectId, paginationUrl, "project", onError);
 
   useRefetch(paginationUrl, refetch);
 
@@ -62,6 +62,8 @@ const ProjectEmail = ({ projectId }) => {
             pagination={projectEmail?.pagination}
             refetch={refetch}
             setOpen={setCreateEmail}
+            projectId={projectId}
+            slug="projects"
           />
         </React.Fragment>
       ) : (
@@ -78,6 +80,7 @@ const ProjectEmail = ({ projectId }) => {
                     emailsData={projectEmail?.emails}
                     pagination={projectEmail?.pagination}
                     projectId={projectId}
+                    slug="projects"
                   />
                 </>
               ) : (

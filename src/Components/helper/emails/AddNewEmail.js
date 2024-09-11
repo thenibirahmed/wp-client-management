@@ -15,20 +15,37 @@ import {
   SignatureIcon,
 } from "../../../utils/icons";
 
-const AddNewEmail = ({ emailsData, pagination, refetch, setOpen }) => {
+const AddNewEmail = ({
+  emailsData,
+  pagination,
+  refetch,
+  setOpen,
+  projectId,
+  slug,
+}) => {
   return (
     <div>
       <div className="border border-borderColor rounded-[8px] py-[13px] ">
-        <EmailBox refetch={refetch} setOpen={setOpen} />
+        <EmailBox
+          refetch={refetch}
+          setOpen={setOpen}
+          slug={slug}
+          id={projectId}
+        />
       </div>
-      <EmailTable emailsData={emailsData} pagination={pagination} />
+      <EmailTable
+        emailsData={emailsData}
+        pagination={pagination}
+        projectId={projectId}
+        slug={slug}
+      />
     </div>
   );
 };
 
 export default AddNewEmail;
 
-const EmailBox = ({ refetch, setOpen }) => {
+const EmailBox = ({ refetch, setOpen, slug, id }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
@@ -41,19 +58,22 @@ const EmailBox = ({ refetch, setOpen }) => {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-    if (!editorContent) return toast.error("Content required");
-    const projectId = pathArray[1] ? Number(pathArray[1]) : null;
 
-    if (!projectId) return toast.error("ProjectId is required");
+    if (!id) return toast.error("Id is required");
 
     setSubmitLoader(true);
     const sendData = {
-      client_id: 13,
-      project_id: projectId,
-      subject: setSubject,
+      subject: subject,
       body: editorContent,
       scheduled_at: dayjs(new Date()).format("YYYY-MM-DD"),
     };
+
+    if (slug === "projects") {
+      sendData.project_id = id;
+      sendData.client_id = 12;
+    } else {
+      sendData.client_id = id;
+    }
 
     try {
       const { data } = await api.post("/email/create", sendData);

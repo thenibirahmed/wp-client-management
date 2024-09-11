@@ -297,17 +297,21 @@ export const useFetchProjectInvoice = (projectId, paginationUrl, onError) => {
 
 export const useFetchProjectNotes = (id, pageinationUrl, type, onError) => {
   return useQuery(
-    ["project-notes", id],
+    [`${type}-notes`, id],
     async () => {
       return await api.get(`/${type}/${id}/notes/?${pageinationUrl}`);
     },
     {
       select: (data) => {
-        console.log("client note", data.data);
         const sendData = {
-          notes: data.data.data,
           pagination: data.data.pagination,
         };
+
+        if (type === "project") {
+          sendData.notes = data.data.data;
+        } else {
+          sendData.notes = data.data.notes;
+        }
 
         return sendData;
       },
@@ -318,11 +322,16 @@ export const useFetchProjectNotes = (id, pageinationUrl, type, onError) => {
   );
 };
 
-export const useFetchProjectFiles = (projectId, pageinationUrl, onError) => {
+export const useFetchProjectFiles = (
+  projectId,
+  pageinationUrl,
+  type,
+  onError
+) => {
   return useQuery(
-    ["project-files", projectId],
+    [`${type}-files`, projectId],
     async () => {
-      return await api.get(`/project/${projectId}/files/?${pageinationUrl}`);
+      return await api.get(`/${type}/${projectId}/files/?${pageinationUrl}`);
     },
     {
       select: (data) => {
@@ -339,18 +348,28 @@ export const useFetchProjectFiles = (projectId, pageinationUrl, onError) => {
   );
 };
 
-export const useFetchProjectEmails = (projectId, pageinationUrl, onError) => {
+export const useFetchProjectEmails = (
+  projectId,
+  pageinationUrl,
+  type,
+  onError
+) => {
   return useQuery(
-    ["project-email", projectId],
+    [`${type}-email`, projectId],
     async () => {
-      return await api.get(`/project/${projectId}/emails/?${pageinationUrl}`);
+      return await api.get(`/${type}/${projectId}/emails/?${pageinationUrl}`);
     },
     {
       select: (data) => {
         const sendData = {
-          emails: data.data.data,
           pagination: data.data.pagination,
         };
+
+        if (type === "project") {
+          sendData.emails = data.data.data;
+        } else {
+          sendData.emails = data.data.emails;
+        }
 
         return sendData;
       },

@@ -1,27 +1,90 @@
-import React from "react";
-import { FileAddIcon } from "../../../utils/icons";
+import React, { useState } from "react";
 
+import { FileAddIcon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import EmptyTable from "../../helper/EmptyTable";
 import Modal from "../../helper/Modal";
-
 import FileTable from "../../helper/files/FileTable";
-import FileHeader from "../../helper/files/FileHeader";
 import AddNewFileForm from "../../helper/forms/AddNewFileForm";
+import ProjectHeader from "../../helper/projects/ProjectHeader";
+import useHashRouting from "../../../utils/useHashRouting";
+import { useFetchProjectFiles } from "../../../hooks/useQuery";
+import { useRefetch } from "../../../hooks/useRefetch";
+import Errors from "../../Errors";
+import Skeleton from "../../Skeleton";
 
-const ClientFiles = () => {
+const ClientFiles = ({ clientId }) => {
   const { openFileModal, setOpenFileModal } = useStoreContext();
+  const [selectedFile, setSelectedFile] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
+
+  const currentPath = useHashRouting("");
+  const getPaginationUrl = currentPath?.split("?")[1];
+  const paginationUrl = getPaginationUrl ? getPaginationUrl : "file=1";
+
+  const {
+    isLoading,
+    data: clientFiles,
+    error,
+    refetch,
+  } = useFetchProjectFiles(clientId, paginationUrl, "client", onError);
+
+  useRefetch(paginationUrl, refetch);
+
+  function onError(err) {
+    console.log(err);
+    toast.error(err?.response?.data?.message || "Failed To Fetch Client Files");
+  }
 
   const handler = () => {
     setOpenFileModal(true);
   };
-  const dataList = [0];
+
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].id);
+  };
+
+  if (error) {
+    return (
+      <Errors
+        message={
+          error?.response?.data?.errors ||
+          `Failed To Fetch Client File Data for clientId ${clientId}`
+        }
+      />
+    );
+  }
+
   return (
     <React.Fragment>
-      <FileHeader />
-      {dataList.length > 0 ? (
+      <ProjectHeader
+        selectedProject={selectedFile}
+        title="Files"
+        setOpenModal={setOpenFileModal}
+        btnTitle="Add File"
+        onDeleteAction={onDeleteAction}
+        onCheckAction={onCheckAction}
+      />
+
+      {clientFiles?.files?.length > 0 ? (
         <>
-          <FileTable fileData={[]} />
+          {isLoading ? (
+            <Skeleton />
+          ) : (
+            <FileTable
+              fileData={clientFiles?.files}
+              projectId={clientId}
+              pagination={clientFiles?.pagination}
+              selectedFile={selectedFile}
+              setSelectedFile={setSelectedFile}
+              isAllselected={isAllselected}
+              setIsAllSelected={setIsAllSelected}
+              slug="clients"
+            />
+          )}
         </>
       ) : (
         <>
@@ -35,7 +98,12 @@ const ClientFiles = () => {
         </>
       )}
       <Modal open={openFileModal} setOpen={setOpenFileModal} title="Add File">
-        <AddNewFileForm />
+        <AddNewFileForm
+          refetch={refetch}
+          setOpen={setOpenFileModal}
+          type="client"
+          id={clientId}
+        />
       </Modal>
     </React.Fragment>
   );

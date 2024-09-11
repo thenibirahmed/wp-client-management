@@ -14,6 +14,7 @@ const NoteTable = ({
   setSelectedNote,
   isAllselected,
   setIsAllSelected,
+  slug,
 }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
@@ -141,7 +142,7 @@ const NoteTable = ({
             </table>
             <Pagination
               pagination={pagination}
-              slug="projects"
+              slug={slug}
               query="/?note"
               projectId={projectId}
             />

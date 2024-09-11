@@ -8,14 +8,15 @@ import { Task01Icon } from "../../../utils/icons";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import { useFetchProjectNotes } from "../../../hooks/useQuery";
 import useHashRouting from "../../../utils/useHashRouting";
+import { useRefetch } from "../../../hooks/useRefetch";
+import Skeleton from "../../Skeleton";
+import Errors from "../../Errors";
 
 const ClientNotes = ({ clientId }) => {
   const { createNote, setCreateNote } = useStoreContext();
 
   const [selectedNote, setSelectedNote] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
-
-  const dataList = [1];
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -27,6 +28,8 @@ const ClientNotes = ({ clientId }) => {
     error,
     refetch,
   } = useFetchProjectNotes(clientId, paginationUrl, "client", onError);
+
+  useRefetch(paginationUrl, refetch);
 
   function onError(err) {
     console.log(err);
@@ -45,6 +48,18 @@ const ClientNotes = ({ clientId }) => {
   const onCheckAction = (ids) => {
     alert(ids[0].id);
   };
+
+  if (error) {
+    console.log("project task error", error?.response?.data?.errors);
+    return (
+      <Errors
+        message={
+          error?.response?.data?.errors ||
+          `Failed To Fetch Client Note Data for clientId ${clientId}`
+        }
+      />
+    );
+  }
 
   return (
     <React.Fragment>
@@ -74,17 +89,22 @@ const ClientNotes = ({ clientId }) => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          {dataList.length > 0 ? (
+          {clientNotes?.notes?.length > 0 ? (
             <>
-              <NoteTable
-                noteData={clientNotes?.notes}
-                projectId={clientId}
-                pagination={clientNotes?.pagination}
-                selectedNote={selectedNote}
-                setSelectedNote={setSelectedNote}
-                isAllselected={isAllselected}
-                setIsAllSelected={setIsAllSelected}
-              />
+              {isLoading ? (
+                <Skeleton />
+              ) : (
+                <NoteTable
+                  noteData={clientNotes?.notes}
+                  projectId={clientId}
+                  pagination={clientNotes?.pagination}
+                  selectedNote={selectedNote}
+                  setSelectedNote={setSelectedNote}
+                  isAllselected={isAllselected}
+                  setIsAllSelected={setIsAllSelected}
+                  slug="clients"
+                />
+              )}
             </>
           ) : (
             <>

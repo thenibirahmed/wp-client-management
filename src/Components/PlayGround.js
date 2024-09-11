@@ -131,7 +131,8 @@ const PlayGround = () => {
   const emplyee = () => {
     axios
       .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/team-members",
+        eicApiSettings.rest_url +
+          "wp-client-management/v1/select-project-client",
 
         {
           headers: {

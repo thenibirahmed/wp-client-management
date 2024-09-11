@@ -24,6 +24,7 @@ const AddNewNote = ({
   projectId,
   pagination,
   type,
+  slug,
 }) => (
   <div>
     <div className="border border-borderColor rounded-[8px] py-[13px]">
@@ -42,6 +43,7 @@ const AddNewNote = ({
       setSelectedNote={setSelectedNote}
       isAllselected={isAllselected}
       setIsAllSelected={setIsAllSelected}
+      slug={slug}
     />
   </div>
 );

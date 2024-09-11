@@ -87,6 +87,7 @@ const ProjectNote = ({ projectId }) => {
             projectId={projectId}
             pagination={projectNotes?.pagination}
             type="project"
+            slug="projects"
           />
         </React.Fragment>
       ) : (
@@ -106,6 +107,7 @@ const ProjectNote = ({ projectId }) => {
                     setSelectedNote={setSelectedNote}
                     isAllselected={isAllselected}
                     setIsAllSelected={setIsAllSelected}
+                    slug="projects"
                   />
                 </>
               ) : (
