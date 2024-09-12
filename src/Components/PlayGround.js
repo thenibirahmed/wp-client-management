@@ -89,6 +89,8 @@ const PlayGround = () => {
 			.then((response) => {
 				console.log(response.data);
 				setPost(response.data);
+
+				
 			})
 			.catch((error) => {
 				console.log(
