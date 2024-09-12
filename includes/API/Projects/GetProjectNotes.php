@@ -93,7 +93,7 @@ class GetProjectNotes {
         }
 
         $response = [
-            'data'       => $data,
+            'notes'      => $data,
             'pagination' => [
                 'total'         => $notes->total(),
                 'per_page'      => $notes->perPage(),
