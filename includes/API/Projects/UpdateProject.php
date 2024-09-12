@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Projects;
 
+use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Priority;
 use WpClientManagement\Models\Project;
 use WpClientManagement\Models\Status;
@@ -60,6 +61,7 @@ class UpdateProject {
         $data['start_date']   = isset($data['start_date']) ? sanitize_text_field($data['start_date']) : null;
         $data['due_date']     = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
         $data['description']  = isset($data['description']) ? sanitize_textarea_field($data['description']) : '';
+        $data['assignee_ids'] = isset($data['assignee_ids']) ? $data['assignee_ids'] : [];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -88,6 +90,17 @@ class UpdateProject {
             'due_date'     => $data['due_date'],
             'description'  => $data['description'],
         ]);
+
+
+        $team_members = EicCrmUser::getTeamMembers(false);
+        $teamMemberIds = $team_members->pluck('id')->toArray();
+
+        if ($data['assignee_ids']) {
+            $validAssigneeIds = array_filter($data['assignee_ids'], function ($id) use ($teamMemberIds) {
+                return in_array($id, $teamMemberIds);
+            });
+            $project->eicCrmUsers()->sync($validAssigneeIds);
+        }
 
         return new \WP_REST_Response([
             'message' => 'Project updated successfully.',

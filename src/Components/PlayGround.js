@@ -75,10 +75,12 @@ const PlayGround = () => {
 					manager_id: 1,
 					status_id: 1,
 					priority_id: 7,
-					title: 'udpated title from play ground',
+					title: 'title from play ground',
 					budget: 5000,
 					start_date: '2022-01-01',
 					due_date: '2022-01-01',
+					description: 'udpated description from play ground',
+					assignee_ids: [1,2,3],
 				},
 				{
 					headers: {
