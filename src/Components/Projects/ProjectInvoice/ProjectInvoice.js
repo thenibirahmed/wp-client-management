@@ -24,7 +24,7 @@ const ProjectInvoice = ({ projectId }) => {
     data: invoiceList,
     error: inoiceErr,
     refetch,
-  } = useFetchProjectInvoice(projectId, paginationUrl, onError);
+  } = useFetchProjectInvoice(projectId, paginationUrl, "project", onError);
 
   useRefetch(paginationUrl, refetch);
 

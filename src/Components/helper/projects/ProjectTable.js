@@ -7,6 +7,9 @@ import SkyBlueCirle from "../../helper/SkyBlueCirle";
 import YellowCirle from "../../helper/YellowCirle";
 import useHashRouting from "../../../utils/useHashRouting";
 import Pagination from "../../Clients/Pagination";
+import Modal from "../../helper/Modal";
+import AddNewProjectForm from "../../helper/forms/AddNewProjectForm";
+import { useStoreContext } from "../../../store/ContextApiStore";
 
 let assignee = [
   {
@@ -42,12 +45,10 @@ const ProjectTable = ({
   setSelectedProject,
   isAllselected,
   setIsAllSelected,
+  refetch,
+  setOpen,
+  open,
 }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-
-  console.log("pagination projects", pagination);
-
   const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
     selectedProject,
     setIsAllSelected,
@@ -239,7 +240,10 @@ const ProjectTable = ({
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
                           <a
-                            href={`#/projects/#/${item.id}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpen(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -273,6 +277,9 @@ const ProjectTable = ({
           </div>
         </div>
       </div>
+      {/* <Modal open={open} setOpen={setOpen} title="Updtae Project">
+        <AddNewProjectForm refetch={refetch} setOpen={setOpen} />
+      </Modal> */}
     </div>
   );
 };

@@ -90,14 +90,16 @@ const Projects = () => {
         <>
           <ProjectOverView projectOverView={projectOverView?.projectOverView} />
           <div className="space-y-6">
-            <ProjectHeader
-              selectedProject={selectedProject}
-              title="All Project"
-              setOpenModal={setOpenProjectModal}
-              btnTitle="Add Project"
-              onDeleteAction={onDeleteAction}
-              onCheckAction={onCheckAction}
-            />
+            <>
+              <ProjectHeader
+                selectedProject={selectedProject}
+                title="All Project"
+                setOpenModal={setOpenProjectModal}
+                btnTitle="Add Project"
+                onDeleteAction={onDeleteAction}
+                onCheckAction={onCheckAction}
+              />
+            </>
             <React.Fragment>
               {projects.projects.length > 0 ? (
                 <>
@@ -108,6 +110,9 @@ const Projects = () => {
                     setSelectedProject={setSelectedProject}
                     isAllselected={isAllselected}
                     setIsAllSelected={setIsAllSelected}
+                    refetch={refetch}
+                    setOpen={setOpenProjectModal}
+                    open={openProjectModal}
                   />
                 </>
               ) : (
