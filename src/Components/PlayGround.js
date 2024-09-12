@@ -68,13 +68,19 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.put(
-				eicApiSettings.rest_url + "wp-client-management/v1/team-member/update/4",
+		axios.post(
+				eicApiSettings.rest_url + "wp-client-management/v1/project/create",
 				{
-					name: "our best team member",
-					phone: "1234567890",
-					email: "yNk2T@example.com",
-					designation: "the best",
+					title: "our best project",
+					manager_id: 1,
+					client_id: 1,
+					budget: 10000,
+					status_id: 1,
+					priority_id: 7,
+					start_date: "2022-01-01",
+					due_date: "2022-01-01",
+					description: "this is our best project",
+					assignee_ids: [1, 2, 13],
 
 				},
 				{
