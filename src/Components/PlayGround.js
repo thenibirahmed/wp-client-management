@@ -68,15 +68,15 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/1/notes",
-				// {
-				// 	project_id: 1,
-				// 	client_id: 1,
-				// 	subject: "test email",
-				// 	body: "test email body",
+		axios.put(
+				eicApiSettings.rest_url + "wp-client-management/v1/team-member/update/4",
+				{
+					name: "our best team member",
+					phone: "1234567890",
+					email: "yNk2T@example.com",
+					designation: "the best",
 
-				// },
+				},
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
