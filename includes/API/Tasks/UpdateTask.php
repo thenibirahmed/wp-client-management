@@ -16,7 +16,7 @@ class UpdateTask {
         'project_id'     => 'required|exists:eic_projects,id',
         'title'          => 'required|string',
         'start_date'     => 'nullable|date',
-        'due_date'       => 'nullable|date',
+        'end_date'       => 'nullable|date',
         'status_id'      => 'nullable|exists:eic_statuses,id',
         'priority_id'    => 'nullable|exists:eic_priorities,id',
         'description'    => 'nullable|string',
@@ -29,7 +29,7 @@ class UpdateTask {
         'title.required'            => 'The title field is required.',
         'title.string'              => 'The title must be a valid string.',
         'start_date.date'           => 'The start date must be a valid date.',
-        'due_date.date'             => 'The due date must be a valid date.',
+        'end_date.date'             => 'The due date must be a valid date.',
         'status_id.exists'          => 'The selected status does not exist.',
         'priority_id.exists'        => 'The selected priority does not exist.',
         'description.string'        => 'The description must be a valid string.',
@@ -56,7 +56,7 @@ class UpdateTask {
         $data['title']           = isset($data['title']) ? sanitize_text_field($data['title']) : '';
         $data['description']     = isset($data['description']) ? sanitize_text_field($data['description']) : '';
         $data['start_date']      = isset($data['start_date']) ? sanitize_text_field($data['start_date']) : null;
-        $data['due_date']        = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
+        $data['end_date']        = isset($data['end_date']) ? sanitize_text_field($data['end_date']) : null;
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -79,7 +79,7 @@ class UpdateTask {
             'assigned_to'  => $data['assigned_to'],
             'title'        => $data['title'],
             'start_date'   => $data['start_date'],
-            'due_date'     => $data['end_date'],
+            'end_date'     => $data['end_date'],
             'status_id'    => $data['status_id'],
             'priority_id'  => $data['priority_id'],
             'description'  => $data['description'],
