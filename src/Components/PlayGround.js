@@ -68,16 +68,17 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/team-member/create",
+		axios.put(
+				eicApiSettings.rest_url + "wp-client-management/v1/task/update/1",
 				{
-
-					name: 'project memberx',
-					email: 'VfGjz@examplex.com',
-					phone: '1234567890',
-					designation: 'developer',
-					projectIds: [1, 2, 3, 4, 5, 6],
-
+					assigned_to: 1,
+					project_id: 1,
+					status_id: 1,
+					priority_id: 11,
+					title: "update by Sam",
+					description: "testing update",
+					start_date: "2022-02-01T00:00:00",
+					due_date: "2022-02-01T00:00:00",
 				},
 				{
 					headers: {
@@ -90,7 +91,7 @@ const PlayGround = () => {
 				console.log(response.data);
 				setPost(response.data);
 
-				
+
 			})
 			.catch((error) => {
 				console.log(
