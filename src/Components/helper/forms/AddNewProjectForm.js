@@ -20,7 +20,7 @@ import toast from "react-hot-toast";
 import Loaders from "../../Loaders";
 import Errors from "../../Errors";
 
-const AddNewProjectForm = ({ refetch, setOpen }) => {
+const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
   const imageRef = useRef();
@@ -208,12 +208,12 @@ const AddNewProjectForm = ({ refetch, setOpen }) => {
             isSubmitting={isSubmitting}
           />
         </div>
-        <div className=" w-full">
+        <div className="flex md:flex-row flex-col gap-4 w-full">
           {/* <SelectTextField
             label="Assignee"
-            select={selectAssignee}
-            setSelect={setSelectAssignee}
-            lists={assigneeLists}
+            select={selectProjectManager}
+            setSelect={setSelectProjectManager}
+            lists={managers?.employee}
             isSubmitting={isSubmitting}
           /> */}
           <SelectTextField
@@ -328,7 +328,7 @@ const AddNewProjectForm = ({ refetch, setOpen }) => {
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            {submitLoader ? <Loaders /> : "Save"}
+            {submitLoader ? <Loaders /> : <> {update ? "Update" : "Save"}</>}
           </button>
         </div>
       </form>

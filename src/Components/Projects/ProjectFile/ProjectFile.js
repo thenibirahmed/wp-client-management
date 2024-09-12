@@ -73,6 +73,7 @@ const ProjectFile = ({ projectId }) => {
                   isAllselected={isAllselected}
                   setIsAllSelected={setIsAllSelected}
                   slug="projects"
+                  refetch={refetch}
                 />
               </>
             ) : (

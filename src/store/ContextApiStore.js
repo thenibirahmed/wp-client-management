@@ -4,13 +4,25 @@ const ContextApi = createContext();
 
 export const ContextProvider = ({ children }) => {
   const [openTask, setOpenTask] = useState(false);
+  const [openUpdateTask, setOpenUpdateTask] = useState(false);
+
   const [openProjectModal, setOpenProjectModal] = useState(false);
+  const [openProjectUpdateModal, setOpenProjectUpdateModal] = useState(false);
+
   const [openFileModal, setOpenFileModal] = useState(false);
+  const [updateFileModal, setUpdateFileModal] = useState(false);
+
   const [openEmailModal, setOpenEmailModal] = useState(false);
+
   const [createInvoice, setCreateInvoice] = useState(false);
+  const [updateInvoice, setUpdateInvoice] = useState(false);
+
   const [createNote, setCreateNote] = useState(false);
+
   const [createEmail, setCreateEmail] = useState(false);
+
   const [openTaskDetail, setOpenTaskDetail] = useState(false);
+  const [openTaskDesc, setOpenTaskDesc] = useState(false);
 
   const [allTabItems, setAllTabItems] = useState({
     project: true,
@@ -35,16 +47,24 @@ export const ContextProvider = ({ children }) => {
   const sendData = {
     openTask,
     setOpenTask,
+    openUpdateTask,
+    setOpenUpdateTask,
     openProjectModal,
     setOpenProjectModal,
+    openProjectUpdateModal,
+    setOpenProjectUpdateModal,
     allTabItems,
     setAllTabItems,
     createInvoice,
+    updateInvoice,
+    setUpdateInvoice,
     setCreateInvoice,
     createNote,
     setCreateNote,
     openFileModal,
     setOpenFileModal,
+    updateFileModal,
+    setUpdateFileModal,
     createEmail,
     setCreateEmail,
     openEmailModal,
@@ -57,6 +77,8 @@ export const ContextProvider = ({ children }) => {
     setContactTabs,
     contactTeamDetailsTabs,
     setContactTeamDetailsTabs,
+    openTaskDesc,
+    setOpenTaskDesc,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

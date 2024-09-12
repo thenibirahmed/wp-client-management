@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useStoreContext } from "../../store/ContextApiStore";
 import ProjectInfo from "./ProjectInfo";
@@ -11,6 +11,7 @@ import useHashRouting from "../../utils/useHashRouting";
 import { useFetchSingleProjectOverView } from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
 import Errors from "../Errors";
+import ProjectTaskDetails from "./ProjectTask/ProjectTaskDetails";
 
 const extractProjectId = (url) => {
   const match = url.match(/projects\/#\/(\d+)/);
@@ -20,7 +21,14 @@ const extractProjectId = (url) => {
 const ProjectDetail = () => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
-  const { createInvoice } = useStoreContext();
+  const {
+    createInvoice,
+    updateInvoice,
+    openTaskDesc,
+    setCreateInvoice,
+    setUpdateInvoice,
+    setOpenTaskDesc,
+  } = useStoreContext();
 
   const projectId = extractProjectId(currentPath);
 
@@ -33,6 +41,17 @@ const ProjectDetail = () => {
   function onError(err) {
     console.log(err);
   }
+
+  useEffect(() => {
+    if (createInvoice || updateInvoice) {
+      setOpenTaskDesc(false);
+    }
+
+    if (openTaskDesc) {
+      setCreateInvoice(false);
+      setUpdateInvoice(false);
+    }
+  }, [createInvoice, updateInvoice, openTaskDesc]);
 
   if (isLoading) return <Skeleton />;
 
@@ -49,7 +68,7 @@ const ProjectDetail = () => {
 
   return (
     <React.Fragment>
-      {!createInvoice ? (
+      {!createInvoice && !updateInvoice && !openTaskDesc ? (
         <React.Fragment>
           <ProjectInfo projectHeader={singleProjectOverView.header} />
           <ProjectOverView
@@ -65,7 +84,11 @@ const ProjectDetail = () => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <AddNewInvoice />
+          {openTaskDesc ? (
+            <ProjectTaskDetails />
+          ) : (
+            <AddNewInvoice update={updateInvoice} />
+          )}
         </React.Fragment>
       )}
     </React.Fragment>

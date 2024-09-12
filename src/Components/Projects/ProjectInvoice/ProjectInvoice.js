@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
 import InvoiceTable from "../../helper/invoices/InvoiceTable";
@@ -11,7 +11,8 @@ import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectInvoice = ({ projectId }) => {
-  const { setCreateInvoice } = useStoreContext();
+  const { setCreateInvoice, updateInvoice, setUpdateInvoice } =
+    useStoreContext();
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
@@ -43,6 +44,10 @@ const ProjectInvoice = ({ projectId }) => {
     toast.error("Failed to fetch all project Invoice Data");
   }
 
+  useEffect(() => {
+    setUpdateInvoice(false);
+  }, []);
+
   if (inoiceErr) {
     return (
       <Errors
@@ -59,8 +64,8 @@ const ProjectInvoice = ({ projectId }) => {
       <ProjectHeader
         selectedProject={selectedInvoices}
         title="Invoices"
-        setOpenModal={setCreateInvoice}
-        btnTitle="Create Invoice"
+        setOpenModal={updateInvoice ? setUpdateInvoice : setCreateInvoice}
+        btnTitle={"Create Invoice"}
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
       />

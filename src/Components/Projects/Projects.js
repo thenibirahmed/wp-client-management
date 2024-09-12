@@ -25,6 +25,7 @@ const Projects = () => {
     setOpenProjectModal,
     setAllTabItems,
     openTaskDetail,
+    setOpenTaskDesc,
   } = useStoreContext();
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -65,6 +66,7 @@ const Projects = () => {
       email: false,
       info: false,
     });
+    setOpenTaskDesc(false);
   }, []);
 
   const onDeleteAction = (ids) => {
@@ -111,8 +113,6 @@ const Projects = () => {
                     isAllselected={isAllselected}
                     setIsAllSelected={setIsAllSelected}
                     refetch={refetch}
-                    setOpen={setOpenProjectModal}
-                    open={openProjectModal}
                   />
                 </>
               ) : (

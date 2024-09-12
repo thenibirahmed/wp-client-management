@@ -10,7 +10,10 @@ import SkyBlueCirle from "../../helper/SkyBlueCirle";
 import YellowCirle from "../../helper/YellowCirle";
 import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
-import useHashRouting from "../../../utils/useHashRouting";
+import Modal from "../Modal";
+import AddNewTaskForm from "./AddNewTaskForm";
+import { useStoreContext } from "../../../store/ContextApiStore";
+import ProjectTaskDetails from "../../Projects/ProjectTask/ProjectTaskDetails";
 
 const ProjectTaskTable = ({
   projectId,
@@ -20,9 +23,9 @@ const ProjectTaskTable = ({
   setSelectedClient,
   isAllselected,
   setIsAllSelected,
+  refetch,
 }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
+  const [openTask, setOpenTask] = useState(false);
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedClient,
@@ -30,7 +33,9 @@ const ProjectTaskTable = ({
     setSelectedClient
   );
 
-  console.log(selectedClient);
+  const { openUpdateTask, setOpenUpdateTask, setOpenTaskDesc } =
+    useStoreContext();
+
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -121,8 +126,14 @@ const ProjectTaskTable = ({
                       : "";
 
                   return (
-                    <tr>
-                      <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
+                    <tr
+                      className="cursor-pointer"
+                      onClick={() => setOpenTaskDesc(true)}
+                    >
+                      <td
+                        onClick={(e) => e.stopPropagation()}
+                        className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal"
+                      >
                         <input
                           checked={isChecked}
                           onChange={(e) =>
@@ -191,8 +202,11 @@ const ProjectTaskTable = ({
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={`/#/projects/#/${item.id}/#/Task`}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenUpdateTask(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -200,7 +214,7 @@ const ProjectTaskTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                           <a
                             href=""
                             className="text-indigo-600 hover:text-indigo-900"
@@ -227,6 +241,13 @@ const ProjectTaskTable = ({
           </div>
         </div>
       </div>
+      <Modal
+        open={openUpdateTask}
+        setOpen={setOpenUpdateTask}
+        title="Update Task"
+      >
+        <AddNewTaskForm refetch={refetch} setOpen={setOpenUpdateTask} update />
+      </Modal>
     </div>
   );
 };

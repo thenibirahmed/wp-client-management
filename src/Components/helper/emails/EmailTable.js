@@ -79,7 +79,7 @@ const EmailTable = ({ emailsData, pagination, projectId, slug }) => {
   const viewEmailHandler = (emailId) => {
     setOpenEmailModal(true);
 
-    const findEmail = tableData.find((email) => email.id === emailId);
+    const findEmail = emailsData?.find((email) => email.id === emailId);
 
     setSelectedViewEmail(findEmail);
   };

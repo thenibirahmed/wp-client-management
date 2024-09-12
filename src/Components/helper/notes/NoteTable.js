@@ -5,6 +5,7 @@ import useCheckedHandler from "../../../utils/useCheckedItem";
 import Pagination from "../../Clients/Pagination";
 import { Delete03Icon, ViewIcon } from "../../../utils/icons";
 import useHashRouting from "../../../utils/useHashRouting";
+import { useStoreContext } from "../../../store/ContextApiStore";
 
 const NoteTable = ({
   noteData,
@@ -16,8 +17,7 @@ const NoteTable = ({
   setIsAllSelected,
   slug,
 }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
+  const { updateNote, setUpdateNote } = useStoreContext();
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedNote,
@@ -113,8 +113,11 @@ const NoteTable = ({
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={``}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setUpdateNote(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <ViewIcon
@@ -122,7 +125,7 @@ const NoteTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                           <a
                             href=""
                             className="text-indigo-600 hover:text-indigo-900"

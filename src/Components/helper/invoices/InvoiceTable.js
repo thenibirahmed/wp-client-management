@@ -4,6 +4,7 @@ import useHashRouting from "../../../utils/useHashRouting";
 import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
+import { useStoreContext } from "../../../store/ContextApiStore";
 
 const InvoiceTable = ({
   invoiceList,
@@ -19,7 +20,7 @@ const InvoiceTable = ({
     setIsAllSelected,
     setSelectedInvoices
   );
-
+  const { createInvoice, updateInvoice, setUpdateInvoice } = useStoreContext();
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -147,8 +148,11 @@ const InvoiceTable = ({
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={``}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setUpdateInvoice(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -156,7 +160,7 @@ const InvoiceTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                           <a
                             href=""
                             className="text-indigo-600 hover:text-indigo-900"

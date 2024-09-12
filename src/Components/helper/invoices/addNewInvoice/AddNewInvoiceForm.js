@@ -23,8 +23,8 @@ import {
   useFetchSelectProjects,
 } from "../../../../hooks/useQuery";
 
-const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
-  const { setCreateInvoice } = useStoreContext();
+const AddNewInvoiceForm = ({ noteText, invoiceItem, update }) => {
+  const { setCreateInvoice, setUpdateInvoice } = useStoreContext();
 
   const { subtotal, totalDiscount, totalTax, finalAmount } =
     useSubtotal(invoiceItem);
@@ -216,11 +216,17 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
       <React.Fragment>
         <div className="flex justify-between items-center">
           <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
-            Create Invoice
+            {update ? "Update Invoice" : "Create Invoice"}
           </h1>
           <div className="space-x-3">
             <button
-              onClick={() => setCreateInvoice(false)}
+              onClick={() => {
+                if (update) {
+                  setUpdateInvoice(false);
+                } else {
+                  setCreateInvoice(false);
+                }
+              }}
               type="button"
               className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
             >
@@ -230,14 +236,19 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem }) => {
               type="button"
               className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
             >
-              Save and Send
+              {" "}
+              {submitLoader ? (
+                <Loaders />
+              ) : (
+                <> {update ? "Update and Send" : " Save and Send"}</>
+              )}
             </button>
             <button
               disabled={submitLoader}
               type="submit"
               className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
             >
-              {submitLoader ? <Loaders /> : "Save"}
+              {submitLoader ? <Loaders /> : <> {update ? "Update" : "Send"}</>}
             </button>
           </div>
         </div>

@@ -310,13 +310,8 @@ export const useFetchProjectNotes = (id, pageinationUrl, type, onError) => {
       select: (data) => {
         const sendData = {
           pagination: data.data.pagination,
+          notes: data.data.notes,
         };
-
-        if (type === "project") {
-          sendData.notes = data.data.data;
-        } else {
-          sendData.notes = data.data.notes;
-        }
 
         return sendData;
       },
@@ -368,13 +363,8 @@ export const useFetchProjectEmails = (
       select: (data) => {
         const sendData = {
           pagination: data.data.pagination,
+          emails: data.data.emails,
         };
-
-        if (type === "project") {
-          sendData.emails = data.data.data;
-        } else {
-          sendData.emails = data.data.emails;
-        }
 
         return sendData;
       },

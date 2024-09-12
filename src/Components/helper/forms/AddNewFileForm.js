@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import api from "../../../api/api";
 import Loaders from "../../Loaders";
 
-const AddNewFileForm = ({ refetch, setOpen, type, id }) => {
+const AddNewFileForm = ({ refetch, setOpen, type, id, update }) => {
   const { setOpenFileModal } = useStoreContext();
   const [imageUrl, setImageUrl] = useState();
   const [submitLoader, setSubmitLoader] = useState(false);
@@ -120,7 +120,7 @@ const AddNewFileForm = ({ refetch, setOpen, type, id }) => {
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            {submitLoader ? <Loaders /> : "Save"}
+            {submitLoader ? <Loaders /> : <> {update ? "Update" : "Save"}</>}
           </button>
         </div>
       </form>

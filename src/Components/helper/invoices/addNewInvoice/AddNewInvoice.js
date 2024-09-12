@@ -4,14 +4,18 @@ import AddNewInvoiceForm from "./AddNewInvoiceForm";
 import InvoiceItemTable from "./InvoiceItemTable";
 import AddInvoiceNote from "./AddInvoiceNote";
 
-const AddNewInvoice = () => {
+const AddNewInvoice = ({ update }) => {
   const [invoiceItem, setInvoiceItems] = useState([]);
   const [noteText, setNoteText] = useState("");
 
   return (
     <div className="space-y-4 pb-16">
       {/* <AddInvoiceHeader /> */}
-      <AddNewInvoiceForm noteText={noteText} invoiceItem={invoiceItem} />
+      <AddNewInvoiceForm
+        noteText={noteText}
+        invoiceItem={invoiceItem}
+        update={update}
+      />
       <InvoiceItemTable
         invoiceItem={invoiceItem}
         setInvoiceItems={setInvoiceItems}

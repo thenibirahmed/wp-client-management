@@ -15,7 +15,7 @@ import Errors from "../../Errors";
 import Loaders from "../../Loaders";
 import dayjs from "dayjs";
 
-const AddNewTaskForm = ({ refetch, setOpen }) => {
+const AddNewTaskForm = ({ refetch, setOpen, update }) => {
   const { setOpenProjectModal } = useStoreContext();
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
@@ -237,7 +237,7 @@ const AddNewTaskForm = ({ refetch, setOpen }) => {
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            {submitLoader ? <Loaders /> : "Save"}
+            {submitLoader ? <Loaders /> : <> {update ? "Update" : "Save"}</>}
           </button>
         </div>
       </form>

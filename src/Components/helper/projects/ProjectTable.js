@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 
+import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import RedCirlcle from "../../helper/RedCirlcle";
 import SkyBlueCirle from "../../helper/SkyBlueCirle";
 import YellowCirle from "../../helper/YellowCirle";
-import useHashRouting from "../../../utils/useHashRouting";
 import Pagination from "../../Clients/Pagination";
 import Modal from "../../helper/Modal";
 import AddNewProjectForm from "../../helper/forms/AddNewProjectForm";
@@ -46,14 +45,14 @@ const ProjectTable = ({
   isAllselected,
   setIsAllSelected,
   refetch,
-  setOpen,
-  open,
 }) => {
   const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
     selectedProject,
     setIsAllSelected,
     setSelectedProject
   );
+  const { openProjectUpdateModal, setOpenProjectUpdateModal } =
+    useStoreContext();
 
   return (
     <div className="mt-8 flow-root">
@@ -239,10 +238,10 @@ const ProjectTable = ({
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
+                          <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              setOpen(true);
+                              setOpenProjectUpdateModal(true);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
@@ -251,7 +250,7 @@ const ProjectTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                           <a
                             href=""
                             className="text-indigo-600 hover:text-indigo-900"
@@ -277,9 +276,17 @@ const ProjectTable = ({
           </div>
         </div>
       </div>
-      {/* <Modal open={open} setOpen={setOpen} title="Updtae Project">
-        <AddNewProjectForm refetch={refetch} setOpen={setOpen} />
-      </Modal> */}
+      <Modal
+        open={openProjectUpdateModal}
+        setOpen={setOpenProjectUpdateModal}
+        title="Updtae Project"
+      >
+        <AddNewProjectForm
+          refetch={refetch}
+          setOpen={setOpenProjectUpdateModal}
+          update
+        />
+      </Modal>
     </div>
   );
 };

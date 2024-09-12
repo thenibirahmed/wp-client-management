@@ -86,6 +86,7 @@ const ProjectTask = ({ projectId }) => {
                   setSelectedClient={setSelectedProjectTask}
                   isAllselected={isAllselected}
                   setIsAllSelected={setIsAllSelected}
+                  refetch={refetch}
                 />
               </>
             ) : (

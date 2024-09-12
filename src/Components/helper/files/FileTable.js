@@ -9,6 +9,9 @@ import {
 
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import Pagination from "../../Clients/Pagination";
+import { useStoreContext } from "../../../store/ContextApiStore";
+import Modal from "../Modal";
+import AddNewFileForm from "../forms/AddNewFileForm";
 
 const FileTable = ({
   fileData,
@@ -19,9 +22,9 @@ const FileTable = ({
   isAllselected,
   setIsAllSelected,
   slug,
+  refetch,
 }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
+  const { updateFileModal, setUpdateFileModal } = useStoreContext();
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedFile,
@@ -124,8 +127,11 @@ const FileTable = ({
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={``}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setUpdateFileModal(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -133,7 +139,7 @@ const FileTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                           <a
                             href=""
                             className="text-indigo-600 hover:text-indigo-900"
@@ -160,6 +166,19 @@ const FileTable = ({
           </div>
         </div>
       </div>
+      <Modal
+        open={updateFileModal}
+        setOpen={setUpdateFileModal}
+        title="Update File"
+      >
+        <AddNewFileForm
+          refetch={refetch}
+          setOpen={setUpdateFileModal}
+          type="project"
+          id={projectId}
+          update
+        />
+      </Modal>
     </div>
   );
 };
