@@ -69,16 +69,16 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.put(
-				eicApiSettings.rest_url + "wp-client-management/v1/task/update/1",
+				eicApiSettings.rest_url + "wp-client-management/v1/project/update/1",
 				{
-					assigned_to: 1,
-					project_id: 1,
+					client_id: 1,
+					manager_id: 1,
 					status_id: 1,
-					priority_id: 11,
-					title: "update by Sam",
-					description: "testing update",
-					start_date: "2022-02-01T00:00:00",
-					due_date: "2022-02-01T00:00:00",
+					priority_id: 7,
+					title: 'udpated title from play ground',
+					budget: 5000,
+					start_date: '2022-01-01',
+					due_date: '2022-01-01',
 				},
 				{
 					headers: {
