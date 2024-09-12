@@ -3,6 +3,7 @@ namespace WpClientManagement\API\Contacts;
 
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
+use WpClientManagement\Models\Project;
 
 class AddTeamMember {
 
@@ -46,6 +47,7 @@ class AddTeamMember {
         $data['email']       = sanitize_email($data['email']);
         $data['phone']       = sanitize_text_field($data['phone']);
         $data['designation'] = sanitize_text_field($data['designation']);
+        $data['projectIds']  = isset($data['projectIds']) ? $data['projectIds'] : [];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -84,6 +86,17 @@ class AddTeamMember {
             return new \WP_REST_Response([
                 'message' => 'Something went wrong',
             ]);
+        }
+
+        $activeProjects = Project::getActiveProjects();
+        $projectIds = $activeProjects->pluck('id')->toArray();
+
+        if(isset($data['projectIds'])) {
+            $validateProjectIds = array_filter($data['projectIds'], function ($id) use ($projectIds) {
+                return in_array($id, $projectIds);
+            });
+
+            $eic_crm_user->assignedProjects()->syncWithoutDetaching($validateProjectIds);
         }
 
         $member_response_data = [
