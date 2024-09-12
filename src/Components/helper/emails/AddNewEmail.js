@@ -70,7 +70,6 @@ const EmailBox = ({ refetch, setOpen, slug, id }) => {
 
     if (slug === "projects") {
       sendData.project_id = id;
-      sendData.client_id = 12;
     } else {
       sendData.client_id = id;
     }

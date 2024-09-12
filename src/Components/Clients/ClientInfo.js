@@ -6,24 +6,10 @@ import {
   Mail02Icon,
   PencilEdit02Icon,
 } from "../../utils/icons";
-import useHashRouting from "../../utils/useHashRouting";
-import { useFetchSingleTeamOverview } from "../../hooks/useQuery";
+
 import Skeleton from "../Skeleton";
 
-const ClientInfo = ({ profile, teamId }) => {
-  const {
-    isLoading,
-    data: teamOverView,
-    error,
-  } = useFetchSingleTeamOverview(teamId, onError);
-
-  function onError(err) {
-    console.log(err);
-    toast.error("Failed to fetch all projects or project Overview data");
-  }
-
-  if (isLoading) return <Skeleton />;
-
+const ClientInfo = ({ profile }) => {
   return (
     <div className="flex sm:flex-row flex-col sm:gap-0 gap-4 justify-between sm:items-center   pb-5 border-b border-b-borderColor">
       <div className="flex  gap-4">
@@ -36,10 +22,10 @@ const ClientInfo = ({ profile, teamId }) => {
         </div>
         <div>
           <h1 className="font-metropolis font-semibold  text-textColor text-3xl ">
-            {teamOverView?.profile?.name}
+            {profile?.name}
           </h1>
           <span className="text-xs  text-textColor2 font-metropolis font-normal ">
-            {teamOverView?.profile?.designation}
+            {profile?.designation}
           </span>
         </div>
       </div>

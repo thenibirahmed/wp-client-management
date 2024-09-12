@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import ClientOverView from "./ClientOverView";
 import ClientInfo from "./ClientInfo";
@@ -19,7 +19,6 @@ const extractProjectId = (url) => {
 
 const ClientDetails = () => {
   const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
 
   const clientId = extractProjectId(currentPath);
 

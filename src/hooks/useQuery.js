@@ -38,6 +38,7 @@ export const useFetchSingleClientOverView = (clientId, onError) => {
 
         return sendData;
       },
+      enabled: !!clientId,
       onError,
       staleTime: 5000,
     }
