@@ -80,21 +80,23 @@ class GetProjectEmails {
             ];
         }
 
-        $data = [];
-        foreach ($emails as $email) {
-            $wp_user_id = $email->eic_crm_user->wp_user_id;
+        $emailsWithDetails = $emails->map(function ($email) use ($wpUsers) {
 
-            $data[] = [
+            $wp_user_id = $email->eic_crm_user->wp_user_id;
+            $wp_user    = $wpUsers[$wp_user_id] ?? null;
+
+            return [
                 'id'       => $email->id,
-                'from'     => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
+                'from'     => $wp_user['name'] ?? 'Unknown',
                 'subject'  => $email->subject,
                 'body'     => $email->body,
                 'time'     => $email->created_at ? human_time_diff(strtotime($email->created_at), current_time('timestamp')) . ' ago' : null,
             ];
-        }
+
+        });
 
         $response = [
-            'emails'     => $data,
+            'emails'     => $emailsWithDetails,
             'pagination' => [
                 'total'         => $emails->total(),
                 'per_page'      => $emails->perPage(),
