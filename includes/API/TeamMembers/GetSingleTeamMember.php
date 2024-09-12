@@ -52,10 +52,10 @@ class GetSingleTeamMember {
             ], 400);
         }
 
-        $teamMemberData = EicCrmUser::find($id);
+        $teamMemberData     = EicCrmUser::find($id);
 
-        $teamMemberProjects = Project::getTeamMemberProjects($teamMemberData->id, false);
-        $teamMemberTasks = Task::getTeamMemberTasks($data['id'], false);
+        $teamMemberProjects = $teamMemberData->assignedProjects();
+        $teamMemberTasks    = Task::getTeamMemberTasks($data['id'], false);
 
         $wp_user = get_user_by('id', $teamMemberData->wp_user_id);
 
@@ -66,12 +66,12 @@ class GetSingleTeamMember {
         }
 
         $teamMemberResponseData = [
-            'id' => $teamMemberData->id,
-            'name' => $wp_user->user_login,
-            'email' => $wp_user->user_email,
-            'phone' => $teamMemberData->phone,
+            'id'          => $teamMemberData->id,
+            'name'        => $wp_user->user_login,
+            'email'       => $wp_user->user_email,
+            'phone'       => $teamMemberData->phone,
             'designation' => $teamMemberData->designation,
-            'address' => $teamMemberData->address,
+            'address'     => $teamMemberData->address,
         ];
 
         return new \WP_REST_Response([

@@ -68,20 +68,25 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.put(
-				eicApiSettings.rest_url + "wp-client-management/v1/project/update/1",
-				{
-					client_id: 1,
-					manager_id: 1,
-					status_id: 1,
-					priority_id: 7,
-					title: 'title from play ground',
-					budget: 5000,
-					start_date: '2022-01-01',
-					due_date: '2022-01-01',
-					description: 'udpated description from play ground',
-					assignee_ids: [1,2,3],
-				},
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/team-member/5/projects",
+				// {
+					// name: 'saikat1',
+					// email: 'saikat1@wp.com',
+					// phone: '1234567890',
+					// designation: 'legend',
+					// projectIds: [1,9,10,12,13,4,5]
+				// 	client_id: 1,
+				// 	manager_id: 1,
+				// 	status_id: 1,
+				// 	priority_id: 7,
+				// 	title: 'title from play ground',
+				// 	budget: 5000,
+				// 	start_date: '2022-01-01',
+				// 	due_date: '2022-01-01',
+				// 	description: 'udpated description from play ground',
+				// 	assignee_ids: [1,23,5],
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
@@ -89,6 +94,7 @@ const PlayGround = () => {
 					},
 				}
 			)
+
 			.then((response) => {
 				console.log(response.data);
 				setPost(response.data);
