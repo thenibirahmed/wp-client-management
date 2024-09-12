@@ -65,7 +65,9 @@ class GetSingleProjectOverview {
         $manager = get_user_by('ID', $projectData->manager->wp_user_id);
 
         $projectHeader = [
+            'id'           => $projectData->id,
             'name'         => $projectData->title,
+            'client_id'    => $client->id,
             'client_name'  => $client->user_login,
             'manager_name' => $manager->user_login,
             'status'       => $projectData->status->name,
