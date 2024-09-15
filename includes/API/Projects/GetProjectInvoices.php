@@ -92,14 +92,13 @@ class GetProjectInvoices {
 
            return [
                'id'             => $invoice->id,
-               'invvoice_id'    => $invoice->code,
+               'code'           => $invoice->code,
                'client_name'    => $wp_user['name'],
                'total'          => $invoice->total,
                'status'         => $invoice->status->name,
                'payment_method' => $invoice->paymentMethod->name,
                'due_date'       => $invoice->due_date ? date('M d, Y', strtotime($invoice->due_date)) : '',
            ];
-
 
         });
 

@@ -69,8 +69,28 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/clients",
+				eicApiSettings.rest_url + "wp-client-management/v1/invoice/create",
 				// {
+				// invoice_items: [
+				// 	{
+				// 		details: "test details",
+				// 		quantity: 1,
+				// 		unit_price: 100,
+				// 		line_total: 100,
+				// 	},
+				// 	{
+				// 		details: "test details",
+				// 		quantity: 1,
+				// 		unit_price: 100,
+				// 		line_total: 100,
+				// 	},
+				// 	{
+				// 		details: "test details",
+				// 		quantity: 1,
+				// 		unit_price: 100,
+				// 		line_total: 100,
+				// 	},
+				// ]
 					// name: 'saikat12',
 					// email: 'saikat12@wp.com',
 					// phone: '1234567890',
@@ -101,8 +121,6 @@ const PlayGround = () => {
 			.then((response) => {
 				console.log(response.data);
 				setPost(response.data);
-
-
 			})
 			.catch((error) => {
 				console.log(

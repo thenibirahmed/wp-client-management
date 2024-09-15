@@ -37,7 +37,7 @@ class CreateInvoice {
         'tax'                      => 'nullable|numeric',
         'fee'                      => 'nullable|numeric',
     ];
- 
+
     protected array $validationMessages = [
         'eic_crm_user_id.exists'         => 'The selected EicCrmUser does not exist.',
         'project_id.exists'              => 'The selected Project does not exist.',
@@ -88,46 +88,48 @@ class CreateInvoice {
 
         $data = $request->get_params();
 
-        $currentWpUser                  = wp_get_current_user();
-        $eicCrmUserId                   = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
-        $data['eic_crm_user_id']        = isset($eicCrmUserId) ? intval($eicCrmUserId) : null;
-        $data['project_id']             = isset($data['project_id']) ? intval($data['project_id']) : null;
-        $data['client_id']              = isset($data['client_id']) ? intval($data['client_id']) : null;
-        $data['status_id']              = isset($data['status_id']) ? intval($data['status_id']) : null;
-        $data['currency_id']            = isset($data['currency_id']) ? intval($data['currency_id']) : null;
-        $data['payment_method_id']      = isset($data['payment_method_id']) ? intval($data['payment_method_id']) : null;
-        $data['status_id']              = isset($data['status_id']) ? intval($data['status_id']) : null;
-        $data['code']                   = sanitize_text_field($data['invoice_number'] ?? '');
-        $data['type']                   = sanitize_text_field($data['type'] ?? '');
-        $data['title']                  = sanitize_text_field($data['title'] ?? '');
-        $data['date']                   = isset($data['date']) ? sanitize_text_field($data['date']) : date('Y-m-d');
-        $data['due_date']               = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
-        $data['items']                  = isset($data['items']) ? json_encode(array_map('sanitize_text_field', json_decode($data['items'], true) ?? [])) :
-                                         json_encode([]);
-        $data['note']                   = sanitize_textarea_field($data['note'] ?? '');
-        $data['billing_address']        = sanitize_textarea_field($data['billing_address'] ?? '');
-        $data['billing_phone_number']   = sanitize_textarea_field($data['billing_phone_number'] ?? '');
-        $data['billing_email']          = sanitize_textarea_field($data['billing_email'] ?? '');
-        $data['bill_from_address']      = sanitize_textarea_field($data['bill_from_address'] ?? '');
-        $data['bill_from_phone_number'] = sanitize_textarea_field($data['bill_from_phone_number'] ?? '');
-        $data['bill_from_email']        = sanitize_textarea_field($data['bill_from_email'] ?? '');
-        $data['sub_total']              = floatval($data['sub_total'] ?? 0.0);
-        $data['total']                  = floatval($data['total'] ?? 0.0);
-        $data['discount']               = floatval($data['discount'] ?? 0.0);
-        $data['tax']                    = floatval($data['tax'] ?? 0.0);
-        $data['fee']                    = floatval($data['fee'] ?? 0.0);
+        return new \WP_REST_Response($data);
 
-        if (isset($data['project_id']) && !isset($data['client_id'])) {
-            $data['client_id'] = Project::where('id', $data['project_id'])->pluck('client_id')->first();
-        }
+        // $currentWpUser                  = wp_get_current_user();
+        // $eicCrmUserId                   = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
+        // $data['eic_crm_user_id']        = isset($eicCrmUserId) ? intval($eicCrmUserId) : null;
+        // $data['project_id']             = isset($data['project_id']) ? intval($data['project_id']) : null;
+        // $data['client_id']              = isset($data['client_id']) ? intval($data['client_id']) : null;
+        // $data['status_id']              = isset($data['status_id']) ? intval($data['status_id']) : null;
+        // $data['currency_id']            = isset($data['currency_id']) ? intval($data['currency_id']) : null;
+        // $data['payment_method_id']      = isset($data['payment_method_id']) ? intval($data['payment_method_id']) : null;
+        // $data['status_id']              = isset($data['status_id']) ? intval($data['status_id']) : null;
+        // $data['code']                   = sanitize_text_field($data['invoice_number'] ?? '');
+        // $data['type']                   = sanitize_text_field($data['type'] ?? '');
+        // $data['title']                  = sanitize_text_field($data['title'] ?? '');
+        // $data['date']                   = isset($data['date']) ? sanitize_text_field($data['date']) : date('Y-m-d');
+        // $data['due_date']               = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
+        // $data['items']                  = isset($data['items']) ? json_encode(array_map('sanitize_text_field', json_decode($data['items'], true) ?? [])) :
+        //                                  json_encode([]);
+        // $data['note']                   = sanitize_textarea_field($data['note'] ?? '');
+        // $data['billing_address']        = sanitize_textarea_field($data['billing_address'] ?? '');
+        // $data['billing_phone_number']   = sanitize_textarea_field($data['billing_phone_number'] ?? '');
+        // $data['billing_email']          = sanitize_textarea_field($data['billing_email'] ?? '');
+        // $data['bill_from_address']      = sanitize_textarea_field($data['bill_from_address'] ?? '');
+        // $data['bill_from_phone_number'] = sanitize_textarea_field($data['bill_from_phone_number'] ?? '');
+        // $data['bill_from_email']        = sanitize_textarea_field($data['bill_from_email'] ?? '');
+        // $data['sub_total']              = floatval($data['sub_total'] ?? 0.0);
+        // $data['total']                  = floatval($data['total'] ?? 0.0);
+        // $data['discount']               = floatval($data['discount'] ?? 0.0);
+        // $data['tax']                    = floatval($data['tax'] ?? 0.0);
+        // $data['fee']                    = floatval($data['fee'] ?? 0.0);
 
-        $validator = $validator->make($data, $this->rules, $this->validationMessages);
+        // if (isset($data['project_id']) && !isset($data['client_id'])) {
+        //     $data['client_id'] = Project::where('id', $data['project_id'])->pluck('client_id')->first();
+        // }
 
-        if ($validator->fails()) {
-            return new \WP_REST_Response([
-                'errors' => $validator->errors(),
-            ], 400);
-        }
+        // $validator = $validator->make($data, $this->rules, $this->validationMessages);
+
+        // if ($validator->fails()) {
+        //     return new \WP_REST_Response([
+        //         'errors' => $validator->errors(),
+        //     ], 400);
+        // }
 
         $invoice = Invoice::create($data);
 
