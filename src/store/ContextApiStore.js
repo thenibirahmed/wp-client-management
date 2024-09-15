@@ -23,6 +23,7 @@ export const ContextProvider = ({ children }) => {
 
   const [openTaskDetail, setOpenTaskDetail] = useState(false);
   const [openTaskDesc, setOpenTaskDesc] = useState(false);
+  const [taskId, setTaskId] = useState(false);
 
   const [allTabItems, setAllTabItems] = useState({
     project: true,
@@ -79,6 +80,8 @@ export const ContextProvider = ({ children }) => {
     setContactTeamDetailsTabs,
     openTaskDesc,
     setOpenTaskDesc,
+    taskId,
+    setTaskId,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

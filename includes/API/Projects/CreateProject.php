@@ -1,6 +1,7 @@
 <?php
 namespace WpClientManagement\API\Projects;
 
+use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Project;
 
 class CreateProject {
@@ -56,6 +57,7 @@ class CreateProject {
         $data['start_date']   = isset($data['start_date']) ? sanitize_text_field($data['start_date']) : '';
         $data['due_date']     = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : '';
         $data['description']  = isset($data['description']) ? sanitize_textarea_field($data['description']) : '';
+        $data['assignee_ids'] = isset($data['assignee_ids']) ? $data['assignee_ids'] : [];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -64,13 +66,22 @@ class CreateProject {
                 'errors' => $validator->errors(),
             ], 400);
         }
-
         $project = Project::create($data);
 
-        if(!$project) {
+        if (!$project) {
             return new \WP_REST_Response([
                 'message' => 'Something went wrong',
             ]);
+        }
+
+        $team_members = EicCrmUser::getTeamMembers(false);
+        $teamMemberIds = $team_members->pluck('id')->toArray();
+
+        if (isset($data['assignee_ids'])) {
+            $validAssigneeIds = array_filter($data['assignee_ids'], function ($id) use ($teamMemberIds) {
+                return in_array($id, $teamMemberIds);
+            });
+            $project->eicCrmUsers()->syncWithoutDetaching($validAssigneeIds);
         }
 
         $projectResponse = [

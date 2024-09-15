@@ -561,3 +561,27 @@ export const useFetchSingleTeamTasks = (teamId, paginationUrl, onError) => {
     }
   );
 };
+export const useFetchSingleEmailView = (emailId, onError) => {
+  return useQuery(
+    ["single-email-view", emailId],
+    async () => {
+      return await api.get(`/email/${emailId}`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          id: data.data.id,
+          subject: data.data.subject,
+          body: data.data.body,
+          date: data.data.date,
+          from: data.data.from,
+        };
+
+        return sendData;
+      },
+      enabled: !!emailId,
+      onError,
+      staleTime: 5000,
+    }
+  );
+};

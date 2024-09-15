@@ -33,7 +33,7 @@ const ProjectTaskTable = ({
     setSelectedClient
   );
 
-  const { openUpdateTask, setOpenUpdateTask, setOpenTaskDesc } =
+  const { openUpdateTask, setOpenUpdateTask, setOpenTaskDesc, setTaskId } =
     useStoreContext();
 
   return (
@@ -128,7 +128,10 @@ const ProjectTaskTable = ({
                   return (
                     <tr
                       className="cursor-pointer"
-                      onClick={() => setOpenTaskDesc(true)}
+                      onClick={() => {
+                        setOpenTaskDesc(true);
+                        setTaskId(item.id);
+                      }}
                     >
                       <td
                         onClick={(e) => e.stopPropagation()}

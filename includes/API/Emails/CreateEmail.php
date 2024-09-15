@@ -50,7 +50,7 @@ class CreateEmail{
         $data['client_id']       = isset($data['client_id']) ? intval($data['client_id']) : null;
         $data['project_id']      = isset($data['project_id']) ? intval($data['project_id']) : null;
         $data['subject']         = isset($data['subject']) ? sanitize_text_field($data['subject']) : '';
-        $data['body']            = isset($data['body']) ? sanitize_textarea_field($data['body']) : '';
+        $data['body']            = $data['body'];
 
         if(!isset($data['client_id']) && isset($data['project_id'])) {
             $data['client_id'] = Project::find($data['project_id'])->client_id;

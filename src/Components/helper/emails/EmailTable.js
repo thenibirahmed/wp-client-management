@@ -16,6 +16,7 @@ import Pagination from "../../Clients/Pagination";
 import Modal from "../Modal";
 
 import ViewEmail from "./ViewEmail";
+import { useFetchSingleEmailView } from "../../../hooks/useQuery";
 
 const tableData = [
   {
@@ -57,9 +58,6 @@ const tableData = [
 ];
 
 const EmailTable = ({ emailsData, pagination, projectId, slug }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-
   const {
     openEmailModal,
     setOpenEmailModal,
@@ -172,9 +170,12 @@ const EmailTable = ({ emailsData, pagination, projectId, slug }) => {
                         <h3 className="text-sm   text-textColor font-metropolis font-normal ">
                           {item.subject}
                         </h3>{" "}
-                        <h6 className="text-xs  text-textColor2 font-metropolis font-normal ">
-                          {truncateText(item.body)}
-                        </h6>
+                        <h6
+                          className="text-xs text-textColor2 font-metropolis font-normal"
+                          dangerouslySetInnerHTML={{
+                            __html: truncateText(item.body),
+                          }}
+                        ></h6>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-normal">
                         {item.time}
@@ -219,7 +220,7 @@ const EmailTable = ({ emailsData, pagination, projectId, slug }) => {
         <Modal
           open={openEmailModal}
           setOpen={setOpenEmailModal}
-          title="How a visual artist redefines success in graphic design"
+          title="How a visual artist redefines success"
         >
           <ViewEmail />
         </Modal>

@@ -239,7 +239,7 @@ class Installer {
                         `assigned_to` bigint UNSIGNED DEFAULT NULL,
                         `title` varchar(255) NOT NULL,
                         `start_date` date DEFAULT NULL,
-                        `due_date` date DEFAULT NULL,
+                        `end_date` date DEFAULT NULL,
                         `status_id` bigint UNSIGNED DEFAULT NULL,
                         `priority_id` bigint UNSIGNED DEFAULT NULL,
                         `description` text COLLATE utf8mb4_unicode_ci,

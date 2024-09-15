@@ -19,6 +19,7 @@ import { Calendar02Icon } from "../../../utils/icons";
 import toast from "react-hot-toast";
 import Loaders from "../../Loaders";
 import Errors from "../../Errors";
+import { MultiSelectTextField } from "../MultiSelectTextField";
 
 const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
   const datePickerStartRef = useRef(null);
@@ -33,6 +34,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
   const [selectStatus, setSelectStatus] = useState();
   const [selectPriority, setSelectPriority] = useState();
   const [selectProjectManager, setSelectProjectManager] = useState();
+  const [selectedAssignees, setSelectedAssignees] = useState([]);
   const [submitLoader, setSubmitLoader] = useState(false);
 
   //calling react-query Parallely for fetching data
@@ -76,6 +78,12 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
     mode: "onTouched",
   });
 
+  const [allIds, setAllIds] = useState([]);
+
+  useEffect(() => {
+    setAllIds(selectedAssignees.map((item) => item.id));
+  }, [selectedAssignees]);
+
   const addNewProjectHandler = async (data) => {
     if (
       !selectClient?.id ||
@@ -87,9 +95,11 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
       return setError("This field is required*");
     }
     setSubmitLoader(true);
+
     const sendData = {
       title: data.title,
       manager_id: selectProjectManager?.id,
+      assigee_ids: allIds,
       client_id: selectClient?.id,
       status_id: selectStatus?.id,
       priority_id: selectPriority?.id,
@@ -209,20 +219,24 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
           />
         </div>
         <div className="flex md:flex-row flex-col gap-4 w-full">
-          {/* <SelectTextField
-            label="Assignee"
-            select={selectProjectManager}
-            setSelect={setSelectProjectManager}
-            lists={managers?.employee}
-            isSubmitting={isSubmitting}
-          /> */}
-          <SelectTextField
-            label="Currency"
-            select={selectCurrency}
-            setSelect={setSelectCurrency}
-            lists={currencyLists?.currency}
-            isSubmitting={isSubmitting}
-          />
+          <div className="min-w-full max-w-full ">
+            <MultiSelectTextField
+              label="Assignee"
+              select={selectedAssignees}
+              setSelect={setSelectedAssignees}
+              lists={managers?.employee}
+              isSubmitting={isSubmitting}
+            />
+          </div>
+          <div className="min-w-full max-w-full">
+            <SelectTextField
+              label="Currency"
+              select={selectCurrency}
+              setSelect={setSelectCurrency}
+              lists={currencyLists?.currency}
+              isSubmitting={isSubmitting}
+            />
+          </div>
         </div>
 
         <div className="flex md:flex-row flex-col gap-4 w-full">
