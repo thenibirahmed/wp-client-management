@@ -93,7 +93,7 @@ const ClientTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {clientData.map((item) => {
+                {clientData?.map((item) => {
                   const isChecked = selectedClient.some(
                     (client) => client?.client_id === item?.client_id
                   );

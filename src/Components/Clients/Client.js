@@ -14,7 +14,7 @@ import ClientOverView from "./ClientOverView";
 import { useStoreContext } from "../../store/ContextApiStore";
 import Modal from "../helper/Modal";
 import AddClientForm from "./AddClientForm";
-import { useFetchClientOverView } from "../../hooks/useQuery";
+import { useFetchClientOverView, useFetchClients } from "../../hooks/useQuery";
 import toast from "react-hot-toast";
 import Skeleton from "../Skeleton";
 import Errors from "../Errors";
@@ -39,11 +39,17 @@ const Client = () => {
   const [isAllselected, setIsAllSelected] = useState(false);
 
   const {
+    isLoading: clientsLoader,
+    data: clientList,
+    error: cliErr,
+    refetch,
+  } = useFetchClients(paginationUrl, onError);
+  const {
     isLoading,
     data: clientOverView,
     error,
-    refetch,
-  } = useFetchClientOverView(paginationUrl, onError);
+    refetch: cliOverViewRefetch,
+  } = useFetchClientOverView(onError);
 
   useRefetch(paginationUrl, refetch);
 
@@ -124,11 +130,11 @@ const Client = () => {
         </div>
 
         <React.Fragment>
-          {clientOverView.clients.length > 0 ? (
+          {clientList?.clients?.length > 0 ? (
             <>
               <ClientTable
-                clientData={clientOverView?.clients}
-                pagination={clientOverView?.pagination}
+                clientData={clientList?.clients}
+                pagination={clientList?.pagination}
                 selectedClient={selectedClient}
                 setSelectedClient={setSelectedClient}
                 isAllselected={isAllselected}

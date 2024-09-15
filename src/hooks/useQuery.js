@@ -1,18 +1,36 @@
 import { useQuery } from "react-query";
 import api from "../api/api";
 
-export const useFetchClientOverView = (pageinationUrl, onError) => {
+export const useFetchClientOverView = (onError) => {
   return useQuery(
     "client-overview",
     async () => {
-      return await api.get(`/clients-overview/?${pageinationUrl}`);
+      return await api.get(`/clients-overview`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          topBar: data.data.topBar,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+export const useFetchClients = (pageinationUrl, onError) => {
+  return useQuery(
+    "clients",
+    async () => {
+      return await api.get(`/clients/?${pageinationUrl}`);
     },
     {
       select: (data) => {
         const sendData = {
           clients: data.data.clients,
           pagination: data.data.pagination,
-          topBar: data.data.topBar,
         };
 
         return sendData;
@@ -198,7 +216,7 @@ export const useFetchProjectOverView = (onError) => {
   return useQuery(
     "project-overview",
     async () => {
-      return await api.get("/project-overview");
+      return await api.get("/projects-overview");
     },
     {
       select: (data) => {

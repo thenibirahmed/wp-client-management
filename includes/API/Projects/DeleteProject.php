@@ -8,7 +8,7 @@ class DeleteProject {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/project/delete/(?P<id>\d+)';
+    private $endpoint  = '/project/delete/(?P<id>\d+)';
 
     protected array $rules = [
         'id' => 'required|integer|exists:eic_projects,id',
@@ -16,8 +16,8 @@ class DeleteProject {
 
     protected array $validationMessages = [
         'id.required' => 'The project ID is required.',
-        'id.integer' => 'The projects ID must be an integer.',
-        'id.exists' => 'The projects does not exist.',
+        'id.integer'  => 'The projects ID must be an integer.',
+        'id.exists'   => 'The projects does not exist.',
     ];
 
     public function __construct() {
@@ -33,7 +33,7 @@ class DeleteProject {
 
         $project_id = $request->get_param('id');
 
-        $data = ['id' => $project_id];
+        $data       = ['id' => $project_id];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

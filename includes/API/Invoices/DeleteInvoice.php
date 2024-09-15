@@ -16,8 +16,8 @@ class DeleteInvoice {
 
     protected array $validationMessages = [
         'id.required' => 'The Invoice ID is required.',
-        'id.integer' => 'The Invoice ID must be an integer.',
-        'id.exists' => 'The Invoice does not exist.',
+        'id.integer'  => 'The Invoice ID must be an integer.',
+        'id.exists'   => 'The Invoice does not exist.',
     ];
 
     public function __construct() {
@@ -33,7 +33,7 @@ class DeleteInvoice {
 
         $invoice_id = $request->get_param('id');
 
-        $data = ['id' => $invoice_id];
+        $data       = ['id' => $invoice_id];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -50,6 +50,8 @@ class DeleteInvoice {
                 'message' => 'Invoice not found.',
             ], 404);
         }
+
+        $invoice->items()->delete();
 
         $invoice->delete();
 

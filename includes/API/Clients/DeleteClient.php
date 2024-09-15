@@ -16,8 +16,8 @@ class DeleteClient {
 
     protected array $validationMessages = [
         'id.required' => 'The client ID is required.',
-        'id.integer' => 'The client ID must be an integer.',
-        'id.exists' => 'The client does not exist.',
+        'id.integer'  => 'The client ID must be an integer.',
+        'id.exists'   => 'The client does not exist.',
     ];
 
     public function __construct() {
@@ -30,6 +30,7 @@ class DeleteClient {
 
     public function delete_client(\WP_REST_Request $request) {
         require_once(ABSPATH . 'wp-admin/includes/user.php');
+
         global $validator;
 
         $client_id = $request->get_param('id');
@@ -58,9 +59,10 @@ class DeleteClient {
             wp_delete_user($user->ID);
         }
 
+        $client->eic_crm_user->delete();
+
         $client->delete();
 
-        $client->eic_crm_user->delete();
 
         return new \WP_REST_Response([
             'message' => 'Client deleted successfully.',
