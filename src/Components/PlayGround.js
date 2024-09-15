@@ -68,16 +68,16 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.put(
-				eicApiSettings.rest_url + "wp-client-management/v1/note/update/3",
-				{
+		axios.delete(
+				eicApiSettings.rest_url + "wp-client-management/v1/client/delete/13",
+				// {
 					// name: 'saikat12',
 					// email: 'saikat12@wp.com',
 					// phone: '1234567890',
 					// organization: 'not found',
 					// address: 'not found',
 					// city: "not found",
-				note: "updated note for now"
+				// note: "updated note for now"
 
 				// 	client_id: 1,
 				// 	manager_id: 1,
@@ -89,7 +89,7 @@ const PlayGround = () => {
 				// 	due_date: '2022-01-01',
 				// 	description: 'udpated description from play ground',
 				// 	assignee_ids: [1,23,5],
-				},
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
