@@ -8,7 +8,7 @@ use WpClientManagement\Models\Project;
 class ProjectOverview {
 
     private $namespace = 'wp-client-management/v1';
-    private $endpoint  = '/project-overview';
+    private $endpoint  = '/projects-overview';
 
     public function __construct()
     {
