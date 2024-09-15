@@ -68,48 +68,49 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/task/1",
-				// {
-				// invoice_items: [
-				// 	{
-				// 		details: "test details",
-				// 		quantity: 1,
-				// 		unit_price: 100,
-				// 		line_total: 100,
-				// 	},
-				// 	{
-				// 		details: "test details",
-				// 		quantity: 1,
-				// 		unit_price: 100,
-				// 		line_total: 100,
-				// 	},
-				// 	{
-				// 		details: "test details",
-				// 		quantity: 1,
-				// 		unit_price: 100,
-				// 		line_total: 100,
-				// 	},
-				// ]
-					// name: 'saikat12',
-					// email: 'saikat12@wp.com',
-					// phone: '1234567890',
-					// organization: 'not found',
-					// address: 'not found',
-					// city: "not found",
-				// note: "updated note for now"
-
-				// 	client_id: 1,
-				// 	manager_id: 1,
-				// 	status_id: 1,
-				// 	priority_id: 7,
-				// 	title: 'title from play ground',
-				// 	budget: 5000,
-				// 	start_date: '2022-01-01',
-				// 	due_date: '2022-01-01',
-				// 	description: 'udpated description from play ground',
-				// 	assignee_ids: [1,23,5],
-				// },
+		axios.post(
+				eicApiSettings.rest_url + "wp-client-management/v1/invoice/create",
+				{
+					eic_crm_user_id: 1,
+					project_id: 1,
+					client_id: null,
+					currency_id: 1,
+					payment_method_id: 2,
+					status_id: 7,
+					invoice_number: 12345,
+					type: 'service',
+					title: 'Invoice for Web Development',
+					date: '2024-09-15',
+					due_date: '2024-09-30',
+					bill_from_address: '123 Main St, Cityville',
+					bill_from_phone_number: '+1234567890',
+					bill_from_email: 'billing@example.com',
+					invoice_items: [
+					  {
+						name: 'Design',
+						description: 'Web Design Service',
+						quantity: 2,
+						unit_price: 500.00,
+						line_total: 1000.00
+					  },
+					  {
+						name: 'Development',
+						description: 'Hosting Fee',
+						quantity: 3,
+						unit_price: 140.00,
+						line_total: 420.00
+					  }
+					],
+					billing_address: '456 Client Ave, Townsville',
+					billing_phone_number: '+9876543210',
+					billing_email: 'client@example.com',
+					note: 'Thank you for your business.',
+					sub_total: 1220.00,
+					total:1220.00,
+					discount: 0,
+					tax: 0,
+					fee: 0
+				},
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
