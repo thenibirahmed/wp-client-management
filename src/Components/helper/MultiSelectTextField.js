@@ -19,6 +19,7 @@ export const MultiSelectTextField = ({
   setSelect,
   lists,
   isSubmitting,
+  project = false,
 }) => {
   const handleSelect = (person) => {
     const isIncluded = select?.some((item) => item.id === person.id);
@@ -35,12 +36,14 @@ export const MultiSelectTextField = ({
         <label className="font-medium text-sm font-metropolis text-textColor">
           {label}
         </label>
-        <div className="relative mt-2">
+        <div className="relative ">
           <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
             <span className="block truncate">
               {select?.length > 0
                 ? select?.map((p) => p.name).join(", ")
-                : "Select people"}
+                : project
+                ? "Select Projects"
+                : "Select Peoples"}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon

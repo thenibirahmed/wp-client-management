@@ -41,18 +41,18 @@ const ContactProject = ({ teamId }) => {
 
   return (
     <React.Fragment>
-      {teamLists?.teamproject?.length > 0 ? (
-        <div className="space-y-6">
-          <>
-            <ProjectHeader
-              selectedProject={selectedProject}
-              title="Projects"
-              setOpenModal={() => {}}
-              btnTitle="Add Project"
-              onDeleteAction={onDeleteAction}
-              onCheckAction={onCheckAction}
-            />
-          </>
+      <div className="space-y-6">
+        <>
+          <ProjectHeader
+            selectedProject={selectedProject}
+            title="Projects"
+            setOpenModal={() => {}}
+            btnTitle="Add Project"
+            onDeleteAction={onDeleteAction}
+            onCheckAction={onCheckAction}
+          />
+        </>
+        {teamLists?.teamproject?.length > 0 ? (
           <ContactTeamProjectTable
             teamId={teamId}
             teamLists={teamLists?.teamproject}
@@ -62,20 +62,20 @@ const ContactProject = ({ teamId }) => {
             isAllselected={isAllselected}
             setIsAllSelected={setIsAllSelected}
           />
-        </div>
-      ) : (
-        <>
-          <EmptyTable
-            handler={() => {}}
-            Icon={UserCircle02Icon}
-            setOpen={() => {}}
-            title="  No Team Created Yet"
-            subtitle="Start building your Project list"
-            btnText=" Add Project"
-            bottom
-          />
-        </>
-      )}
+        ) : (
+          <>
+            <EmptyTable
+              handler={() => {}}
+              Icon={UserCircle02Icon}
+              setOpen={() => {}}
+              title="  No Team Created Yet"
+              subtitle="Start building your Project list"
+              btnText=" Add Project"
+              bottom
+            />
+          </>
+        )}
+      </div>
     </React.Fragment>
   );
 };

@@ -6,6 +6,8 @@ import AddInvoiceNote from "./AddInvoiceNote";
 
 const AddNewInvoice = ({ update, clientId = null }) => {
   const [invoiceItem, setInvoiceItems] = useState([]);
+  console.log("itemDetails", invoiceItem);
+
   const [noteText, setNoteText] = useState("");
 
   return (

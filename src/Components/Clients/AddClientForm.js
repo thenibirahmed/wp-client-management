@@ -19,17 +19,6 @@ const AddClientForm = ({ setOpen, refetch, update = false }) => {
     setError,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      name: clientInfo.name,
-      email: clientInfo.email,
-      country: clientInfo.country,
-      city: clientInfo.city,
-      address: clientInfo.address,
-      organization: clientInfo.organization,
-      phone: clientInfo.phone,
-      state: clientInfo.state,
-      zip: clientInfo.zip,
-    },
     mode: "onTouched",
   });
 

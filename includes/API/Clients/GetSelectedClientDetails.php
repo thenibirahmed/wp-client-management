@@ -50,11 +50,16 @@ class GetSelectedClientDetails{
         return new \WP_REST_Response([
             'client_details' => [
                 'id'      => $client->id,
-                'address' => $eic_crm_user->address,
                 'name'    => $wp_user->user_login,
-                'email'   => $wp_user->user_email
+                'email'   => $wp_user->user_email,
+                'address' => $eic_crm_user->address,
+                'organization' => $client->organization,
+                'phone'   => $eic_crm_user->phone,
+                'city'    => $eic_crm_user->city,
+                'state'   => $eic_crm_user->state,
+                'zip'     => $eic_crm_user->zip,
+                'country' => $eic_crm_user->country,
             ]
-            ]);
-
+        ]);
     }
 }

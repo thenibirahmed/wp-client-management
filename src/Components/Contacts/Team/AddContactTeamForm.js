@@ -36,7 +36,7 @@ const AddContactTeamForm = ({ setOpen, refetch }) => {
 
   const addNewContactTeamHandler = async (data) => {
     setSubmitLoader(true);
-    if (projectIds.length === 0) return toast.error("Team member is required");
+
     const sendData = {
       name: data.name,
       email: data.email,
@@ -142,11 +142,12 @@ const AddContactTeamForm = ({ setOpen, refetch }) => {
         <React.Fragment>
           <div className="w-full">
             <MultiSelectTextField
-              label="Team Members"
+              label="Add Projects"
               select={selectedProject}
               setSelect={setSelectedProject}
               lists={projectLists?.projects}
               isSubmitting={isSubmitting}
+              project
             />
           </div>
         </React.Fragment>

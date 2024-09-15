@@ -36,17 +36,17 @@ const ContactTask = ({ teamId }) => {
   if (isLoading) return <Skeleton />;
   return (
     <React.Fragment>
-      {taskLists?.task?.length > 0 ? (
-        <div className="space-y-6">
-          {" "}
-          <ProjectHeader
-            selectedProject={selectedTask}
-            title="Tasks"
-            setOpenModal={() => {}}
-            btnTitle="Add Task"
-            onDeleteAction={onDeleteAction}
-            onCheckAction={onCheckAction}
-          />
+      <div className="space-y-6">
+        {" "}
+        <ProjectHeader
+          selectedProject={selectedTask}
+          title="Tasks"
+          setOpenModal={() => {}}
+          btnTitle="Add Task"
+          onDeleteAction={onDeleteAction}
+          onCheckAction={onCheckAction}
+        />
+        {taskLists?.task?.length > 0 ? (
           <ContactTeamTaskTable
             teamId={teamId}
             taskLists={taskLists?.task}
@@ -56,20 +56,20 @@ const ContactTask = ({ teamId }) => {
             isAllselected={isAllselected}
             setIsAllSelected={setIsAllSelected}
           />
-        </div>
-      ) : (
-        <>
-          <EmptyTable
-            handler={() => {}}
-            Icon={UserCircle02Icon}
-            setOpen={() => {}}
-            title="  No Task Created Yet"
-            subtitle="Start building your Project list"
-            btnText=" Add Project"
-            bottom
-          />
-        </>
-      )}
+        ) : (
+          <>
+            <EmptyTable
+              handler={() => {}}
+              Icon={UserCircle02Icon}
+              setOpen={() => {}}
+              title="  No Task Created Yet"
+              subtitle="Start building your Project list"
+              btnText=" Add Project"
+              bottom
+            />
+          </>
+        )}
+      </div>
     </React.Fragment>
   );
 };

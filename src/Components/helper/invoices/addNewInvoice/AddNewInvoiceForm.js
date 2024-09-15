@@ -26,6 +26,17 @@ import {
 const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
   const { setCreateInvoice, setUpdateInvoice } = useStoreContext();
 
+  const invoice_items = invoiceItem?.map((item) => ({
+    details: item.itemDetails,
+    quantity: item.quantity,
+    unit_price: item.rate,
+    discount_type: item.discountType,
+    discount_value: item.discount,
+    tax_type: item.taxType,
+    tax_value: item.tax,
+    line_total: item.total,
+  }));
+
   const { subtotal, totalDiscount, totalTax, finalAmount } =
     useSubtotal(invoiceItem);
 
@@ -133,6 +144,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
       discount: totalDiscount,
       tax: totalTax,
       fee: 10,
+      invoice_items,
     };
 
     if (clientId) {
