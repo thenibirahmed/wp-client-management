@@ -56,8 +56,6 @@ class GetSingleTask {
             ]);
         }
 
-        return new \WP_REST_Response('Debugging....');
-
         $comments       = $task->comments()->whereNull('reply_to')->get();
         $wp_user_ids    = $task->eic_crm_user->pluck('wp_user_id')->toArray();
 

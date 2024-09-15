@@ -16,6 +16,8 @@ const ClientTable = ({
   setIsAllSelected,
   refetch,
 }) => {
+  const [clientInfo, setClientInfo] = useState();
+
   const { updateClient, setUpdateClient } = useStoreContext();
 
   const { checkedAllClient, checkedSingleClient } = useClientCheckedHandler(
@@ -160,6 +162,8 @@ const ClientTable = ({
                             onClick={(e) => {
                               e.stopPropagation();
                               setUpdateClient(true);
+                              console.log("clientId", item);
+                              setClientInfo(item);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >

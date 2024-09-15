@@ -78,6 +78,8 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
   const { isLoading: isLoadingEmpDetails, data: emplyoee } =
     useFetchEmployeeDetails(selectEmplyoee?.id, onEmployeeError);
 
+  console.log("selected emp", selectEmplyoee?.id);
+
   function onClientErr(err) {
     toast.error(
       err?.response?.data?.errors || "Failed to fetch client address"
@@ -156,6 +158,9 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
       setValue("cphone", "01275757");
     }
   }, [client]);
+
+  console.log("employee details", emplyoee?.employeeDetails);
+  console.log("client details", client?.clientDetails);
 
   useEffect(() => {
     if (emplyoee?.employeeDetails) {

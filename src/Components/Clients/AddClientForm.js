@@ -11,6 +11,7 @@ const AddClientForm = ({ setOpen, refetch, update = false }) => {
   const [loading, setLoading] = useState(false);
 
   const imageRef = useRef();
+
   const {
     register,
     handleSubmit,
@@ -18,21 +19,27 @@ const AddClientForm = ({ setOpen, refetch, update = false }) => {
     setError,
     formState: { errors },
   } = useForm({
+    defaultValues: {
+      name: clientInfo.name,
+      email: clientInfo.email,
+      country: clientInfo.country,
+      city: clientInfo.city,
+      address: clientInfo.address,
+      organization: clientInfo.organization,
+      phone: clientInfo.phone,
+      state: clientInfo.state,
+      zip: clientInfo.zip,
+    },
     mode: "onTouched",
   });
 
   //submitting the form
   const addNewClientHandler = async (data) => {
-    const sendData = {
-      ...data,
-      role: "admin",
-      status: "active",
-    };
-    console.log(sendData);
+    console.log(data);
 
     try {
       setLoading(true);
-      const { data: res } = await api.post("/client/create", sendData);
+      const { data: res } = await api.post("/client/create", data);
       toast.success(res?.message);
       await refetch();
       reset();
