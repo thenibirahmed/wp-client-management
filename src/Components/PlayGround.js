@@ -69,7 +69,7 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/invoice/create",
+				eicApiSettings.rest_url + "wp-client-management/v1/task/100",
 				// {
 				// invoice_items: [
 				// 	{

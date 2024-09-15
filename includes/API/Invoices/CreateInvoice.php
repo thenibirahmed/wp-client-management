@@ -3,6 +3,7 @@ namespace WpClientManagement\API\Invoices;
 
 use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Invoice;
+use WpClientManagement\Models\InvoiceItem;
 use WpClientManagement\Models\Project;
 
 class CreateInvoice {
@@ -88,7 +89,20 @@ class CreateInvoice {
 
         $data = $request->get_params();
 
-        return new \WP_REST_Response($data);
+        if($data['invoice_items']) {
+            foreach($data['invoice_items'] as $key => $value) {
+                $data['invoice_items'][$key]['project_id'] = isset($data['project_id']) ? intval($data['project_id']) : 1;
+                $data['invoice_items'][$key]['details'] = isset($data['invoice_items'][$key]['details']) ? sanitize_textarea_field($data['invoice_items'][$key]['details']) : null;
+                $data['invoice_items'][$key]['quantity'] = isset($data['invoice_items'][$key]['quantity']) ? intval($data['invoice_items'][$key]['quantity']) : null;
+                $data['invoice_items'][$key]['unit_price'] = isset($data['invoice_items'][$key]['unit_price']) ? floatval($data['invoice_items'][$key]['unit_price']) : null;
+                $data['invoice_items'][$key]['line_total'] = isset($data['invoice_items'][$key]['line_total']) ? floatval($data['invoice_items'][$key]['line_total']) : null;
+            }
+        }
+
+        InvoiceItem::insert($data);
+        return new \WP_REST_Response($data['invoice_items']);
+
+
 
         // $currentWpUser                  = wp_get_current_user();
         // $eicCrmUserId                   = EicCrmUser::whereWpUserId($currentWpUser->ID)->pluck('id')->first();
