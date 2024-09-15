@@ -8,7 +8,7 @@ class DeleteTask {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/task/delete/(?P<id>\d+)';
+    private $endpoint  = '/task/delete/(?P<id>\d+)';
 
     protected array $rules = [
         'id' => 'required|integer|exists:eic_tasks,id',
@@ -16,13 +16,13 @@ class DeleteTask {
 
     protected array $validationMessages = [
         'id.required' => 'The task ID is required.',
-        'id.integer' => 'The task ID must be an integer.',
-        'id.exists' => 'The task does not exist.',
+        'id.integer'  => 'The task ID must be an integer.',
+        'id.exists'   => 'The task does not exist.',
     ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::DELETABLE,
+            'methods'  => \WP_REST_Server::DELETABLE,
             'callback' => array($this, 'delete_task'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -31,9 +31,9 @@ class DeleteTask {
     public function delete_task(\WP_REST_Request $request) {
         global $validator;
 
-        $task_id = $request->get_param('id');
+        $task_id   = $request->get_param('id');
 
-        $data = ['id' => $task_id];
+        $data      = ['id' => $task_id];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -50,6 +50,8 @@ class DeleteTask {
                 'message' => 'Task not found.',
             ], 404);
         }
+
+        $task->comments()->delete();
 
         $task->delete();
 

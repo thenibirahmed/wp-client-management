@@ -31,6 +31,7 @@ use WpClientManagement\API\Projects\GetProjectFiles;
 use WpClientManagement\API\Clients\GetSingleClientOverview;
 use WpClientManagement\API\Clients\UpdateClient;
 use WpClientManagement\API\Contacts\AddTeamMember;
+use WpClientManagement\API\Contacts\DeleteTeamMember;
 use WpClientManagement\API\Contacts\GetTeamMembers;
 use WpClientManagement\API\Contacts\UpdateTeamMember;
 use WpClientManagement\API\Currencies\SelectCurrency;
@@ -167,6 +168,7 @@ class API {
         new GetSingleTeamMemberProjects();
         new GetSingleTeamMemberTasks();
         new UpdateTeamMember();
+        new DeleteTeamMember();
 
         // Email
         new GetEmails();

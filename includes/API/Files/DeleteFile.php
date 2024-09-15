@@ -16,13 +16,13 @@ class DeleteFile {
 
     protected array $validationMessages = [
         'id.required' => 'The file ID is required.',
-        'id.integer' => 'The file ID must be an integer.',
-        'id.exists' => 'The file does not exist.',
+        'id.integer'  => 'The file ID must be an integer.',
+        'id.exists'   => 'The file does not exist.',
     ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::DELETABLE,
+            'methods'  => \WP_REST_Server::DELETABLE,
             'callback' => array($this, 'delete_file'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -33,7 +33,7 @@ class DeleteFile {
 
         $file_id = $request->get_param('id');
 
-        $data = ['id' => $file_id];
+        $data    = ['id' => $file_id];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -42,6 +42,7 @@ class DeleteFile {
                 'errors' => $validator->errors(),
             ], 400);
         }
+
         $file = File::find($file_id);
 
         if (!$file) {
