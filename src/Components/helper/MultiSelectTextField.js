@@ -21,9 +21,9 @@ export const MultiSelectTextField = ({
   isSubmitting,
 }) => {
   const handleSelect = (person) => {
-    const isIncluded = select.some((item) => item.id === person.id);
+    const isIncluded = select?.some((item) => item.id === person.id);
     if (isIncluded) {
-      setSelect(select.filter((p) => p.id !== person.id));
+      setSelect(select?.filter((p) => p.id !== person.id));
     } else {
       setSelect([...select, person]);
     }
@@ -51,12 +51,12 @@ export const MultiSelectTextField = ({
           </ListboxButton>
 
           <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-            {lists.map((person) => (
+            {lists?.map((person) => (
               <ListboxOption
                 key={person.id}
                 value={person}
                 className={`group relative cursor-default select-none py-2 pl-3 pr-9 ${
-                  select?.some((p) => p.id === person.id)
+                  select?.some((p) => p?.id === person?.id)
                     ? "bg-indigo-600 text-white"
                     : "text-gray-900"
                 }`}

@@ -2,6 +2,7 @@ import React from "react";
 import { OvierViewItem } from "../helper/OverViewItem";
 
 const ClientOverView = ({ topBarData }) => {
+  console.log("topbar", topBarData);
   return (
     <React.Fragment>
       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">

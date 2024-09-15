@@ -77,7 +77,7 @@ class CreateProject {
         $team_members = EicCrmUser::getTeamMembers(false);
         $teamMemberIds = $team_members->pluck('id')->toArray();
 
-        if (isset($data['assignee_ids'])) {
+        if ($data['assignee_ids']) {
             $validAssigneeIds = array_filter($data['assignee_ids'], function ($id) use ($teamMemberIds) {
                 return in_array($id, $teamMemberIds);
             });

@@ -128,6 +128,7 @@ export const useFetchPriorities = (type, onError) => {
 
     {
       select: (data) => {
+        console.log("client pri", data.data);
         const priorities = data?.data?.priorities?.map((item) => {
           return {
             id: item.id,
@@ -282,12 +283,13 @@ export const useFetchProjectInvoice = (
   onError
 ) => {
   return useQuery(
-    ["project-invoice", projectId],
+    [`${type}-invoice`, projectId],
     async () => {
       return await api.get(`/${type}/${projectId}/invoices/?${paginationUrl}`);
     },
     {
       select: (data) => {
+        console.log("client invoice ", data.data);
         const sendData = {
           invoices: data.data.invoices,
           pagination: data.data.pagination,
@@ -527,7 +529,7 @@ export const useFetchSingleTeamProject = (teamId, paginationUrl, onError) => {
       select: (data) => {
         console.log("projectTask", data.data);
         const sendData = {
-          team: data.data.projects,
+          teamproject: data.data.projects,
           pagination: data.data.pagination,
         };
 
@@ -566,6 +568,30 @@ export const useFetchSingleEmailView = (emailId, onError) => {
     ["single-email-view", emailId],
     async () => {
       return await api.get(`/email/${emailId}`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          id: data.data.id,
+          subject: data.data.subject,
+          body: data.data.body,
+          date: data.data.date,
+          from: data.data.from,
+        };
+
+        return sendData;
+      },
+      enabled: !!emailId,
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+export const useFetchSingleTask = (taskId, onError) => {
+  return useQuery(
+    ["single-task-view", taskId],
+    async () => {
+      return await api.get(`/task/${taskId}`);
     },
     {
       select: (data) => {

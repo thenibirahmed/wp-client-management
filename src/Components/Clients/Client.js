@@ -26,8 +26,15 @@ const Client = () => {
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "page=1";
 
-  const { setCreateInvoice, setAllTabItems } = useStoreContext();
-  const [open, setOpen] = useState(false);
+  const {
+    setCreateInvoice,
+    setAllTabItems,
+    createClient,
+    setCreateClient,
+    updateClient,
+    setUpdateClient,
+  } = useStoreContext();
+
   const [selectedClient, setSelectedClient] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
@@ -54,7 +61,7 @@ const Client = () => {
   }, []);
 
   const addNewClient = () => {
-    setOpen(true);
+    setCreateClient(true);
   };
 
   function onError(err) {
@@ -103,7 +110,7 @@ const Client = () => {
             )}
             <ClientSearchInput />
             <button
-              onClick={() => setOpen(true)}
+              onClick={() => setCreateClient(true)}
               type="button"
               className="inline-flex items-center gap-x-1.5 rounded-md bg-customBlue px-5 py-[10px] text-sm font-semibold text-white shadow-sm  hover:text-gray-200 "
             >
@@ -126,6 +133,7 @@ const Client = () => {
                 setSelectedClient={setSelectedClient}
                 isAllselected={isAllselected}
                 setIsAllSelected={setIsAllSelected}
+                refetch={refetch}
               />
             </>
           ) : (
@@ -141,8 +149,8 @@ const Client = () => {
           )}
         </React.Fragment>
       </div>
-      <Modal open={open} setOpen={setOpen} title="Add Client">
-        <AddClientForm setOpen={setOpen} refetch={refetch} />
+      <Modal open={createClient} setOpen={setCreateClient} title="Add Client">
+        <AddClientForm setOpen={setCreateClient} refetch={refetch} />
       </Modal>
     </React.Fragment>
   );

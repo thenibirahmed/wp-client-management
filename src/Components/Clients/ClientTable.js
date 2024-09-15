@@ -3,6 +3,9 @@ import { Delete03Icon, PencilEdit02Icon } from "../../utils/icons";
 import useHashRouting from "../../utils/useHashRouting";
 import Pagination from "./Pagination";
 import { useClientCheckedHandler } from "../../utils/useCheckedItem";
+import { useStoreContext } from "../../store/ContextApiStore";
+import AddClientForm from "./AddClientForm";
+import Modal from "../helper/Modal";
 
 const ClientTable = ({
   clientData,
@@ -11,8 +14,9 @@ const ClientTable = ({
   setSelectedClient,
   isAllselected,
   setIsAllSelected,
+  refetch,
 }) => {
-  console.log("cli pagi", pagination);
+  const { updateClient, setUpdateClient } = useStoreContext();
 
   const { checkedAllClient, checkedSingleClient } = useClientCheckedHandler(
     selectedClient,
@@ -152,8 +156,11 @@ const ClientTable = ({
                         className="whitespace-nowrap   px-3 py-4 "
                       >
                         <div className="flex gap-3">
-                          <a
-                            href={`#/clients/#/${item?.client_id}`}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setUpdateClient(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -161,7 +168,7 @@ const ClientTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                           <a
                             href={`#/clients/#/${item?.client_id}`}
                             className="text-indigo-600 hover:text-indigo-900"
@@ -183,6 +190,13 @@ const ClientTable = ({
           </div>
         </div>
       </div>
+      <Modal
+        open={updateClient}
+        setOpen={setUpdateClient}
+        title="Update Client"
+      >
+        <AddClientForm refetch={refetch} setOpen={setUpdateClient} update />
+      </Modal>
     </div>
   );
 };

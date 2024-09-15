@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Projects;
 
+use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Priority;
 use WpClientManagement\Models\Project;
 use WpClientManagement\Models\Status;
@@ -57,9 +58,10 @@ class UpdateProject {
         $data['priority_id']  = isset($data['priority_id']) ? intval($data['priority_id']) : null;
         $data['title']        = sanitize_text_field($data['title'] ?? '');
         $data['budget']       = isset($data['budget']) ? floatval($data['budget']) : null;
-        $data['start_date']   = isset($data['start_date']) ? sanitize_text_field($data['start_date']) : '';
-        $data['due_date']     = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : '';
+        $data['start_date']   = isset($data['start_date']) ? sanitize_text_field($data['start_date']) : null;
+        $data['due_date']     = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
         $data['description']  = isset($data['description']) ? sanitize_textarea_field($data['description']) : '';
+        $data['assignee_ids'] = isset($data['assignee_ids']) ? $data['assignee_ids'] : [];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -68,22 +70,6 @@ class UpdateProject {
                 'errors' => $validator->errors(),
             ], 400);
         }
-
-        // ***
-        $priorities = Priority::where('type','project')->pluck('id')->toArray();
-        if(!in_array($data['priority_id'], $priorities)){
-            return new \WP_REST_Response([
-                'errors' => 'Invalid project priority.',
-            ], 404);
-        }
-
-        $statuses = Status::where('type','project')->pluck('id')->toArray();
-        if(!in_array($data['status_id'], $statuses)){
-            return new \WP_REST_Response([
-                'errors' => 'Invalid project status.',
-            ], 404);
-        }
-        // ***
 
         $project = Project::find($id);
 
@@ -104,6 +90,15 @@ class UpdateProject {
             'due_date'     => $data['due_date'],
             'description'  => $data['description'],
         ]);
+
+
+        $team_members = EicCrmUser::getTeamMembers(false);
+        $teamMemberIds = $team_members->pluck('id')->toArray();
+
+        $validAssigneeIds = array_filter($data['assignee_ids'], function ($id) use ($teamMemberIds) {
+            return in_array($id, $teamMemberIds);
+        });
+        $project->eicCrmUsers()->sync($validAssigneeIds);
 
         return new \WP_REST_Response([
             'message' => 'Project updated successfully.',

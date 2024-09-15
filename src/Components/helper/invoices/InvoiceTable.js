@@ -14,6 +14,7 @@ const InvoiceTable = ({
   setSelectedInvoices,
   isAllselected,
   setIsAllSelected,
+  isClient = false,
 }) => {
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedInvoices,
@@ -55,13 +56,14 @@ const InvoiceTable = ({
                     scope="col"
                     className="px-3 uppercase py-3.5 text-left text-sm font-semibold text-textColor2"
                   >
-                    client Name
+                    {isClient ? "Project Name" : "client Name"}
                   </th>{" "}
                   <th
                     scope="col"
                     className="px-3 uppercase py-3.5 text-left text-sm font-semibold text-textColor2"
                   >
-                    total
+                    {" "}
+                    {isClient ? "amount" : "total"}
                   </th>{" "}
                   <th
                     scope="col"
@@ -124,14 +126,14 @@ const InvoiceTable = ({
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.invvoice_id}
+                          {item.code}
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-normal text-sm">
-                        {item.client_name}
+                        {isClient ? item.project : item.client_name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-semibold text-sm">
-                        ${item.total}
+                        $ {isClient ? item.amount : item.total}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm  font-metropolis font-medium">
                         <span

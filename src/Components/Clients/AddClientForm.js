@@ -6,7 +6,7 @@ import TextField from "../helper/TextField";
 import api from "../../api/api";
 import Loaders from "../Loaders";
 
-const AddClientForm = ({ setOpen, refetch }) => {
+const AddClientForm = ({ setOpen, refetch, update = false }) => {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -199,7 +199,7 @@ const AddClientForm = ({ setOpen, refetch }) => {
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            {loading ? <Loaders /> : "Save"}
+            {loading ? <Loaders /> : <> {update ? "Update" : "Save"}</>}
           </button>
         </div>
       </form>

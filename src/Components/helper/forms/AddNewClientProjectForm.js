@@ -1,57 +1,39 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 
 import TextField from "../TextField";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { SelectTextField } from "../SelectTextField";
+import {
+  useFetchAssignee,
+  useFetchPriorities,
+  useFetchSelectCurrency,
+  useFetchStatus,
+} from "../../../hooks/useQuery";
+import Errors from "../../Errors";
+import Skeleton from "../../Skeleton";
+import { Calendar02Icon } from "../../../utils/icons";
+import DatePicker from "react-datepicker";
+import toast from "react-hot-toast";
+import api from "../../../api/api";
+import dayjs from "dayjs";
+import Loaders from "../../Loaders";
 
-const AddNewClientProjectForm = () => {
+const AddNewClientProjectForm = ({ clientId, refetch }) => {
+  const datePickerStartRef = useRef(null);
+  const datePickerDueRef = useRef(null);
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
   const { setOpenProjectModal } = useStoreContext();
-  const people = [
-    { id: 1, name: "Client Name" },
-    { id: 2, name: "Arlene Mccoy" },
-    { id: 3, name: "Devon Webb" },
-  ];
-  const currencyLists = [
-    { id: 1, name: "Select Currency" },
-    { id: 2, name: "USD" },
-    { id: 3, name: "EUR" },
-    { id: 4, name: "JPY" },
-    { id: 5, name: "GBP" },
-  ];
-  const statusLists = [
-    { id: 1, name: "Select Status" },
-    { id: 2, name: "Active" },
-    { id: 3, name: "Pending" },
-    { id: 3, name: "Completed" },
-  ];
-  const priorityLists = [
-    { id: 1, name: "Select Priority" },
-    { id: 2, name: "Nomal" },
-    { id: 3, name: "Medium" },
-    { id: 3, name: "Hard" },
-  ];
-  const projectManagerLists = [
-    { id: 1, name: "Select Project Manager" },
-    { id: 2, name: "Scrum Master" },
-    { id: 3, name: "Program Manager" },
-  ];
-  const assigneeLists = [
-    { id: 1, name: "Select Assignee" },
-    { id: 2, name: "Software Developer" },
-    { id: 3, name: "UX Designer" },
-  ];
 
-  const [selectClientName, setSelectClientName] = useState(people[0]);
-  const [selectCurrency, setSelectCurrency] = useState(currencyLists[0]);
-  const [selectStatus, setSelectStatus] = useState(statusLists[0]);
-  const [selectPriority, setSelectPriority] = useState(priorityLists[0]);
-  const [selectProjectManager, setSelectProjectManager] = useState(
-    projectManagerLists[0]
-  );
-  const [selectAssignee, setSelectAssignee] = useState(assigneeLists[0]);
-
+  const [selectStatus, setSelectStatus] = useState();
+  const [selectPriority, setSelectPriority] = useState();
+  const [selectProjectManager, setSelectProjectManager] = useState();
+  const [selectCurrency, setSelectCurrency] = useState();
+  const [submitLoader, setSubmitLoader] = useState(false);
   const imageRef = useRef();
   const {
     register,
@@ -63,18 +45,109 @@ const AddNewClientProjectForm = () => {
     mode: "onTouched",
   });
 
-  const addNewClientHandler = (data) => {
-    console.log(data);
-    reset();
+  const addNewClientProjectHandler = async (data) => {
+    if (!selectProjectManager?.id || !selectStatus?.id || !selectPriority?.id) {
+      return setError("This field is required*");
+    }
+    setSubmitLoader(true);
+
+    const sendData = {
+      title: data.title,
+      manager_id: selectProjectManager?.id,
+      client_id: clientId,
+      status_id: 1,
+      priority_id: 1,
+      budget: data.budget,
+      currency: selectCurrency?.id,
+      start_date: dayjs(startDate).format("YYYY-MM-DD"),
+      due_date: dayjs(endDate).format("YYYY-MM-DD"),
+      description: data?.description,
+    };
+
+    try {
+      const { data } = await api.post(`/project/create`, sendData);
+      toast.success(data?.message);
+      await refetch();
+      reset();
+      setOpenProjectModal(false);
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    } finally {
+      setSubmitLoader(false);
+    }
   };
+
+  const {
+    isLoading: isLoadProjectManager,
+    data: managers,
+    error: pManagerErr,
+  } = useFetchAssignee(onError);
+
+  const {
+    isLoading: isLoadingPriorities,
+    data: priorities,
+    error: pPrioritiesErr,
+  } = useFetchPriorities("project", onError);
+
+  const {
+    isLoading: isLoadingStatus,
+    data: statuses,
+    error: pStatusErr,
+  } = useFetchStatus("project", onError);
+
+  const {
+    isLoading: isLoadingSelectCurrency,
+    data: currencyLists,
+    error: selecturrencyErr,
+  } = useFetchSelectCurrency(onError);
+
+  function onError(err) {
+    toast.error(err?.response?.data?.message);
+    console.log(err);
+  }
+  useEffect(() => {
+    if (managers?.employee.length > 0) {
+      setSelectProjectManager(managers?.employee[0]);
+    } else {
+      setSelectProjectManager({ name: " -No Project Manager- ", id: null });
+    }
+    if (priorities?.priorities.length > 0) {
+      setSelectPriority(priorities?.priorities[0]);
+    } else {
+      setSelectPriority({ name: " -No Priority- ", id: null });
+    }
+    if (statuses?.statuses.length > 0) {
+      setSelectStatus(statuses?.statuses[0]);
+    } else {
+      setSelectStatus({ name: " -No Status- ", id: null });
+    }
+    if (currencyLists?.currency.length > 0) {
+      setSelectCurrency(currencyLists?.currency[0]);
+    } else {
+      setSelectCurrency({ name: " -No Currency- ", id: null });
+    }
+  }, [managers, priorities, statuses, currencyLists]);
 
   const onImageUploadHandler = () => {
     imageRef.current.click();
   };
 
+  const isLoading =
+    isLoadProjectManager || isLoadingStatus || isLoadingPriorities;
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
+
+  if (pManagerErr) return <Errors message="Internal Server Error" />;
+
   return (
     <div className="py-5 relative h-full ">
-      <form className="space-y-4 " onSubmit={handleSubmit(addNewClientHandler)}>
+      <form
+        className="space-y-4 "
+        onSubmit={handleSubmit(addNewClientProjectHandler)}
+      >
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <TextField
             label="Project Title"
@@ -87,13 +160,13 @@ const AddNewClientProjectForm = () => {
             errors={errors}
           />
 
-          <SelectTextField
+          {/* <SelectTextField
             label="Client Name"
             select={selectClientName}
             setSelect={setSelectClientName}
             lists={people}
             isSubmitting={isSubmitting}
-          />
+          /> */}
         </div>
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <TextField
@@ -110,7 +183,7 @@ const AddNewClientProjectForm = () => {
             label="Currency"
             select={selectCurrency}
             setSelect={setSelectCurrency}
-            lists={currencyLists}
+            lists={currencyLists?.currency}
             isSubmitting={isSubmitting}
           />
         </div>
@@ -120,14 +193,14 @@ const AddNewClientProjectForm = () => {
             label="Status"
             select={selectStatus}
             setSelect={setSelectStatus}
-            lists={statusLists}
+            lists={statuses?.statuses}
             isSubmitting={isSubmitting}
           />
           <SelectTextField
             label="Priority"
             select={selectPriority}
             setSelect={setSelectPriority}
-            lists={priorityLists}
+            lists={priorities?.priorities}
             isSubmitting={isSubmitting}
           />
         </div>
@@ -136,17 +209,66 @@ const AddNewClientProjectForm = () => {
             label="Project Manager"
             select={selectProjectManager}
             setSelect={setSelectProjectManager}
-            lists={projectManagerLists}
+            lists={managers?.employee}
             isSubmitting={isSubmitting}
           />
-          <SelectTextField
+          {/* <SelectTextField
             label="Assignee"
             select={selectAssignee}
             setSelect={setSelectAssignee}
             lists={assigneeLists}
             isSubmitting={isSubmitting}
-          />
+          /> */}
         </div>
+        <React.Fragment>
+          <div className="flex md:flex-row flex-col gap-4 w-full">
+            <div className="flex flex-col gap-2 w-full">
+              <label className="font-medium text-sm  font-metropolis text-textColor">
+                Start Date
+              </label>
+              <div
+                className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}
+              >
+                <DatePicker
+                  ref={datePickerStartRef}
+                  className="font-metropolis text-sm text-textColor w-full outline-none"
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => datePickerStartRef.current.setFocus()}
+                  className="absolute right-0 top-0 bottom-0 m-auto"
+                >
+                  <Calendar02Icon />
+                </button>
+              </div>
+            </div>{" "}
+            <div className="flex flex-col gap-2 w-full   ">
+              <label className="font-medium text-sm  font-metropolis text-textColor">
+                Due Date
+              </label>
+              <div
+                className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}
+              >
+                <DatePicker
+                  ref={datePickerDueRef}
+                  className="font-metropolis text-sm text-textColor w-full outline-none"
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                />
+                <button
+                  type="button"
+                  onClick={() => datePickerDueRef.current.setFocus()}
+                  className="absolute right-0 top-0 bottom-0 m-auto"
+                >
+                  <Calendar02Icon />
+                </button>
+              </div>
+            </div>
+          </div>
+        </React.Fragment>
         <div className="flex flex-col gap-2 w-full">
           <label
             htmlFor="desc"
@@ -184,7 +306,7 @@ const AddNewClientProjectForm = () => {
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            Save
+            {submitLoader ? <Loaders /> : "Save"}
           </button>
         </div>
       </form>

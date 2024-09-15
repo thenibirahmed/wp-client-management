@@ -83,6 +83,7 @@ const ClientInvoices = ({ clientId }) => {
                 setSelectedInvoices={setSelectedInvoices}
                 isAllselected={isAllselected}
                 setIsAllSelected={setIsAllSelected}
+                isClient
               />
             </>
           )}

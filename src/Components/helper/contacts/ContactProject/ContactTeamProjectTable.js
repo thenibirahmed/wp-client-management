@@ -38,82 +38,20 @@ let assignee = [
     src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
   },
 ];
-const tableData = [
-  {
-    id: 1,
-
-    projectName: "The",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "Completed",
-    priority: "High",
-  },
-  {
-    id: 2,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "On Hold",
-    priority: "Low",
-  },
-  {
-    id: 3,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "Cancelled",
-    priority: "Medium",
-  },
-  {
-    id: 4,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "In progress",
-    priority: "Low",
-  },
-  {
-    id: 5,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "In Review",
-    priority: "Low",
-  },
-];
-
-const ContactTeamProjectTable = ({ teamLists, pagination }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-  const [selectedClient, setSelectedClient] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
-
+const ContactTeamProjectTable = ({
+  teamLists,
+  pagination,
+  selectedClient,
+  setSelectedClient,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
     selectedClient,
     setIsAllSelected,
     setSelectedClient
   );
 
-  console.log(selectedClient);
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -133,7 +71,7 @@ const ContactTeamProjectTable = ({ teamLists, pagination }) => {
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, teamLists)
                       }
                       type="checkbox"
                     />
@@ -165,7 +103,7 @@ const ContactTeamProjectTable = ({ teamLists, pagination }) => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
+                {teamLists?.map((item) => {
                   let itemStatus = item.status.toLowerCase();
                   let itemPriority = item.priority.toLowerCase();
 
@@ -200,13 +138,13 @@ const ContactTeamProjectTable = ({ teamLists, pagination }) => {
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.projectName}
+                          {item.project_name}
                         </h3>
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6  ">
-                        <div className="flex ">
-                          <>
-                            {item.assignee.slice(0, 3).map((img, i) => {
+                        <div className=" text-textColor2 font-metropolis pl-4">
+                          {/* <>
+                            {assignee.slice(0, 3).map((img, i) => {
                               return (
                                 <img
                                   src={img.src}
@@ -218,9 +156,10 @@ const ContactTeamProjectTable = ({ teamLists, pagination }) => {
                               );
                             })}
                             <div className="w-6 h-6 flex justify-center items-center bg-customBg2 border border-borderColor text-textColor2 font-metropolis rounded-full text-[8px] font-medium">
-                              +{item.assignee.length}
+                              +{item.assignee}
                             </div>
-                          </>
+                          </> */}
+                          {item.assignee}
                         </div>
                       </td>
 
@@ -250,7 +189,11 @@ const ContactTeamProjectTable = ({ teamLists, pagination }) => {
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug="projects"
+              query="/?page"
+            />
           </div>
         </div>
       </div>

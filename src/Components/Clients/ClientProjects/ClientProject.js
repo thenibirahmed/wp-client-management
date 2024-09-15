@@ -83,6 +83,7 @@ const ClientProject = ({ clientId }) => {
             projectData={clientProjects?.projects}
             pagination={clientProjects?.pagination}
             clientId={clientId}
+            refetch={refetch}
           />
         </>
       ) : (
@@ -101,7 +102,7 @@ const ClientProject = ({ clientId }) => {
         setOpen={setOpenProjectModal}
         title="Add Project"
       >
-        <AddNewClientProjectForm />
+        <AddNewClientProjectForm clientId={clientId} refetch={refetch} />
       </Modal>
     </React.Fragment>
   );

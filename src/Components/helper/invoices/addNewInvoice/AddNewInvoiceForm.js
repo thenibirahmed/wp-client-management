@@ -23,7 +23,7 @@ import {
   useFetchSelectProjects,
 } from "../../../../hooks/useQuery";
 
-const AddNewInvoiceForm = ({ noteText, invoiceItem, update }) => {
+const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
   const { setCreateInvoice, setUpdateInvoice } = useStoreContext();
 
   const { subtotal, totalDiscount, totalTax, finalAmount } =
@@ -110,6 +110,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update }) => {
       return setError("This field is required*");
     }
     setSubmitLoader(true);
+
     const sendData = {
       project_id: selectedProject?.id,
       title: data.title,
@@ -131,6 +132,10 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update }) => {
       tax: totalTax,
       fee: 10,
     };
+
+    if (clientId) {
+      sendData.client_id = clientId;
+    }
 
     try {
       const { data } = await api.post("/invoice/create", sendData);

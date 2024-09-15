@@ -1,33 +1,48 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 import TextField from "../../helper/TextField";
 import api from "../../../api/api";
 import toast from "react-hot-toast";
 import Loaders from "../../Loaders";
+import { useFetchSelectProjects } from "../../../hooks/useQuery";
+import Errors from "../../Errors";
+import Skeleton from "../../Skeleton";
+import { MultiSelectTextField } from "../../helper/MultiSelectTextField";
 
 const AddContactTeamForm = ({ setOpen, refetch }) => {
   const [imageUrl, setImageUrl] = useState("");
-  const [submitLoader, setSubmitLoader] = useState(false);
-
   const imageRef = useRef();
+
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const [selectedProject, setSelectedProject] = useState([]);
+  const [projectIds, setProjectIds] = useState([]);
+
+  const {
+    isLoading,
+    data: projectLists,
+    error,
+  } = useFetchSelectProjects(onError);
+
   const {
     register,
     handleSubmit,
     reset,
     setError,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched",
   });
 
-  const addNewClientHandler = async (data) => {
+  const addNewContactTeamHandler = async (data) => {
     setSubmitLoader(true);
+    if (projectIds.length === 0) return toast.error("Team member is required");
     const sendData = {
       name: data.name,
       email: data.email,
       phone: data.phone,
       designation: data.designation,
+      projectIds: projectIds,
     };
 
     try {
@@ -58,9 +73,28 @@ const AddContactTeamForm = ({ setOpen, refetch }) => {
     imageRef.current.click();
   };
 
+  function onError(err) {
+    toast.error(err?.response?.data?.message);
+    console.log(err);
+  }
+  console.log("s", projectIds);
+
+  useEffect(() => {
+    setProjectIds(selectedProject.map((item) => item.id));
+  }, [selectedProject]);
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
+
+  if (error) return <Errors message="Internal Server Error" />;
+
   return (
     <div className="py-5 relative h-full ">
-      <form className="space-y-4 " onSubmit={handleSubmit(addNewClientHandler)}>
+      <form
+        className="space-y-4 "
+        onSubmit={handleSubmit(addNewContactTeamHandler)}
+      >
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <TextField
             label="Name"
@@ -105,6 +139,17 @@ const AddContactTeamForm = ({ setOpen, refetch }) => {
             errors={errors}
           />
         </div>
+        <React.Fragment>
+          <div className="w-full">
+            <MultiSelectTextField
+              label="Team Members"
+              select={selectedProject}
+              setSelect={setSelectedProject}
+              lists={projectLists?.projects}
+              isSubmitting={isSubmitting}
+            />
+          </div>
+        </React.Fragment>
 
         <div className="flex  flex-col gap-2 md:w-1/2 w-full">
           <label

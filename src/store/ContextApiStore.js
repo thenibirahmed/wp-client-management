@@ -6,6 +6,9 @@ export const ContextProvider = ({ children }) => {
   const [openTask, setOpenTask] = useState(false);
   const [openUpdateTask, setOpenUpdateTask] = useState(false);
 
+  const [createClient, setCreateClient] = useState(false);
+  const [updateClient, setUpdateClient] = useState(false);
+
   const [openProjectModal, setOpenProjectModal] = useState(false);
   const [openProjectUpdateModal, setOpenProjectUpdateModal] = useState(false);
 
@@ -82,6 +85,10 @@ export const ContextProvider = ({ children }) => {
     setOpenTaskDesc,
     taskId,
     setTaskId,
+    createClient,
+    setCreateClient,
+    updateClient,
+    setUpdateClient,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

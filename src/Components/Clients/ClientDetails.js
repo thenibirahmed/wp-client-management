@@ -61,7 +61,7 @@ const ClientDetails = () => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <AddNewInvoice />
+          <AddNewInvoice clientId={clientId} />
         </React.Fragment>
       )}
     </React.Fragment>

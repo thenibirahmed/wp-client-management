@@ -11,59 +11,16 @@ import SkyBlueCirle from "../../../helper/SkyBlueCirle";
 import YellowCirle from "../../../helper/YellowCirle";
 import Pagination from "../../../Clients/Pagination";
 import useCheckedHandler from "../../../../utils/useCheckedItem";
-import useHashRouting from "../../../../utils/useHashRouting";
 
-const tableData = [
-  {
-    id: 1,
-    owner: "Easin Ahmedss",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    tasktitle: "Analysis Request",
-    dueDate: "August 2, 2013",
-    comment: 0,
-    status: "To Do",
-    priority: "High",
-  },
-  {
-    id: 2,
-    owner: "Easin Ahmed",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    tasktitle: "Analysis Request",
-    dueDate: "August 2, 2013",
-    comment: 0,
-    status: "Doing",
-    priority: "High",
-  },
-  {
-    id: 3,
-    owner: "Easin Ahmed",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    tasktitle: "Analysis Request",
-    dueDate: "August 2, 2013",
-    comment: 0,
-    status: "Done",
-    priority: "High",
-  },
-  {
-    id: 4,
-    owner: "Easin Ahmed",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    tasktitle: "Analysis Request",
-    dueDate: "August 2, 2013",
-    comment: 10,
-    status: "Done",
-    priority: "High",
-  },
-];
-
-const ContactTeamTaskTable = ({ taskLists, pagination, teamId }) => {
-  const [selectedClient, setSelectedClient] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
-
+const ContactTeamTaskTable = ({
+  taskLists,
+  pagination,
+  teamId,
+  selectedClient,
+  setSelectedClient,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedClient,
     setIsAllSelected,
@@ -90,7 +47,7 @@ const ContactTeamTaskTable = ({ taskLists, pagination, teamId }) => {
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, taskLists)
                       }
                       type="checkbox"
                     />

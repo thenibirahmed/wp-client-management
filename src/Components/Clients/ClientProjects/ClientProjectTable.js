@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import useHashRouting from "../../../utils/useHashRouting";
 import {
   Delete03Icon,
   PencilEdit02Icon,
@@ -11,56 +10,9 @@ import SkyBlueCirle from "../../helper/SkyBlueCirle";
 import YellowCirle from "../../helper/YellowCirle";
 import Pagination from "../Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
-
-const tableData = [
-  {
-    id: 1,
-    name: "Easin",
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "Completed",
-    priority: "High",
-  },
-  {
-    id: 2,
-    name: "Ahmed",
-    invoice: 350,
-    revenue: 5,
-    due: 72,
-    status: "On Hold",
-    priority: "Low",
-  },
-  {
-    id: 3,
-    name: "Tanvir",
-    invoice: 180,
-    revenue: 15,
-    due: 200,
-    status: "Cancelled",
-    priority: "Medium",
-  },
-  {
-    id: 4,
-    name: "Mohahhamd",
-
-    invoice: 720,
-    revenue: 150,
-    due: 750,
-    status: "In progress",
-    priority: "Low",
-  },
-  {
-    id: 5,
-    name: "Rifat",
-
-    invoice: 900,
-    revenue: 5,
-    due: 666,
-    status: "In Review",
-    priority: "Low",
-  },
-];
+import { useStoreContext } from "../../../store/ContextApiStore";
+import AddNewClientProjectForm from "../../helper/forms/AddNewClientProjectForm";
+import Modal from "../../helper/Modal";
 
 const ClientProjectTable = ({
   selectedClient,
@@ -70,15 +22,16 @@ const ClientProjectTable = ({
   projectData,
   pagination,
   clientId,
+  refetch,
 }) => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedClient,
     setIsAllSelected,
     setSelectedClient
   );
+
+  const { openProjectUpdateModal, setOpenProjectUpdateModal } =
+    useStoreContext();
 
   return (
     <div className="mt-8 flow-root">
@@ -99,7 +52,7 @@ const ClientProjectTable = ({
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, projectData)
                       }
                       type="checkbox"
                     />
@@ -219,8 +172,11 @@ const ClientProjectTable = ({
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={``}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenProjectUpdateModal(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -228,7 +184,7 @@ const ClientProjectTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                           <a
                             href=""
                             className="text-indigo-600 hover:text-indigo-900"
@@ -255,6 +211,17 @@ const ClientProjectTable = ({
           </div>
         </div>
       </div>
+      <Modal
+        open={openProjectUpdateModal}
+        setOpen={setOpenProjectUpdateModal}
+        title="Update Project"
+      >
+        <AddNewClientProjectForm
+          refetch={refetch}
+          setOpen={setOpenProjectUpdateModal}
+          update
+        />
+      </Modal>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ContactTeamProjectTable from "../../../helper/contacts/ContactProject/ContactTeamProjectTable";
 import useHashRouting from "../../../../utils/useHashRouting";
 import {
@@ -10,12 +10,14 @@ import toast from "react-hot-toast";
 import EmptyTable from "../../../helper/EmptyTable";
 import { UserCircle02Icon } from "../../../../utils/icons";
 import Skeleton from "../../../Skeleton";
+import ProjectHeader from "../../../helper/projects/ProjectHeader";
 
 const ContactProject = ({ teamId }) => {
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "project=1";
-
+  const [selectedProject, setSelectedProject] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
   console.log(teamId, "teamId");
 
   const {
@@ -24,7 +26,12 @@ const ContactProject = ({ teamId }) => {
     error,
     refetch,
   } = useFetchSingleTeamProject(teamId, paginationUrl, onError);
-
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].id);
+  };
   function onError(err) {
     console.log(err);
     toast.error(err?.response?.data?.errors || "Failed to fetch team data");
@@ -34,15 +41,28 @@ const ContactProject = ({ teamId }) => {
 
   return (
     <React.Fragment>
-      {teamLists?.team?.length > 0 ? (
-        <>
-          {" "}
+      {teamLists?.teamproject?.length > 0 ? (
+        <div className="space-y-6">
+          <>
+            <ProjectHeader
+              selectedProject={selectedProject}
+              title="Projects"
+              setOpenModal={() => {}}
+              btnTitle="Add Project"
+              onDeleteAction={onDeleteAction}
+              onCheckAction={onCheckAction}
+            />
+          </>
           <ContactTeamProjectTable
             teamId={teamId}
-            teamLists={teamLists?.team}
+            teamLists={teamLists?.teamproject}
             pagination={teamLists?.pagination}
+            selectedClient={selectedProject}
+            setSelectedClient={setSelectedProject}
+            isAllselected={isAllselected}
+            setIsAllSelected={setIsAllSelected}
           />
-        </>
+        </div>
       ) : (
         <>
           <EmptyTable
