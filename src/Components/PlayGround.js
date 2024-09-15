@@ -68,8 +68,8 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.delete(
-				eicApiSettings.rest_url + "wp-client-management/v1/task/delete/1",
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/clients-overview",
 				// {
 					// name: 'saikat12',
 					// email: 'saikat12@wp.com',

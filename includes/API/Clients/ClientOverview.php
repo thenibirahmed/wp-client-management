@@ -39,7 +39,7 @@ class ClientOverview {
             ];
         }
 
-        $clientIds = $clientsData->pluck('id')->toArray();
+        $clientIds = Client::pluck('id')->toArray();
         $invoices  = Invoice::whereIn('client_id', $clientIds)
                     ->with('status')
                     ->get();
