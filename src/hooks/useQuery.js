@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import api from "../api/api";
-
+import { useQueryClient, useMutation } from "react-query";
 export const useFetchClientOverView = (onError) => {
   return useQuery(
     "client-overview",
@@ -37,6 +37,22 @@ export const useFetchClients = (pageinationUrl, onError) => {
       },
       onError,
       staleTime: 5000,
+    }
+  );
+};
+
+export const useDeleteClient = (clientId, onSuccess) => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    async (clientId) => {
+      return await api.delete(`/clients/${clientId}`);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("clients");
+        if (onSuccess) onSuccess();
+      },
     }
   );
 };

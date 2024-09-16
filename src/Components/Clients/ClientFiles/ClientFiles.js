@@ -15,6 +15,7 @@ import Skeleton from "../../Skeleton";
 
 const ClientFiles = ({ clientId }) => {
   const { openFileModal, setOpenFileModal } = useStoreContext();
+
   const [selectedFile, setSelectedFile] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
@@ -83,6 +84,7 @@ const ClientFiles = ({ clientId }) => {
               isAllselected={isAllselected}
               setIsAllSelected={setIsAllSelected}
               slug="clients"
+              refetch={refetch}
             />
           )}
         </>

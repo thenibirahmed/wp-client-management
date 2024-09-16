@@ -27,6 +27,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
   const { setCreateInvoice, setUpdateInvoice } = useStoreContext();
 
   const invoice_items = invoiceItem?.map((item) => ({
+    name: "test",
     details: item.itemDetails,
     quantity: item.quantity,
     unit_price: item.rate,

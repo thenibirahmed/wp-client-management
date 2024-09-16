@@ -9,6 +9,8 @@ import useHashRouting from "../../../utils/useHashRouting";
 import { useFetchProjectEmails } from "../../../hooks/useQuery";
 import { useRefetch } from "../../../hooks/useRefetch";
 import EmptyTable from "../../helper/EmptyTable";
+import Skeleton from "../../Skeleton";
+import Errors from "../../Errors";
 
 const ClientEmails = ({ clientId }) => {
   const { createEmail, setCreateEmail } = useStoreContext();
@@ -37,6 +39,13 @@ const ClientEmails = ({ clientId }) => {
     setCreateEmail(true);
   };
 
+  if (error)
+    return (
+      <Errors
+        message={error?.response?.data?.errors || "Internal Server Error"}
+      />
+    );
+
   return (
     <React.Fragment>
       <EmailHeader />
@@ -54,24 +63,31 @@ const ClientEmails = ({ clientId }) => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          {clientEmail?.emails?.length > 0 ? (
-            <>
-              <EmailTable
-                emailsData={clientEmail?.emails}
-                pagination={clientEmail?.pagination}
-                projectId={clientId}
-                slug="clients"
-              />
-            </>
+          {isLoading ? (
+            <Skeleton />
           ) : (
             <>
-              <EmptyTable
-                Icon={Mail02Icon}
-                handler={handler}
-                title="Inbox is Empty"
-                subtitle="Start your inbox with your first email."
-                btnText="Write Email"
-              />
+              {clientEmail?.emails?.length > 0 ? (
+                <>
+                  <EmailTable
+                    emailsData={clientEmail?.emails}
+                    pagination={clientEmail?.pagination}
+                    projectId={clientId}
+                    slug="clients"
+                    refetch={refetch}
+                  />
+                </>
+              ) : (
+                <>
+                  <EmptyTable
+                    Icon={Mail02Icon}
+                    handler={handler}
+                    title="Inbox is Empty"
+                    subtitle="Start your inbox with your first email."
+                    btnText="Write Email"
+                  />
+                </>
+              )}
             </>
           )}
         </React.Fragment>

@@ -6,6 +6,7 @@ import { useClientCheckedHandler } from "../../utils/useCheckedItem";
 import { useStoreContext } from "../../store/ContextApiStore";
 import AddClientForm from "./AddClientForm";
 import Modal from "../helper/Modal";
+import { DeleteModal } from "../DeleteModal";
 
 const ClientTable = ({
   clientData,
@@ -18,7 +19,8 @@ const ClientTable = ({
 }) => {
   const [clientInfo, setClientInfo] = useState();
 
-  const { updateClient, setUpdateClient } = useStoreContext();
+  const { updateClient, setUpdateClient, deleteClient, setDeleteClient } =
+    useStoreContext();
 
   const { checkedAllClient, checkedSingleClient } = useClientCheckedHandler(
     selectedClient,
@@ -163,7 +165,6 @@ const ClientTable = ({
                               e.stopPropagation();
                               setUpdateClient(true);
                               console.log("clientId", item);
-                              setClientInfo(item);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
@@ -173,8 +174,12 @@ const ClientTable = ({
                               height="20px"
                             />
                           </button>
-                          <a
-                            href={`#/clients/#/${item?.client_id}`}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeleteClient(true);
+                              setClientInfo(item);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -182,7 +187,7 @@ const ClientTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -201,6 +206,14 @@ const ClientTable = ({
       >
         <AddClientForm refetch={refetch} setOpen={setUpdateClient} update />
       </Modal>
+      <DeleteModal
+        open={deleteClient}
+        setOpen={setDeleteClient}
+        id={clientInfo?.client_id}
+        refetch={refetch}
+        title="Delete Client"
+        path="client"
+      />
     </div>
   );
 };

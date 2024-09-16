@@ -58,7 +58,7 @@ const AddNewClientProjectForm = ({ clientId, refetch }) => {
       status_id: 1,
       priority_id: 1,
       budget: data.budget,
-      currency: selectCurrency?.id,
+      currency_id: selectCurrency?.id,
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
       due_date: dayjs(endDate).format("YYYY-MM-DD"),
       description: data?.description,

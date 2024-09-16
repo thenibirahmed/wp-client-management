@@ -71,6 +71,7 @@ const ContactTeam = () => {
                   setSelectedClient={setSelectedClient}
                   isAllselected={isAllselected}
                   setIsAllSelected={setIsAllSelected}
+                  refetch={refetch}
                 />
               </>
             ) : (

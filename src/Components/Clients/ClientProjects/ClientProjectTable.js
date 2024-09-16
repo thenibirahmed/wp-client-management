@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Delete03Icon,
@@ -13,6 +13,7 @@ import useCheckedHandler from "../../../utils/useCheckedItem";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import AddNewClientProjectForm from "../../helper/forms/AddNewClientProjectForm";
 import Modal from "../../helper/Modal";
+import { DeleteModal } from "../../DeleteModal";
 
 const ClientProjectTable = ({
   selectedClient,
@@ -30,8 +31,14 @@ const ClientProjectTable = ({
     setSelectedClient
   );
 
-  const { openProjectUpdateModal, setOpenProjectUpdateModal } =
-    useStoreContext();
+  const [projectId, setProjectId] = useState();
+
+  const {
+    openProjectUpdateModal,
+    setOpenProjectUpdateModal,
+    deleteProject,
+    setDeleteProject,
+  } = useStoreContext();
 
   return (
     <div className="mt-8 flow-root">
@@ -185,8 +192,12 @@ const ClientProjectTable = ({
                               height="20px"
                             />
                           </button>
-                          <a
-                            href=""
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setProjectId(item?.id);
+                              setDeleteProject(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -194,7 +205,7 @@ const ClientProjectTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -222,6 +233,15 @@ const ClientProjectTable = ({
           update
         />
       </Modal>
+
+      <DeleteModal
+        open={deleteProject}
+        setOpen={setDeleteProject}
+        id={projectId}
+        refetch={refetch}
+        path="project"
+        title="Delete Project"
+      />
     </div>
   );
 };

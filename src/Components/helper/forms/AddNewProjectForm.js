@@ -104,7 +104,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
       status_id: selectStatus?.id,
       priority_id: selectPriority?.id,
       budget: 450.2,
-      currency: "USD",
+      currency_id: selectCurrency?.id,
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
       due_date: dayjs(endDate).format("YYYY-MM-DD"),
       description: data?.description,
@@ -219,7 +219,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
           />
         </div>
         <div className="flex md:flex-row items-end flex-col gap-4 w-full">
-          <div className=" min-w-96 max-w-96 ">
+          <div className=" md:min-w-96 md:max-w-96 w-full ">
             <MultiSelectTextField
               label="Assignee"
               select={selectedAssignees}
@@ -228,7 +228,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
               isSubmitting={isSubmitting}
             />
           </div>
-          <div className="flex-1">
+          <div className="md:flex-1 w-full">
             <SelectTextField
               label="Currency"
               select={selectCurrency}

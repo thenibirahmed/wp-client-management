@@ -6,6 +6,7 @@ import Pagination from "../../Clients/Pagination";
 import { Delete03Icon, ViewIcon } from "../../../utils/icons";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useStoreContext } from "../../../store/ContextApiStore";
+import { DeleteModal } from "../../DeleteModal";
 
 const NoteTable = ({
   noteData,
@@ -16,8 +17,12 @@ const NoteTable = ({
   isAllselected,
   setIsAllSelected,
   slug,
+  refetch,
 }) => {
-  const { updateNote, setUpdateNote } = useStoreContext();
+  const { updateNote, setUpdateNote, deleteNote, setDeleteNote } =
+    useStoreContext();
+
+  const [noteId, setNoteId] = useState();
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedNote,
@@ -126,8 +131,12 @@ const NoteTable = ({
                               height="20px"
                             />
                           </button>
-                          <a
-                            href=""
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setNoteId(item?.id);
+                              setDeleteNote(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -135,7 +144,7 @@ const NoteTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -152,6 +161,14 @@ const NoteTable = ({
           </div>
         </div>
       </div>
+      <DeleteModal
+        open={deleteNote}
+        setOpen={setDeleteNote}
+        id={noteId}
+        refetch={refetch}
+        path="note"
+        title="Delete Note"
+      />
     </div>
   );
 };

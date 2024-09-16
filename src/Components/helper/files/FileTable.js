@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from "react";
-
-import useHashRouting from "../../../utils/useHashRouting";
-import {
-  Delete03Icon,
-  PencilEdit02Icon,
-  Task01Icon,
-} from "../../../utils/icons";
-
+import React, { useState } from "react";
+import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import Pagination from "../../Clients/Pagination";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import Modal from "../Modal";
 import AddNewFileForm from "../forms/AddNewFileForm";
+import { DeleteModal } from "../../DeleteModal";
 
 const FileTable = ({
   fileData,
@@ -24,7 +18,14 @@ const FileTable = ({
   slug,
   refetch,
 }) => {
-  const { updateFileModal, setUpdateFileModal } = useStoreContext();
+  const {
+    updateFileModal,
+    setUpdateFileModal,
+    deleteFileModal,
+    setDeleteFileModal,
+  } = useStoreContext();
+
+  const [fileId, setFileId] = useState();
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedFile,
@@ -140,8 +141,12 @@ const FileTable = ({
                               height="20px"
                             />
                           </button>
-                          <a
-                            href=""
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setFileId(item?.id);
+                              setDeleteFileModal(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -149,7 +154,7 @@ const FileTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -179,6 +184,15 @@ const FileTable = ({
           update
         />
       </Modal>
+
+      <DeleteModal
+        open={deleteFileModal}
+        setOpen={setDeleteFileModal}
+        id={fileId}
+        refetch={refetch}
+        path="file"
+        title="Delete File"
+      />
     </div>
   );
 };

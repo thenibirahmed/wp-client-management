@@ -251,16 +251,13 @@ const ProjectTable = ({
                               height="20px"
                             />
                           </button>
-                          <a
-                            href=""
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
+                          <button className="text-indigo-600 hover:text-indigo-900">
                             <Delete03Icon
                               className="text-customRed"
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>

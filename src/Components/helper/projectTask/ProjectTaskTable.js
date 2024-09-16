@@ -14,6 +14,7 @@ import Modal from "../Modal";
 import AddNewTaskForm from "./AddNewTaskForm";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import ProjectTaskDetails from "../../Projects/ProjectTask/ProjectTaskDetails";
+import { DeleteModal } from "../../DeleteModal";
 
 const ProjectTaskTable = ({
   projectId,
@@ -25,7 +26,7 @@ const ProjectTaskTable = ({
   setIsAllSelected,
   refetch,
 }) => {
-  const [openTask, setOpenTask] = useState(false);
+  const [id, setId] = useState(false);
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedClient,
@@ -33,8 +34,14 @@ const ProjectTaskTable = ({
     setSelectedClient
   );
 
-  const { openUpdateTask, setOpenUpdateTask, setOpenTaskDesc, setTaskId } =
-    useStoreContext();
+  const {
+    openUpdateTask,
+    setOpenUpdateTask,
+    setOpenTaskDesc,
+    setTaskId,
+    deleteTask,
+    setDeleteTask,
+  } = useStoreContext();
 
   return (
     <div className="mt-8 flow-root">
@@ -218,8 +225,12 @@ const ProjectTaskTable = ({
                               height="20px"
                             />
                           </button>
-                          <a
-                            href=""
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setId(item?.id);
+                              setDeleteTask(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -227,7 +238,7 @@ const ProjectTaskTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -251,6 +262,15 @@ const ProjectTaskTable = ({
       >
         <AddNewTaskForm refetch={refetch} setOpen={setOpenUpdateTask} update />
       </Modal>
+
+      <DeleteModal
+        open={deleteTask}
+        setOpen={setDeleteTask}
+        id={id}
+        refetch={refetch}
+        path="task"
+        title="Delete Task"
+      />
     </div>
   );
 };

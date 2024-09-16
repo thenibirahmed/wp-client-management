@@ -7,7 +7,7 @@ const PlayGround = () => {
 
   const getPosts = () => {
     axios
-      .get(eicApiSettings.rest_url + "wp-client-management/v1/task/4", {
+      .get(eicApiSettings.rest_url + "wp-client-management/v1/task/1", {
         headers: {
           "X-WP-Nonce": eicApiSettings.nonce,
         },

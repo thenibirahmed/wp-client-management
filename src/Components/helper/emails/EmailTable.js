@@ -11,62 +11,24 @@ import {
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import truncateText from "../../../utils/truncateText";
 import { useStoreContext } from "../../../store/ContextApiStore";
-
 import Pagination from "../../Clients/Pagination";
 import Modal from "../Modal";
-
 import ViewEmail from "./ViewEmail";
-import { useFetchSingleEmailView } from "../../../hooks/useQuery";
 
-const tableData = [
-  {
-    id: 1,
-    from: "Easin",
-    email: {
-      title: "How a visual artist redefines success in graphic design",
-      content:
-        "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    },
-    time: "july 05, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 2,
-    from: "Tanvir",
-    email: {
-      title: "Web Development",
-      content:
-        "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    },
-    time: "August 10, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 3,
-    from: "Ahmed",
-    email: {
-      title: "Journey",
-      content:
-        "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    },
-    time: "May 05, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
+import { DeleteModal } from "../../DeleteModal";
 
-const EmailTable = ({ emailsData, pagination, projectId, slug }) => {
+const EmailTable = ({ emailsData, pagination, projectId, slug, refetch }) => {
   const {
     openEmailModal,
     setOpenEmailModal,
-
+    deleteEmail,
+    setDeleteEmail,
     setSelectedViewEmail,
   } = useStoreContext();
 
   const [selectedEmail, setSelectedEmail] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
+  const [emailId, setEmailId] = useState();
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedEmail,
@@ -192,8 +154,12 @@ const EmailTable = ({ emailsData, pagination, projectId, slug }) => {
                               height="20px"
                             />
                           </button>
-                          <a
-                            href=""
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEmailId(item?.id);
+                              setDeleteEmail(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -201,7 +167,7 @@ const EmailTable = ({ emailsData, pagination, projectId, slug }) => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -225,6 +191,15 @@ const EmailTable = ({ emailsData, pagination, projectId, slug }) => {
           <ViewEmail />
         </Modal>
       </div>
+
+      <DeleteModal
+        open={deleteEmail}
+        setOpen={setDeleteEmail}
+        id={emailId}
+        refetch={refetch}
+        path="email"
+        title="Delete Email"
+      />
     </div>
   );
 };

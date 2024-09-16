@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
+import { DeleteModal } from "../../DeleteModal";
 
 const ContactTeamTable = ({
   teamLists,
@@ -11,12 +12,16 @@ const ContactTeamTable = ({
   setSelectedClient,
   isAllselected,
   setIsAllSelected,
+  refetch,
 }) => {
   const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
     selectedClient,
     setIsAllSelected,
     setSelectedClient
   );
+
+  const [openContact, setOpenContact] = useState(false);
+  const [contactId, setContactId] = useState();
 
   return (
     <div className="mt-8 flow-root">
@@ -141,8 +146,12 @@ const ContactTeamTable = ({
                               height="20px"
                             />
                           </a>
-                          <a
-                            href=""
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setContactId(item?.id);
+                              setOpenContact(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -150,7 +159,7 @@ const ContactTeamTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -162,6 +171,14 @@ const ContactTeamTable = ({
           </div>
         </div>
       </div>
+      <DeleteModal
+        open={openContact}
+        setOpen={setOpenContact}
+        id={contactId}
+        refetch={refetch}
+        path="team-member"
+        title="Delete Contact Team"
+      />
     </div>
   );
 };

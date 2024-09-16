@@ -67,7 +67,9 @@ const ClientNotes = ({ clientId }) => {
         selectedProject={selectedNote}
         title="Notes"
         setOpenModal={setCreateNote}
+        openModal={createNote}
         btnTitle="Add Note"
+        cancelTitle="Cancel"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
       />
@@ -102,6 +104,7 @@ const ClientNotes = ({ clientId }) => {
                   setSelectedNote={setSelectedNote}
                   isAllselected={isAllselected}
                   setIsAllSelected={setIsAllSelected}
+                  refetch={refetch}
                   slug="clients"
                 />
               )}

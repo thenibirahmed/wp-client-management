@@ -50,7 +50,6 @@ const ProjectHeader = ({
           </>
         ) : (
           <>
-            {" "}
             <button
               onClick={() => setOpenModal(true)}
               type="button"
