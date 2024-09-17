@@ -54,6 +54,7 @@ use WpClientManagement\API\Files\UpdateFile;
 use WpClientManagement\API\InvoiceItems\CreateInvoiceItem;
 use WpClientManagement\API\Invoices\CreateInvoice;
 use WpClientManagement\API\Invoices\DeleteInvoice;
+use WpClientManagement\API\Invoices\EditInvoice;
 use WpClientManagement\API\Invoices\UpdateInvoice;
 use WpClientManagement\API\Notes\CreateNote;
 use WpClientManagement\API\Notes\DeleteNote;
@@ -197,6 +198,7 @@ class API {
         new CreateInvoice();
         new UpdateInvoice();
         new CreateInvoiceItem();
+        new EditInvoice();
 
         // Note
         new GetNotes();
