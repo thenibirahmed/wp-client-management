@@ -69,9 +69,11 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/note/3/edit",
+				eicApiSettings.rest_url + "wp-client-management/v1/file/18/edit",
 				// {
-				// title: 'updated project',
+				// title: 'update update',
+				// client_id: 4,
+				// url: 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.jpg',
 				// manager_id: 1,
 				// client_id: 1,
 				// note: 'last note'
