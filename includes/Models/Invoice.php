@@ -101,7 +101,7 @@ class Invoice extends Model
         return $this->belongsTo(Status::class,'status_id');
     }
 
-    public function items()
+    public function invoice_items()
     {
         return $this->hasMany(InvoiceItem::class);
     }
