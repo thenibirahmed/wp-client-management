@@ -25,7 +25,7 @@ class Project extends Model
         'priority_id',
         'title',
         'budget',
-        'currency',
+        'currency_id',
         'start_date',
         'due_date',
         'description',

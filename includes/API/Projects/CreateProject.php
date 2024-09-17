@@ -15,6 +15,7 @@ class CreateProject {
         'manager_id'       => 'nullable|exists:eic_eic_crm_users,id',
         'status_id'        => 'nullable|exists:eic_statuses,id',
         'priority_id'      => 'nullable|exists:eic_priorities,id',
+        'currency_id'      => 'nullable|exists:eic_currencies,id',
         'title'            => 'required|string',
         'budget'           => 'nullable|numeric',
         'start_date'       => 'nullable|date',
@@ -27,6 +28,7 @@ class CreateProject {
         'manager_id.exists'   => 'The selected manager does not exist.',
         'status_id.exists'    => 'The selected status does not exist.',
         'priority_id.exists'  => 'The selected priority does not exist.',
+        'currency_id.exists'  => 'The selected currency does not exist.',
         'title.required'      => 'The title is required.',
         'title.string'        => 'The title must be a string.',
         'budget.numeric'      => 'The budget must be a numeric value.',
@@ -52,6 +54,7 @@ class CreateProject {
         $data['manager_id']   = isset($data['manager_id']) ? intval($data['manager_id']) : null;
         $data['status_id']    = isset($data['status_id']) ? intval($data['status_id']) : null;
         $data['priority_id']  = isset($data['priority_id']) ? intval($data['priority_id']) : null;
+        $data['currency_id']  = isset($data['currency_id']) ? intval($data['currency_id']) : null;
         $data['title']        = sanitize_text_field($data['title'] ?? '');
         $data['budget']       = isset($data['budget']) ? floatval($data['budget']) : null;
         $data['start_date']   = isset($data['start_date']) ? sanitize_text_field($data['start_date']) : null;
@@ -85,6 +88,8 @@ class CreateProject {
             $project->eicCrmUsers()->syncWithoutDetaching($validAssigneeIds);
         }
 
+        $assigneIds = $project->eicCrmUsers->pluck('id');
+
         $projectResponse = [
             'id'           => $project->id,
             'title'        => $project->title,
@@ -93,9 +98,12 @@ class CreateProject {
             'manager_id'   => $project->manager_id,
             'status_id'    => $project->status_id,
             'priority_id'  => $project->priority_id,
+            'currency_id'  => $project->currency_id,
             'budget'       => $project->budget,
             'start_date'   => $project->start_date,
             'due_date'     => $project->due_date,
+            'description'  => $project->description,
+            'assignee_ids' => $assigneIds
         ];
 
         return new \WP_REST_Response([

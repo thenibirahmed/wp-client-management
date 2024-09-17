@@ -5,6 +5,7 @@ namespace WpClientManagement;
 use WpClientManagement\API\Clients\ClientOverview;
 use WpClientManagement\API\Clients\CreateClient;
 use WpClientManagement\API\Clients\DeleteClient;
+use WpClientManagement\API\Clients\EditClient;
 use WpClientManagement\API\Clients\GetClientEmails;
 use WpClientManagement\API\Clients\GetClientFiles;
 use WpClientManagement\API\Clients\GetClientInvoices;
@@ -66,6 +67,7 @@ use WpClientManagement\API\Priorities\SelectPriority;
 use WpClientManagement\API\Priorities\UpdatePriority;
 use WpClientManagement\API\Projects\CreateProject;
 use WpClientManagement\API\Projects\DeleteProject;
+use WpClientManagement\API\Projects\EditProject;
 use WpClientManagement\API\Projects\GetAllProjects;
 use WpClientManagement\API\Projects\GetProjectEmails;
 use WpClientManagement\API\Projects\GetProjectInvoices;
@@ -144,6 +146,7 @@ class API {
         new GetClientFiles();
         new GetClientEmails();
         new GetSingleClientOverview();
+        new EditClient();
 
         // DealPipeline
         new GetDealPipelines();
@@ -226,6 +229,7 @@ class API {
         new GetProjectInvoices();
         new SelectProject();
         new GetSelectedClientDetails();
+        new EditProject();
 
         // Schedule
         new GetSchedules();

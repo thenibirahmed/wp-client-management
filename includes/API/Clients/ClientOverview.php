@@ -19,7 +19,7 @@ class ClientOverview {
         ]);
     }
 
-    public function get_clients_overview(\WP_REST_Request $request)
+    public function get_clients_overview(/*\WP_REST_Request $request*/)
     {
         // $page = $request->get_param('page');
 

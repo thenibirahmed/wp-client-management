@@ -69,8 +69,28 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/1/details",
+				eicApiSettings.rest_url + "wp-client-management/v1/project/1/edit",
 				// {
+				// title: 'updated project',
+				// manager_id: 1,
+				// client_id: 1,
+				// budget: 500,
+				// currency_id: 1,
+				// status_id: 2,
+				// priority_id: 8,
+				// start_date: '2024-09-15',
+				// due_date: '2024-09-30',
+				// description: 'updated description',
+				// assignee_ids: [,1,2,3,4,5,6,7,8],
+				// name: 'last client1',
+				// email: 'last@client1.com',
+				// organization: 'last organization',
+				// phone: '745454545',
+				// address: 'grave',
+				// city: 'last city',
+				// zip: '12345',
+				// country: 'last country',
+				// state: 'last state'
 				// 	eic_crm_user_id: 1,
 				// 	project_id: 1,
 				// 	client_id: null,
