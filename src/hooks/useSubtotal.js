@@ -7,14 +7,12 @@ const useSubtotal = (invoiceItem) => {
     const itemSubtotal = item.quantity * item.rate;
     subtotal += itemSubtotal;
 
-    // Calculate Discount
     const discountAmount =
       item.discountType === "percent"
         ? (itemSubtotal * item.discount) / 100
         : item.discount;
     totalDiscount += discountAmount;
 
-    // Calculate Tax
     const taxAmount =
       item.taxType === "percent"
         ? ((itemSubtotal - discountAmount) * item.tax) / 100

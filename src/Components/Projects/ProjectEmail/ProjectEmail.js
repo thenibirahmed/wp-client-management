@@ -81,6 +81,7 @@ const ProjectEmail = ({ projectId }) => {
                     pagination={projectEmail?.pagination}
                     projectId={projectId}
                     slug="projects"
+                    refetch={refetch}
                   />
                 </>
               ) : (
