@@ -82,6 +82,38 @@ export const useFetchClientEditDetails = (id, update, onError) => {
   );
 };
 
+export const useFetchProjectEditDetails = (id, update, onError) => {
+  return useQuery(
+    ["project-edit-details", id],
+    async () => {
+      return await api.get(`/project/${id}/edit`);
+    },
+    {
+      select: (data) => {
+        // const {
+        //   name,
+        //   email,
+        //   id,
+        //   address,
+        //   city,
+        //   country,
+        //   organization,
+        //   phone,
+        //   state,
+        //   zip,
+        // } = data.data.client;
+
+        console.log("cli project details", data.data);
+
+        return data;
+      },
+      enabled: !!id && update,
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
 export const useFetchSingleClientOverView = (clientId, onError) => {
   return useQuery(
     ["single-client-overview", clientId],
@@ -187,7 +219,6 @@ export const useFetchPriorities = (type, onError) => {
 
     {
       select: (data) => {
-        console.log("client pri", data.data);
         const priorities = data?.data?.priorities?.map((item) => {
           return {
             id: item.id,

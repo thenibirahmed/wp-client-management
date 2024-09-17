@@ -182,6 +182,7 @@ const ClientProjectTable = ({
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
+                              setProjectId(item?.id);
                               setOpenProjectUpdateModal(true);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
@@ -195,7 +196,7 @@ const ClientProjectTable = ({
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              setProjectId(item?.id);
+
                               setDeleteProject(true);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
@@ -231,6 +232,7 @@ const ClientProjectTable = ({
           refetch={refetch}
           setOpen={setOpenProjectUpdateModal}
           update
+          projectId={projectId}
         />
       </Modal>
 

@@ -8,6 +8,7 @@ import { SelectTextField } from "../SelectTextField";
 import {
   useFetchAssignee,
   useFetchPriorities,
+  useFetchProjectEditDetails,
   useFetchSelectCurrency,
   useFetchStatus,
 } from "../../../hooks/useQuery";
@@ -19,8 +20,11 @@ import toast from "react-hot-toast";
 import api from "../../../api/api";
 import dayjs from "dayjs";
 import Loaders from "../../Loaders";
+import { MultiSelectTextField } from "../MultiSelectTextField";
 
-const AddNewClientProjectForm = ({ clientId, refetch }) => {
+const AddNewClientProjectForm = ({ clientId, refetch, update, projectId }) => {
+  console.log("projectId ", projectId);
+
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
 
@@ -34,49 +38,15 @@ const AddNewClientProjectForm = ({ clientId, refetch }) => {
   const [selectProjectManager, setSelectProjectManager] = useState();
   const [selectCurrency, setSelectCurrency] = useState();
   const [submitLoader, setSubmitLoader] = useState(false);
+  const [selectedAssignees, setSelectedAssignees] = useState([]);
+  const [allIds, setAllIds] = useState([]);
   const imageRef = useRef();
+
   const {
-    register,
-    handleSubmit,
-    reset,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    mode: "onTouched",
-  });
-
-  const addNewClientProjectHandler = async (data) => {
-    if (!selectProjectManager?.id || !selectStatus?.id || !selectPriority?.id) {
-      return setError("This field is required*");
-    }
-    setSubmitLoader(true);
-
-    const sendData = {
-      title: data.title,
-      manager_id: selectProjectManager?.id,
-      client_id: clientId,
-      status_id: 1,
-      priority_id: 1,
-      budget: data.budget,
-      currency_id: selectCurrency?.id,
-      start_date: dayjs(startDate).format("YYYY-MM-DD"),
-      due_date: dayjs(endDate).format("YYYY-MM-DD"),
-      description: data?.description,
-    };
-
-    try {
-      const { data } = await api.post(`/project/create`, sendData);
-      toast.success(data?.message);
-      await refetch();
-      reset();
-      setOpenProjectModal(false);
-    } catch (err) {
-      console.log(err);
-      toast.error("Something went wrong");
-    } finally {
-      setSubmitLoader(false);
-    }
-  };
+    isLoading: loader,
+    data: clientProjects,
+    error,
+  } = useFetchProjectEditDetails(projectId, update, onError);
 
   const {
     isLoading: isLoadProjectManager,
@@ -102,10 +72,59 @@ const AddNewClientProjectForm = ({ clientId, refetch }) => {
     error: selecturrencyErr,
   } = useFetchSelectCurrency(onError);
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: "onTouched",
+  });
+
+  const addNewClientProjectHandler = async (data) => {
+    if (!selectProjectManager?.id || !selectStatus?.id || !selectPriority?.id) {
+      return setError("This field is required*");
+    }
+    setSubmitLoader(true);
+
+    const sendData = {
+      title: data.title,
+      manager_id: selectProjectManager?.id,
+      client_id: Number(clientId),
+      status_id: selectStatus?.id,
+      priority_id: selectPriority?.id,
+      currency_id: selectCurrency?.id,
+      assigee_ids: allIds,
+      budget: data.budget,
+      start_date: dayjs(startDate).format("YYYY-MM-DD"),
+      due_date: dayjs(endDate).format("YYYY-MM-DD"),
+      description: data?.description,
+    };
+
+    try {
+      const { data } = await api.post(`/project/create`, sendData);
+      toast.success(data?.message);
+      await refetch();
+      reset();
+      setOpenProjectModal(false);
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    } finally {
+      setSubmitLoader(false);
+    }
+  };
+
   function onError(err) {
     toast.error(err?.response?.data?.message);
     console.log(err);
   }
+
+  useEffect(() => {
+    setAllIds(selectedAssignees.map((item) => item.id));
+  }, [selectedAssignees]);
+
   useEffect(() => {
     if (managers?.employee.length > 0) {
       setSelectProjectManager(managers?.employee[0]);
@@ -212,13 +231,13 @@ const AddNewClientProjectForm = ({ clientId, refetch }) => {
             lists={managers?.employee}
             isSubmitting={isSubmitting}
           />
-          {/* <SelectTextField
+          <MultiSelectTextField
             label="Assignee"
-            select={selectAssignee}
-            setSelect={setSelectAssignee}
-            lists={assigneeLists}
+            select={selectedAssignees}
+            setSelect={setSelectedAssignees}
+            lists={managers?.employee}
             isSubmitting={isSubmitting}
-          /> */}
+          />
         </div>
         <React.Fragment>
           <div className="flex md:flex-row flex-col gap-4 w-full">

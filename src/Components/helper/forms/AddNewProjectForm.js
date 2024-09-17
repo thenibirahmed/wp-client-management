@@ -35,6 +35,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
   const [selectPriority, setSelectPriority] = useState();
   const [selectProjectManager, setSelectProjectManager] = useState();
   const [selectedAssignees, setSelectedAssignees] = useState([]);
+  const [allIds, setAllIds] = useState([]);
   const [submitLoader, setSubmitLoader] = useState(false);
 
   //calling react-query Parallely for fetching data
@@ -77,8 +78,6 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
   } = useForm({
     mode: "onTouched",
   });
-
-  const [allIds, setAllIds] = useState([]);
 
   useEffect(() => {
     setAllIds(selectedAssignees.map((item) => item.id));

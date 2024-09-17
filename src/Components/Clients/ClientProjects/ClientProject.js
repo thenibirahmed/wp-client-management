@@ -102,7 +102,7 @@ const ClientProject = ({ clientId }) => {
         setOpen={setOpenProjectModal}
         title="Add Project"
       >
-        <AddNewClientProjectForm clientId={clientId} refetch={refetch} />
+        <AddNewClientProjectForm clientId={clientId} refetch={refetch} update />
       </Modal>
     </React.Fragment>
   );
