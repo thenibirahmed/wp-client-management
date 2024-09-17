@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useStoreContext } from "../../../store/ContextApiStore";
 
 import { Mail02Icon } from "../../../utils/icons";
@@ -14,6 +14,9 @@ import Errors from "../../Errors";
 
 const ClientEmails = ({ clientId }) => {
   const { createEmail, setCreateEmail } = useStoreContext();
+
+  const [selectedEmail, setSelectedEmail] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -39,6 +42,13 @@ const ClientEmails = ({ clientId }) => {
     setCreateEmail(true);
   };
 
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onEmailBox = (ids) => {
+    alert(ids[0].id);
+  };
+
   if (error)
     return (
       <Errors
@@ -48,7 +58,11 @@ const ClientEmails = ({ clientId }) => {
 
   return (
     <React.Fragment>
-      <EmailHeader />
+      <EmailHeader
+        selectedEmail={selectedEmail}
+        onDeleteAction={onDeleteAction}
+        onEmailBox={onEmailBox}
+      />
 
       {createEmail ? (
         <React.Fragment>
@@ -75,6 +89,10 @@ const ClientEmails = ({ clientId }) => {
                     projectId={clientId}
                     slug="clients"
                     refetch={refetch}
+                    selectedEmail={selectedEmail}
+                    setSelectedEmail={setSelectedEmail}
+                    isAllselected={isAllselected}
+                    setIsAllSelected={setIsAllSelected}
                   />
                 </>
               ) : (

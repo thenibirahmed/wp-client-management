@@ -1,46 +1,70 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 import TextField from "../helper/TextField";
 import api from "../../api/api";
 import Loaders from "../Loaders";
+import { useFetchClientEditDetails } from "../../hooks/useQuery";
+import Skeleton from "../Skeleton";
+import { useUpdateDefaultValue } from "../../hooks/useRefetch";
 
-const AddClientForm = ({ setOpen, refetch, update = false }) => {
+const AddClientForm = ({
+  setOpen,
+  refetch,
+  update = false,
+  clientId = null,
+}) => {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
   const imageRef = useRef();
 
   const {
+    isLoading,
+    data: client,
+    error,
+  } = useFetchClientEditDetails(clientId, update, onError);
+
+  const {
     register,
     handleSubmit,
     reset,
+    setValue,
     setError,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
   });
 
+  //custom hook for updating default value in the form to edit
+  useUpdateDefaultValue(update, client, setValue);
+
   //submitting the form
   const addNewClientHandler = async (data) => {
-    console.log(data);
+    let endpoint;
+
+    if (update) {
+      endpoint = `/client/${clientId}/edit`;
+    } else {
+      endpoint = `/client/create`;
+    }
 
     try {
       setLoading(true);
-      const { data: res } = await api.post("/client/create", data);
+      const { data: res } = await api.post(endpoint, data);
       toast.success(res?.message);
       await refetch();
       reset();
       setOpen(false);
     } catch (err) {
       console.log(err.response);
+
       if (err?.response?.data?.errors["email"]?.length > 0) {
         setError("email", {
           message: err?.response?.data?.errors["email"][0],
         });
       }
-
       if (err?.response?.data?.errors["name"]?.length > 0) {
         setError("name", {
           message: err?.response?.data?.errors["name"][0],
@@ -54,6 +78,15 @@ const AddClientForm = ({ setOpen, refetch, update = false }) => {
   const onImageUploadHandler = () => {
     imageRef.current.click();
   };
+
+  function onError(err) {
+    console.log(err);
+    toast.error(
+      err?.response?.data?.message?.errors || "Failed To Fetch Client Info"
+    );
+  }
+
+  if (isLoading && update) return <Skeleton />;
 
   return (
     <div className="py-5 relative h-full ">

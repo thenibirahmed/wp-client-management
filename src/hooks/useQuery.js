@@ -41,18 +41,43 @@ export const useFetchClients = (pageinationUrl, onError) => {
   );
 };
 
-export const useDeleteClient = (clientId, onSuccess) => {
-  const queryClient = useQueryClient();
-
-  return useMutation(
-    async (clientId) => {
-      return await api.delete(`/clients/${clientId}`);
+export const useFetchClientEditDetails = (id, update, onError) => {
+  return useQuery(
+    ["client-edit-details", id],
+    async () => {
+      return await api.get(`/client/${id}/edit`);
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries("clients");
-        if (onSuccess) onSuccess();
+      select: (data) => {
+        const {
+          name,
+          email,
+          id,
+          address,
+          city,
+          country,
+          organization,
+          phone,
+          state,
+          zip,
+        } = data.data.client;
+
+        return {
+          name,
+          email,
+          id,
+          address,
+          city,
+          country,
+          organization,
+          phone,
+          state,
+          zip,
+        };
       },
+      enabled: !!id && update,
+      onError,
+      staleTime: 5000,
     }
   );
 };

@@ -140,7 +140,6 @@ class Installer {
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_invoice_items` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
                         `invoice_id` bigint UNSIGNED DEFAULT NULL,
-                        `name` varchar(255) NOT NULL,
                         `details` text COLLATE utf8mb4_unicode_ci,
                         `quantity` int DEFAULT 1,
                         `unit_price` decimal(10,2) NOT NULL,
@@ -184,6 +183,7 @@ class Installer {
                         `priority_id` bigint UNSIGNED DEFAULT NULL,
                         `title` varchar(255) NOT NULL,
                         `budget` decimal(8,2) NOT NULL DEFAULT '0.00',
+                        `currency_id` bigint UNSIGNED DEFAULT NULL,
                         `start_date` datetime DEFAULT NULL,
                         `due_date` datetime DEFAULT NULL,
                         `description` varchar(255) DEFAULT NULL,

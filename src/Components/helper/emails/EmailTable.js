@@ -17,7 +17,17 @@ import ViewEmail from "./ViewEmail";
 
 import { DeleteModal } from "../../DeleteModal";
 
-const EmailTable = ({ emailsData, pagination, projectId, slug, refetch }) => {
+const EmailTable = ({
+  emailsData,
+  pagination,
+  projectId,
+  slug,
+  refetch,
+  selectedEmail,
+  setSelectedEmail,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const {
     openEmailModal,
     setOpenEmailModal,
@@ -26,8 +36,6 @@ const EmailTable = ({ emailsData, pagination, projectId, slug, refetch }) => {
     setSelectedViewEmail,
   } = useStoreContext();
 
-  const [selectedEmail, setSelectedEmail] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
   const [emailId, setEmailId] = useState();
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
@@ -96,8 +104,8 @@ const EmailTable = ({ emailsData, pagination, projectId, slug, refetch }) => {
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
                 {emailsData?.map((item) => {
-                  const isChecked = selectedEmail.some(
-                    (client) => client.id === item.id
+                  const isChecked = selectedEmail?.some(
+                    (client) => client?.id === item?.id
                   );
 
                   return (

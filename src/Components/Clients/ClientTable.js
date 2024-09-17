@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Delete03Icon, PencilEdit02Icon } from "../../utils/icons";
-import useHashRouting from "../../utils/useHashRouting";
 import Pagination from "./Pagination";
 import { useClientCheckedHandler } from "../../utils/useCheckedItem";
 import { useStoreContext } from "../../store/ContextApiStore";
@@ -164,7 +163,7 @@ const ClientTable = ({
                             onClick={(e) => {
                               e.stopPropagation();
                               setUpdateClient(true);
-                              console.log("clientId", item);
+                              setClientInfo(item);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
@@ -204,7 +203,12 @@ const ClientTable = ({
         setOpen={setUpdateClient}
         title="Update Client"
       >
-        <AddClientForm refetch={refetch} setOpen={setUpdateClient} update />
+        <AddClientForm
+          refetch={refetch}
+          setOpen={setUpdateClient}
+          update
+          clientId={clientInfo?.client_id}
+        />
       </Modal>
       <DeleteModal
         open={deleteClient}

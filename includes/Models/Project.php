@@ -25,7 +25,7 @@ class Project extends Model
         'priority_id',
         'title',
         'budget',
-        'currency',
+        'currency_id',
         'start_date',
         'due_date',
         'description',
@@ -93,6 +93,11 @@ class Project extends Model
 
     public function invoices() {
         return $this->hasMany(Invoice::class);
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
     }
 
     public function tasks() {

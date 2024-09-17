@@ -5,6 +5,7 @@ namespace WpClientManagement;
 use WpClientManagement\API\Clients\ClientOverview;
 use WpClientManagement\API\Clients\CreateClient;
 use WpClientManagement\API\Clients\DeleteClient;
+use WpClientManagement\API\Clients\EditClient;
 use WpClientManagement\API\Clients\GetClientEmails;
 use WpClientManagement\API\Clients\GetClientFiles;
 use WpClientManagement\API\Clients\GetClientInvoices;
@@ -48,6 +49,7 @@ use WpClientManagement\API\Emails\DeleteEmail;
 use WpClientManagement\API\Emails\UpdateEmail;
 use WpClientManagement\API\Files\CreateFile;
 use WpClientManagement\API\Files\DeleteFile;
+use WpClientManagement\API\Files\EditFile;
 use WpClientManagement\API\Files\UpdateFile;
 use WpClientManagement\API\InvoiceItems\CreateInvoiceItem;
 use WpClientManagement\API\Invoices\CreateInvoice;
@@ -55,6 +57,7 @@ use WpClientManagement\API\Invoices\DeleteInvoice;
 use WpClientManagement\API\Invoices\UpdateInvoice;
 use WpClientManagement\API\Notes\CreateNote;
 use WpClientManagement\API\Notes\DeleteNote;
+use WpClientManagement\API\Notes\EditNote;
 use WpClientManagement\API\Notes\UpdateNote;
 use WpClientManagement\API\PaymentMethods\SelectPaymentMethod;
 use WpClientManagement\API\Posts\GetSinglePost;
@@ -66,6 +69,7 @@ use WpClientManagement\API\Priorities\SelectPriority;
 use WpClientManagement\API\Priorities\UpdatePriority;
 use WpClientManagement\API\Projects\CreateProject;
 use WpClientManagement\API\Projects\DeleteProject;
+use WpClientManagement\API\Projects\EditProject;
 use WpClientManagement\API\Projects\GetAllProjects;
 use WpClientManagement\API\Projects\GetProjectEmails;
 use WpClientManagement\API\Projects\GetProjectInvoices;
@@ -144,6 +148,7 @@ class API {
         new GetClientFiles();
         new GetClientEmails();
         new GetSingleClientOverview();
+        new EditClient();
 
         // DealPipeline
         new GetDealPipelines();
@@ -183,6 +188,7 @@ class API {
         new DeleteFile();
         new CreateFile();
         new UpdateFile();
+        new EditFile();
 
         // Invoice
         new GetInvoices();
@@ -198,6 +204,7 @@ class API {
         new DeleteNote();
         new CreateNote();
         new UpdateNote();
+        new EditNote();
 
         // Priority
         new GetPriorities();
@@ -226,6 +233,7 @@ class API {
         new GetProjectInvoices();
         new SelectProject();
         new GetSelectedClientDetails();
+        new EditProject();
 
         // Schedule
         new GetSchedules();

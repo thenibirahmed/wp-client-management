@@ -90,9 +90,6 @@ const Client = () => {
   const onDeleteAction = (ids) => {
     alert(ids[0].client_id);
   };
-  const onCheckAction = (ids) => {
-    alert(ids[0].client_id);
-  };
 
   return (
     <React.Fragment>
@@ -108,9 +105,6 @@ const Client = () => {
                 {" "}
                 <button onClick={() => onDeleteAction(selectedClient)}>
                   <Delete03Icon className="text-textColor2" />
-                </button>
-                <button onClick={() => onCheckAction(selectedClient)}>
-                  <CheckmarkCircle02Icon className="text-textColor2" />
                 </button>
               </>
             )}

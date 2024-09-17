@@ -10,7 +10,7 @@ import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 import { MultiSelectTextField } from "../../helper/MultiSelectTextField";
 
-const AddContactTeamForm = ({ setOpen, refetch }) => {
+const AddContactTeamForm = ({ setOpen, refetch, update = false }) => {
   const [imageUrl, setImageUrl] = useState("");
   const imageRef = useRef();
 
@@ -77,7 +77,6 @@ const AddContactTeamForm = ({ setOpen, refetch }) => {
     toast.error(err?.response?.data?.message);
     console.log(err);
   }
-  console.log("s", projectIds);
 
   useEffect(() => {
     setProjectIds(selectedProject.map((item) => item.id));
@@ -189,7 +188,7 @@ const AddContactTeamForm = ({ setOpen, refetch }) => {
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            {submitLoader ? <Loaders /> : "Save"}
+            {submitLoader ? <Loaders /> : <> {update ? "Update" : "Save"}</>}
           </button>
         </div>
       </form>

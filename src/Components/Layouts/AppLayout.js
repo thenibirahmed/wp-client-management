@@ -114,7 +114,7 @@ const AppLayout = ({ children }) => {
           </div>
 
           <main className=" min-h-[calc(100vh-180px)] ">
-            <div className="px-4 sm:px-6 lg:px-8 space-y-8">{children}</div>
+            <div className="px-4 sm:px-6 lg:px-8 space-y-7">{children}</div>
           </main>
           <Footer />
         </div>

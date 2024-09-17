@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { Mail02Icon } from "../../../utils/icons";
@@ -14,6 +14,9 @@ import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectEmail = ({ projectId }) => {
   const { createEmail, setCreateEmail } = useStoreContext();
+
+  const [selectedEmail, setSelectedEmail] = useState([]);
+  const [isAllselected, setIsAllSelected] = useState(false);
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -39,6 +42,13 @@ const ProjectEmail = ({ projectId }) => {
     setCreateEmail(true);
   };
 
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onEmailBox = (ids) => {
+    alert(ids[0].id);
+  };
+
   if (error) {
     console.log("project task error", error?.response?.data?.errors);
     return (
@@ -53,7 +63,11 @@ const ProjectEmail = ({ projectId }) => {
 
   return (
     <React.Fragment>
-      <EmailHeader />
+      <EmailHeader
+        selectedEmail={selectedEmail}
+        onDeleteAction={onDeleteAction}
+        onEmailBox={onEmailBox}
+      />
 
       {createEmail ? (
         <React.Fragment>

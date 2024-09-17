@@ -12,7 +12,7 @@ import Skeleton from "../Skeleton";
 const ClientInfo = ({ profile }) => {
   return (
     <div className="flex sm:flex-row flex-col sm:gap-0 gap-4 justify-between sm:items-center   pb-5 border-b border-b-borderColor">
-      <div className="flex  gap-4">
+      <div className="flex items-center  gap-4">
         <div>
           <img
             className="h-20 w-20 rounded-full object-cover"
@@ -25,7 +25,7 @@ const ClientInfo = ({ profile }) => {
             {profile?.name}
           </h1>
           <span className="text-xs  text-textColor2 font-metropolis font-normal ">
-            {profile?.designation}
+            {profile?.organization}
           </span>
         </div>
       </div>

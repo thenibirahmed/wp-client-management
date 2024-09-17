@@ -18,6 +18,7 @@ const ProjectHeader = ({
   onDeleteAction,
   onCheckAction,
   filter = true,
+  check = true,
 }) => {
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
@@ -30,9 +31,11 @@ const ProjectHeader = ({
             <button onClick={() => onDeleteAction(selectedProject)}>
               <Delete03Icon className="text-textColor2" />
             </button>
-            <button onClick={() => onCheckAction(selectedProject)}>
-              <CheckmarkCircle02Icon className="text-textColor2" />
-            </button>
+            {check && (
+              <button onClick={() => onCheckAction(selectedProject)}>
+                <CheckmarkCircle02Icon className="text-textColor2" />
+              </button>
+            )}
           </>
         )}
         <Search />

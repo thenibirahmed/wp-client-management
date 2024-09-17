@@ -72,6 +72,7 @@ const ClientNotes = ({ clientId }) => {
         cancelTitle="Cancel"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
+        check={false}
       />
 
       {createNote ? (

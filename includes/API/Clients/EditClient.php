@@ -4,21 +4,21 @@ namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
 
-class GetSelectedClientDetails{
+class EditClient{
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/client/(?P<id>\d+)/details';
+    private $endpoint = '/client/(?P<id>\d+)/edit';
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
-            'callback' => array($this, 'selected_client_details'),
+            'callback' => array($this, 'client_edit'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function selected_client_details(\WP_REST_Request $request)
+    public function client_edit(\WP_REST_Request $request)
     {
         $id = $request->get_param('id');
 
@@ -48,7 +48,7 @@ class GetSelectedClientDetails{
         }
 
         return new \WP_REST_Response([
-            'client_details' => [
+            'client' => [
                 'id'           => $client->id,
                 'name'         => $wp_user->user_login,
                 'email'        => $wp_user->user_email,

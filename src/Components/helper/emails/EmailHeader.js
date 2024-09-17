@@ -8,7 +8,7 @@ import {
 } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
 
-const EmailHeader = () => {
+const EmailHeader = ({ selectedEmail, onDeleteAction, onEmailBox }) => {
   const { createEmail, setCreateEmail } = useStoreContext();
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
@@ -16,13 +16,16 @@ const EmailHeader = () => {
         Email
       </h1>
       <div className="flex sm:flex-row flex-wrap gap-5 items-center">
-        <button>
-          <Mail02Icon className="text-textColor2" />
-        </button>
-        <button>
-          <Delete03Icon className="text-textColor2" />
-        </button>
-
+        {selectedEmail?.length > 0 && (
+          <>
+            <button onClick={() => onEmailBox(selectedEmail)}>
+              <Mail02Icon className="text-textColor2" />
+            </button>
+            <button onClick={() => onDeleteAction(selectedEmail)}>
+              <Delete03Icon className="text-textColor2" />
+            </button>
+          </>
+        )}
         <Search01Icon />
         {createEmail ? (
           <>

@@ -4,6 +4,8 @@ import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import { DeleteModal } from "../../DeleteModal";
+import Modal from "../Modal";
+import AddContactTeamForm from "../../Contacts/Team/AddContactTeamForm";
 
 const ContactTeamTable = ({
   teamLists,
@@ -22,6 +24,7 @@ const ContactTeamTable = ({
 
   const [openContact, setOpenContact] = useState(false);
   const [contactId, setContactId] = useState();
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="mt-8 flow-root">
@@ -136,8 +139,11 @@ const ContactTeamTable = ({
 
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={`#/contact/#/${item.name}`}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpen(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -145,7 +151,7 @@ const ContactTeamTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
@@ -171,6 +177,9 @@ const ContactTeamTable = ({
           </div>
         </div>
       </div>
+      <Modal open={open} setOpen={setOpen} title="Update Member">
+        <AddContactTeamForm setOpen={setOpen} refetch={refetch} update />
+      </Modal>
       <DeleteModal
         open={openContact}
         setOpen={setOpenContact}
