@@ -56,6 +56,7 @@ use WpClientManagement\API\Invoices\DeleteInvoice;
 use WpClientManagement\API\Invoices\UpdateInvoice;
 use WpClientManagement\API\Notes\CreateNote;
 use WpClientManagement\API\Notes\DeleteNote;
+use WpClientManagement\API\Notes\EditNote;
 use WpClientManagement\API\Notes\UpdateNote;
 use WpClientManagement\API\PaymentMethods\SelectPaymentMethod;
 use WpClientManagement\API\Posts\GetSinglePost;
@@ -201,6 +202,7 @@ class API {
         new DeleteNote();
         new CreateNote();
         new UpdateNote();
+        new EditNote();
 
         // Priority
         new GetPriorities();
