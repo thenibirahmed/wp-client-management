@@ -183,6 +183,7 @@ class Installer {
                         `priority_id` bigint UNSIGNED DEFAULT NULL,
                         `title` varchar(255) NOT NULL,
                         `budget` decimal(8,2) NOT NULL DEFAULT '0.00',
+                        `currency_id` bigint UNSIGNED DEFAULT NULL,
                         `start_date` datetime DEFAULT NULL,
                         `due_date` datetime DEFAULT NULL,
                         `description` varchar(255) DEFAULT NULL,
