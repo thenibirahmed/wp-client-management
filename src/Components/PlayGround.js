@@ -69,7 +69,7 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/invoice/20/edit",
+				eicApiSettings.rest_url + "wp-client-management/v1/project/1/edit",
 				// {
 				// title: 'update update',
 				// client_id: 4,
@@ -86,7 +86,7 @@ const PlayGround = () => {
 				// start_date: '2024-09-15',
 				// due_date: '2024-09-30',
 				// description: 'updated description',
-				// assignee_ids: [,1,2,3,4,5,6,7,8],
+				// assignee_ids: [1,2,3,4,5,6,7,8],
 				// name: 'last client1',
 				// email: 'last@client1.com',
 				// organization: 'last organization',

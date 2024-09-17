@@ -149,7 +149,6 @@ class CreateInvoice {
             $invoice->invoice_items()->createMany([]);
         }
 
-
         return new \WP_REST_Response([
             'message' => 'Invoice created successfully.',
             'invoice' => $invoice,
