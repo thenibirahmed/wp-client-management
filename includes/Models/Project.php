@@ -95,6 +95,11 @@ class Project extends Model
         return $this->hasMany(Invoice::class);
     }
 
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
     public function tasks() {
         return $this->hasMany(Task::class);
     }
