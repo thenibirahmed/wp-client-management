@@ -103,8 +103,8 @@ class CreateInvoice {
         $data['title']                  = sanitize_text_field($data['title'] ?? '');
         $data['date']                   = isset($data['date']) ? sanitize_text_field($data['date']) : date('Y-m-d');
         $data['due_date']               = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
-        $data['items']                  = isset($data['items']) ? json_encode(array_map('sanitize_text_field', json_decode($data['items'], true) ?? [])) :
-                                         json_encode([]);
+        $data['invoice_items']          = isset($data['invoice_items']) ? $data['invoice_items'] : null;
+
         $data['note']                   = sanitize_textarea_field($data['note'] ?? '');
         $data['billing_address']        = sanitize_textarea_field($data['billing_address'] ?? '');
         $data['billing_phone_number']   = sanitize_textarea_field($data['billing_phone_number'] ?? '');
@@ -138,7 +138,15 @@ class CreateInvoice {
             ]);
         }
 
-        $invoice->items()->createMany($data['invoice_items']);
+        if (isset($data['invoice_items']) && is_array($data['invoice_items'])) {
+            $sanitized_invoice_items = array_map(function($item) {
+                return array_map('sanitize_text_field', $item);
+            }, $data['invoice_items']);
+            $invoice->invoice_items()->createMany($sanitized_invoice_items);
+        } else {
+            $invoice->invoice_items()->createMany([]);
+        }
+
 
         return new \WP_REST_Response([
             'message' => 'Invoice created successfully.',

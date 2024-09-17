@@ -45,20 +45,30 @@ const AddClientForm = ({
     let endpoint;
 
     if (update) {
-      endpoint = `/client/${clientId}/edit`;
+      if (!clientId) return toast.error("ClientId is required");
+
+      endpoint = `/client/update/${clientId}`;
     } else {
       endpoint = `/client/create`;
     }
 
     try {
       setLoading(true);
-      const { data: res } = await api.post(endpoint, data);
-      toast.success(res?.message);
+      let res;
+      if (update) {
+        let { data: res } = await api.put(endpoint, data);
+        res = data;
+      } else {
+        let { data: res } = await api.post(endpoint, data);
+        res = data;
+      }
+      console.log("res", res);
+      toast.success(res?.message || "operation success");
       await refetch();
       reset();
       setOpen(false);
     } catch (err) {
-      console.log(err.response);
+      console.log(err);
 
       if (err?.response?.data?.errors["email"]?.length > 0) {
         setError("email", {
