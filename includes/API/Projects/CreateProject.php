@@ -54,8 +54,8 @@ class CreateProject {
         $data['priority_id']  = isset($data['priority_id']) ? intval($data['priority_id']) : null;
         $data['title']        = sanitize_text_field($data['title'] ?? '');
         $data['budget']       = isset($data['budget']) ? floatval($data['budget']) : null;
-        $data['start_date']   = isset($data['start_date']) ? sanitize_text_field($data['start_date']) : '';
-        $data['due_date']     = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : '';
+        $data['start_date']   = isset($data['start_date']) ? sanitize_text_field($data['start_date']) : null;
+        $data['due_date']     = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
         $data['description']  = isset($data['description']) ? sanitize_textarea_field($data['description']) : '';
         $data['assignee_ids'] = isset($data['assignee_ids']) ? $data['assignee_ids'] : [];
 
@@ -66,6 +66,7 @@ class CreateProject {
                 'errors' => $validator->errors(),
             ], 400);
         }
+
         $project = Project::create($data);
 
         if (!$project) {
