@@ -85,6 +85,7 @@ const ClientFiles = ({ clientId }) => {
               setIsAllSelected={setIsAllSelected}
               slug="clients"
               refetch={refetch}
+              type="client"
             />
           )}
         </>

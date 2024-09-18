@@ -37,6 +37,7 @@ class CreateInvoice {
         'discount'                 => 'nullable|numeric',
         'tax'                      => 'nullable|numeric',
         'fee'                      => 'nullable|numeric',
+        'invoice_items'            => 'array|min:1',
     ];
 
     protected array $validationMessages = [
@@ -73,8 +74,9 @@ class CreateInvoice {
         'discount.numeric'               => 'The Discount must be a valid number.',
         'tax.numeric'                    => 'The Tax must be a valid number.',
         'fee.numeric'                    => 'The Fee must be a valid number.',
+        'invoice_items.array'            => 'The Invoice Items must be an array.',
+        'invoice_items.min'              => 'The Invoice Items must contain at least one item.',
     ];
-
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [

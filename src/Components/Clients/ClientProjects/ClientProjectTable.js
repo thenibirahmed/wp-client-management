@@ -233,6 +233,7 @@ const ClientProjectTable = ({
           setOpen={setOpenProjectUpdateModal}
           update
           projectId={projectId}
+          clientId={clientId}
         />
       </Modal>
 

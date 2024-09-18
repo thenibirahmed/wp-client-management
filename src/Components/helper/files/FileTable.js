@@ -17,6 +17,7 @@ const FileTable = ({
   setIsAllSelected,
   slug,
   refetch,
+  type,
 }) => {
   const {
     updateFileModal,
@@ -131,6 +132,7 @@ const FileTable = ({
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
+                              setFileId(item?.id);
                               setUpdateFileModal(true);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
@@ -179,8 +181,8 @@ const FileTable = ({
         <AddNewFileForm
           refetch={refetch}
           setOpen={setUpdateFileModal}
-          type="project"
-          id={projectId}
+          type={type}
+          id={fileId}
           update
         />
       </Modal>

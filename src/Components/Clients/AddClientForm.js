@@ -42,24 +42,18 @@ const AddClientForm = ({
 
   //submitting the form
   const addNewClientHandler = async (data) => {
-    let endpoint;
-
     if (update) {
       if (!clientId) return toast.error("ClientId is required");
-
-      endpoint = `/client/update/${clientId}`;
-    } else {
-      endpoint = `/client/create`;
     }
 
     try {
       setLoading(true);
       let res;
       if (update) {
-        let { data: res } = await api.put(endpoint, data);
+        let { data: res } = await api.put(`/client/update/${clientId}`, data);
         res = data;
       } else {
-        let { data: res } = await api.post(endpoint, data);
+        let { data: res } = await api.post(`/client/create`, data);
         res = data;
       }
       console.log("res", res);

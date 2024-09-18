@@ -1,7 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-
 import { useForm } from "react-hook-form";
-
 import TextField from "../TextField";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { SelectTextField } from "../SelectTextField";
@@ -21,23 +19,26 @@ import api from "../../../api/api";
 import dayjs from "dayjs";
 import Loaders from "../../Loaders";
 import { MultiSelectTextField } from "../MultiSelectTextField";
+import { useUpdateDefaultProjectValue } from "../../../hooks/useRefetch";
 
-const AddNewClientProjectForm = ({ clientId, refetch, update, projectId }) => {
-  console.log("projectId ", projectId);
-
+const AddNewClientProjectForm = ({
+  clientId,
+  refetch,
+  update = false,
+  projectId,
+}) => {
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
-  const { setOpenProjectModal } = useStoreContext();
-
-  const [selectStatus, setSelectStatus] = useState();
+  const { setOpenProjectModal, setOpenProjectUpdateModal } = useStoreContext();
+  const [selectStatus, setSelectStatus] = useState(2);
   const [selectPriority, setSelectPriority] = useState();
   const [selectProjectManager, setSelectProjectManager] = useState();
   const [selectCurrency, setSelectCurrency] = useState();
   const [submitLoader, setSubmitLoader] = useState(false);
+  const [assigneeLists, setAssigneeLists] = useState();
   const [selectedAssignees, setSelectedAssignees] = useState([]);
   const [allIds, setAllIds] = useState([]);
   const imageRef = useRef();
@@ -77,10 +78,14 @@ const AddNewClientProjectForm = ({ clientId, refetch, update, projectId }) => {
     handleSubmit,
     reset,
     setError,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched",
   });
+
+  //set default value for updating the project
+  useUpdateDefaultProjectValue(update, clientProjects, setValue, "client");
 
   const addNewClientProjectHandler = async (data) => {
     if (!selectProjectManager?.id || !selectStatus?.id || !selectPriority?.id) {
@@ -95,7 +100,7 @@ const AddNewClientProjectForm = ({ clientId, refetch, update, projectId }) => {
       status_id: selectStatus?.id,
       priority_id: selectPriority?.id,
       currency_id: selectCurrency?.id,
-      assigee_ids: allIds,
+      assignee_ids: allIds,
       budget: data.budget,
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
       due_date: dayjs(endDate).format("YYYY-MM-DD"),
@@ -103,11 +108,20 @@ const AddNewClientProjectForm = ({ clientId, refetch, update, projectId }) => {
     };
 
     try {
-      const { data } = await api.post(`/project/create`, sendData);
-      toast.success(data?.message);
+      let res;
+      if (update) {
+        let { data } = await api.put(`/project/update/${projectId}`, sendData);
+        res = data;
+      } else {
+        let { data } = await api.post("/project/create", sendData);
+        res = data;
+      }
+
+      toast.success(res?.message || "operation success");
       await refetch();
       reset();
       setOpenProjectModal(false);
+      setOpenProjectUpdateModal(true);
     } catch (err) {
       console.log(err);
       toast.error("Something went wrong");
@@ -116,50 +130,91 @@ const AddNewClientProjectForm = ({ clientId, refetch, update, projectId }) => {
     }
   };
 
-  function onError(err) {
-    toast.error(err?.response?.data?.message);
-    console.log(err);
-  }
-
   useEffect(() => {
     setAllIds(selectedAssignees.map((item) => item.id));
   }, [selectedAssignees]);
 
   useEffect(() => {
     if (managers?.employee.length > 0) {
-      setSelectProjectManager(managers?.employee[0]);
+      if (!update) {
+        setAssigneeLists(managers?.employee);
+        setSelectProjectManager(managers?.employee[0]);
+      } else if (update && clientProjects) {
+        const managerLists = managers?.employee.find(
+          (item) => item.id === clientProjects?.manager_id
+        );
+        const assigneeLists = managers?.employee.filter((item) =>
+          clientProjects?.assignee_ids?.includes(item.id)
+        );
+        setSelectedAssignees(assigneeLists);
+        setAllIds(assigneeLists.map((item) => item.id));
+        setAssigneeLists(managers?.employee);
+        setSelectProjectManager(managerLists);
+      }
     } else {
       setSelectProjectManager({ name: " -No Project Manager- ", id: null });
     }
     if (priorities?.priorities.length > 0) {
-      setSelectPriority(priorities?.priorities[0]);
+      if (!update) {
+        setSelectPriority(priorities?.priorities[0]);
+      } else if (update && clientProjects) {
+        const priorityLists = priorities?.priorities.find(
+          (item) => item.id === clientProjects?.priority_id
+        );
+        setSelectPriority(priorityLists);
+      }
     } else {
       setSelectPriority({ name: " -No Priority- ", id: null });
     }
+
     if (statuses?.statuses.length > 0) {
-      setSelectStatus(statuses?.statuses[0]);
+      if (!update) {
+        setSelectStatus(statuses?.statuses[0]);
+      } else if (update && clientProjects) {
+        const statusLists = statuses?.statuses.find(
+          (item) => item.id === clientProjects?.status_id
+        );
+        setSelectStatus(statusLists);
+      }
     } else {
       setSelectStatus({ name: " -No Status- ", id: null });
     }
     if (currencyLists?.currency.length > 0) {
-      setSelectCurrency(currencyLists?.currency[0]);
+      if (!update) {
+        setSelectCurrency(currencyLists?.currency[0]);
+      } else if (update && clientProjects) {
+        const currencyitems = currencyLists?.currency.find(
+          (item) => item.id === clientProjects?.currency_id
+        );
+        setSelectCurrency(currencyitems);
+      }
     } else {
       setSelectCurrency({ name: " -No Currency- ", id: null });
     }
-  }, [managers, priorities, statuses, currencyLists]);
+  }, [managers, priorities, statuses, currencyLists, clientProjects, update]);
 
   const onImageUploadHandler = () => {
     imageRef.current.click();
   };
 
   const isLoading =
-    isLoadProjectManager || isLoadingStatus || isLoadingPriorities;
+    isLoadProjectManager ||
+    isLoadingStatus ||
+    isLoadingPriorities ||
+    loader ||
+    isLoadingSelectCurrency;
+
+  function onError(err) {
+    toast.error(err?.response?.data?.message?.errors || "Something went wrong");
+    console.log(err);
+  }
 
   if (isLoading) {
     return <Skeleton />;
   }
 
-  if (pManagerErr) return <Errors message="Internal Server Error" />;
+  if (pManagerErr || pPrioritiesErr || pStatusErr || selecturrencyErr)
+    return <Errors message="Internal Server Error" />;
 
   return (
     <div className="py-5 relative h-full ">
@@ -235,8 +290,10 @@ const AddNewClientProjectForm = ({ clientId, refetch, update, projectId }) => {
             label="Assignee"
             select={selectedAssignees}
             setSelect={setSelectedAssignees}
-            lists={managers?.employee}
+            lists={assigneeLists}
             isSubmitting={isSubmitting}
+            allIds={allIds}
+            update={update}
           />
         </div>
         <React.Fragment>

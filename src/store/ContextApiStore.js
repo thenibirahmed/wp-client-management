@@ -26,6 +26,7 @@ export const ContextProvider = ({ children }) => {
 
   const [createNote, setCreateNote] = useState(false);
   const [deleteNote, setDeleteNote] = useState(false);
+  const [updateNotes, setUpdateNotes] = useState(false);
 
   const [createEmail, setCreateEmail] = useState(false);
   const [deleteEmail, setDeleteEmail] = useState(false);
@@ -33,6 +34,8 @@ export const ContextProvider = ({ children }) => {
   const [openTaskDetail, setOpenTaskDetail] = useState(false);
   const [openTaskDesc, setOpenTaskDesc] = useState(false);
   const [taskId, setTaskId] = useState(false);
+
+  const [noteId, setNoteId] = useState();
 
   const [allTabItems, setAllTabItems] = useState({
     project: true,
@@ -107,6 +110,10 @@ export const ContextProvider = ({ children }) => {
     setDeleteEmail,
     deleteTask,
     setDeleteTask,
+    updateNotes,
+    setUpdateNotes,
+    noteId,
+    setNoteId,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

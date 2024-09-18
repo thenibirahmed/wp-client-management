@@ -7,6 +7,9 @@ import TextField from "../TextField";
 import toast from "react-hot-toast";
 import api from "../../../api/api";
 import Loaders from "../../Loaders";
+import { useFetchFileEditDetails } from "../../../hooks/useQuery";
+import { useUpdateDefaultFileValue } from "../../../hooks/useRefetch";
+import Skeleton from "../../Skeleton";
 
 const AddNewFileForm = ({ refetch, setOpen, type, id, update }) => {
   const { setOpenFileModal } = useStoreContext();
@@ -15,30 +18,66 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update }) => {
   const imageRef = useRef();
 
   const {
+    isLoading: fileLoader,
+    data: clientFile,
+    error,
+  } = useFetchFileEditDetails(id, update, onError);
+
+  function onError(err) {
+    toast.error(
+      err?.response?.data?.message?.errors || "Failed to fetch file data"
+    );
+    console.log(err);
+  }
+
+  const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm({
+    defaultValues: { client_id: "", project_id: "" },
     mode: "onTouched",
   });
 
+  //custom hook for updating default value in the form to edit
+  useUpdateDefaultFileValue(update, clientFile, setValue, "client");
+
   const addNewFileHandler = async (data) => {
     setSubmitLoader(true);
+
     const sendData = {
       title: data.title,
       url: data.url,
     };
 
-    if (type === "project") {
-      sendData.project_id = id;
+    if (update) {
+      if (type === "project") {
+        sendData.project_id = data.project_id;
+      } else {
+        sendData.client_id = data.client_id;
+      }
     } else {
-      sendData.client_id = id;
+      if (type === "project") {
+        sendData.project_id = id;
+      } else {
+        sendData.client_id = id;
+      }
     }
 
     try {
-      const { data } = await api.post("/file/create", sendData);
-      toast.success(data?.message);
+      let res;
+      if (update) {
+        let { data: res } = await api.put(`/file/update/${id}`, sendData);
+        res = data;
+      } else {
+        let { data: res } = await api.post("/file/create", sendData);
+        res = data;
+      }
+
+      toast.success(res?.message || "operation success");
       await refetch();
       setOpen(false);
       reset();
@@ -60,6 +99,7 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update }) => {
     }
   }, [imageUrl]);
 
+  if (fileLoader) return <Skeleton />;
   return (
     <div className="py-5 relative h-full ">
       <form className="space-y-4 " onSubmit={handleSubmit(addNewFileHandler)}>

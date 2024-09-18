@@ -3,10 +3,12 @@ import React, { useState, useEffect } from "react";
 import truncateText from "../../../utils/truncateText";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import Pagination from "../../Clients/Pagination";
-import { Delete03Icon, ViewIcon } from "../../../utils/icons";
-import useHashRouting from "../../../utils/useHashRouting";
+import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
+
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { DeleteModal } from "../../DeleteModal";
+import Modal from "../Modal";
+import AddNewNote from "./AddNewNote";
 
 const NoteTable = ({
   noteData,
@@ -19,10 +21,14 @@ const NoteTable = ({
   slug,
   refetch,
 }) => {
-  const { updateNote, setUpdateNote, deleteNote, setDeleteNote } =
-    useStoreContext();
-
-  const [noteId, setNoteId] = useState();
+  const {
+    deleteNote,
+    setDeleteNote,
+    updateNotes,
+    setUpdateNotes,
+    noteId,
+    setNoteId,
+  } = useStoreContext();
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedNote,
@@ -121,11 +127,12 @@ const NoteTable = ({
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
-                              setUpdateNote(true);
+                              setNoteId(item?.id);
+                              setUpdateNotes(true);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
-                            <ViewIcon
+                            <PencilEdit02Icon
                               className="text-textColor2"
                               width="20px"
                               height="20px"
@@ -161,6 +168,7 @@ const NoteTable = ({
           </div>
         </div>
       </div>
+
       <DeleteModal
         open={deleteNote}
         setOpen={setDeleteNote}

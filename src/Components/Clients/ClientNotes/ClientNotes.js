@@ -13,7 +13,8 @@ import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
 
 const ClientNotes = ({ clientId }) => {
-  const { createNote, setCreateNote } = useStoreContext();
+  const { createNote, setCreateNote, updateNotes, setUpdateNotes } =
+    useStoreContext();
 
   const [selectedNote, setSelectedNote] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
@@ -66,8 +67,8 @@ const ClientNotes = ({ clientId }) => {
       <ProjectHeader
         selectedProject={selectedNote}
         title="Notes"
-        setOpenModal={setCreateNote}
-        openModal={createNote}
+        setOpenModal={updateNotes ? setUpdateNotes : setCreateNote}
+        openModal={updateNotes ? updateNotes : createNote}
         btnTitle="Add Note"
         cancelTitle="Cancel"
         onDeleteAction={onDeleteAction}
@@ -75,7 +76,7 @@ const ClientNotes = ({ clientId }) => {
         check={false}
       />
 
-      {createNote ? (
+      {createNote || updateNotes ? (
         <React.Fragment>
           <AddNewNote
             noteData={clientNotes?.notes}
@@ -88,6 +89,7 @@ const ClientNotes = ({ clientId }) => {
             projectId={clientId}
             pagination={clientNotes?.pagination}
             type="client"
+            update={updateNotes}
           />
         </React.Fragment>
       ) : (

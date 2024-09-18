@@ -84,28 +84,79 @@ export const useFetchClientEditDetails = (id, update, onError) => {
 
 export const useFetchProjectEditDetails = (id, update, onError) => {
   return useQuery(
-    ["project-edit-details", id],
+    ["client-project-edit-details", id],
     async () => {
       return await api.get(`/project/${id}/edit`);
     },
     {
       select: (data) => {
-        // const {
-        //   name,
-        //   email,
-        //   id,
-        //   address,
-        //   city,
-        //   country,
-        //   organization,
-        //   phone,
-        //   state,
-        //   zip,
-        // } = data.data.client;
+        const {
+          id,
+          assignee_ids,
+          budget,
+          client_id,
+          currency_id,
+          description,
+          due_date,
+          manager_id,
+          priority_id,
+          start_date,
+          status_id,
+          title,
+        } = data.data.project;
 
-        console.log("cli project details", data.data);
+        return {
+          id,
+          assignee_ids,
+          budget,
+          client_id,
+          currency_id,
+          description,
+          due_date,
+          manager_id,
+          priority_id,
+          start_date,
+          status_id,
+          title,
+        };
+      },
+      enabled: !!id && update,
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
 
-        return data;
+export const useFetchFileEditDetails = (id, update, onError) => {
+  return useQuery(
+    ["client-file-details", id],
+    async () => {
+      return await api.get(`/file/${id}/edit`);
+    },
+    {
+      select: (data) => {
+        const { id, client_id, project_id, title, url } = data.data.file;
+
+        return { id, client_id, project_id, title, url };
+      },
+      enabled: !!id && update,
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchNoteEditDetails = (id, update, onError) => {
+  return useQuery(
+    ["client-note-detail", id],
+    async () => {
+      return await api.get(`/note/${id}/edit`);
+    },
+    {
+      select: (data) => {
+        const { id, client_id, project_id } = data.data.note;
+
+        return { id, client_id, project_id };
       },
       enabled: !!id && update,
       onError,

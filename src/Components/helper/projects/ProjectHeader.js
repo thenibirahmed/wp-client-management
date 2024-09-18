@@ -7,6 +7,7 @@ import {
 } from "../../../utils/icons";
 import { Search } from "../Search";
 import Filter from "../Filter";
+import { useStoreContext } from "../../../store/ContextApiStore";
 
 const ProjectHeader = ({
   selectedProject,
@@ -20,6 +21,7 @@ const ProjectHeader = ({
   filter = true,
   check = true,
 }) => {
+  const { updateNotes, setUpdateNotes } = useStoreContext();
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
@@ -54,7 +56,10 @@ const ProjectHeader = ({
         ) : (
           <>
             <button
-              onClick={() => setOpenModal(true)}
+              onClick={() => {
+                setOpenModal(true);
+                setUpdateNotes(false);
+              }}
               type="button"
               className="inline-flex items-center gap-x-1.5 rounded-md bg-customBlue px-5 py-[11px] text-sm font-semibold text-white shadow-sm  hover:text-gray-200 "
             >

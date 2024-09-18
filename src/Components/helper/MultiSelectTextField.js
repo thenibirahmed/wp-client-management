@@ -20,6 +20,8 @@ export const MultiSelectTextField = ({
   lists,
   isSubmitting,
   project = false,
+  allIds,
+  update = false,
 }) => {
   const handleSelect = (person) => {
     const isIncluded = select?.some((item) => item.id === person.id);

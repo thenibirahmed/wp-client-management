@@ -17,7 +17,7 @@ class InvoiceItem extends Model
         'tax_type',
         'tax_value',
         'line_total'
-    ];
+    ];  
 
     public function invoice()
     {

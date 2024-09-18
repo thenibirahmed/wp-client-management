@@ -12,6 +12,11 @@ import {
   Image02Icon,
   Link05Icon,
 } from "../../../utils/icons";
+import { useFetchNoteEditDetails } from "../../../hooks/useQuery";
+import {
+  useUpdateDefaultFileValue,
+  useUpdateDefaultNoteValue,
+} from "../../../hooks/useRefetch";
 
 const AddNewNote = ({
   noteData,
@@ -25,6 +30,7 @@ const AddNewNote = ({
   pagination,
   type,
   slug,
+  update = false,
 }) => (
   <div>
     <div className="border border-borderColor rounded-[8px] py-[13px]">
@@ -33,6 +39,7 @@ const AddNewNote = ({
         setOpen={setOpen}
         projectId={projectId}
         type={type}
+        update={update}
       />
     </div>
     <NoteTable
@@ -50,15 +57,31 @@ const AddNewNote = ({
 
 export default AddNewNote;
 
-const AddNewNoteTextArea = ({ refetch, setOpen, projectId, type }) => {
+const AddNewNoteTextArea = ({ refetch, setOpen, projectId, type, update }) => {
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
 
-  const { setCreateNote } = useStoreContext();
+  const { setCreateNote, noteId, setUpdateNotes } = useStoreContext();
   const [editorContent, setEditorContent] = useState("");
   const [submitLoader, setSubmitLoader] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
 
   const quillRef = useRef(null);
+
+  const {
+    isLoading,
+    data: client,
+    error,
+  } = useFetchNoteEditDetails(projectId, update, onError);
+
+  useUpdateDefaultNoteValue(update, client, type, setSelectedId);
+
+  function onError(err) {
+    console.log(err);
+    toast.error(
+      err?.response?.data?.message?.errors || "Failed To Fetch Client Info"
+    );
+  }
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -71,18 +94,36 @@ const AddNewNoteTextArea = ({ refetch, setOpen, projectId, type }) => {
       note: editorContent,
     };
 
-    if (type === "project") {
-      sendData.project_id = projectId;
+    if (update) {
+      if (type === "project") {
+        sendData.project_id = selectedId;
+      } else {
+        sendData.client_id = selectedId;
+      }
     } else {
-      sendData.client_id = projectId;
+      if (type === "project") {
+        sendData.project_id = projectId;
+      } else {
+        sendData.client_id = projectId;
+      }
     }
 
     try {
-      const { data } = await api.post("/note/create", sendData);
-      toast.success(data?.message);
+      let res;
+      if (update) {
+        let { data } = await api.put(`/note/update/${noteId}`, sendData);
+        res = data;
+      } else {
+        let { data } = await api.post("/note/create", sendData);
+        res = data;
+      }
+
+      toast.success(res?.message || "operation success");
       await refetch();
       setEditorContent("");
       setCreateNote(false);
+      setUpdateNotes(false);
+
       setOpen(false);
     } catch (err) {
       console.log(err);
