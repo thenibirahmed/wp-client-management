@@ -167,21 +167,25 @@ class UpdateInvoice {
         ]);
 
         if (isset($data['invoice_items']) && is_array($data['invoice_items'])) {
+            $provided_item_ids = [];
+
             foreach ($data['invoice_items'] as $item) {
                 $sanitized_item = array_map('sanitize_text_field', $item);
 
-                // Check if 'id' is set and is not null
                 if (!empty($sanitized_item['id'])) {
-                    $invoiceItem = $invoice->invoice_items()->find($sanitized_item['id']);
+                    $provided_item_ids[] = $sanitized_item['id'];
 
+                    $invoiceItem = $invoice->invoice_items()->find($sanitized_item['id']);
                     if ($invoiceItem) {
                         $invoiceItem->update($sanitized_item);
                     }
                 } else {
-                    // Create new invoice item if 'id' is not set or is null
-                    $invoice->invoice_items()->create($sanitized_item);
+                    $newItem = $invoice->invoice_items()->create($sanitized_item);
+                    $provided_item_ids[] = $newItem->id;
                 }
             }
+
+            $invoice->invoice_items()->whereNotIn('id', $provided_item_ids)->delete();
         }
 
 
