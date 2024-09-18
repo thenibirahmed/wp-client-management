@@ -23,10 +23,12 @@ class UpdateInvoice {
         'title'                    => 'required|string',
         'date'                     => 'required|date',
         'due_date'                 => 'nullable|date',
+        'bill_to_id'               => 'nullable|exists:eic_clients,id',
         'bill_from_address'        => 'nullable|string',
         'bill_from_phone_number'   => 'required|string',
         'bill_from_email'          => 'required|email',
         'items'                    => 'nullable|json',
+        'bill_from_id'             => 'nullable|exists:eic_eic_crm_users,id',
         'billing_address'          => 'nullable|string',
         'billing_phone_number'     => 'required|string',
         'billing_email'            => 'required|email',
@@ -107,9 +109,11 @@ class UpdateInvoice {
         $data['due_date']               = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
         $data['invoice_items']          = isset($data['invoice_items']) ? $data['invoice_items'] : null;
         $data['note']                   = sanitize_textarea_field($data['note'] ?? '');
+        $data['bill_to_id']             = isset($data['bill_to_id']) ? intval($data['bill_to_id']) : null;
         $data['billing_address']        = sanitize_textarea_field($data['billing_address'] ?? '');
         $data['billing_phone_number']   = sanitize_textarea_field($data['billing_phone_number'] ?? '');
         $data['billing_email']          = sanitize_textarea_field($data['billing_email'] ?? '');
+        $data['bill_from_id']           = isset($data['bill_from_id']) ? intval($data['bill_from_id']) : null;
         $data['bill_from_address']      = sanitize_textarea_field($data['bill_from_address'] ?? '');
         $data['bill_from_phone_number'] = sanitize_textarea_field($data['bill_from_phone_number'] ?? '');
         $data['bill_from_email']        = sanitize_textarea_field($data['bill_from_email'] ?? '');
@@ -146,9 +150,11 @@ class UpdateInvoice {
             'title' => $data['title'],
             'date' => $data['date'],
             'due_date' => $data['due_date'],
+            'bill_to_id' => $data['bill_to_id'],
             'billing_address' => $data['billing_address'],
             'billing_phone_number' => $data['billing_phone_number'],
             'billing_email' => $data['billing_email'],
+            'bill_from_id' => $data['bill_from_id'],
             'bill_from_address' =>  $data['bill_from_address'],
            ' bill_from_phone_number' =>  $data['bill_from_phone_number'],
             'bill_from_email' => $data['bill_from_email'],
