@@ -140,56 +140,50 @@ class UpdateInvoice {
         }
 
         $invoice->update([
-            'project_id' => $data['project_id'],
-            'client_id' => $data['client_id'],
-            'currency_id' => $data['currency_id'],
-            'payment_method_id' => $data['payment_method_id'],
-            'status_id' => $data['status_id'],
-            'invoice_number' => $data['invoice_number'],
-            'type' => $data['type'],
-            'title' => $data['title'],
-            'date' => $data['date'],
-            'due_date' => $data['due_date'],
-            'bill_to_id' => $data['bill_to_id'],
-            'billing_address' => $data['billing_address'],
-            'billing_phone_number' => $data['billing_phone_number'],
-            'billing_email' => $data['billing_email'],
-            'bill_from_id' => $data['bill_from_id'],
-            'bill_from_address' =>  $data['bill_from_address'],
-           ' bill_from_phone_number' =>  $data['bill_from_phone_number'],
-            'bill_from_email' => $data['bill_from_email'],
-            'note' => $data['note'],
-            'sub_total' => $data['sub_total'],
-            'total' => $data['total'],
-            'discount' => $data['discount'],
-            'tax' => $data['tax'],
-            'fee' => $data['fee']
+            'project_id'              => $data['project_id'],
+            'client_id'               => $data['client_id'],
+            'currency_id'             => $data['currency_id'],
+            'payment_method_id'       => $data['payment_method_id'],
+            'status_id'               => $data['status_id'],
+            'invoice_number'          => $data['invoice_number'],
+            'type'                    => $data['type'],
+            'title'                   => $data['title'],
+            'date'                    => $data['date'],
+            'due_date'                => $data['due_date'],
+            'bill_to_id'              => $data['bill_to_id'],
+            'billing_address'         => $data['billing_address'],
+            'billing_phone_number'    => $data['billing_phone_number'],
+            'billing_email'           => $data['billing_email'],
+            'bill_from_id'            => $data['bill_from_id'],
+            'bill_from_address'       => $data['bill_from_address'],
+            'bill_from_phone_number'  => $data['bill_from_phone_number'],
+            'bill_from_email'         => $data['bill_from_email'],
+            'note'                    => $data['note'],
+            'sub_total'               => $data['sub_total'],
+            'total'                   => $data['total'],
+            'discount'                => $data['discount'],
+            'tax'                     => $data['tax'],
+            'fee'                     => $data['fee']
         ]);
-
-        // if (isset($data['invoice_items']) && is_array($data['invoice_items'])) {
-        //     $sanitized_invoice_items = array_map(function($item) {
-        //         return array_map('sanitize_text_field', $item);
-        //     }, $data['invoice_items']);
-        //     $invoice->invoice_items()->createMany($sanitized_invoice_items);
-        // } else {
-        //     $invoice->invoice_items()->createMany([]);
-        // }
 
         if (isset($data['invoice_items']) && is_array($data['invoice_items'])) {
             foreach ($data['invoice_items'] as $item) {
                 $sanitized_item = array_map('sanitize_text_field', $item);
 
-                if (isset($sanitized_item['id'])) {
+                // Check if 'id' is set and is not null
+                if (!empty($sanitized_item['id'])) {
                     $invoiceItem = $invoice->invoice_items()->find($sanitized_item['id']);
 
                     if ($invoiceItem) {
                         $invoiceItem->update($sanitized_item);
                     }
                 } else {
+                    // Create new invoice item if 'id' is not set or is null
                     $invoice->invoice_items()->create($sanitized_item);
                 }
             }
         }
+
 
         return new \WP_REST_Response([
             'message' => 'Invoice updated successfully.',
