@@ -39,6 +39,16 @@ class Invoice extends Model
         'fee'
     ];
 
+    protected $casts = [
+        'date'      => 'date',
+        'due_date'  => 'date',
+        'sub_total' => 'float',
+        'total'     => 'float',
+        'discount'  => 'float',
+        'tax'       => 'float',
+        'fee'       => 'float'
+    ];
+
     public static function getClientInvoices($id ,$page)
     {
         return self::with(['status','project','paymentMethod'])
