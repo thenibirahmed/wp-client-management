@@ -143,7 +143,7 @@ export const useUpdateDefaultInvoiceValue = (
         fee,
         invoice_items,
       } = client;
-      //setInvoiceItems(invoice_items);
+      setInvoiceItems(invoice_items);
       console.log("invoice iremssss", invoice_items);
       setValue("invoicenumber", code);
       setValue("title", title);
