@@ -22,7 +22,7 @@ const ClientDetails = () => {
 
   const clientId = extractProjectId(currentPath);
 
-  const { createInvoice } = useStoreContext();
+  const { createInvoice, updateInvoice } = useStoreContext();
   const {
     isLoading,
     data: singleClientOverView,
@@ -48,7 +48,14 @@ const ClientDetails = () => {
 
   return (
     <React.Fragment>
-      {!createInvoice ? (
+      {createInvoice || updateInvoice ? (
+        <React.Fragment>
+          <AddNewInvoice
+            clientId={clientId}
+            update={updateInvoice ? updateInvoice : false}
+          />
+        </React.Fragment>
+      ) : (
         <React.Fragment>
           <ClientInfo profile={singleClientOverView?.profile} />
           <ClientOverView topBarData={singleClientOverView?.topBar} />
@@ -58,10 +65,6 @@ const ClientDetails = () => {
               <ClientDetailsLayout clientId={clientId} />
             </React.Fragment>
           </div>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <AddNewInvoice clientId={clientId} />
         </React.Fragment>
       )}
     </React.Fragment>

@@ -107,3 +107,52 @@ export const useUpdateDefaultProjectValue = (
     }
   }, [update, client]);
 };
+
+export const useUpdateDefaultInvoiceValue = (
+  update,
+  client,
+  setValue,
+  setInvoiceItems,
+  type
+) => {
+  useEffect(() => {
+    if (update && client) {
+      const {
+        id,
+        client_id,
+        project_id,
+        currency_id,
+        code,
+        type,
+        title,
+        date,
+        due_date,
+        note,
+        billing_address,
+        billing_phone_number,
+        billing_email,
+        bill_from_address,
+        bill_from_email,
+        bill_from_phone_number,
+        payment_method_id,
+        status_id,
+        sub_total,
+        total,
+        discount,
+        tax,
+        fee,
+        invoice_items,
+      } = client;
+      //setInvoiceItems(invoice_items);
+      console.log("invoice iremssss", invoice_items);
+      setValue("invoicenumber", code);
+      setValue("title", title);
+      setValue("address", bill_from_address);
+      setValue("phone", bill_from_phone_number);
+      setValue("email", bill_from_email);
+      setValue("caddress", billing_address);
+      setValue("cphone", billing_phone_number);
+      setValue("cemail", billing_email);
+    }
+  }, [update, client]);
+};

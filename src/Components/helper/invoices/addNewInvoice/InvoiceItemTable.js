@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { Add01Icon, Delete03Icon } from "../../../../utils/icons";
 import Pagination from "../../../Clients/Pagination";
 import useSubtotal from "../../../../hooks/useSubtotal";
+import { useStoreContext } from "../../../../store/ContextApiStore";
 
 const InvoiceItemTable = ({ invoiceItem, setInvoiceItems }) => {
   const itemDetailsRef = useRef(null);

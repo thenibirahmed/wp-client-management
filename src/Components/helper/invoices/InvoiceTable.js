@@ -21,7 +21,8 @@ const InvoiceTable = ({
     setIsAllSelected,
     setSelectedInvoices
   );
-  const { createInvoice, updateInvoice, setUpdateInvoice } = useStoreContext();
+  const { createInvoice, updateInvoice, setUpdateInvoice, setInvoiceId } =
+    useStoreContext();
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -154,6 +155,7 @@ const InvoiceTable = ({
                             onClick={(e) => {
                               e.stopPropagation();
                               setUpdateInvoice(true);
+                              setInvoiceId(item?.id);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >

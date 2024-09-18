@@ -21,6 +21,7 @@ export const ContextProvider = ({ children }) => {
 
   const [openEmailModal, setOpenEmailModal] = useState(false);
 
+  const [invoiceId, setInvoiceId] = useState(false);
   const [createInvoice, setCreateInvoice] = useState(false);
   const [updateInvoice, setUpdateInvoice] = useState(false);
 
@@ -114,6 +115,8 @@ export const ContextProvider = ({ children }) => {
     setUpdateNotes,
     noteId,
     setNoteId,
+    invoiceId,
+    setInvoiceId,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

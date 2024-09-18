@@ -17,17 +17,25 @@ import {
   useFetchAssignee,
   useFetchClientDetails,
   useFetchEmployeeDetails,
+  useFetchInvoiceEditDetails,
   useFetchProjectClients,
   useFetchSelectCurrency,
   useFetchSelectPaymentMethod,
   useFetchSelectProjects,
 } from "../../../../hooks/useQuery";
+import { useUpdateDefaultInvoiceValue } from "../../../../hooks/useRefetch";
 
-const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
-  const { setCreateInvoice, setUpdateInvoice } = useStoreContext();
+const AddNewInvoiceForm = ({
+  noteText,
+  invoiceItem,
+  update,
+  clientId,
+  setInvoiceItems,
+}) => {
+  const { setCreateInvoice, setUpdateInvoice, invoiceId, updateInvoice } =
+    useStoreContext();
 
   const invoice_items = invoiceItem?.map((item) => ({
-    name: "test",
     details: item.itemDetails,
     quantity: item.quantity,
     unit_price: item.rate,
@@ -53,6 +61,12 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
 
   const [invoiceDate, setInvoiceDate] = useState(new Date());
   const [dueDate, setDueDate] = useState(new Date());
+
+  const {
+    isLoading: invoiceLoader,
+    data: clientInvoice,
+    error: er,
+  } = useFetchInvoiceEditDetails(invoiceId, update, onError);
 
   const {
     isLoading: isLoadingSelectProject,
@@ -114,6 +128,14 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
     mode: "onTouched",
   });
 
+  useUpdateDefaultInvoiceValue(
+    updateInvoice,
+    clientInvoice,
+    setValue,
+    setInvoiceItems,
+    "client"
+  );
+
   const addNewInvoiceHandler = async (data) => {
     if (
       !selectClient?.id ||
@@ -156,6 +178,7 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
       const { data } = await api.post("/invoice/create", sendData);
       toast.success(data?.message);
       reset();
+      setCreateInvoice(false);
     } catch (err) {
       console.log(err);
       toast.error(err?.response?.data?.errors || "Something went wrong");
@@ -172,9 +195,6 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
     }
   }, [client]);
 
-  console.log("employee details", emplyoee?.employeeDetails);
-  console.log("client details", client?.clientDetails);
-
   useEffect(() => {
     if (emplyoee?.employeeDetails) {
       setValue("email", emplyoee?.employeeDetails?.email);
@@ -183,20 +203,44 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
     }
   }, [emplyoee]);
 
+  console.log("here is invoice", clientInvoice);
+
   useEffect(() => {
     if (projectsLists?.projects?.length > 0) {
-      setSelectedProject(projectsLists?.projects[0]);
+      if (!update) {
+        setSelectedProject(projectsLists?.projects[0]);
+      } else if (update && clientInvoice) {
+        const projectList = projectsLists?.projects.find(
+          (item) => item.id === clientInvoice?.project_id
+        );
+        setSelectedProject(projectList);
+      }
     } else {
       setSelectedProject({ name: " -No Project- ", id: null });
     }
 
     if (currencyLists?.currency?.length > 0) {
-      setSelectCurrency(currencyLists?.currency[0]);
+      if (!update) {
+        setSelectCurrency(currencyLists?.currency[0]);
+      } else if (update && clientInvoice) {
+        const currencyList = currencyLists?.currency.find(
+          (item) => item.id === clientInvoice?.currency_id
+        );
+        setSelectCurrency(currencyList);
+      }
     } else {
       setSelectCurrency({ name: " -No Currency- ", id: null });
     }
+
     if (paymentMethod?.method?.length > 0) {
-      setSelectPayMethod(paymentMethod?.method[0]);
+      if (!update) {
+        setSelectPayMethod(paymentMethod?.method[0]);
+      } else if (update && clientInvoice) {
+        const currencyList = paymentMethod?.method.find(
+          (item) => item.id === clientInvoice?.payment_method_id
+        );
+        setSelectPayMethod(currencyList);
+      }
     } else {
       setSelectPayMethod({ name: " -No Payment Method- ", id: null });
     }
@@ -211,12 +255,20 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
       setSelectEmployee(employeeLists?.employee[0]);
     } else {
       setSelectEmployee({
-        name: " -No Payment Method- ",
+        name: " -No Employee- ",
         id: null,
         employeeLists,
       });
     }
-  }, [clientLists, projectsLists, currencyLists, paymentMethod, employeeLists]);
+  }, [
+    clientLists,
+    projectsLists,
+    currencyLists,
+    paymentMethod,
+    employeeLists,
+    update,
+    clientInvoice,
+  ]);
 
   function onError(err) {
     toast.error(err?.response?.data?.message || "Internal Server Error");
@@ -395,7 +447,6 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
                   />
                   <TextField
                     label="Client Billing Address"
-                    required
                     id="address"
                     type="text"
                     message="This field is required*"
@@ -457,7 +508,6 @@ const AddNewInvoiceForm = ({ noteText, invoiceItem, update, clientId }) => {
                   />
                   <TextField
                     label="Billing Address"
-                    required
                     id="caddress"
                     type="text"
                     message="This field is required*"

@@ -11,7 +11,8 @@ import Errors from "../../Errors";
 import useHashRouting from "../../../utils/useHashRouting";
 
 const ClientInvoices = ({ clientId }) => {
-  const { setCreateInvoice } = useStoreContext();
+  const { setCreateInvoice, updateInvoice, setUpdateInvoice } =
+    useStoreContext();
 
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
@@ -63,7 +64,7 @@ const ClientInvoices = ({ clientId }) => {
       <ProjectHeader
         selectedProject={selectedInvoices}
         title="Invoices"
-        setOpenModal={setCreateInvoice}
+        setOpenModal={updateInvoice ? setUpdateInvoice : setCreateInvoice}
         btnTitle="Create Invoice"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}

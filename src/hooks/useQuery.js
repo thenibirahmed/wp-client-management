@@ -164,6 +164,74 @@ export const useFetchNoteEditDetails = (id, update, onError) => {
     }
   );
 };
+export const useFetchInvoiceEditDetails = (id, update, onError) => {
+  return useQuery(
+    ["client-invoice-detail", id],
+    async () => {
+      return await api.get(`/invoice/${id}/edit`);
+    },
+    {
+      select: (data) => {
+        const {
+          id,
+          client_id,
+          project_id,
+          currency_id,
+          code,
+          type,
+          title,
+          date,
+          due_date,
+          note,
+          billing_address,
+          billing_phone_number,
+          billing_email,
+          bill_from_address,
+          bill_from_email,
+          bill_from_phone_number,
+          payment_method_id,
+          status_id,
+          sub_total,
+          total,
+          discount,
+          tax,
+          fee,
+          invoice_items,
+        } = data.data.invoice;
+
+        return {
+          id,
+          client_id,
+          project_id,
+          currency_id,
+          code,
+          type,
+          title,
+          date,
+          due_date,
+          note,
+          billing_address,
+          billing_phone_number,
+          billing_email,
+          bill_from_address,
+          bill_from_email,
+          bill_from_phone_number,
+          payment_method_id,
+          status_id,
+          sub_total,
+          total,
+          discount,
+          tax,
+          fee,
+          invoice_items,
+        };
+      },
+      enabled: !!id && update,
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
 
 export const useFetchSingleClientOverView = (clientId, onError) => {
   return useQuery(

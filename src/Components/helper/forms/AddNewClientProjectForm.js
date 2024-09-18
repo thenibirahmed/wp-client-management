@@ -121,7 +121,7 @@ const AddNewClientProjectForm = ({
       await refetch();
       reset();
       setOpenProjectModal(false);
-      setOpenProjectUpdateModal(true);
+      setOpenProjectUpdateModal(false);
     } catch (err) {
       console.log(err);
       toast.error("Something went wrong");
