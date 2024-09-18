@@ -106,7 +106,6 @@ class CreateInvoice {
         $data['date']                   = isset($data['date']) ? sanitize_text_field($data['date']) : date('Y-m-d');
         $data['due_date']               = isset($data['due_date']) ? sanitize_text_field($data['due_date']) : null;
         $data['invoice_items']          = isset($data['invoice_items']) ? $data['invoice_items'] : null;
-
         $data['note']                   = sanitize_textarea_field($data['note'] ?? '');
         $data['billing_address']        = sanitize_textarea_field($data['billing_address'] ?? '');
         $data['billing_phone_number']   = sanitize_textarea_field($data['billing_phone_number'] ?? '');
