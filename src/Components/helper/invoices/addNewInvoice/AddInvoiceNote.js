@@ -2,7 +2,7 @@ import React from "react";
 import { useStoreContext } from "../../../../store/ContextApiStore";
 import useSubtotal from "../../../../hooks/useSubtotal";
 
-const AddInvoiceNote = ({ invoiceItem, setNoteText }) => {
+const AddInvoiceNote = ({ invoiceItem, setNoteText, noteText }) => {
   const { setCreateInvoice } = useStoreContext();
 
   const { subtotal, totalDiscount, totalTax, finalAmount } =
@@ -15,6 +15,7 @@ const AddInvoiceNote = ({ invoiceItem, setNoteText }) => {
           Note
         </h1>
         <textarea
+          value={noteText}
           onChange={(e) => setNoteText(e.target.value)}
           className="w-full mt-1 border border-borderColor outline-none px-5 py-4 rounded-[8px]"
           rows={5}

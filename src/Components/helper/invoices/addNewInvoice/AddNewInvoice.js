@@ -17,6 +17,7 @@ const AddNewInvoice = ({ update = false, clientId = null }) => {
         update={update}
         clientId={clientId}
         setInvoiceItems={setInvoiceItems}
+        setNoteText={setNoteText}
       />
       <InvoiceItemTable
         invoiceItem={invoiceItem}

@@ -144,7 +144,7 @@ const InvoiceItemTable = ({ invoiceItem, setInvoiceItems }) => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {invoiceItem.map((item, index) => (
+                      {invoiceItem?.map((item, index) => (
                         <tr key={item.id}>
                           <td className="whitespace-nowrap  pl-4 pr-3 sm:pl-6">
                             <button onClick={() => handleDeleteRow(index)}>
@@ -245,7 +245,7 @@ const InvoiceItemTable = ({ invoiceItem, setInvoiceItems }) => {
                             </select>
                           </td>
                           <td className="text-sm text-textColor font-metropolis font-semibold leading-[14px]">
-                            ${item.total.toFixed(2)}
+                            ${item?.total}
                           </td>
                         </tr>
                       ))}

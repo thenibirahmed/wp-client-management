@@ -113,6 +113,7 @@ export const useUpdateDefaultInvoiceValue = (
   client,
   setValue,
   setInvoiceItems,
+  setNoteText,
   type
 ) => {
   useEffect(() => {
@@ -143,8 +144,22 @@ export const useUpdateDefaultInvoiceValue = (
         fee,
         invoice_items,
       } = client;
-      setInvoiceItems(invoice_items);
-      console.log("invoice iremssss", invoice_items);
+
+      const updateInvoice = invoice_items.map((data) => {
+        return {
+          itemDetails: data.details,
+          invoice_id: data.invoice_id,
+          quantity: data.quantity,
+          rate: data.unit_price,
+          discount: data.discount_value,
+          discountType: data.discount_type,
+          tax: data.tax_value,
+          taxType: data.tax_type,
+          total: data.line_total,
+        };
+      });
+      setNoteText(note);
+      setInvoiceItems(updateInvoice);
       setValue("invoicenumber", code);
       setValue("title", title);
       setValue("address", bill_from_address);

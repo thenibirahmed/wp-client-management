@@ -31,9 +31,11 @@ const AddNewInvoiceForm = ({
   update,
   clientId,
   setInvoiceItems,
+  setNoteText,
 }) => {
   const { setCreateInvoice, setUpdateInvoice, invoiceId, updateInvoice } =
     useStoreContext();
+  console.log("current invoice", invoiceItem);
 
   const invoice_items = invoiceItem?.map((item) => ({
     details: item.itemDetails,
@@ -44,6 +46,7 @@ const AddNewInvoiceForm = ({
     tax_type: item.taxType,
     tax_value: item.tax,
     line_total: item.total,
+    id: item.invoice_id,
   }));
 
   const { subtotal, totalDiscount, totalTax, finalAmount } =
@@ -133,6 +136,7 @@ const AddNewInvoiceForm = ({
     clientInvoice,
     setValue,
     setInvoiceItems,
+    setNoteText,
     "client"
   );
 
@@ -172,15 +176,30 @@ const AddNewInvoiceForm = ({
       invoice_items,
     };
 
-    if (clientId) {
-      sendData.client_id = clientId;
+    if (update) {
+      if (clientId) {
+        sendData.client_id = clientInvoice?.client_id;
+      }
+    } else {
+      if (clientId) {
+        sendData.client_id = clientId;
+      }
     }
 
     try {
-      const { data } = await api.post("/invoice/create", sendData);
-      toast.success(data?.message);
+      let res;
+      if (update) {
+        let { data } = await api.put(`/invoice/update/${invoiceId}`, sendData);
+        res = data;
+      } else {
+        let { data } = await api.post("/invoice/create", sendData);
+        res = data;
+      }
+
+      toast.success(res?.message);
       reset();
       setCreateInvoice(false);
+      setUpdateInvoice(false);
     } catch (err) {
       console.log(err);
       toast.error(err?.response?.data?.errors || "Something went wrong");
