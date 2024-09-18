@@ -11,6 +11,23 @@ export const useRefetch = (paginationUrl, refetch) => {
     }
   }, [paginationUrl]);
 };
+
+export const useInvoiceRefetch = (paginationUrl, isFetching, refetch) => {
+  useEffect(() => {
+    const refetchHandler = async () => {
+      await refetch();
+    };
+
+    if (paginationUrl) {
+      refetchHandler();
+    }
+
+    if (isFetching) {
+      refetchHandler();
+    }
+  }, [paginationUrl, isFetching]);
+};
+
 export const useUpdateDefaultValue = (update, client, setValue) => {
   useEffect(() => {
     if (update && client) {
@@ -82,6 +99,8 @@ export const useUpdateDefaultProjectValue = (
   update,
   client,
   setValue,
+  setStartDate,
+  setEndDate,
   type
 ) => {
   useEffect(() => {
@@ -104,6 +123,8 @@ export const useUpdateDefaultProjectValue = (
       setValue("title", title);
       setValue("budget", budget);
       setValue("description", description);
+      setStartDate(start_date);
+      setEndDate(due_date);
     }
   }, [update, client]);
 };
@@ -114,6 +135,8 @@ export const useUpdateDefaultInvoiceValue = (
   setValue,
   setInvoiceItems,
   setNoteText,
+  setInvoiceDate,
+  setDueDate,
   type
 ) => {
   useEffect(() => {
@@ -148,7 +171,7 @@ export const useUpdateDefaultInvoiceValue = (
       const updateInvoice = invoice_items.map((data) => {
         return {
           itemDetails: data.details,
-          invoice_id: data.invoice_id,
+          invoice_id: data.id,
           quantity: data.quantity,
           rate: data.unit_price,
           discount: data.discount_value,
@@ -168,6 +191,8 @@ export const useUpdateDefaultInvoiceValue = (
       setValue("caddress", billing_address);
       setValue("cphone", billing_phone_number);
       setValue("cemail", billing_email);
+      setInvoiceDate(new Date(date));
+      setDueDate(new Date(due_date));
     }
   }, [update, client]);
 };

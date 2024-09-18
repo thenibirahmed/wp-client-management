@@ -53,6 +53,7 @@ const ClientDetails = () => {
           <AddNewInvoice
             clientId={clientId}
             update={updateInvoice ? updateInvoice : false}
+            type="client"
           />
         </React.Fragment>
       ) : (

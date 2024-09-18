@@ -33,11 +33,6 @@ const ClientProject = ({ clientId }) => {
 
   useRefetch(paginationUrl, refetch);
 
-  function onError(err) {
-    console.log(err);
-    toast.error(err?.response?.data?.message || "Failed To Fetch Project Task");
-  }
-
   const handler = () => {
     setOpenProjectModal(true);
   };
@@ -50,6 +45,11 @@ const ClientProject = ({ clientId }) => {
   };
 
   if (isLoading) return <Skeleton />;
+
+  function onError(err) {
+    console.log(err);
+    toast.error(err?.response?.data?.message || "Failed To Fetch Project Task");
+  }
 
   if (error) {
     console.log("project task error", error?.response?.data?.errors);

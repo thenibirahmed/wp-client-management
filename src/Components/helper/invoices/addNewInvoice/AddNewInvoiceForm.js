@@ -32,10 +32,16 @@ const AddNewInvoiceForm = ({
   clientId,
   setInvoiceItems,
   setNoteText,
+  type,
 }) => {
-  const { setCreateInvoice, setUpdateInvoice, invoiceId, updateInvoice } =
-    useStoreContext();
-  console.log("current invoice", invoiceItem);
+  const {
+    setCreateInvoice,
+    setUpdateInvoice,
+    invoiceId,
+    updateInvoice,
+    isFetching,
+    setIsFetching,
+  } = useStoreContext();
 
   const invoice_items = invoiceItem?.map((item) => ({
     details: item.itemDetails,
@@ -107,20 +113,6 @@ const AddNewInvoiceForm = ({
   const { isLoading: isLoadingEmpDetails, data: emplyoee } =
     useFetchEmployeeDetails(selectEmplyoee?.id, onEmployeeError);
 
-  console.log("selected emp", selectEmplyoee?.id);
-
-  function onClientErr(err) {
-    toast.error(
-      err?.response?.data?.errors || "Failed to fetch client address"
-    );
-  }
-
-  function onEmployeeError(err) {
-    toast.error(
-      err?.response?.data?.errors || "Failed to fetch employee address"
-    );
-  }
-
   const {
     register,
     handleSubmit,
@@ -137,6 +129,8 @@ const AddNewInvoiceForm = ({
     setValue,
     setInvoiceItems,
     setNoteText,
+    setInvoiceDate,
+    setDueDate,
     "client"
   );
 
@@ -185,7 +179,7 @@ const AddNewInvoiceForm = ({
         sendData.client_id = clientId;
       }
     }
-
+    setIsFetching(true);
     try {
       let res;
       if (update) {
@@ -195,16 +189,17 @@ const AddNewInvoiceForm = ({
         let { data } = await api.post("/invoice/create", sendData);
         res = data;
       }
-
-      toast.success(res?.message);
+      toast.success(res?.message || "Operation Success");
       reset();
+
       setCreateInvoice(false);
       setUpdateInvoice(false);
     } catch (err) {
       console.log(err);
-      toast.error(err?.response?.data?.errors || "Something went wrong");
+      toast.error("Something went wrong");
     } finally {
       setSubmitLoader(false);
+      setIsFetching(false);
     }
   };
 
@@ -223,8 +218,6 @@ const AddNewInvoiceForm = ({
       setValue("phone", "01275757");
     }
   }, [emplyoee]);
-
-  console.log("here is invoice", clientInvoice);
 
   useEffect(() => {
     if (projectsLists?.projects?.length > 0) {
@@ -304,7 +297,18 @@ const AddNewInvoiceForm = ({
     update,
     clientInvoice,
   ]);
-  console.log("clientinvoicesss", clientInvoice);
+
+  function onClientErr(err) {
+    toast.error(
+      err?.response?.data?.errors || "Failed to fetch client address"
+    );
+  }
+
+  function onEmployeeError(err) {
+    toast.error(
+      err?.response?.data?.errors || "Failed to fetch employee address"
+    );
+  }
 
   function onError(err) {
     toast.error(err?.response?.data?.message || "Internal Server Error");
@@ -320,7 +324,14 @@ const AddNewInvoiceForm = ({
   if (isLoading || invoiceLoader) {
     return <Skeleton />;
   }
-  if (pManagerErr || selectProjectErr || selecturrencyErr || paymentErr)
+  if (
+    pManagerErr ||
+    selectProjectErr ||
+    selecturrencyErr ||
+    paymentErr ||
+    er ||
+    projectClientErr
+  )
     return <Errors message="Internal Server Error" />;
   return (
     <form onSubmit={handleSubmit(addNewInvoiceHandler)}>

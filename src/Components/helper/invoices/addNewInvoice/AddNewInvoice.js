@@ -4,7 +4,7 @@ import AddNewInvoiceForm from "./AddNewInvoiceForm";
 import InvoiceItemTable from "./InvoiceItemTable";
 import AddInvoiceNote from "./AddInvoiceNote";
 
-const AddNewInvoice = ({ update = false, clientId = null }) => {
+const AddNewInvoice = ({ update = false, clientId = null, type }) => {
   const [invoiceItem, setInvoiceItems] = useState([]);
 
   const [noteText, setNoteText] = useState("");
@@ -18,6 +18,7 @@ const AddNewInvoice = ({ update = false, clientId = null }) => {
         clientId={clientId}
         setInvoiceItems={setInvoiceItems}
         setNoteText={setNoteText}
+        type={type}
       />
       <InvoiceItemTable
         invoiceItem={invoiceItem}

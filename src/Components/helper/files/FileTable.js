@@ -119,7 +119,7 @@ const FileTable = ({
                           />
                           <div>
                             <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                              {item.created_by}
+                              {item.author}
                             </h3>
                           </div>
                         </div>

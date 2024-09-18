@@ -40,6 +40,8 @@ export const renderComponent = (path, activeUrl, paginationUrl) => {
 
     case "invoices":
       return <Invoices />;
+    case `invoices/?${paginationUrl}`:
+      return <Invoices />;
     case "schedules":
       return <Schedules />;
     case "report/#/client-report":

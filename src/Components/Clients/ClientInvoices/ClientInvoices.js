@@ -6,12 +6,12 @@ import { Invoice01Icon } from "../../../utils/icons";
 import InvoiceTable from "../../helper/invoices/InvoiceTable";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import { useFetchProjectInvoice } from "../../../hooks/useQuery";
-import { useRefetch } from "../../../hooks/useRefetch";
+import { useInvoiceRefetch, useRefetch } from "../../../hooks/useRefetch";
 import Errors from "../../Errors";
 import useHashRouting from "../../../utils/useHashRouting";
 
 const ClientInvoices = ({ clientId }) => {
-  const { setCreateInvoice, updateInvoice, setUpdateInvoice } =
+  const { setCreateInvoice, updateInvoice, setUpdateInvoice, isFetching } =
     useStoreContext();
 
   const [selectedInvoices, setSelectedInvoices] = useState([]);
@@ -28,9 +28,7 @@ const ClientInvoices = ({ clientId }) => {
     refetch,
   } = useFetchProjectInvoice(clientId, paginationUrl, "client", onError);
 
-  useRefetch(paginationUrl, refetch);
-
-  const dataList = [1];
+  useInvoiceRefetch(paginationUrl, isFetching, refetch);
 
   const handler = () => {
     setCreateInvoice(true);
@@ -85,6 +83,7 @@ const ClientInvoices = ({ clientId }) => {
                 isAllselected={isAllselected}
                 setIsAllSelected={setIsAllSelected}
                 isClient
+                slug="clients"
               />
             </>
           )}

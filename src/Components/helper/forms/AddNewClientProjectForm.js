@@ -85,7 +85,14 @@ const AddNewClientProjectForm = ({
   });
 
   //set default value for updating the project
-  useUpdateDefaultProjectValue(update, clientProjects, setValue, "client");
+  useUpdateDefaultProjectValue(
+    update,
+    clientProjects,
+    setValue,
+    setStartDate,
+    setEndDate,
+    "client"
+  );
 
   const addNewClientProjectHandler = async (data) => {
     if (!selectProjectManager?.id || !selectStatus?.id || !selectPriority?.id) {

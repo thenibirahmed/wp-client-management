@@ -218,7 +218,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
           />
         </div>
         <div className="flex md:flex-row items-end flex-col gap-4 w-full">
-          <div className=" md:min-w-96 md:max-w-96 w-full ">
+          <div className=" flex-1 ">
             <MultiSelectTextField
               label="Assignee"
               select={selectedAssignees}
@@ -227,7 +227,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
               isSubmitting={isSubmitting}
             />
           </div>
-          <div className="md:flex-1 w-full">
+          <div className="flex-1">
             <SelectTextField
               label="Currency"
               select={selectCurrency}
