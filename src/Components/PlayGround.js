@@ -68,9 +68,9 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/invoice/create",
-				{
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/invoice/6/edit",
+				// {
 				// title: 'update update',
 				// client_id: 4,
 				// subject: 'no subject',
@@ -107,12 +107,13 @@ const PlayGround = () => {
 				// 	title: 'Updated',
 				// 	date: '2024-09-15',
 				// 	due_date: '2024-09-30',
+				// 	bill_from_id: 1,
 				// 	bill_from_address: 'Update, Cityville',
 				// 	bill_from_phone_number: '+1234567890',
 				// 	bill_from_email: 'billing@update.com',
 				// 	invoice_items: [
 				// 	  {
-				// 		id: 1,
+				// 		// id: 1,
 				// 		details: 'Update',
 				// 		description: 'Updated Design Service',
 				// 		quantity: 2,
@@ -136,6 +137,7 @@ const PlayGround = () => {
 				// 		tax_value: 5
 				// 	  },
 				// 	],
+				// 	bill_to_id: 10,
 				// 	billing_address: 'Update, Townsville',
 				// 	billing_phone_number: '+9876543210',
 				// 	billing_email: 'client@update.com',
@@ -145,7 +147,7 @@ const PlayGround = () => {
 				// 	discount: 0,
 				// 	tax: 0,
 				// 	fee: 0
-				},
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
