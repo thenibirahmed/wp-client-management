@@ -24,9 +24,11 @@ class Invoice extends Model
         'due_date',
         'items',
         'note',
+        'bill_to_id',
         'billing_address',
         'billing_phone_number',
         'billing_email',
+        'bill_from_id',
         'bill_from_address',
         'bill_from_phone_number',
         'bill_from_email',
@@ -104,6 +106,16 @@ class Invoice extends Model
     public function invoice_items()
     {
         return $this->hasMany(InvoiceItem::class);
+    }
+
+    public function bill_to()
+    {
+        return $this->belongsTo(Client::class, 'bill_to_id');
+    }
+
+    public function bill_from()
+    {
+        return $this->belongsTo(EicCrmUser::class, 'bill_from_id');
     }
 
 }

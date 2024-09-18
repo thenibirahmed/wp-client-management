@@ -68,9 +68,9 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/invoice/15/edit",
-				// {
+		axios.post(
+				eicApiSettings.rest_url + "wp-client-management/v1/invoice/create",
+				{
 				// title: 'update update',
 				// client_id: 4,
 				// subject: 'no subject',
@@ -145,7 +145,7 @@ const PlayGround = () => {
 				// 	discount: 0,
 				// 	tax: 0,
 				// 	fee: 0
-				// },
+				},
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
