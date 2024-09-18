@@ -161,6 +161,8 @@ const AddNewInvoiceForm = ({
       bill_from_address: emplyoee?.employeeDetails?.address,
       bill_from_phone_number: "45424",
       bill_from_email: emplyoee?.employeeDetails?.email,
+      bill_from_id: selectEmplyoee?.id,
+      bill_to_id: selectClient?.id,
       note: noteText,
       sub_total: subtotal,
       total: finalAmount,
@@ -246,13 +248,27 @@ const AddNewInvoiceForm = ({
     }
 
     if (clientLists?.clients?.length > 0) {
-      setSelectClient(clientLists?.clients[0]);
+      if (!update) {
+        setSelectClient(clientLists?.clients[0]);
+      } else if (update && clientInvoice) {
+        const clientList = clientLists?.clients.find(
+          (item) => item.id === clientInvoice?.bill_to_id
+        );
+        setSelectClient(clientList);
+      }
     } else {
       setSelectClient({ name: " -No Client- ", id: null });
     }
 
     if (employeeLists?.employee?.length > 0) {
-      setSelectEmployee(employeeLists?.employee[0]);
+      if (!update) {
+        setSelectEmployee(employeeLists?.employee[0]);
+      } else if (update && clientInvoice) {
+        const employeeList = employeeLists?.employee.find(
+          (item) => item.id === clientInvoice?.bill_from_id
+        );
+        setSelectEmployee(employeeList);
+      }
     } else {
       setSelectEmployee({
         name: " -No Employee- ",
@@ -269,6 +285,7 @@ const AddNewInvoiceForm = ({
     update,
     clientInvoice,
   ]);
+  console.log("clientinvoicesss", clientInvoice);
 
   function onError(err) {
     toast.error(err?.response?.data?.message || "Internal Server Error");
@@ -281,7 +298,7 @@ const AddNewInvoiceForm = ({
     isLoadingPayMethod ||
     isLoadingProClient;
 
-  if (isLoading) {
+  if (isLoading || invoiceLoader) {
     return <Skeleton />;
   }
   if (pManagerErr || selectProjectErr || selecturrencyErr || paymentErr)

@@ -173,6 +173,8 @@ export const useFetchInvoiceEditDetails = (id, update, onError) => {
     {
       select: (data) => {
         const {
+          bill_from_id,
+          bill_to_id,
           id,
           client_id,
           project_id,
@@ -224,6 +226,8 @@ export const useFetchInvoiceEditDetails = (id, update, onError) => {
           tax,
           fee,
           invoice_items,
+          bill_from_id,
+          bill_to_id,
         };
       },
       enabled: !!id && update,
