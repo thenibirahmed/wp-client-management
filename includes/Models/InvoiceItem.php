@@ -17,7 +17,14 @@ class InvoiceItem extends Model
         'tax_type',
         'tax_value',
         'line_total'
-    ];  
+    ];
+
+    protected $casts = [
+        'unit_price'     => 'float',
+        'discount_value' => 'float',
+        'tax_value'      => 'float',
+        'line_total'     => 'float',
+    ];
 
     public function invoice()
     {
