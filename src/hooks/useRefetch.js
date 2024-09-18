@@ -61,13 +61,15 @@ export const useUpdateDefaultNoteValue = (
   update,
   client,
   type,
-  setSelectedId
+  setSelectedId,
+  setEditorContent
 ) => {
   useEffect(() => {
     if (update && client) {
-      const { client_id, project_id } = client;
+      const { client_id, project_id, note } = client;
 
       if (type === "client") {
+        setEditorContent(note);
         setSelectedId(client_id);
       } else {
         setSelectedId(project_id);

@@ -39,7 +39,8 @@ class EditNote {
         $noteResponse = [
             'id'         => $note->id,
             'project_id' => $note->project_id,
-            'client_id'  => $note->client_id
+            'client_id'  => $note->client_id,
+            'note'       => $note->note,
         ];
 
         return new \WP_REST_Response([

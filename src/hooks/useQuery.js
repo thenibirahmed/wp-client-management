@@ -154,9 +154,9 @@ export const useFetchNoteEditDetails = (id, update, onError) => {
     },
     {
       select: (data) => {
-        const { id, client_id, project_id } = data.data.note;
+        const { id, client_id, project_id, note } = data.data.note;
 
-        return { id, client_id, project_id };
+        return { id, client_id, project_id, note };
       },
       enabled: !!id && update,
       onError,

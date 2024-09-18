@@ -17,6 +17,7 @@ import {
   useUpdateDefaultFileValue,
   useUpdateDefaultNoteValue,
 } from "../../../hooks/useRefetch";
+import Skeleton from "../../Skeleton";
 
 const AddNewNote = ({
   noteData,
@@ -72,9 +73,15 @@ const AddNewNoteTextArea = ({ refetch, setOpen, projectId, type, update }) => {
     isLoading,
     data: client,
     error,
-  } = useFetchNoteEditDetails(projectId, update, onError);
+  } = useFetchNoteEditDetails(noteId, update, onError);
 
-  useUpdateDefaultNoteValue(update, client, type, setSelectedId);
+  useUpdateDefaultNoteValue(
+    update,
+    client,
+    type,
+    setSelectedId,
+    setEditorContent
+  );
 
   function onError(err) {
     console.log(err);
@@ -179,6 +186,8 @@ const AddNewNoteTextArea = ({ refetch, setOpen, projectId, type, update }) => {
     quill.clipboard.dangerouslyPasteHTML(range.index, html);
   };
 
+  if (isLoading) return <Skeleton />;
+
   return (
     <form onSubmit={onSubmitHandler}>
       <ReactQuill
@@ -210,7 +219,11 @@ const AddNewNoteTextArea = ({ refetch, setOpen, projectId, type, update }) => {
             type="submit"
             className="font-metropolis rounded-[5px] bg-customBlue text-white py-[10px] px-[12px] text-xs font-medium"
           >
-            {submitLoader ? <Loaders /> : "Save Note"}
+            {submitLoader ? (
+              <Loaders />
+            ) : (
+              <> {update ? "Update Note" : "Save Note"}</>
+            )}
           </button>
         </div>
       </div>
