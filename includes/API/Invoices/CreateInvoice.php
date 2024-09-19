@@ -129,6 +129,10 @@ class CreateInvoice {
             $data['client_id'] = Project::where('id', $data['project_id'])->pluck('client_id')->first();
         }
 
+        if(isset($data['project_id']) && !isset($data['currency_id'])) {
+            $data['currency_id'] = Project::where('id', $data['project_id'])->pluck('currency_id')->first();
+        }
+
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
         if ($validator->fails()) {
