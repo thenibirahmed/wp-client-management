@@ -184,24 +184,18 @@ const PlayGround = () => {
 // ***
 
 	const getTestData = () => {
-		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/add-comment",
-				{
-				// 	// project_id: 1,
-				// 	// title: 'no tittle',
-				// 	// url: 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.jpg'
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/task/6/edit",
+				// {
 				// 	project_id: 1,
 				// 	assigned_to: 1,
-				// 	title: 'ekdom thik ache',
+				// 	title: 'only error.',
  				// 	start_date: '2024-09-15',
 				// 	end_date: '2024-09-30',
 				// 	status_id: 8,
 				// 	priority_id: 12,
-				// 	description: 'noting to loose,'
-				task_id: 6,
-				// reply_to: 17,
-				comment: 'here a another one.'
-				},
+				// 	description: 'never give up,'
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,

@@ -99,6 +99,7 @@ use WpClientManagement\API\Statuses\UpdateStatus;
 use WpClientManagement\API\TaskComments\AddTaskComment;
 use WpClientManagement\API\Tasks\CreateTask;
 use WpClientManagement\API\Tasks\DeleteTask;
+use WpClientManagement\API\Tasks\EditTask;
 use WpClientManagement\API\Tasks\GetSingleTask;
 use WpClientManagement\API\Tasks\GetTasks;
 use WpClientManagement\API\Tasks\UpdateTask;
@@ -258,6 +259,7 @@ class API {
         new DeleteTask();
         new CreateTask();
         new UpdateTask();
+        new EditTask();
 
         // TaskComment
         new AddTaskComment();
