@@ -132,6 +132,8 @@ const AddNewInvoiceForm = ({
     setNoteText,
     setInvoiceDate,
     setDueDate,
+    clientInvoice?.bill_from_id == selectEmplyoee?.id,
+    clientInvoice?.bill_to_id == selectClient?.id,
     "client"
   );
 
@@ -144,6 +146,10 @@ const AddNewInvoiceForm = ({
     ) {
       return setError("This field is required*");
     }
+
+    if (invoice_items?.length === 0)
+      return toast.error("At least one items is required");
+
     setSubmitLoader(true);
 
     const sendData = {
@@ -205,26 +211,50 @@ const AddNewInvoiceForm = ({
   };
 
   useEffect(() => {
-    if (
-      client?.clientDetails &&
-      clientInvoice?.bill_to_id !== selectClient?.id
-    ) {
+    if (client?.clientDetails && !update) {
       setValue("cemail", client?.clientDetails?.email);
       setValue("caddress", client?.clientDetails?.address);
       setValue("cphone", client?.clientDetails?.phone);
     }
-  }, [client, clientInvoice]);
+
+    if (
+      client?.clientDetails &&
+      clientInvoice?.bill_to_id != selectClient?.id &&
+      update
+    ) {
+      console.log("client details should update");
+      console.log("client email", client?.clientDetails?.email);
+      console.log("client address", client?.clientDetails?.address);
+      console.log("client phone", client?.clientDetails?.phone);
+
+      setValue("cemail", client?.clientDetails?.email);
+      setValue("caddress", client?.clientDetails?.address);
+      setValue("cphone", client?.clientDetails?.phone);
+    }
+  }, [client, clientInvoice, update, selectClient]);
 
   useEffect(() => {
-    if (
-      emplyoee?.employeeDetails &&
-      clientInvoice?.bill_from_id !== selectEmplyoee?.id
-    ) {
+    if (emplyoee?.employeeDetails && !update) {
       setValue("email", emplyoee?.employeeDetails?.email);
       setValue("address", emplyoee?.employeeDetails?.address);
       setValue("phone", emplyoee?.employeeDetails?.phone);
     }
-  }, [emplyoee, clientInvoice]);
+
+    if (
+      emplyoee?.employeeDetails &&
+      clientInvoice?.bill_from_id != selectEmplyoee?.id &&
+      update
+    ) {
+      console.log("emaployee details should update");
+      console.log("emaployee email", emplyoee?.employeeDetails?.email);
+      console.log("emaployee address", emplyoee?.employeeDetails?.address);
+      console.log("emaployee phone", emplyoee?.employeeDetails?.phone);
+
+      setValue("email", emplyoee?.employeeDetails?.email);
+      setValue("address", emplyoee?.employeeDetails?.address);
+      setValue("phone", emplyoee?.employeeDetails?.phone);
+    }
+  }, [emplyoee, clientInvoice, update, selectEmplyoee]);
 
   useEffect(() => {
     if (projectsLists?.projects?.length > 0) {
@@ -500,7 +530,7 @@ const AddNewInvoiceForm = ({
                     isSubmitting={isSubmitting}
                   />
                   <TextField
-                    label="Client Billing Address"
+                    label="Employee Billing Address"
                     id="address"
                     type="text"
                     message="This field is required*"

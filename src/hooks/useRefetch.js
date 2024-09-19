@@ -137,6 +137,8 @@ export const useUpdateDefaultInvoiceValue = (
   setNoteText,
   setInvoiceDate,
   setDueDate,
+  employeematch,
+  clientMatch,
   type
 ) => {
   useEffect(() => {
@@ -185,14 +187,21 @@ export const useUpdateDefaultInvoiceValue = (
       setInvoiceItems(updateInvoice);
       setValue("invoicenumber", code);
       setValue("title", title);
-      setValue("address", bill_from_address);
-      setValue("phone", bill_from_phone_number);
-      setValue("email", bill_from_email);
-      setValue("caddress", billing_address);
-      setValue("cphone", billing_phone_number);
-      setValue("cemail", billing_email);
+
+      if (clientMatch) {
+        setValue("caddress", billing_address);
+        setValue("cphone", billing_phone_number);
+        setValue("cemail", billing_email);
+      }
+
+      if (employeematch) {
+        setValue("address", bill_from_address);
+        setValue("phone", bill_from_phone_number);
+        setValue("email", bill_from_email);
+      }
+
       setInvoiceDate(new Date(date));
       setDueDate(new Date(due_date));
     }
-  }, [update, client]);
+  }, [update, client, employeematch, clientMatch]);
 };
