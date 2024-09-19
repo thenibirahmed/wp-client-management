@@ -184,13 +184,24 @@ const PlayGround = () => {
 // ***
 
 	const getTestData = () => {
-		axios.put(
-				eicApiSettings.rest_url + "wp-client-management/v1/file/update/1",
-				{
-					project_id: 1,
-					title: 'no tittle',
-					url: 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.jpg'
-				},
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/employee/1/details",
+				// {
+				// 	// project_id: 1,
+				// 	// title: 'no tittle',
+				// 	// url: 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.jpg'
+				// 	project_id: 1,
+				// 	assigned_to: 1,
+				// 	title: 'ekdom thik ache',
+ 				// 	start_date: '2024-09-15',
+				// 	end_date: '2024-09-30',
+				// 	status_id: 8,
+				// 	priority_id: 12,
+				// 	description: 'noting to loose,'
+				// task_id: 6,
+				// reply_to: 17,
+				// comment: 'very good.'
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,

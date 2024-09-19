@@ -53,7 +53,7 @@ class CreateEmail{
         $data['body']            = $data['body'];
 
         if(!isset($data['client_id']) && isset($data['project_id'])) {
-            $data['client_id'] = Project::find($data['project_id'])->client_id;
+            $data['client_id'] = Project::find($data['project_id'])->pluck('client_id')->first();
         }
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);

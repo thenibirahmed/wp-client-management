@@ -49,6 +49,7 @@ class GetSelectedEmployeeDetails{
             'employee_details' => [
                 'id'      => $employee->id,
                 'address' => $employee->address,
+                'phone'   => $employee->phone,
                 'name'    => $wp_user->user_login,
                 'email'   => $wp_user->user_email
             ]
