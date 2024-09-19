@@ -184,18 +184,17 @@ const PlayGround = () => {
 // ***
 
 	const getTestData = () => {
-		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/task/6/edit",
-				// {
-				// 	project_id: 1,
-				// 	assigned_to: 1,
-				// 	title: 'only error.',
- 				// 	start_date: '2024-09-15',
-				// 	end_date: '2024-09-30',
-				// 	status_id: 8,
-				// 	priority_id: 12,
-				// 	description: 'never give up,'
-				// },
+		axios.put(
+				eicApiSettings.rest_url + "wp-client-management/v1/task/update/6",
+				{
+					assigned_to: 1,
+					title: 'Error solved.',
+ 					start_date: '2024-09-15',
+					end_date: '2024-09-30',
+					status_id: 8,
+					priority_id: 12,
+					description: 'Remeber the pain,'
+				},
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,

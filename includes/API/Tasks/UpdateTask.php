@@ -2,7 +2,6 @@
 
 namespace WpClientManagement\API\Tasks;
 
-use WpClientManagement\Models\Status;
 use WpClientManagement\Models\Task;
 
 class UpdateTask {
@@ -13,7 +12,6 @@ class UpdateTask {
 
     protected array $rules = [
         'assigned_to'    => 'nullable|exists:eic_eic_crm_users,id',
-        'project_id'     => 'required|exists:eic_projects,id',
         'title'          => 'required|string',
         'start_date'     => 'nullable|date',
         'end_date'       => 'nullable|date',
@@ -24,8 +22,6 @@ class UpdateTask {
 
     protected array $validationMessages = [
         'assigned_to.exists'        => 'The assigned user does not exist.',
-        'project_id.required'       => 'The project field is required.',
-        'project_id.exists'         => 'The selected project does not exist.',
         'title.required'            => 'The title field is required.',
         'title.string'              => 'The title must be a valid string.',
         'start_date.date'           => 'The start date must be a valid date.',
@@ -50,7 +46,6 @@ class UpdateTask {
         $data = $request->get_params();
 
         $data['assigned_to']     = isset($data['assigned_to']) ? intval($data['assigned_to']) : null;
-        $data['project_id']      = isset($data['project_id']) ? intval($data['project_id']) : null;
         $data['status_id']       = isset($data['status_id']) ? intval($data['status_id']) : null;
         $data['priority_id']     = isset($data['priority_id']) ? intval($data['priority_id']) : null;
         $data['title']           = isset($data['title']) ? sanitize_text_field($data['title']) : '';
@@ -75,7 +70,6 @@ class UpdateTask {
         }
 
         $task->update([
-            'project_id'   => $data['project_id'],
             'assigned_to'  => $data['assigned_to'],
             'title'        => $data['title'],
             'start_date'   => $data['start_date'],

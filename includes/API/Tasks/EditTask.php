@@ -37,15 +37,14 @@ class EditTask {
         }
 
         $taskResponse = [
-            'id'         => $task->id,
-            'project_id' => $task->project_id,
-            'assigned_to'=> $task->assigned_to,
-            'title'  => $task->title,
-            'start_date' => $task->start_date,
-            'end_date' => $task->end_date,
-            'status_id' => $task->status_id,
-            'priority_id' => $task->priority_id,
-            'description'       => $task->description,
+            'id'            => $task->id,
+            'assigned_to'   => $task->assigned_to,
+            'title'         => $task->title,
+            'start_date'    => $task->start_date,
+            'end_date'      => $task->end_date,
+            'status_id'     => $task->status_id,
+            'priority_id'   => $task->priority_id,
+            'description'   => $task->description,
         ];
 
         return new \WP_REST_Response([
