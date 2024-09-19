@@ -53,11 +53,19 @@ const PlayGround = () => {
   };
   const createClient = () => {
     axios
-      .post(eicApiSettings.rest_url + "wp-client-management/v1/client/create", {
-        headers: {
-          "X-WP-Nonce": eicApiSettings.nonce,
+      .post(
+        eicApiSettings.rest_url + "wp-client-management/v1/add-comment",
+        {
+          task_id: 1,
+          reply_to: null,
+          comment: "Great",
         },
-      })
+        {
+          headers: {
+            "X-WP-Nonce": eicApiSettings.nonce,
+          },
+        }
+      )
       .then((response) => {
         console.log(response.data);
       })
@@ -190,6 +198,7 @@ const PlayGround = () => {
       <br /> <button onClick={emplyee}>Emplyee</button>
       <br />
       <br /> <button onClick={overview}>overview</button>
+      <br /> <button onClick={createClient}>Create Coment</button>
       <br />
     </div>
   );

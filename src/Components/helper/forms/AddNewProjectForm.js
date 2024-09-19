@@ -12,6 +12,7 @@ import {
   useFetchStatus,
   useFetchAssignee,
   useFetchSelectCurrency,
+  useFetchProjectEditDetails,
 } from "../../../hooks/useQuery";
 import Skeleton from "../../Skeleton";
 import api from "../../../api/api";
@@ -20,12 +21,13 @@ import toast from "react-hot-toast";
 import Loaders from "../../Loaders";
 import Errors from "../../Errors";
 import { MultiSelectTextField } from "../MultiSelectTextField";
+import { useUpdateDefaultProjectValue } from "../../../hooks/useRefetch";
 
-const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
+const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
   const imageRef = useRef();
-  const { setOpenProjectModal } = useStoreContext();
+  const { setOpenProjectModal, setOpenProjectUpdateModal } = useStoreContext();
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -34,9 +36,16 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
   const [selectStatus, setSelectStatus] = useState();
   const [selectPriority, setSelectPriority] = useState();
   const [selectProjectManager, setSelectProjectManager] = useState();
+  const [assigneeLists, setAssigneeLists] = useState();
   const [selectedAssignees, setSelectedAssignees] = useState([]);
   const [allIds, setAllIds] = useState([]);
   const [submitLoader, setSubmitLoader] = useState(false);
+
+  const {
+    isLoading: loader,
+    data: clientProjects,
+    error,
+  } = useFetchProjectEditDetails(projectId, update, "project", onError);
 
   //calling react-query Parallely for fetching data
   const {
@@ -74,10 +83,21 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
     handleSubmit,
     reset,
     setError,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched",
   });
+
+  //set default value for updating the project
+  useUpdateDefaultProjectValue(
+    update,
+    clientProjects,
+    setValue,
+    setStartDate,
+    setEndDate,
+    "project"
+  );
 
   useEffect(() => {
     setAllIds(selectedAssignees.map((item) => item.id));
@@ -103,6 +123,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
       status_id: selectStatus?.id,
       priority_id: selectPriority?.id,
       budget: 450.2,
+      assignee_ids: allIds,
       currency_id: selectCurrency?.id,
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
       due_date: dayjs(endDate).format("YYYY-MM-DD"),
@@ -110,11 +131,20 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
     };
 
     try {
-      const { data } = await api.post("/project/create", sendData);
-      toast.success(data?.message);
+      let res;
+      if (update) {
+        let { data } = await api.put(`/project/update/${projectId}`, sendData);
+        res = data;
+      } else {
+        let { data } = await api.post("/project/create", sendData);
+        res = data;
+      }
+
+      toast.success(res?.message || "operation success");
       await refetch();
       reset();
       setOpen(false);
+      setOpenProjectUpdateModal(false);
     } catch (err) {
       console.log(err);
       toast.error("Something went wrong");
@@ -129,39 +159,91 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
 
   useEffect(() => {
     if (clients?.clients.length > 0) {
-      setSelectClient(clients?.clients[0]);
+      if (!update) {
+        setSelectClient(clients?.clients[0]);
+      } else {
+        const clientLists = clients?.clients?.find(
+          (item) => item.id === clientProjects?.client_id
+        );
+        setSelectClient(clientLists);
+      }
     } else {
       setSelectClient({ name: " -No Client- ", id: null });
     }
+
     if (managers?.employee.length > 0) {
-      setSelectProjectManager(managers?.employee[0]);
+      if (!update) {
+        setAssigneeLists(managers?.employee);
+        setSelectProjectManager(managers?.employee[0]);
+      } else if (update && clientProjects) {
+        const managerLists = managers?.employee.find(
+          (item) => item.id === clientProjects?.manager_id
+        );
+        const assigneeLists = managers?.employee.filter((item) =>
+          clientProjects?.assignee_ids?.includes(item.id)
+        );
+        setSelectedAssignees(assigneeLists);
+        setAllIds(assigneeLists.map((item) => item.id));
+        setAssigneeLists(managers?.employee);
+        setSelectProjectManager(managerLists);
+      }
     } else {
       setSelectProjectManager({ name: " -No Project Manager- ", id: null });
     }
+
     if (priorities?.priorities.length > 0) {
-      setSelectPriority(priorities?.priorities[0]);
+      if (!update) {
+        setSelectPriority(priorities?.priorities[0]);
+      } else if (update && clientProjects) {
+        const priorityLists = priorities?.priorities.find(
+          (item) => item.id === clientProjects?.priority_id
+        );
+        setSelectPriority(priorityLists);
+      }
     } else {
       setSelectPriority({ name: " -No Priority- ", id: null });
     }
     if (statuses?.statuses.length > 0) {
-      setSelectStatus(statuses?.statuses[0]);
+      if (!update) {
+        setSelectStatus(statuses?.statuses[0]);
+      } else if (update && clientProjects) {
+        const statusLists = statuses?.statuses.find(
+          (item) => item.id === clientProjects?.status_id
+        );
+        setSelectStatus(statusLists);
+      }
     } else {
       setSelectStatus({ name: " -No Status- ", id: null });
     }
-
     if (currencyLists?.currency.length > 0) {
-      setSelectCurrency(currencyLists?.currency[0]);
+      if (!update) {
+        setSelectCurrency(currencyLists?.currency[0]);
+      } else if (update && clientProjects) {
+        const currencyitems = currencyLists?.currency.find(
+          (item) => item.id === clientProjects?.currency_id
+        );
+        setSelectCurrency(currencyitems);
+      }
     } else {
       setSelectCurrency({ name: " -No Currency- ", id: null });
     }
-  }, [clients, managers, priorities, statuses, currencyLists]);
+  }, [
+    clients,
+    managers,
+    priorities,
+    statuses,
+    currencyLists,
+    update,
+    clientProjects,
+  ]);
 
   const isLoading =
     isLoadingClients ||
     isLoadingPriorities ||
     isLoadProjectManager ||
     isLoadingStatus ||
-    isLoadingSelectCurrency;
+    isLoadingSelectCurrency ||
+    loader;
 
   function onError(err) {
     toast.error(err?.response?.data?.message);
@@ -223,7 +305,8 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false }) => {
               label="Assignee"
               select={selectedAssignees}
               setSelect={setSelectedAssignees}
-              lists={managers?.employee}
+              lists={assigneeLists}
+              allIds={allIds}
               isSubmitting={isSubmitting}
             />
           </div>

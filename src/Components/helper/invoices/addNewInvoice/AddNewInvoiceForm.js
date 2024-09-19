@@ -63,6 +63,7 @@ const AddNewInvoiceForm = ({
   const [submitLoader, setSubmitLoader] = useState(false);
 
   const [selectClient, setSelectClient] = useState();
+
   const [selectEmplyoee, setSelectEmployee] = useState();
   const [selectedProject, setSelectedProject] = useState();
   const [selectCurrency, setSelectCurrency] = useState();
@@ -153,12 +154,12 @@ const AddNewInvoiceForm = ({
       currency_id: selectCurrency?.id,
       date: dayjs(invoiceDate).format("YYYY-MM-DD"),
       due_date: dayjs(dueDate).format("YYYY-MM-DD"),
-      billing_address: client?.clientDetails?.address,
-      billing_phone_number: "1452",
-      billing_email: client?.clientDetails?.email,
-      bill_from_address: emplyoee?.employeeDetails?.address,
-      bill_from_phone_number: "45424",
-      bill_from_email: emplyoee?.employeeDetails?.email,
+      billing_address: data?.caddress,
+      billing_phone_number: data?.cphone,
+      billing_email: data?.cemail,
+      bill_from_address: data?.address,
+      bill_from_phone_number: data?.phone,
+      bill_from_email: data?.email,
       bill_from_id: selectEmplyoee?.id,
       bill_to_id: selectClient?.id,
       note: noteText,
@@ -204,20 +205,26 @@ const AddNewInvoiceForm = ({
   };
 
   useEffect(() => {
-    if (client?.clientDetails) {
+    if (
+      client?.clientDetails &&
+      clientInvoice?.bill_to_id !== selectClient?.id
+    ) {
       setValue("cemail", client?.clientDetails?.email);
       setValue("caddress", client?.clientDetails?.address);
-      setValue("cphone", "01275757");
+      setValue("cphone", client?.clientDetails?.phone);
     }
-  }, [client]);
+  }, [client, clientInvoice]);
 
   useEffect(() => {
-    if (emplyoee?.employeeDetails) {
+    if (
+      emplyoee?.employeeDetails &&
+      clientInvoice?.bill_from_id !== selectEmplyoee?.id
+    ) {
       setValue("email", emplyoee?.employeeDetails?.email);
       setValue("address", emplyoee?.employeeDetails?.address);
-      setValue("phone", "01275757");
+      setValue("phone", emplyoee?.employeeDetails?.phone);
     }
-  }, [emplyoee]);
+  }, [emplyoee, clientInvoice]);
 
   useEffect(() => {
     if (projectsLists?.projects?.length > 0) {
@@ -501,7 +508,6 @@ const AddNewInvoiceForm = ({
                     register={register}
                     errors={errors}
                     className="text-textColor"
-                    disabled
                   />
                   <div className="flex md:flex-row flex-col gap-2">
                     <div className="flex-1">
@@ -516,7 +522,6 @@ const AddNewInvoiceForm = ({
                         register={register}
                         errors={errors}
                         className="text-textColor"
-                        disabled
                       />
                     </div>
                     <div className="flex-1">
@@ -531,7 +536,6 @@ const AddNewInvoiceForm = ({
                         register={register}
                         errors={errors}
                         className="text-textColor"
-                        disabled
                       />
                     </div>
                   </div>
@@ -562,7 +566,6 @@ const AddNewInvoiceForm = ({
                     register={register}
                     errors={errors}
                     className="text-textColor"
-                    disabled
                   />
                   <div className="flex md:flex-row flex-col gap-2">
                     <div className="flex-1">
@@ -577,7 +580,6 @@ const AddNewInvoiceForm = ({
                         register={register}
                         errors={errors}
                         className="text-textColor"
-                        disabled
                       />
                     </div>
                     <div className="flex-1">
@@ -592,7 +594,6 @@ const AddNewInvoiceForm = ({
                         register={register}
                         errors={errors}
                         className="text-textColor"
-                        disabled
                       />
                     </div>
                   </div>

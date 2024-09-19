@@ -47,7 +47,7 @@ const AddNewClientProjectForm = ({
     isLoading: loader,
     data: clientProjects,
     error,
-  } = useFetchProjectEditDetails(projectId, update, onError);
+  } = useFetchProjectEditDetails(projectId, update, "client", onError);
 
   const {
     isLoading: isLoadProjectManager,
@@ -161,6 +161,7 @@ const AddNewClientProjectForm = ({
     } else {
       setSelectProjectManager({ name: " -No Project Manager- ", id: null });
     }
+
     if (priorities?.priorities.length > 0) {
       if (!update) {
         setSelectPriority(priorities?.priorities[0]);
@@ -186,6 +187,7 @@ const AddNewClientProjectForm = ({
     } else {
       setSelectStatus({ name: " -No Status- ", id: null });
     }
+
     if (currencyLists?.currency.length > 0) {
       if (!update) {
         setSelectCurrency(currencyLists?.currency[0]);

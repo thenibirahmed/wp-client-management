@@ -51,6 +51,8 @@ const ProjectTable = ({
     setIsAllSelected,
     setSelectedProject
   );
+
+  const [projectId, setProjectId] = useState();
   const { openProjectUpdateModal, setOpenProjectUpdateModal } =
     useStoreContext();
 
@@ -241,6 +243,8 @@ const ProjectTable = ({
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
+
+                              setProjectId(item?.id);
                               setOpenProjectUpdateModal(true);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
@@ -282,6 +286,7 @@ const ProjectTable = ({
           refetch={refetch}
           setOpen={setOpenProjectUpdateModal}
           update
+          projectId={projectId}
         />
       </Modal>
     </div>

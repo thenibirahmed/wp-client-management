@@ -82,9 +82,9 @@ export const useFetchClientEditDetails = (id, update, onError) => {
   );
 };
 
-export const useFetchProjectEditDetails = (id, update, onError) => {
+export const useFetchProjectEditDetails = (id, update, type, onError) => {
   return useQuery(
-    ["client-project-edit-details", id],
+    [`${type}-project-edit-details`, id],
     async () => {
       return await api.get(`/project/${id}/edit`);
     },
