@@ -1,8 +1,10 @@
 <?php
 namespace WpClientManagement\API\Notes;
 
+use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Note;
+use WpClientManagement\Models\Project;
 
 class CreateNote{
 
@@ -44,6 +46,10 @@ class CreateNote{
         $data['client_id']       = isset($data['client_id']) ? intval($data['client_id']) : null;
         $data['project_id']      = isset($data['project_id']) ? intval($data['project_id']) : null;
         $data['note']            = sanitize_textarea_field($data['note'] ?? '');
+
+        if(isset($data['project_id']) && !isset($data['client_id'])) {
+            $data['client_id'] =  Project::where('id', $data['project_id'])->pluck('client_id')->first();
+        }
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
