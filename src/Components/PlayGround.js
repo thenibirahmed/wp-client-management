@@ -184,9 +184,9 @@ const PlayGround = () => {
 // ***
 
 	const getTestData = () => {
-		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/employee/1/details",
-				// {
+		axios.post(
+				eicApiSettings.rest_url + "wp-client-management/v1/add-comment",
+				{
 				// 	// project_id: 1,
 				// 	// title: 'no tittle',
 				// 	// url: 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.jpg'
@@ -198,10 +198,10 @@ const PlayGround = () => {
 				// 	status_id: 8,
 				// 	priority_id: 12,
 				// 	description: 'noting to loose,'
-				// task_id: 6,
+				task_id: 6,
 				// reply_to: 17,
-				// comment: 'very good.'
-				// },
+				comment: 'here a another one.'
+				},
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,

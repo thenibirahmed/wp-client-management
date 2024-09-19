@@ -18,13 +18,15 @@ class AddTaskComment {
     ];
 
     protected array $validationMessages = [
-        'task_id.required'    => 'The task id is required.',
-        'task_id.exists'      => 'The task id does not exists.',
-        'user_id.required'    => 'The user is invalid.',
-        'user_id.exists'      => 'The user id does not exists.',
-        'reply_to.exists'     => 'The reply to id does not exists.',
-        'comment.required'    => 'The comment is required.',
-        'comment.string'      => 'The comment must be a string.',
+        'eic_crm_user_id.required' => 'The EicCrmUser is requird',
+        'eic_crm_user_id.exists'   => 'The EicCrmUser id does not exists.',
+        'task_id.required'         => 'The task id is required.',
+        'task_id.exists'           => 'The task id does not exists.',
+        'user_id.required'         => 'The user is invalid.',
+        'user_id.exists'           => 'The user id does not exists.',
+        'reply_to.exists'          => 'The reply to id does not exists.',
+        'comment.required'         => 'The comment is required.',
+        'comment.string'           => 'The comment must be a string.',
     ];
 
     public function __construct() {
