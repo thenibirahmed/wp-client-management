@@ -89,7 +89,7 @@ class GetProjectTasks {
                 'id'           => $task->id,
                 'title'        => $task->title,
                 'owner'        => $owner_wp_user['name'] ?? '',
-                'due_date'     => $task->due_date ? date('M d, Y', strtotime($task->due_date)) : null,
+                'end_date'     => $task->end_date ? date('M d, Y', strtotime($task->end_date)) : null,
                 'assigned_to'  => $assigned_wp_user['name'] ?? '',
                 'status'       => $task->status->name,
                 'priority'     => $task->priority->name,

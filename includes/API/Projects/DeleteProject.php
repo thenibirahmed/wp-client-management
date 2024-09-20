@@ -51,6 +51,10 @@ class DeleteProject {
             ], 404);
         }
 
+        if($project->eicCrmUsers){
+            $project->eicCrmUsers()->detach();
+        }
+
         $project->delete();
 
         return new \WP_REST_Response([

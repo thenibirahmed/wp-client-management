@@ -127,6 +127,53 @@ export const useFetchProjectEditDetails = (id, update, type, onError) => {
   );
 };
 
+export const useFetchTaskEditDetails = (id, update, type, onError) => {
+  return useQuery(
+    [`project-task-edit-details`, id],
+    async () => {
+      return await api.get(`/task/${id}/edit`);
+    },
+    {
+      select: (data) => {
+        // const {
+        //   id,
+        //   assignee_ids,
+        //   budget,
+        //   client_id,
+        //   currency_id,
+        //   description,
+        //   due_date,
+        //   manager_id,
+        //   priority_id,
+        //   start_date,
+        //   status_id,
+        //   title,
+        // } = data.data.project;
+
+        // return {
+        //   id,
+        //   assignee_ids,
+        //   budget,
+        //   client_id,
+        //   currency_id,
+        //   description,
+        //   due_date,
+        //   manager_id,
+        //   priority_id,
+        //   start_date,
+        //   status_id,
+        //   title,
+        // };
+        console.log("task details", data.data);
+        return data;
+      },
+      enabled: !!id && update,
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
 export const useFetchFileEditDetails = (id, update, onError) => {
   return useQuery(
     ["client-file-details", id],
@@ -809,16 +856,18 @@ export const useFetchSingleTask = (taskId, onError) => {
     {
       select: (data) => {
         const sendData = {
-          id: data.data.id,
-          subject: data.data.subject,
-          body: data.data.body,
-          date: data.data.date,
-          from: data.data.from,
+          assignee_to: data.data.assignee_to,
+          comments: data.data.comments,
+          description: data.data.description,
+          owner: data.data.owner,
+          priority: data.data.priority,
+          status: data.data.status,
+          title: data.data.title,
         };
 
         return sendData;
       },
-      enabled: !!emailId,
+      enabled: !!taskId,
       onError,
       staleTime: 5000,
     }

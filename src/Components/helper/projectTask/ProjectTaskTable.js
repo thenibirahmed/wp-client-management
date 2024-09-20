@@ -260,7 +260,12 @@ const ProjectTaskTable = ({
         setOpen={setOpenUpdateTask}
         title="Update Task"
       >
-        <AddNewTaskForm refetch={refetch} setOpen={setOpenUpdateTask} update />
+        <AddNewTaskForm
+          refetch={refetch}
+          setOpen={setOpenUpdateTask}
+          update
+          projectId={projectId}
+        />
       </Modal>
 
       <DeleteModal

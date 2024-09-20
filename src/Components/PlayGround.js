@@ -7,7 +7,7 @@ const PlayGround = () => {
 
   const getPosts = () => {
     axios
-      .get(eicApiSettings.rest_url + "wp-client-management/v1/task/1", {
+      .get(eicApiSettings.rest_url + "wp-client-management/v1/task/3", {
         headers: {
           "X-WP-Nonce": eicApiSettings.nonce,
         },
@@ -56,9 +56,9 @@ const PlayGround = () => {
       .post(
         eicApiSettings.rest_url + "wp-client-management/v1/add-comment",
         {
-          task_id: 1,
-          reply_to: null,
-          comment: "Great",
+          task_id: 3,
+          reply_to: 1,
+          comment: "Reply to my first Comment",
         },
         {
           headers: {

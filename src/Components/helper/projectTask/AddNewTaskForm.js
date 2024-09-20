@@ -8,14 +8,21 @@ import { Calendar02Icon } from "../../../utils/icons";
 import TextField from "../TextField";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { SelectTextField } from "../SelectTextField";
-import { useFetchAssignee, useFetchPriorities } from "../../../hooks/useQuery";
+import {
+  useFetchAssignee,
+  useFetchPriorities,
+  useFetchProjectEditDetails,
+  useFetchStatus,
+  useFetchTaskEditDetails,
+} from "../../../hooks/useQuery";
 import useHashRouting from "../../../utils/useHashRouting";
 import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
 import Loaders from "../../Loaders";
 import dayjs from "dayjs";
+import { useUpdateDefaultProjectValue } from "../../../hooks/useRefetch";
 
-const AddNewTaskForm = ({ refetch, setOpen, update }) => {
+const AddNewTaskForm = ({ refetch, setOpen, update, projectId }) => {
   const { setOpenProjectModal } = useStoreContext();
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
@@ -25,10 +32,17 @@ const AddNewTaskForm = ({ refetch, setOpen, update }) => {
   const pathArray = currentPath?.split("/#/");
 
   const [selectPriority, setSelectPriority] = useState();
+  const [selectStatus, setSelectStatus] = useState();
   const [selectAssignee, setSelectAssignee] = useState();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [submitLoader, setSubmitLoader] = useState(false);
+
+  const {
+    isLoading: loader,
+    data: projectTask,
+    error,
+  } = useFetchTaskEditDetails(projectId, update, onError);
 
   const {
     data: assignee,
@@ -43,14 +57,31 @@ const AddNewTaskForm = ({ refetch, setOpen, update }) => {
   } = useFetchPriorities("project", onError);
 
   const {
+    isLoading: isLoadingStatus,
+    data: statuses,
+    error: pStatusErr,
+  } = useFetchStatus("project", onError);
+
+  const {
     register,
     handleSubmit,
     reset,
     setError,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched",
   });
+
+  //set default value for updating the project
+  // useUpdateDefaultProjectValue(
+  //   update,
+  //   clientProjects,
+  //   setValue,
+  //   setStartDate,
+  //   setEndDate,
+  //   "project"
+  // );
 
   const addNewTaskHandler = async (data) => {
     const projectId = pathArray[1] ? Number(pathArray[1]) : null;
@@ -66,8 +97,9 @@ const AddNewTaskForm = ({ refetch, setOpen, update }) => {
       assigned_to: selectAssignee?.id,
       project_id: projectId,
       priority_id: selectPriority.id,
+      status_id: selectStatus?.id,
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
-      due_date: dayjs(endDate).format("YYYY-MM-DD"),
+      end_date: dayjs(endDate).format("YYYY-MM-DD"),
       description: data.description,
     };
 
@@ -96,7 +128,35 @@ const AddNewTaskForm = ({ refetch, setOpen, update }) => {
     } else {
       setSelectPriority({ name: " -No Priority- ", id: null });
     }
-  }, [assignee, priorities]);
+
+    if (statuses?.statuses.length > 0) {
+      setSelectStatus(statuses?.statuses[0]);
+      // if (!update) {
+      //   setSelectStatus(statuses?.statuses[0]);
+      // } else if (update && clientProjects) {
+      //   const statusLists = statuses?.statuses.find(
+      //     (item) => item.id === clientProjects?.status_id
+      //   );
+      //   setSelectStatus(statusLists);
+      // }
+    } else {
+      setSelectStatus({ name: " -No Status- ", id: null });
+    }
+
+    if (priorities?.priorities.length > 0) {
+      setSelectPriority(priorities?.priorities[0]);
+      // if (!update) {
+      //   setSelectPriority(priorities?.priorities[0]);
+      // } else if (update && clientProjects) {
+      //   const priorityLists = priorities?.priorities.find(
+      //     (item) => item.id === clientProjects?.priority_id
+      //   );
+      //   setSelectPriority(priorityLists);
+      // }
+    } else {
+      setSelectPriority({ name: " -No Priority- ", id: null });
+    }
+  }, [assignee, priorities, statuses]);
 
   const onImageUploadHandler = () => {
     imageRef.current.click();
@@ -131,13 +191,22 @@ const AddNewTaskForm = ({ refetch, setOpen, update }) => {
             errors={errors}
           />
         </div>
-
-        <div className="flex md:flex-row flex-col gap-4 w-full">
+        <div className="w-full">
           <SelectTextField
             label="Assignee"
             select={selectAssignee}
             setSelect={setSelectAssignee}
             lists={assignee?.employee}
+            isSubmitting={isSubmitting}
+          />
+        </div>
+
+        <div className="flex md:flex-row flex-col gap-4 w-full">
+          <SelectTextField
+            label="Status"
+            select={selectStatus}
+            setSelect={setSelectStatus}
+            lists={statuses?.statuses}
             isSubmitting={isSubmitting}
           />
 
