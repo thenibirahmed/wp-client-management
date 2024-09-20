@@ -11,7 +11,7 @@ import { useFetchFileEditDetails } from "../../../hooks/useQuery";
 import { useUpdateDefaultFileValue } from "../../../hooks/useRefetch";
 import Skeleton from "../../Skeleton";
 
-const AddNewFileForm = ({ refetch, setOpen, type, id, update }) => {
+const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
   const { setOpenFileModal } = useStoreContext();
   const [imageUrl, setImageUrl] = useState();
   const [submitLoader, setSubmitLoader] = useState(false);
@@ -55,9 +55,9 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update }) => {
 
     if (update) {
       if (type === "project") {
-        sendData.project_id = data.project_id;
+        sendData.project_id = clientFile.project_id;
       } else {
-        sendData.client_id = data.client_id;
+        sendData.client_id = clientFile.client_id;
       }
     } else {
       if (type === "project") {

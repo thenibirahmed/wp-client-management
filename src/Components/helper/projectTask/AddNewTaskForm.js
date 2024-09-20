@@ -20,10 +20,10 @@ import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
 import Loaders from "../../Loaders";
 import dayjs from "dayjs";
-import { useUpdateDefaultProjectValue } from "../../../hooks/useRefetch";
+import { useUpdateDefaultTaskValue } from "../../../hooks/useRefetch";
 
-const AddNewTaskForm = ({ refetch, setOpen, update, projectId }) => {
-  const { setOpenProjectModal } = useStoreContext();
+const AddNewTaskForm = ({ refetch, setOpen, update, taskId }) => {
+  const { setOpenProjectModal, setOpenUpdateTask } = useStoreContext();
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
   const imageRef = useRef();
@@ -42,7 +42,7 @@ const AddNewTaskForm = ({ refetch, setOpen, update, projectId }) => {
     isLoading: loader,
     data: projectTask,
     error,
-  } = useFetchTaskEditDetails(projectId, update, onError);
+  } = useFetchTaskEditDetails(taskId, update, onError);
 
   const {
     data: assignee,
@@ -74,28 +74,21 @@ const AddNewTaskForm = ({ refetch, setOpen, update, projectId }) => {
   });
 
   //set default value for updating the project
-  // useUpdateDefaultProjectValue(
-  //   update,
-  //   clientProjects,
-  //   setValue,
-  //   setStartDate,
-  //   setEndDate,
-  //   "project"
-  // );
+  useUpdateDefaultTaskValue(
+    update,
+    projectTask,
+    setValue,
+    setStartDate,
+    setEndDate
+  );
 
   const addNewTaskHandler = async (data) => {
     const projectId = pathArray[1] ? Number(pathArray[1]) : null;
-
-    if (!selectPriority?.id) {
-      return setError("This field is required*");
-    }
-    if (!projectId) return toast.error("ProjectId is required");
 
     setSubmitLoader(true);
     const sendData = {
       title: data.title,
       assigned_to: selectAssignee?.id,
-      project_id: projectId,
       priority_id: selectPriority.id,
       status_id: selectStatus?.id,
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
@@ -103,11 +96,24 @@ const AddNewTaskForm = ({ refetch, setOpen, update, projectId }) => {
       description: data.description,
     };
 
+    if (!update) {
+      sendData.project_id = projectId;
+    }
+
     try {
-      const { data } = await api.post("/task/create", sendData);
-      toast.success(data?.message);
+      let res;
+      if (update) {
+        let { data } = await api.put(`/task/update/${taskId}`, sendData);
+        res = data;
+      } else {
+        let { data } = await api.post("/task/create", sendData);
+        res = data;
+      }
+
+      toast.success(res?.message || "operation success");
       await refetch();
       setOpen(false);
+      setOpenUpdateTask(false);
       reset();
     } catch (err) {
       console.log(err);
@@ -119,44 +125,44 @@ const AddNewTaskForm = ({ refetch, setOpen, update, projectId }) => {
 
   useEffect(() => {
     if (assignee?.employee.length > 0) {
-      setSelectAssignee(assignee?.employee[0]);
+      if (!update) {
+        setSelectAssignee(assignee?.employee[0]);
+      } else {
+        const assignedTo = assignee?.employee.find(
+          (item) => item.id === projectTask?.assigned_to
+        );
+        setSelectAssignee(assignedTo);
+      }
     } else {
       setSelectAssignee({ name: " -No Assignee- ", id: null });
     }
-    if (priorities?.priorities.length > 0) {
-      setSelectPriority(priorities?.priorities[0]);
-    } else {
-      setSelectPriority({ name: " -No Priority- ", id: null });
-    }
 
     if (statuses?.statuses.length > 0) {
-      setSelectStatus(statuses?.statuses[0]);
-      // if (!update) {
-      //   setSelectStatus(statuses?.statuses[0]);
-      // } else if (update && clientProjects) {
-      //   const statusLists = statuses?.statuses.find(
-      //     (item) => item.id === clientProjects?.status_id
-      //   );
-      //   setSelectStatus(statusLists);
-      // }
+      if (!update) {
+        setSelectStatus(statuses?.statuses[0]);
+      } else if (update && projectTask) {
+        const statusLists = statuses?.statuses.find(
+          (item) => item.id === projectTask?.status_id
+        );
+        setSelectStatus(statusLists);
+      }
     } else {
       setSelectStatus({ name: " -No Status- ", id: null });
     }
 
     if (priorities?.priorities.length > 0) {
-      setSelectPriority(priorities?.priorities[0]);
-      // if (!update) {
-      //   setSelectPriority(priorities?.priorities[0]);
-      // } else if (update && clientProjects) {
-      //   const priorityLists = priorities?.priorities.find(
-      //     (item) => item.id === clientProjects?.priority_id
-      //   );
-      //   setSelectPriority(priorityLists);
-      // }
+      if (!update) {
+        setSelectPriority(priorities?.priorities[0]);
+      } else if (update && projectTask) {
+        const priorityLists = priorities?.priorities.find(
+          (item) => item.id === projectTask?.priority_id
+        );
+        setSelectPriority(priorityLists);
+      }
     } else {
       setSelectPriority({ name: " -No Priority- ", id: null });
     }
-  }, [assignee, priorities, statuses]);
+  }, [assignee, priorities, statuses, projectTask]);
 
   const onImageUploadHandler = () => {
     imageRef.current.click();
@@ -245,7 +251,7 @@ const AddNewTaskForm = ({ refetch, setOpen, update, projectId }) => {
           </div>{" "}
           <div className="flex flex-col gap-2 w-full   ">
             <label className="font-medium text-sm  font-metropolis text-textColor">
-              Due Date
+              End Date
             </label>
             <div
               className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}

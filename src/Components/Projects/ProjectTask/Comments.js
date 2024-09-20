@@ -8,58 +8,65 @@ import {
   Link05Icon,
 } from "../../../utils/icons";
 import CommentLists from "./CommentLists";
+import { useStoreContext } from "../../../store/ContextApiStore";
+import toast from "react-hot-toast";
+import Loaders from "../../Loaders";
+import api from "../../../api/api";
 
-const messages = [
-  {
-    sender: {
-      name: "Alice",
-      image: "https://cdn.tailwindcss.com/assets/img/image1.jpg",
-      text: "Hey, how are you?",
-      time: "10:30 AM",
-    },
-    receiver: {
-      name: "Bob",
-      image: "https://cdn.tailwindcss.com/assets/img/image2.jpg",
-      text: "I'm good, thanks! How about you?",
-      time: "10:32 AM",
-    },
-  },
-  {
-    sender: {
-      name: "Charlie",
-      image: "https://cdn.tailwindcss.com/assets/img/image3.jpg",
-      text: "Can we meet tomorrow?",
-      time: "11:15 AM",
-    },
-    receiver: {
-      name: "David",
-      image: "https://cdn.tailwindcss.com/assets/img/image4.jpg",
-      text: "Sure, what time?",
-      time: "11:17 AM",
-    },
-  },
-];
+const Comments = ({ comments, refetch }) => {
+  console.log("all comments", comments);
 
-const Comments = () => {
   return (
     <div>
       <h1 className="font-metropolis text-textColor font-semibold sm:text-2xl text-xl  leading-10 mb-5 ">
-        All Comments <span className="font-normal">(3)</span>
+        All Comments <span className="font-normal">({comments?.length})</span>
       </h1>
       <div className="border border-borderColor rounded-[8px] py-[13px]">
-        <CommentBox />
+        <CommentBox refetch={refetch} />
       </div>
-      <CommentLists commentlists={messages} />
+      <CommentLists commentlists={comments} />
     </div>
   );
 };
 
 export default Comments;
 
-const CommentBox = () => {
+const CommentBox = ({ refetch }) => {
+  const { commentReplyId, setCommentReplyId, taskId } = useStoreContext();
+
+  const [submitLoader, setSubmitLoader] = useState(false);
+
   const [editorContent, setEditorContent] = useState("");
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
+
+  const addNewCommentHandler = async (event) => {
+    event.preventDefault();
+    setSubmitLoader(true);
+
+    const sendData = {
+      task_id: taskId,
+      comment: editorContent,
+    };
+
+    if (commentReplyId) {
+      sendData.reply_to = commentReplyId;
+    }
+
+    try {
+      const { data } = await api.post("/add-comment", sendData);
+
+      setEditorContent("");
+      await refetch();
+      toast.success(data?.message || "Comment Added Successfully");
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    } finally {
+      setSubmitLoader(false);
+      setCommentReplyId("");
+    }
+  };
 
   const handleAttachment = () => {
     fileInputRef.current.click(); // Trigger hidden file input for attachments
@@ -110,7 +117,7 @@ const CommentBox = () => {
   const quillRef = useRef(null);
 
   return (
-    <>
+    <form onSubmit={addNewCommentHandler}>
       <ReactQuill
         ref={quillRef}
         value={editorContent}
@@ -135,10 +142,17 @@ const CommentBox = () => {
           </button>
         </div>
         <button
+          disabled={submitLoader}
           type="submit"
           className="font-metropolis rounded-[5px] bg-customBlue text-white py-[10px] px-[12px] text-xs font-medium"
         >
-          Save Note
+          {submitLoader ? (
+            <Loaders />
+          ) : commentReplyId ? (
+            "Add Reply"
+          ) : (
+            "Add Comment"
+          )}
         </button>
       </div>
 
@@ -160,6 +174,6 @@ const CommentBox = () => {
         accept="image/*"
         multiple
       />
-    </>
+    </form>
   );
 };

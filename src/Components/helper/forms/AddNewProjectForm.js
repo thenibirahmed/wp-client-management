@@ -99,10 +99,6 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
     "project"
   );
 
-  useEffect(() => {
-    setAllIds(selectedAssignees.map((item) => item.id));
-  }, [selectedAssignees]);
-
   const addNewProjectHandler = async (data) => {
     if (
       !selectClient?.id ||
@@ -118,11 +114,10 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
     const sendData = {
       title: data.title,
       manager_id: selectProjectManager?.id,
-      assigee_ids: allIds,
       client_id: selectClient?.id,
       status_id: selectStatus?.id,
       priority_id: selectPriority?.id,
-      budget: 450.2,
+      budget: data.budget,
       assignee_ids: allIds,
       currency_id: selectCurrency?.id,
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
@@ -156,6 +151,10 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
   const onImageUploadHandler = () => {
     imageRef.current.click();
   };
+
+  useEffect(() => {
+    setAllIds(selectedAssignees.map((item) => item.id));
+  }, [selectedAssignees]);
 
   useEffect(() => {
     if (clients?.clients.length > 0) {
@@ -383,6 +382,18 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
               </button>
             </div>
           </div>
+        </div>
+        <div className="w-full">
+          <TextField
+            label="Budget"
+            required
+            id="budget"
+            type="number"
+            message="This field is required*"
+            placeholder="Budget"
+            register={register}
+            errors={errors}
+          />
         </div>
         <div className="flex flex-col gap-2 w-full">
           <label

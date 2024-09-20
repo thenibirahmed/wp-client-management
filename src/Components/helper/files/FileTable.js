@@ -119,7 +119,9 @@ const FileTable = ({
                           />
                           <div>
                             <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                              {item.author}
+                              {type === "project"
+                                ? item.created_by
+                                : item.author}
                             </h3>
                           </div>
                         </div>
@@ -183,7 +185,7 @@ const FileTable = ({
           setOpen={setUpdateFileModal}
           type={type}
           id={fileId}
-          update
+          update={updateFileModal}
         />
       </Modal>
 

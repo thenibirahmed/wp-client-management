@@ -84,9 +84,8 @@ export const useUpdateDefaultNoteValue = (
   useEffect(() => {
     if (update && client) {
       const { client_id, project_id, note } = client;
-
+      setEditorContent(note);
       if (type === "client") {
-        setEditorContent(note);
         setSelectedId(client_id);
       } else {
         setSelectedId(project_id);
@@ -127,6 +126,34 @@ export const useUpdateDefaultProjectValue = (
       setEndDate(due_date);
     }
   }, [update, client]);
+};
+
+export const useUpdateDefaultTaskValue = (
+  update,
+  task,
+  setValue,
+  setStartDate,
+  setEndDate
+) => {
+  useEffect(() => {
+    if (update && task) {
+      const {
+        id,
+        assigned_to,
+        description,
+        end_date,
+        start_date,
+        priority_id,
+        status_id,
+        title,
+      } = task;
+
+      setValue("title", title);
+      setValue("description", description);
+      setStartDate(start_date);
+      setEndDate(end_date);
+    }
+  }, [update, task]);
 };
 
 export const useUpdateDefaultInvoiceValue = (

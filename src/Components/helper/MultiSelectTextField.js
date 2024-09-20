@@ -7,12 +7,6 @@ import {
 } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
-const people = [
-  { id: 1, name: "Easin" },
-  { id: 2, name: "Tanvir" },
-  { id: 3, name: "Jack" },
-];
-
 export const MultiSelectTextField = ({
   label,
   select,

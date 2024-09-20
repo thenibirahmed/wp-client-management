@@ -135,37 +135,27 @@ export const useFetchTaskEditDetails = (id, update, type, onError) => {
     },
     {
       select: (data) => {
-        // const {
-        //   id,
-        //   assignee_ids,
-        //   budget,
-        //   client_id,
-        //   currency_id,
-        //   description,
-        //   due_date,
-        //   manager_id,
-        //   priority_id,
-        //   start_date,
-        //   status_id,
-        //   title,
-        // } = data.data.project;
+        const {
+          id,
+          assigned_to,
+          description,
+          end_date,
+          start_date,
+          priority_id,
+          status_id,
+          title,
+        } = data.data.task;
 
-        // return {
-        //   id,
-        //   assignee_ids,
-        //   budget,
-        //   client_id,
-        //   currency_id,
-        //   description,
-        //   due_date,
-        //   manager_id,
-        //   priority_id,
-        //   start_date,
-        //   status_id,
-        //   title,
-        // };
-        console.log("task details", data.data);
-        return data;
+        return {
+          id,
+          assigned_to,
+          description,
+          end_date,
+          start_date,
+          priority_id,
+          status_id,
+          title,
+        };
       },
       enabled: !!id && update,
       onError,

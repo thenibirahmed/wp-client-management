@@ -31,6 +31,7 @@ const AddNewNote = ({
   pagination,
   type,
   slug,
+  noteId,
   update = false,
 }) => (
   <div>
@@ -41,6 +42,7 @@ const AddNewNote = ({
         projectId={projectId}
         type={type}
         update={update}
+        noteId={noteId}
       />
     </div>
     <NoteTable
@@ -52,17 +54,25 @@ const AddNewNote = ({
       isAllselected={isAllselected}
       setIsAllSelected={setIsAllSelected}
       slug={slug}
+      noteId={noteId}
     />
   </div>
 );
 
 export default AddNewNote;
 
-const AddNewNoteTextArea = ({ refetch, setOpen, projectId, type, update }) => {
+const AddNewNoteTextArea = ({
+  refetch,
+  setOpen,
+  projectId,
+  type,
+  update,
+  noteId,
+}) => {
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
 
-  const { setCreateNote, noteId, setUpdateNotes } = useStoreContext();
+  const { setCreateNote, setUpdateNotes } = useStoreContext();
   const [editorContent, setEditorContent] = useState("");
   const [submitLoader, setSubmitLoader] = useState(false);
   const [selectedId, setSelectedId] = useState("");

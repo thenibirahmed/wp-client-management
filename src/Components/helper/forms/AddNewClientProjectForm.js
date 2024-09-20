@@ -100,6 +100,8 @@ const AddNewClientProjectForm = ({
     }
     setSubmitLoader(true);
 
+    const idsLists = allIds.map((item) => item);
+    console.log("ids", idsLists);
     const sendData = {
       title: data.title,
       manager_id: selectProjectManager?.id,
@@ -107,12 +109,13 @@ const AddNewClientProjectForm = ({
       status_id: selectStatus?.id,
       priority_id: selectPriority?.id,
       currency_id: selectCurrency?.id,
-      assignee_ids: allIds,
+      assignee_ids: [...allIds],
       budget: data.budget,
       start_date: dayjs(startDate).format("YYYY-MM-DD"),
       due_date: dayjs(endDate).format("YYYY-MM-DD"),
       description: data?.description,
     };
+    console.log("sending data", sendData);
 
     try {
       let res;
@@ -391,7 +394,7 @@ const AddNewClientProjectForm = ({
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            {submitLoader ? <Loaders /> : "Save"}
+            {submitLoader ? <Loaders /> : <> {update ? "Update" : "Save"}</>}
           </button>
         </div>
       </form>

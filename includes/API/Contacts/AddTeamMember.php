@@ -107,8 +107,8 @@ class AddTeamMember {
         ];
 
         return new \WP_REST_Response([
-            'message' => 'Team member added successfully.',
-            'client'  => $member_response_data,
+            'message'      => 'Team member added successfully.',
+            'team-member'  => $member_response_data,
         ], 201);
     }
 

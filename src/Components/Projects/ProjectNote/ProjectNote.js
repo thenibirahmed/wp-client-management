@@ -14,7 +14,14 @@ import { useFetchProjectNotes } from "../../../hooks/useQuery";
 import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectNote = ({ projectId }) => {
-  const { createNote, setCreateNote } = useStoreContext();
+  const {
+    createNote,
+    setCreateNote,
+    setUpdateNotes,
+    updateNotes,
+    setNoteId,
+    noteId,
+  } = useStoreContext();
 
   const [selectedNote, setSelectedNote] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
@@ -66,15 +73,15 @@ const ProjectNote = ({ projectId }) => {
       <ProjectHeader
         selectedProject={selectedNote}
         title="Notes"
-        setOpenModal={setCreateNote}
-        openModal={createNote}
+        setOpenModal={updateNotes ? setUpdateNotes : setCreateNote}
+        openModal={updateNotes ? updateNotes : createNote}
         btnTitle="Add Note"
         cancelTitle="Cancel"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
       />
 
-      {createNote ? (
+      {createNote || updateNotes ? (
         <React.Fragment>
           <AddNewNote
             noteData={projectNotes?.notes}
@@ -88,6 +95,8 @@ const ProjectNote = ({ projectId }) => {
             pagination={projectNotes?.pagination}
             type="project"
             slug="projects"
+            update={updateNotes}
+            noteId={noteId}
           />
         </React.Fragment>
       ) : (
@@ -107,8 +116,11 @@ const ProjectNote = ({ projectId }) => {
                     setSelectedNote={setSelectedNote}
                     isAllselected={isAllselected}
                     setIsAllSelected={setIsAllSelected}
+                    setUpdateNotes={setUpdateNotes}
                     slug="projects"
                     refetch={refetch}
+                    setNoteId={setNoteId}
+                    noteId={noteId}
                   />
                 </>
               ) : (

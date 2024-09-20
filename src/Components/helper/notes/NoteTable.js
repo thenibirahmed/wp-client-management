@@ -20,15 +20,11 @@ const NoteTable = ({
   setIsAllSelected,
   slug,
   refetch,
+  setUpdateNotes,
+  setNoteId,
+  noteId,
 }) => {
-  const {
-    deleteNote,
-    setDeleteNote,
-    updateNotes,
-    setUpdateNotes,
-    noteId,
-    setNoteId,
-  } = useStoreContext();
+  const { deleteNote, setDeleteNote } = useStoreContext();
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedNote,

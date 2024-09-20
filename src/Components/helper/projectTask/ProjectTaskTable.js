@@ -173,7 +173,7 @@ const ProjectTaskTable = ({
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-medium">
-                        {item.due_date}
+                        {item.end_date}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
                         <div className="flex items-center  gap-3">
@@ -215,6 +215,7 @@ const ProjectTaskTable = ({
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
+                              setId(item?.id);
                               setOpenUpdateTask(true);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
@@ -264,7 +265,7 @@ const ProjectTaskTable = ({
           refetch={refetch}
           setOpen={setOpenUpdateTask}
           update
-          projectId={projectId}
+          taskId={id}
         />
       </Modal>
 

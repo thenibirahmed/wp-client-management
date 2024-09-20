@@ -13,8 +13,14 @@ import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
 
 const ClientNotes = ({ clientId }) => {
-  const { createNote, setCreateNote, updateNotes, setUpdateNotes } =
-    useStoreContext();
+  const {
+    createNote,
+    setCreateNote,
+    updateNotes,
+    setUpdateNotes,
+    setNoteId,
+    noteId,
+  } = useStoreContext();
 
   const [selectedNote, setSelectedNote] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
@@ -89,7 +95,9 @@ const ClientNotes = ({ clientId }) => {
             projectId={clientId}
             pagination={clientNotes?.pagination}
             type="client"
+            slug="clients"
             update={updateNotes}
+            noteId={noteId}
           />
         </React.Fragment>
       ) : (
@@ -107,8 +115,11 @@ const ClientNotes = ({ clientId }) => {
                   setSelectedNote={setSelectedNote}
                   isAllselected={isAllselected}
                   setIsAllSelected={setIsAllSelected}
+                  setUpdateNotes={setUpdateNotes}
                   refetch={refetch}
                   slug="clients"
+                  setNoteId={setNoteId}
+                  noteId={noteId}
                 />
               )}
             </>

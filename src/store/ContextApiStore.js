@@ -39,6 +39,8 @@ export const ContextProvider = ({ children }) => {
   const [noteId, setNoteId] = useState();
   const [isFetching, setIsFetching] = useState(false);
 
+  const [commentReplyId, setCommentReplyId] = useState("");
+
   const [allTabItems, setAllTabItems] = useState({
     project: true,
     task: true,
@@ -120,6 +122,8 @@ export const ContextProvider = ({ children }) => {
     setInvoiceId,
     isFetching,
     setIsFetching,
+    commentReplyId,
+    setCommentReplyId,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

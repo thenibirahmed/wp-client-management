@@ -57,6 +57,11 @@ class GetSingleTask {
         }
 
         $comments       = $task->comments()->whereNull('reply_to')->get();
+        if(!$task->eic_crm_user) {
+            return new \WP_REST_Response([
+                'error' => 'EicCrmUser table data is missing.',
+            ]);
+        }
         $wp_user_ids    = $task->eic_crm_user->pluck('wp_user_id')->toArray();
 
         $comments_users = get_users(['include' => $wp_user_ids]);

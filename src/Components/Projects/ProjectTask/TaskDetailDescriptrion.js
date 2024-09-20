@@ -1,12 +1,15 @@
 import React from "react";
 
-const TaskDetailDescriptrion = () => {
+const TaskDetailDescriptrion = ({ description }) => {
   return (
     <div className="border-b border-borderColor pb-6">
       <h1 className="font-metropolis text-textColor font-semibold sm:text-2xl text-xl  leading-10 ">
         Description
       </h1>
-      <div className="pt-4">
+      <p className="font-metropolis text-textColor2 font-normal text-sm  leading-6 pt-4 ">
+        {description}
+      </p>
+      {/* <div className="pt-4">
         <h2 className="font-metropolis text-textColor font-semibold text-sm  leading-6 ">
           Objective
         </h2>
@@ -77,7 +80,7 @@ const TaskDetailDescriptrion = () => {
             <li>Use HTTPS to encrypt data transmission.</li>
           </ul>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
