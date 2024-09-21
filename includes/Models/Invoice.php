@@ -72,7 +72,8 @@ class Invoice extends Model
 
     public static function getPorjectInvoices($id, $page)
     {
-        return self::where('project_id', $id)
+        return self::with(['status','project','paymentMethod'])
+                    ->where('project_id', $id)
                     ->paginate(5, ['*'] , 'invoice', $page);
     }
 
@@ -81,6 +82,12 @@ class Invoice extends Model
         return self::where('status.type','invoice')
                 ->where('status.name','paid')
                 ->get();
+    }
+
+    public static function getActiveClientsInvoices($clientIds)
+    {
+        return self::whereIn('client_id', $clientIds)
+                     ->get();
     }
 
     public function currency()

@@ -1,11 +1,8 @@
 <?php
 namespace WpClientManagement\API\TeamMembers;
 
-use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
-use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
-use WpClientManagement\Models\Task;
 
 class GetSingleTeamMemberProjects {
 

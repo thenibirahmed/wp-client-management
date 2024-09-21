@@ -51,7 +51,7 @@ class GetClientInvoices {
             ], 400);
         }
 
-        $client = Client::find($data['id']);
+        $client = Client::where('id', $client_id)->exists();
 
         if(!$client) {
             return new \WP_REST_Response([

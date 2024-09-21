@@ -31,7 +31,9 @@ class GetClientFiles {
 
     public function get_client_notes(\WP_REST_Request $request) {
         global $validator;
-
+        return new \WP_REST_Response([
+            'id' => 'HI',
+        ]);
         $client_id  = $request->get_param('id');
         $page       = $request->get_param('file');
 
@@ -51,7 +53,7 @@ class GetClientFiles {
             ], 400);
         }
 
-        $client = Client::find($data['id']);
+        $client = Client::where('id', $client_id)->exists();
 
         if(!$client) {
             return new \WP_REST_Response([

@@ -24,7 +24,7 @@ class SelectProject {
         $data = [];
         foreach ($projects as $project) {
             $data[] = [
-                'id' => $project->id,
+                'id'   => $project->id,
                 'name' => $project->title
             ];
         }

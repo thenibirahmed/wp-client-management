@@ -174,19 +174,17 @@ const PlayGround = () => {
 
 // *** Use Effect
 
-
-	useEffect(() => {
-		// getTest();
-		getTestData();
-	}, [])
-
+	// useEffect(() => {
+	// 	// getTest();
+	// 	getTestData();
+	// }, [])
 
 // ***
 
 	const getTestData = () => {
-		axios.put(
-				eicApiSettings.rest_url + "wp-client-management/v1/team-member/create",
-				{
+		axios.get(
+				eicApiSettings.rest_url + "wp-client-management/v1/select/project/status",
+				// {
 				// 	assigned_to: 1,
 				// 	title: 'The last love..',
  				// 	start_date: '2024-09-15',
@@ -194,12 +192,16 @@ const PlayGround = () => {
 				// 	status_id: 8,
 				// 	priority_id: 12,
 				// 	description: 'Remeber the promisees they broke.,'
-				name: 'new new',
-				email: 'new@new.com',
-				phone: 'newphone',
-				designation: 'designation nai',
-				projectIds: [1,2,3,4,5,6,7,8,9]
-				},
+				// name: 'new new',
+				// email: 'new@new.com',
+				// phone: 'newphone',
+				// designation: 'designation nai',
+				// projectIds: [1,2,3,4,5,6,7,8,9]
+				// name: 'lasty',
+				// email: 'last@y.com',
+				// phone: 'noway',
+				// designation: 'updated',
+				// },
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
@@ -226,8 +228,8 @@ const PlayGround = () => {
             {/* <button onClick={getPosts}>Click me to get all posts</button> <br/><br/>
             <button onClick={getUsers}>Click me to get all users</button> <br/><br/>
             <button onClick={getSinglePost}>Click me to get single post</button> <br/><br/> */}
-            {/* <button style={{padding: "10px",marginBottom: "5px", backgroundColor:"blue",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}} onClick={getTest}>Test me!</button><br/>
-            <button style={{padding: "10px",backgroundColor:"black",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}} onClick={getTestData}>Test me!</button><br/> */}
+            {/*<button style={{padding: "10px",marginBottom: "5px", backgroundColor:"blue",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}} onClick={getTest}>Test me!</button><br/>*/}
+            <button style={{padding: "10px",backgroundColor:"black",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}} onClick={getTestData}>Test me!</button><br/>
         </div>
     );
 };

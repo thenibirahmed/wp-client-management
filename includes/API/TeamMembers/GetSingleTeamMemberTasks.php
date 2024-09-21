@@ -86,7 +86,7 @@ class GetSingleTeamMemberTasks {
                 'id'            => $task->id,
                 'title'         => $task->title,
                 'owner'         => $owner_wp_user['name'] ?? '',
-                'due_date'      => $task->due_date ? date('M d, Y', strtotime($task->due_date)) : null,
+                'end_date'      => $task->end_date ? date('M d, Y', strtotime($task->end_date)) : null,
                 'status'        => $task->status->name,
                 'priority'      => $task->priority->name,
                 'comment_count' => $task->comments->count(),

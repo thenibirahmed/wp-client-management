@@ -4,7 +4,6 @@ namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
-use WpClientManagement\Models\Project;
 
 class GetClients {
 
@@ -41,12 +40,8 @@ class GetClients {
             ];
         }
 
-        $clientIds = Client::pluck('id')->toArray();
-        $invoices  = Invoice::whereIn('client_id', $clientIds)
-                    ->with('status')
-                    ->get();
-
-        // $projectCount = Project::getActiveProjects()->count();
+        $clientIds = $clientsData->pluck('id')->toArray();
+        $invoices  = Invoice::getActiveClientsInvoices($clientIds);
 
         $invoiceTotalsByClient = $invoices->groupBy('client_id')->map(function ($invoices) {
 

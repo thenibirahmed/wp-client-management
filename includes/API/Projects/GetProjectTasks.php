@@ -60,10 +60,13 @@ class GetProjectTasks {
             ], 404);
         }
 
-        $tasks         = $project->tasks()->paginate(5, ['*'], 'task', $page);
+        $tasks         = $project->tasks()
+                        ->with('status', 'priority')
+                        ->paginate(5, ['*'], 'task', $page);
+
         $eic_crm_users = EicCrmUser::selectManager(false);
 
-        $wp_user_ids = $eic_crm_users->pluck('wp_user_id')->toArray();
+        $wp_user_ids   = $eic_crm_users->pluck('wp_user_id')->toArray();
 
         $wpUsersDb = get_users([
             'include' => $wp_user_ids,

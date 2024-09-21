@@ -82,8 +82,6 @@ use WpClientManagement\API\Projects\ProjectOverview;
 use WpClientManagement\API\Projects\SelectClientForProject;
 use WpClientManagement\API\Projects\SelectProject;
 use WpClientManagement\API\Projects\SelectProjectManager;
-use WpClientManagement\API\Projects\SelectProjectPriority;
-use WpClientManagement\API\Projects\SelectProjectStatus;
 use WpClientManagement\API\Projects\UpdateProject;
 use WpClientManagement\API\Schedules\CreateSchedule;
 use WpClientManagement\API\Schedules\DeleteSchedule;
@@ -226,8 +224,6 @@ class API {
         new ProjectOverview();
         new SelectProjectManager();
         new SelectClientForProject();
-        new SelectProjectStatus();
-        new SelectProjectPriority();
         new GetSingleProjectOverview();
         new GetProjectTasks();
         new GetProjectNotes();

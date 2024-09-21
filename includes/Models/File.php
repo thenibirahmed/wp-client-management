@@ -25,7 +25,9 @@ class File extends Model
 
     public static function getProjectFiles($id, $page)
     {
-        return self::where('project_id', $id)->paginate(5, ['*'], 'file', $page);
+        return self::with('eic_crm_user')
+                    ->where('project_id', $id)
+                    ->paginate(5, ['*'], 'file', $page);
     }
 
     public function client() {

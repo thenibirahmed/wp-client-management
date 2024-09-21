@@ -82,7 +82,7 @@ class GetProjectNotes {
 
         $data = [];
         foreach ($notes as $note) {
-            $wp_user_id = $note->eic_crm_user->wp_user_id;
+            $wp_user_id = $note->eic_crm_user->wp_user_id ?? null;
 
             $data[] = [
                 'id'      => $note->id,

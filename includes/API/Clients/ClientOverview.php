@@ -19,30 +19,10 @@ class ClientOverview {
         ]);
     }
 
-    public function get_clients_overview(/*\WP_REST_Request $request*/)
+    public function get_clients_overview()
     {
-        // $page = $request->get_param('page');
-
-        // $clientsData = Client::all();
-
-        // $wp_user_ids = $clientsData->pluck('eic_crm_user.wp_user_id')->toArray();
-
-        // $wpUsersDb = get_users([
-        //     'include' => $wp_user_ids,
-        // ]);
-
-        // $wpUsers = [];
-        // foreach ($wpUsersDb as $user) {
-        //     $wpUsers[$user->ID] = [
-        //         'name'  => $user->user_login,
-        //         'email' => $user->user_email,
-        //     ];
-        // }
-
         $clientIds = Client::pluck('id')->toArray();
-        $invoices  = Invoice::whereIn('client_id', $clientIds)
-                    ->with('status')
-                    ->get();
+        $invoices  = Invoice::getActiveClientsInvoices($clientIds);
 
         $projectCount = Project::getActiveProjects()->count();
 
@@ -66,25 +46,6 @@ class ClientOverview {
         $totalInvoiceCount  = $invoices->count();
         $paidInvoiceCount   = $invoices->where('status.name', 'paid')->where('status.type', 'invoice')->count();
         $unpaidInvoiceCount = $totalInvoiceCount - $paidInvoiceCount;
-
-        // $clientsWithDetails = $clientsData->map(function ($client) use ($wpUsers, $invoiceTotalsByClient) {
-        //     $eicCrmUser = $client->eic_crm_user;
-        //     $wpUserId   = $eicCrmUser->wp_user_id;
-        //     $wpUser     = $wpUsers[$wpUserId] ?? [];
-
-        //     $invoices = $invoiceTotalsByClient->get($client->id, [
-        //         'total' => 0, 'revenue' => 0, 'due' => 0
-        //     ]);
-
-        //     return [
-        //         'client_id'     => $client->id,
-        //         'organization'  => $client->organization,
-        //         'project_count' => $client->projects->count() ?? 0,
-        //         'invoice'       => $invoices ?? [],
-        //         'name'          => $wpUser['name'] ?? null,
-        //         'email'         => $wpUser['email'] ?? null,
-        //     ];
-        // });
 
         $topBar = [
             "invoice" => [
@@ -110,16 +71,7 @@ class ClientOverview {
         ];
 
         return new \WP_REST_Response([
-            // 'clients'    => $clientsWithDetails,
             'topBar'     => $topBar,
-        //     'pagination' => [
-        //         'total'         => $clientsData->total(),
-        //         'per_page'      => $clientsData->perPage(),
-        //         'current_page'  => $clientsData->currentPage(),
-        //         'last_page'     => $clientsData->lastPage(),
-        //         'next_page_url' => $clientsData->nextPageUrl(),
-        //         'prev_page_url' => $clientsData->previousPageUrl(),
-        //     ],
         ]);
     }
 }

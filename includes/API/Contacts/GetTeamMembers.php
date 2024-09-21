@@ -49,13 +49,13 @@ class GetTeamMembers {
                 'email'        => $wpUser['email'] ?? null,
                 'phone'        => $member->phone,
                 'designation'  => $member->designation,
-                'created_date' => date('F d, Y', strtotime($member->created_at)),
+                'created_date' => $member->created_at ? date('F d, Y', strtotime($member->created_at)) : null,
             ];
         });
 
         return new \WP_REST_Response([
-            'data' => $teamMembersWithDetails,
-            'pagination' => [
+            'team_members' => $teamMembersWithDetails,
+            'pagination'   => [
                 'total'         => $teamMembers->total(),
                 'per_page'      => $teamMembers->perPage(),
                 'current_page'  => $teamMembers->currentPage(),

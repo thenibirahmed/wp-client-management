@@ -82,7 +82,7 @@ class GetProjectFiles {
 
         $data = [];
         foreach ($files as $file) {
-            $wp_user_id = $file->eic_crm_user->wp_user_id;
+            $wp_user_id = $file->eic_crm_user->wp_user_id ?? null;
 
             $data[] = [
                 'id'         => $file->id,

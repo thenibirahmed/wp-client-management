@@ -22,6 +22,7 @@ class Email extends Model
     public static function getClientEmails($id, $page)
     {
         return self::where('client_id', $id)
+                ->with('eic_crm_user')
                 ->paginate(3, ['*'], 'email', $page);
     }
 
