@@ -31,9 +31,7 @@ class GetClientFiles {
 
     public function get_client_notes(\WP_REST_Request $request) {
         global $validator;
-        return new \WP_REST_Response([
-            'id' => 'HI',
-        ]);
+
         $client_id  = $request->get_param('id');
         $page       = $request->get_param('file');
 
@@ -89,6 +87,7 @@ class GetClientFiles {
             $data[] = [
                 'id'     => $file->id,
                 'name'   => $file->title,
+                'project'=> $file->project->title,
                 'author' => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
                 'url'    => $file->url,
                 'time'   => $file->created_at ? human_time_diff(strtotime($file->created_at), current_time('timestamp')) . ' ago' : null,
