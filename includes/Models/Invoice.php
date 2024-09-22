@@ -84,6 +84,19 @@ class Invoice extends Model
                     ->paginate(5, ['*'] , 'invoice', $page);
     }
 
+    public static function getAllProjectInvoices($projectIds, $currency)
+    {
+        $query = self::whereIn('project_id', $projectIds);
+
+        if($currency) {
+            $query->whereHas('currency', function ($query) use ($currency) {
+                $query->where('code', $currency);
+            });
+        }
+
+        return $query->get();
+    }
+
     public static function getAllPaidInvoices()
     {
         return self::where('status.type','invoice')
