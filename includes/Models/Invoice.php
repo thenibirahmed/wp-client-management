@@ -70,11 +70,16 @@ class Invoice extends Model
         return $query->get();
     }
 
-    public static function getSingleProjectInvoices($id)
+    public static function getSingleProjectInvoices($id, $currency)
     {
-        return self::with(['status'])
-                ->where('project_id',$id)
-                ->get();
+        $query = self::with(['status'])
+                ->where('project_id',$id);
+
+            $query->whereHas('currency', function ($query) use ($currency) {
+                $query->where('code', $currency);
+            });
+
+        return $query->get();
     }
 
     public static function getPorjectInvoices($id, $page)
