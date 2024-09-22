@@ -56,11 +56,18 @@ class Invoice extends Model
                 ->paginate(2, ['*'], 'invoice', $page);
     }
 
-    public static function getSingleClientInvoices($id)
+    public static function getSingleClientInvoices($id, $currency)
     {
-        return self::with(['status'])
-                ->where('client_id',$id)
-                ->get();
+        $query =  self::with(['status'])
+                    ->where('client_id',$id);
+
+        if($currency) {
+            $query->whereHas('currency', function ($query) use ($currency) {
+                $query->where('code', $currency);
+            });
+        }
+
+        return $query->get();
     }
 
     public static function getSingleProjectInvoices($id)

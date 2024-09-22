@@ -183,7 +183,7 @@ const PlayGround = () => {
 
 	const getTestData = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/1/files",
+				eicApiSettings.rest_url + "wp-client-management/v1/client/10/overview/EUR",
 				// {
 				// 	assigned_to: 1,
 				// 	title: 'The last love..',

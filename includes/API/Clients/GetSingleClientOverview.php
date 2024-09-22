@@ -8,16 +8,19 @@ use WpClientManagement\Models\Project;
 class GetSingleClientOverview {
 
     private $namespace = 'wp-client-management/v1';
-    private $endpoint  = '/client/(?P<id>\d+)/overview';
+    // private $endpoint  = '/client/(?P<id>\d+)/overview';
+    private $endpoint = '/client/(?P<id>\d+)/overview(?:/(?P<currency>[a-zA-Z0-9_-]+))?';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:eic_clients,id',
+        'id'       => 'required|integer|exists:eic_clients,id',
+        'currency' => 'nullable|exists:eic_currencies,code',
     ];
 
     protected array $validationMessages = [
-        'id.required' => 'The client ID is required.',
-        'id.integer'  => 'The client ID must be an integer.',
-        'id.exists'   => 'The client does not exist.',
+        'id.required'     => 'The client ID is required.',
+        'id.integer'      => 'The client ID must be an integer.',
+        'id.exists'       => 'The client does not exist.',
+        'currency.exists' => 'Invalid currency code.',
     ];
 
     public function __construct()
@@ -33,7 +36,8 @@ class GetSingleClientOverview {
     {
         global $validator;
 
-        $id = $request->get_param('id');
+        $id       = $request->get_param('id');
+        $currency = $request->get_param('currency');
 
         if(!isset($id)) {
             return new \WP_REST_Response([
@@ -42,6 +46,7 @@ class GetSingleClientOverview {
         }
 
         $data = ['id' => $id];
+        $data['currency'] = $currency ? $currency : 'USD';
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -64,7 +69,7 @@ class GetSingleClientOverview {
         ];
 
         $totalProjects  = Project::getClientProjects($data['id'],false)->count();
-        $clientInvoices = Invoice::getSingleClientInvoices($data['id']);
+        $clientInvoices = Invoice::getSingleClientInvoices($data['id'], $data['currency']);
 
         $totalInvoiceAmount = $clientInvoices->sum('total');
         $totalInvoiceCount  = $clientInvoices->count();
@@ -96,7 +101,8 @@ class GetSingleClientOverview {
                 'name'    => 'Total Projects',
                 'amount'  => $totalProjects,
                 'subText' => 'last 3 months'
-            ]
+            ],
+            'currency'    => $data['currency']
         ];
 
         return new \WP_REST_Response([
