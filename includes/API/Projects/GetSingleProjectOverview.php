@@ -92,24 +92,25 @@ class GetSingleProjectOverview {
         $topBar = [
             "invoice" => [
                 'name'    => 'Total Invoice',
-                'total'  => $totalInvoiceAmount,
+                'total'   => $totalInvoiceAmount,
                 'subText' => $totalInvoiceCount . ($totalInvoiceCount == 1 ? ' invoice' : ' invoices')
             ],
             "revenue" => [
                 'name'    => 'Total Revenue',
-                'total'  => $totalPaidInvoiceAmount,
+                'total'   => $totalPaidInvoiceAmount,
                 'subText' => $paidInvoiceCount . ($paidInvoiceCount == 1 ? ' invoice' : ' invoices')
             ],
             "due" => [
                 'name'    => 'Total Due',
-                'total'  => $totalDueAmount,
+                'total'   => $totalDueAmount,
                 'subText' => $unpaidInvoiceCount . ($unpaidInvoiceCount == 1 ? ' invoice' : ' invoices')
             ],
             "employee" => [
                 'name'    => 'Working Employee',
-                'total'  => $working_employee,
+                'total'   => $working_employee,
                 'subText' => $working_employee . ($working_employee == 1 ? ' employee' : ' employees')
             ],
+            'currency' => $data['currency']
         ];
 
         return new \WP_REST_Response([
