@@ -91,10 +91,18 @@ class Invoice extends Model
                 ->get();
     }
 
-    public static function getActiveClientsInvoices($clientIds)
+    public static function getActiveClientsInvoices($clientIds, $currency)
     {
-        return self::whereIn('client_id', $clientIds)
-                     ->get();
+        $query = self::whereIn('client_id', $clientIds);
+
+        if($currency) {
+            $query->whereHas('currency', function ($query) use ($currency) {
+                $query->where('code', $currency);
+            });
+        }
+
+        return $query->get();
+
     }
 
     public function currency()

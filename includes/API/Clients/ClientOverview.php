@@ -8,7 +8,15 @@ use WpClientManagement\Models\Project;
 class ClientOverview {
 
     private $namespace = 'wp-client-management/v1';
-    private $endpoint = '/clients-overview';
+    private $endpoint = '/clients-overview(?:/(?P<currency>[a-zA-Z0-9_-]+))?';
+
+    protected array $rules = [
+        'currency' => 'nullable|exists:eic_currencies,code',
+    ];
+
+    protected array $validationMessages = [
+        'currency.exists' => 'Invalid currency code.',
+    ];
 
     public function __construct()
     {
@@ -19,10 +27,24 @@ class ClientOverview {
         ]);
     }
 
-    public function get_clients_overview()
+    public function get_clients_overview(\WP_REST_Request $request)
     {
+        global $validator;
+
+        $currency  = $request->get_param('currency');
+
+        $data = ['currency' => $currency ?: 'USD'];
+        $validator = $validator->make($data, $this->rules, $this->validationMessages);
+
+        if ($validator->fails()) {
+            return new \WP_REST_Response([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
         $clientIds = Client::pluck('id')->toArray();
-        $invoices  = Invoice::getActiveClientsInvoices($clientIds);
+
+        $invoices  = Invoice::getActiveClientsInvoices($clientIds, $data['currency']);
 
         $projectCount = Project::getActiveProjects()->count();
 
@@ -67,7 +89,8 @@ class ClientOverview {
                 'name'    => 'Total Projects',
                 'amount'  => $projectCount,
                 'subText' => 'last 3 months'
-            ]
+            ],
+            'currency' => $data['currency'],
         ];
 
         return new \WP_REST_Response([

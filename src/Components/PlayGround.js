@@ -183,25 +183,7 @@ const PlayGround = () => {
 
 	const getTestData = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/10/overview/EUR",
-				// {
-				// 	assigned_to: 1,
-				// 	title: 'The last love..',
- 				// 	start_date: '2024-09-15',
-				// 	end_date: '2024-09-30',
-				// 	status_id: 8,
-				// 	priority_id: 12,
-				// 	description: 'Remeber the promisees they broke.,'
-				// name: 'new new',
-				// email: 'new@new.com',
-				// phone: 'newphone',
-				// designation: 'designation nai',
-				// projectIds: [1,2,3,4,5,6,7,8,9]
-				// name: 'lasty',
-				// email: 'last@y.com',
-				// phone: 'noway',
-				// designation: 'updated',
-				// },
+				eicApiSettings.rest_url + "wp-client-management/v1/clients-overview",
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
