@@ -21,13 +21,21 @@ class Client extends Model
     public static function getActiveClients($page, $from, $to, $search = null)
     {
         $query = self::with('eic_crm_user');
+
+        if(!$from && !$to && !$search) {
+            return $query->paginate(3, ['*'], 'page', $page);
+        }
+
         if($from && $to) {
             $query->whereBetween('created_at', [$from, $to]);
         }
 
-        // if($search) {
-        //     $query->where('organization', 'like', '%'.$search.'%');
-        // }
+        if($search) {
+            $query->whereHas('eic_crm_user.wp_user', function ($query) use ($search) {
+                $query->where('user_login', 'like', '%'.$search.'%')
+                      ->orWhere('user_email', 'like', '%'.$search.'%');
+            });
+        }
         return $query->paginate(3, ['*'], 'page', $page);
     }
 
