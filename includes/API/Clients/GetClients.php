@@ -35,7 +35,7 @@ class GetClients {
         global $validator;
 
         $page = $request->get_param('page');
-
+        $search = $request->get_param('search');
         $from = $request->get_param('from');
         $to   = $request->get_param('to');
 
@@ -54,7 +54,7 @@ class GetClients {
            }
         }
 
-        $clientsData = Client::getActiveClients($page, $data['from'], $data['to']);
+        $clientsData = Client::getActiveClients($page, $data['from'], $data['to'], $search);
 
         $wp_user_ids = $clientsData->pluck('eic_crm_user.wp_user_id')->toArray();
 
@@ -111,6 +111,10 @@ class GetClients {
                 'name'          => $wpUser['name'] ?? null,
                 'email'         => $wpUser['email'] ?? null,
             ];
+        });
+
+        $clientsWithDetails = $clientsWithDetails->filter(function ($client) use ($search) {
+            return stripos($client['name'], $search) !== false;
         });
 
         // $topBar = [
