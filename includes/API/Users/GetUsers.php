@@ -28,11 +28,14 @@ class GetUsers {
             $data[] = [
                 'id' => $user->ID,
                 'username' => $user->user_login,
+                'name' => $user->display_name,
+                'email' => $user->user_email,
+                'role' => $user->roles[0],
             ];
         }
 
         return new \WP_REST_Response([
-            'data' => $data,
+            'users' => $data,
             'pagination' => [
                 'total' => $users->total(),
                 'per_page' => $users->perPage(),

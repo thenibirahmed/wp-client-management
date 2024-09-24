@@ -4,13 +4,22 @@ namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
-use WpClientManagement\Models\Project;
 
 class GetClients {
 
     private $namespace = 'wp-client-management/v1';
 
     private $endpoint  = '/clients';
+
+    protected array $rules = [
+        'from'     => 'nullable|date_format:Y-m-d',
+        'to'       => 'nullable|date_format:Y-m-d',
+    ];
+
+    protected array $validationMessages = [
+        'from.date_format' => 'Invalid date format.',
+        'to'               => 'Invalid date format.',
+    ];
 
     public function __construct()
     {
@@ -23,9 +32,29 @@ class GetClients {
 
     public function get_clients(\WP_REST_Request $request)
     {
+        global $validator;
+
         $page = $request->get_param('page');
 
-        $clientsData = Client::getActiveClients($page);
+        $from = $request->get_param('from');
+        $to   = $request->get_param('to');
+
+        $data = [];
+        $data['from']   = $from ?: date('Y-m-d', strtotime('-3 months'));
+        $data['to']     = $to ?: date('Y-m-d');
+
+        $validator = $validator->make($data, $this->rules, $this->validationMessages);
+
+        if (!empty($data['from']) && !empty($data['to'])) {
+            if($data['from'] >= $data['to']) {
+                $validator->errors()->add('from', 'The from date must be less than the to date.');
+                    return new \WP_REST_Response([
+                    'errors' => $validator->errors(),
+           ], 400);
+           }
+        }
+
+        $clientsData = Client::getActiveClients($page, $data['from'], $data['to']);
 
         $wp_user_ids = $clientsData->pluck('eic_crm_user.wp_user_id')->toArray();
 
@@ -41,12 +70,8 @@ class GetClients {
             ];
         }
 
-        $clientIds = Client::pluck('id')->toArray();
-        $invoices  = Invoice::whereIn('client_id', $clientIds)
-                    ->with('status')
-                    ->get();
-
-        // $projectCount = Project::getActiveProjects()->count();
+        $clientIds = $clientsData->pluck('id')->toArray();
+        $invoices  = Invoice::getAllClientsInvoices($clientIds);
 
         $invoiceTotalsByClient = $invoices->groupBy('client_id')->map(function ($invoices) {
 

@@ -56,7 +56,7 @@ class Project extends Model
 
     public static function getProjectData($id)
     {
-        return self::find($id);
+        return self::where('id', $id)->first();
     }
 
     public function client() {

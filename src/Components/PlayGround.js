@@ -136,11 +136,10 @@ const PlayGround = () => {
       });
   };
 
-  const emplyee = () => {
+  const overview = () => {
     axios
       .get(
-        eicApiSettings.rest_url +
-          "wp-client-management/v1/select-project-client",
+        eicApiSettings.rest_url + "wp-client-management/v1/client/13",
 
         {
           headers: {
@@ -160,10 +159,11 @@ const PlayGround = () => {
         );
       });
   };
-  const overview = () => {
+
+  const Currency = () => {
     axios
       .get(
-        eicApiSettings.rest_url + "wp-client-management/v1/client/13",
+        eicApiSettings.rest_url + "wp-client-management/v1/select-currency",
 
         {
           headers: {
@@ -195,7 +195,7 @@ const PlayGround = () => {
       <br />
       <br />
       <button onClick={getTest}>Test me!</button>
-      <br /> <button onClick={emplyee}>Emplyee</button>
+      <br /> <button onClick={Currency}>Currency</button>
       <br />
       <br /> <button onClick={overview}>overview</button>
       <br /> <button onClick={createClient}>Create Coment</button>

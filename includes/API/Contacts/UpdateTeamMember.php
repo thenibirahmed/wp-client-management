@@ -2,7 +2,6 @@
 
 namespace WpClientManagement\API\Contacts;
 
-use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
 
 class UpdateTeamMember {
@@ -72,11 +71,13 @@ class UpdateTeamMember {
 
         if (isset($data['name']) || isset($data['email'])) {
 
-            $wp_user = wp_update_user(array(
+            $wp_user_data = array(
                 'ID' => $eic_crm_user->wp_user_id,
                 'user_login' => $data['name'] ?? null,
                 'user_email' => $data['email'] ?? null,
-            ));
+            );
+
+            $wp_user = wp_update_user($wp_user_data);
 
             if (is_wp_error($wp_user)) {
                 return new \WP_REST_Response([
@@ -90,4 +91,4 @@ class UpdateTeamMember {
         ], 200);
     }
 
-} 
+}

@@ -17,8 +17,8 @@ class Status extends Model
 
     public CONST TYPES = [
         'project' => 'project',
-        'task' => 'task',
-        'deal' => 'deal',
+        'task'    => 'task',
+        'deal'    => 'deal',
         'invoice' => 'invoice',
     ];
 

@@ -18,9 +18,13 @@ class Client extends Model
         'status'
     ];
 
-    public static function getActiveClients($page)
+    public static function getActiveClients($page, $from, $to)
     {
-        return self::paginate(3, ['*'], 'page', $page);
+        $query = self::with('eic_crm_user');
+        if($from && $to) {
+            $query->whereBetween('created_at', [$from, $to]);
+        }
+        return $query->paginate(3, ['*'], 'page', $page);
     }
 
     // Older one.

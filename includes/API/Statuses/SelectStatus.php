@@ -8,7 +8,7 @@ class SelectStatus {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/select/(?P<type>[a-zA-Z0-9_-]+)/status';
+    private $endpoint  = '/select/(?P<type>[a-zA-Z0-9_-]+)/status';
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [

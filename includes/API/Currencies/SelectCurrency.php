@@ -20,15 +20,20 @@ class SelectCurrency {
 
     public function select_currency()
     {
-        $currencies = Currency::all();
+        $currencies = Currency::select(
+            'id',
+            'name',
+            'symbol',
+            'code'
+        )->get();
 
         $data = [];
         foreach ($currencies as $currency) {
             $data[] = [
-                'id' => $currency->id,
-                'name' => $currency->name,
+                'id'     => $currency->id,
+                'name'   => $currency->name,
                 'symbol' => $currency->symbol,
-                'code' => $currency->code
+                'code'   => $currency->code
             ];
         }
 

@@ -27,7 +27,7 @@ class SelectPriority {
         $data = [];
         foreach ($projectPriorities as $priority) {
             $data[] = [
-                'id' => $priority->id,
+                'id'   => $priority->id,
                 'name' => $priority->name
             ];
         }

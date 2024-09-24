@@ -5,7 +5,7 @@ export const useFetchClientOverView = (onError) => {
   return useQuery(
     "client-overview",
     async () => {
-      return await api.get(`/clients-overview`);
+      return await api.get(`/clients-overview/INR`);
     },
     {
       select: (data) => {
@@ -448,7 +448,7 @@ export const useFetchProjectOverView = (onError) => {
   return useQuery(
     "project-overview",
     async () => {
-      return await api.get("/projects-overview");
+      return await api.get("/projects-overview/BDT");
     },
     {
       select: (data) => {
@@ -468,7 +468,7 @@ export const useFetchSingleProjectOverView = (projectId, onError) => {
   return useQuery(
     ["single-project-overview", projectId],
     async () => {
-      return await api.get(`/project/${projectId}/overview`);
+      return await api.get(`/project/${projectId}/overview/BDT`);
     },
     {
       select: (data) => {
@@ -735,7 +735,7 @@ export const useFetchContactTeamMembers = (paginationUrl, onError) => {
     {
       select: (data) => {
         const sendData = {
-          team: data.data.data,
+          team: data.data.team_members,
           pagination: data.data.pagination,
         };
 

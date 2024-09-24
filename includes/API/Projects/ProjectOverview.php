@@ -8,22 +8,44 @@ use WpClientManagement\Models\Project;
 class ProjectOverview {
 
     private $namespace = 'wp-client-management/v1';
-    private $endpoint  = '/projects-overview';
+    private $endpoint  = '/projects-overview(?:/(?P<currency>[a-zA-Z0-9_-]+))?';
+
+    protected array $rules = [
+        'currency' => 'nullable|exists:eic_currencies,code',
+    ];
+
+    protected array $validationMessages = [
+        'currency.exists' => 'Invalid currency code.',
+    ];
 
     public function __construct()
     {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE,
+            'methods'  => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_project_overview'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function get_project_overview()
+    public function get_project_overview(\WP_REST_Request $request)
     {
+        global $validator;
+
+        $currency = $request->get_param('currency');
+
+        $data      = ['currency' => $currency ?: 'USD'];
+
+        $validator = $validator->make($data, $this->rules, $this->validationMessages);
+
+        if ($validator->fails()) {
+            return new \WP_REST_Response([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
         $projects     = Project::pluck('id')->toArray();
         $projectCount = count($projects);
-        $invoices     = Invoice::whereIn('client_id', $projects)->get();
+        $invoices     = Invoice::getAllProjectInvoices($projects, $data['currency']);
 
         $totalInvoicesAmount = $invoices->sum('total');
         $totalInvoiceCount   = $invoices->count();
@@ -58,7 +80,8 @@ class ProjectOverview {
                     'name'    => 'Total Projects',
                     'count'   => $projectCount,
                     'subText' => 'Last 3 months'
-                ]
+                ],
+                'currency' => $data['currency']
             ]
         ]);
 

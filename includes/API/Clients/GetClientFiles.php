@@ -51,7 +51,7 @@ class GetClientFiles {
             ], 400);
         }
 
-        $client = Client::find($data['id']);
+        $client = Client::where('id', $client_id)->exists();
 
         if(!$client) {
             return new \WP_REST_Response([
@@ -87,6 +87,7 @@ class GetClientFiles {
             $data[] = [
                 'id'     => $file->id,
                 'name'   => $file->title,
+                'project'=> $file->project->title,
                 'author' => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
                 'url'    => $file->url,
                 'time'   => $file->created_at ? human_time_diff(strtotime($file->created_at), current_time('timestamp')) . ' ago' : null,
