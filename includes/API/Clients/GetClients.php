@@ -113,9 +113,11 @@ class GetClients {
             ];
         });
 
-        $clientsWithDetails = $clientsWithDetails->filter(function ($client) use ($search) {
-            return stripos($client['name'], $search) !== false;
-        });
+       if($search) {
+            $clientsWithDetails = $clientsWithDetails->filter(function ($client) use ($search) {
+                return stripos($client['name'], $search) !== false;
+            });
+       }
 
         // $topBar = [
         //     "invoice" => [

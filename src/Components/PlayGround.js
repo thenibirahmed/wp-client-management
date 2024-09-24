@@ -184,7 +184,7 @@ const PlayGround = () => {
 	const getTestData = () => {
 		axios.get(
 			//' ?from=2020-09-15&to=2024-09-30'
-			eicApiSettings.rest_url + "wp-client-management/v1/clients?search=ra&from=2010-09-15&to=2024-09-30" ,
+			eicApiSettings.rest_url + "wp-client-management/v1/clients?from=2010-09-15&to=2024-09-30" ,
 			{
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
@@ -205,6 +205,31 @@ const PlayGround = () => {
 			});
 	};
 
+	// const setSearch = (e) => {
+	// 	if (e.length > 2) {
+	// 		axios.get(
+	// 			eicApiSettings.rest_url + "wp-client-management/v1/clients?search=" + e + "&from=2010-09-15&to=2024-09-30" ,
+	// 			{
+	// 				headers: {
+	// 					"X-WP-Nonce": eicApiSettings.nonce,
+	// 					},
+	// 				}
+	// 			)
+	// 			.then((response) => {
+	// 				console.log(response.data);
+	// 				setPost(response.data);
+	// 			})
+	// 			.catch((error) => {
+	// 				console.log(
+	// 					"Error:",
+	// 					error.response ? error.response.data : error.message
+	// 				);
+	// 			});
+	// 	}
+	// 	console.log(e);
+	// }
+
+
     return (
         <div>
             <h1 style={{textAlign: "center"}}>Let's play!</h1>
@@ -213,6 +238,8 @@ const PlayGround = () => {
             <button onClick={getSinglePost}>Click me to get single post</button> <br/><br/> */}
             {/*<button style={{padding: "10px",marginBottom: "5px", backgroundColor:"blue",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}} onClick={getTest}>Test me!</button><br/>*/}
             <button style={{padding: "10px",backgroundColor:"black",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}} onClick={getTestData}>Test me!</button><br/>
+			<br/>
+			{/* <input type="serch" onChange={(e) => setSearch(e.target.value)}/> */}
         </div>
     );
 };
