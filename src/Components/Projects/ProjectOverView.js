@@ -29,12 +29,12 @@ const ProjectOverView = ({ projectOverView, projectDetails = false }) => {
   }, [currencyLists]);
   return (
     <React.Fragment>
-      <div className="flex justify-between items-center ">
+      <div className="flex md:flex-row flex-col justify-between md:items-center md:gap-0 gap-3 ">
         <h1 className="font-metropolis w-fit  font-semibold  text-textColor text-2xl">
           Projects Overview
         </h1>
 
-        <div className="w-fit flex items-center gap-2">
+        <div className="sm:w-fit flex sm:flex-row flex-col  items-center gap-2 sm:justify-start justify-center w-full">
           <ClearButton />
           <DateRangePicker />
           <SelectTextField

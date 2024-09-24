@@ -4,7 +4,7 @@ export const useFetchClientOverView = (onError) => {
   return useQuery(
     "client-overview",
     async () => {
-      return await api.get(`/clients-overview`);
+      return await api.get(`/clients-overview/BDT`);
     },
     {
       select: (data) => {
