@@ -1,11 +1,10 @@
 import { useQuery } from "react-query";
 import api from "../api/api";
-import { useQueryClient, useMutation } from "react-query";
 export const useFetchClientOverView = (onError) => {
   return useQuery(
     "client-overview",
     async () => {
-      return await api.get(`/clients-overview/INR`);
+      return await api.get(`/clients-overview`);
     },
     {
       select: (data) => {

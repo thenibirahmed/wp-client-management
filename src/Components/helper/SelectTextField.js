@@ -16,6 +16,7 @@ export const SelectTextField = ({
   setSelect,
   lists,
   isSubmitting,
+  currency = false,
 }) => {
   const [error, setError] = useState("");
 
@@ -31,13 +32,19 @@ export const SelectTextField = ({
 
   return (
     <Listbox value={select} onChange={setSelect}>
-      <div className="flex flex-col gap-2 w-full">
-        <label className="font-medium text-sm  font-metropolis text-textColor">
-          {label}
-        </label>
+      <div className={`flex flex-col gap-2 ${currency ? "w-fit" : " w-full"} `}>
+        {label && (
+          <label className="font-medium text-sm  font-metropolis text-textColor">
+            {label}
+          </label>
+        )}
         <div className="relative">
           <ListboxButton
-            className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 ${
+            className={`relative text-sm font-metropolis border ${
+              currency
+                ? "rounded-[5px] border-[1px]  px-4 py-[8px]"
+                : "rounded-md py-1.5 pl-3 pr-10 "
+            } w-full cursor-default  bg-white  text-left text-textColor2   sm:text-sm sm:leading-6 ${
               error ? "border-customRed" : "border-borderColor"
             }`}
           >
