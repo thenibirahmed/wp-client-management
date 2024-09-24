@@ -109,7 +109,7 @@ class Invoice extends Model
                 ->get();
     }
 
-    public static function getActiveClientsInvoices($clientIds, $currency)
+    public static function getActiveClientsInvoices($clientIds, $currency, $from, $to)
     {
         $query = self::whereIn('client_id', $clientIds);
 
@@ -117,6 +117,10 @@ class Invoice extends Model
             $query->whereHas('currency', function ($query) use ($currency) {
                 $query->where('code', $currency);
             });
+        }
+
+        if($from && $to){
+            $query->whereBetween('date', [$from, $to]);
         }
 
         return $query->get();

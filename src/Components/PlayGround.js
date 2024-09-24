@@ -183,7 +183,7 @@ const PlayGround = () => {
 
 	const getTestData = () => {
 		axios.get(
-				eicApiSettings.rest_url + "wp-client-management/v1/project/1/overview",
+				eicApiSettings.rest_url + "wp-client-management/v1/clients-overview?currency=EUR&from=2022-04-01&to=2024-09-30",
 				{
 					headers: {
 						"X-WP-Nonce": eicApiSettings.nonce,
