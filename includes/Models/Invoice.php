@@ -49,6 +49,13 @@ class Invoice extends Model
         'fee'       => 'float'
     ];
 
+    public static function getAllClientsInvoices($clientIds)
+    {
+        return self::with(['status','project','paymentMethod'])
+                ->whereIn('client_id',$clientIds)
+                ->get();
+    }
+
     public static function getClientInvoices($id ,$page)
     {
         return self::with(['status','project','paymentMethod'])
