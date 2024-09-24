@@ -34,10 +34,10 @@ class GetClients {
     {
         global $validator;
 
-        $page = $request->get_param('page');
+        $page   = $request->get_param('page');
         $search = $request->get_param('search');
-        $from = $request->get_param('from');
-        $to   = $request->get_param('to');
+        $from   = $request->get_param('from');
+        $to     = $request->get_param('to');
 
         $data = [];
         $data['from']   = $from ?: date('Y-m-d', strtotime('-3 months'));
@@ -113,11 +113,11 @@ class GetClients {
             ];
         });
 
-       if($search) {
-            $clientsWithDetails = $clientsWithDetails->filter(function ($client) use ($search) {
-                return stripos($client['name'], $search) !== false;
-            });
-       }
+    //    if($search) {
+    //         $clientsWithDetails = $clientsWithDetails->filter(function ($client) use ($search) {
+    //             return stripos($client['name'], $search) !== false;
+    //         });
+    //    }
 
         // $topBar = [
         //     "invoice" => [

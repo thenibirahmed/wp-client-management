@@ -150,7 +150,7 @@ const PlayGround = () => {
       .get(
         //' ?from=2020-09-15&to=2024-09-30'
         eicApiSettings.rest_url +
-          "wp-client-management/v1/clients?from=2010-09-15&to=2024-09-30",
+          "wp-client-management/v1/clients?search=soweb",
         {
           headers: {
             "X-WP-Nonce": eicApiSettings.nonce,

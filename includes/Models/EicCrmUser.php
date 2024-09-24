@@ -55,4 +55,9 @@ class EicCrmUser extends Model
         return $this->belongsToMany(Project::class, 'eic_project_eic_crm_user', 'eic_crm_user_id', 'project_id');
     }
 
+    public function wp_user()
+    {
+        return $this->belongsTo(WpUser::class,'wp_user_id');
+    }
+
 }

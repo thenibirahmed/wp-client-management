@@ -2,8 +2,10 @@
 
 namespace WpClientManagement\API;
 
+use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Project;
 use WpClientManagement\Models\Task;
+use WpClientManagement\Models\WpUser;
 
 class TestApi {
 
@@ -21,14 +23,11 @@ class TestApi {
 
     public function test(\WP_REST_Request $request) {
 
-        $page = $request->get_params('page');
-
-        $task = Task::find(1);
-
-        $assigned = $task->assigned_user;
-
+        $crm_user = EicCrmUser::find(1);
+        $wp_user = $crm_user->wp_user;
+        
         return new \WP_REST_Response([
-            'data' => $assigned
+            'data' => $wp_user
         ]);
     }
 }
