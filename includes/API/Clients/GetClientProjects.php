@@ -13,13 +13,17 @@ class GetClientProjects {
     private $endpoint  = '/client/(?P<id>\d+)/projects';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:eic_clients,id',
+        'id'   => 'required|integer|exists:eic_clients,id',
+        'from' => 'nullable|date_format:Y-m-d',
+        'to'   => 'nullable|date_format:Y-m-d',
     ];
 
     protected array $validationMessages = [
-        'id.required' => 'The client ID is required.',
-        'id.integer'  => 'The client ID must be an integer.',
-        'id.exists'   => 'The client does not exist.',
+        'id.required'        => 'The client ID is required.',
+        'id.integer'         => 'The client ID must be an integer.',
+        'id.exists'          => 'The client does not exist.',
+        'from.date_format'   => 'The from date is not valid.',
+        'to.date_format'     => 'The from date is not valid.',
     ];
 
     public function __construct() {
@@ -35,6 +39,12 @@ class GetClientProjects {
 
         $client_id  = $request->get_param('id');
         $page       = $request->get_param('project');
+        $from       = $request->get_param('from');
+        $to         = $request->get_param('to');
+
+        $data = [];
+        $data['from']  = $from ?: date('Y-m-d', strtotime('-3 months'));
+        $data['to']    = $to ?: date('Y-m-d');
 
         if(!isset($client_id)) {
             return new \WP_REST_Response([
@@ -42,7 +52,7 @@ class GetClientProjects {
             ]);
         }
 
-        $data = ['id' => $client_id];
+        $data['id']  = $client_id;
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -60,7 +70,7 @@ class GetClientProjects {
             ]);
         };
 
-        $projects = Project::getClientProjects($client_id, $page);
+        $projects = Project::getClientProjects($client_id, $page, $data['from'], $data['to']);
 
         if(!$projects) {
             return new \WP_REST_Response([

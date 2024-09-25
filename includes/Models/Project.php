@@ -40,10 +40,11 @@ class Project extends Model
         })->get();
     }
 
-    public static function getClientProjects($id, $page)
+    public static function getClientProjects($id, $page, $from, $to)
     {
         return self::with('invoices','priority')
                 ->where('client_id', $id)
+                ->whereBetween('start_date', [$from, $to])
                 ->paginate(5, ['*'], 'project', $page);
     }
 

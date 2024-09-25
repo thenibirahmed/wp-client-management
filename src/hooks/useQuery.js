@@ -450,7 +450,7 @@ export const useFetchProjectOverView = (dateStart, dateEnd, code, onError) => {
     "project-overview",
     async () => {
       return await api.get(
-        `/projects-overview?currency=${code}&from=${dateStart}&to=${dateEnd}`
+        `/projects-overview?currency=${"USD"}&from=${dateStart}&to=${dateEnd}`
       );
     },
     {
