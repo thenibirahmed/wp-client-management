@@ -1,10 +1,12 @@
 import { useQuery } from "react-query";
 import api from "../api/api";
-export const useFetchClientOverView = (onError) => {
+export const useFetchClientOverView = (dateStart, dateEnd, code, onError) => {
   return useQuery(
     "client-overview",
     async () => {
-      return await api.get(`/clients-overview/BDT`);
+      return await api.get(
+        `/clients-overview?currency=${code}&from=${dateStart}&to=${dateEnd}`
+      );
     },
     {
       select: (data) => {
@@ -14,6 +16,7 @@ export const useFetchClientOverView = (onError) => {
 
         return sendData;
       },
+
       onError,
       staleTime: 5000,
     }
@@ -34,6 +37,27 @@ export const useFetchClients = (pageinationUrl, onError) => {
 
         return sendData;
       },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+export const useFetchSingleClientOverView = (clientId, onError) => {
+  return useQuery(
+    ["single-client-overview", clientId],
+    async () => {
+      return await api.get(`/client/${clientId}/overview/?currency=BDT`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          topBar: data.data.topBar,
+          profile: data.data.profile,
+        };
+
+        return sendData;
+      },
+      enabled: !!clientId,
       onError,
       staleTime: 5000,
     }
@@ -273,28 +297,6 @@ export const useFetchInvoiceEditDetails = (id, update, onError) => {
   );
 };
 
-export const useFetchSingleClientOverView = (clientId, onError) => {
-  return useQuery(
-    ["single-client-overview", clientId],
-    async () => {
-      return await api.get(`/client/${clientId}/overview`);
-    },
-    {
-      select: (data) => {
-        const sendData = {
-          topBar: data.data.topBar,
-          profile: data.data.profile,
-        };
-
-        return sendData;
-      },
-      enabled: !!clientId,
-      onError,
-      staleTime: 5000,
-    }
-  );
-};
-
 export const useFetchClientProject = (clientId, paginationUrl, onError) => {
   return useQuery(
     ["client-projects", clientId],
@@ -447,7 +449,7 @@ export const useFetchProjectOverView = (onError) => {
   return useQuery(
     "project-overview",
     async () => {
-      return await api.get("/projects-overview/BDT");
+      return await api.get("/projects-overview?currency=BDT");
     },
     {
       select: (data) => {

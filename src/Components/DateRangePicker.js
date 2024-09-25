@@ -4,33 +4,20 @@ import dayjs from "dayjs";
 import "react-datepicker/dist/react-datepicker.css";
 import { Calendar02Icon } from "../utils/icons";
 
-const DateRangePicker = () => {
+const DateRangePicker = ({ dateRange, setDateRange }) => {
   const datePickerRef = useRef(null);
-  const [dateRange, setDateRange] = useState([
-    new Date(),
-    dayjs().add(1, "day").toDate(),
-  ]);
   const [startDate, endDate] = dateRange;
-  const [showDatePicker, setShowDatePicker] = useState(false); // Controls visibility
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleDateRangeChange = (update) => {
-    setDateRange(update); // Update the date range
+    setDateRange(update);
   };
 
   const formatDisplayDate = (date) =>
     date ? dayjs(date).format("D MMM, YYYY") : "";
 
   const toggleDatePicker = () => {
-    setShowDatePicker(!showDatePicker); // Toggle date picker visibility on icon click
-  };
-
-  const handleClickOutside = (event) => {
-    if (
-      datePickerRef.current &&
-      !datePickerRef.current.contains(event.target)
-    ) {
-      setShowDatePicker(false); // Close the date picker when clicking outside
-    }
+    setShowDatePicker(!showDatePicker);
   };
 
   useEffect(() => {

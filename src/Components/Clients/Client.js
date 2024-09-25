@@ -39,17 +39,11 @@ const Client = () => {
   const [isAllselected, setIsAllSelected] = useState(false);
 
   const {
-    isLoading: clientsLoader,
+    isLoading,
     data: clientList,
-    error: cliErr,
+    error,
     refetch,
   } = useFetchClients(paginationUrl, onError);
-  const {
-    isLoading,
-    data: clientOverView,
-    error,
-    refetch: cliOverViewRefetch,
-  } = useFetchClientOverView(onError);
 
   useRefetch(paginationUrl, refetch);
 
@@ -93,7 +87,7 @@ const Client = () => {
 
   return (
     <React.Fragment>
-      <ClientOverView topBarData={clientOverView?.topBar} />
+      <ClientOverView />
       <div className="space-y-6">
         <div className="flex md:flex-row  md:justify-between flex-col md:items-center md:gap-0 gap-4">
           <h1 className="font-metropolis font-semibold  text-textColor text-2xl">

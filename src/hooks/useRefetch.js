@@ -232,3 +232,20 @@ export const useUpdateDefaultInvoiceValue = (
     }
   }, [update, client, employeematch, clientMatch]);
 };
+
+export const useClientOverViewRefetch = (
+  dateStart,
+  dateEnd,
+  selectCurrency,
+  refetch
+) => {
+  useEffect(() => {
+    const refetchHandler = async () => {
+      await refetch();
+    };
+
+    if (dateStart || dateEnd || selectCurrency) {
+      refetchHandler();
+    }
+  }, [dateStart, dateEnd, selectCurrency]);
+};
