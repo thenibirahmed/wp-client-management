@@ -187,7 +187,7 @@ const PlayGround = () => {
 
 	const getTestData = () => {
 		axios.get(
-			eicApiSettings.rest_url + "wp-client-management/v1/clients-overview",
+			eicApiSettings.rest_url + "wp-client-management/v1/clients?search=saikat",
 			{
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,

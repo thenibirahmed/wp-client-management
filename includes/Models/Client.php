@@ -32,7 +32,8 @@ class Client extends Model
 
         if($search) {
             $query->whereHas('eic_crm_user.wp_user', function ($query) use ($search) {
-                $query->where('user_login', 'like', '%'.$search.'%');
+                $query->where('user_login', 'like', '%'.$search.'%')
+                    ->orWhere('user_email', 'like', '%'.$search.'%');
             });
         }
         return $query->paginate(30, ['*'], 'page', $page);
