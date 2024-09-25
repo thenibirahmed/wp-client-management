@@ -4,9 +4,8 @@ export const useFetchClientOverView = (dateStart, dateEnd, code, onError) => {
   return useQuery(
     "client-overview",
     async () => {
-      return await api.get(
-        `/clients-overview?currency=${code}&from=${dateStart}&to=${dateEnd}`
-      );
+      const defaultcode = code ? code : "USD";
+      return await api.get(`/clients-overview?currency=${defaultcode}`);
     },
     {
       select: (data) => {
@@ -449,9 +448,7 @@ export const useFetchProjectOverView = (dateStart, dateEnd, code, onError) => {
   return useQuery(
     "project-overview",
     async () => {
-      return await api.get(
-        `/projects-overview?currency=${"USD"}&from=${dateStart}&to=${dateEnd}`
-      );
+      return await api.get(`/projects-overview`);
     },
     {
       select: (data) => {

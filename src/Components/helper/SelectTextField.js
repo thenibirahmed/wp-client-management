@@ -32,7 +32,7 @@ export const SelectTextField = ({
 
   return (
     <Listbox value={select} onChange={setSelect}>
-      <div className={`flex flex-col gap-2 ${currency ? "w-fit" : " w-full"} `}>
+      <div className={`flex flex-col gap-2 ${currency ? "w-32" : " w-full"} `}>
         {label && (
           <label className="font-medium text-sm  font-metropolis text-textColor">
             {label}
@@ -48,7 +48,9 @@ export const SelectTextField = ({
               error ? "border-customRed" : "border-borderColor"
             }`}
           >
-            <span className="block truncate">{select?.name}</span>
+            <span className="block truncate">
+              {currency ? select?.code : select?.name}
+            </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon
                 aria-hidden="true"
@@ -68,7 +70,7 @@ export const SelectTextField = ({
                 className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white"
               >
                 <span className="block truncate font-normal group-data-[selected]:font-semibold">
-                  {person.name}
+                  {currency ? person.code : person.name}
                 </span>
 
                 <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">

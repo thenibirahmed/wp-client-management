@@ -49,8 +49,14 @@ const ProjectOverView = ({ projectDetails = false }) => {
   }
 
   useEffect(() => {
-    if (!selectCurrency) {
-      setSelectCurrency({ name: " -Select Currency-", id: null });
+    if (currencyLists?.currency.length > 0) {
+      const usdCurrency = currencyLists?.currency?.find(
+        (item) => item.code === "USD"
+      );
+
+      setSelectCurrency(usdCurrency);
+    } else {
+      setSelectCurrency({ name: " -No Currency- ", id: null });
     }
   }, [currencyLists]);
 
