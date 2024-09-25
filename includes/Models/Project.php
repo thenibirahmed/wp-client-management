@@ -40,7 +40,7 @@ class Project extends Model
         })->get();
     }
 
-    public static function getClientProjects($id, $page, $from, $to, $priority_id, $status_id)
+    public static function getClientProjects($id, $page, $from, $to, $priority_id, $status_id, $search)
     {
         $query = self::with('invoices','priority')
                 ->where('client_id', $id)
@@ -52,6 +52,10 @@ class Project extends Model
 
         if($priority_id){
             $query->where('priority_id', $priority_id);
+        }
+
+        if($search){
+            $query->where('title', 'like', '%'.$search.'%');
         }
 
         return $query->paginate(10, ['*'], 'project', $page);
