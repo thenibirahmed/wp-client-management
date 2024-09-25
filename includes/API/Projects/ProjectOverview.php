@@ -33,7 +33,7 @@ class ProjectOverview {
 
         $currency = $request->get_param('currency');
 
-        $data      = ['currency' => $currency ?: 'USD'];
+        $data      = ['currency' => $currency ? $currency : 'USD'];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

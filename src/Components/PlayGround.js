@@ -187,7 +187,7 @@ const PlayGround = () => {
 
 	const getTestData = () => {
 		axios.get(
-			eicApiSettings.rest_url + "wp-client-management/v1/clients?search=saikat",
+			eicApiSettings.rest_url + "wp-client-management/v1/projects-overview?currency=BDT",
 			{
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,

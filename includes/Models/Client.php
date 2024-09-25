@@ -26,15 +26,16 @@ class Client extends Model
             return $query->paginate(3, ['*'], 'page', $page);
         }
 
-        // if($from && $to) {
-        //     $query->whereBetween('created_at', [$from, $to]);
-        // }
+        if($from && $to) {
+            $query->whereBetween('created_at', [$from, $to]);
+        }
 
         if($search) {
             $query->whereHas('eic_crm_user.wp_user', function ($query) use ($search) {
                 $query->where('user_login', 'like', '%'.$search.'%')
                     ->orWhere('user_email', 'like', '%'.$search.'%');
             });
+            $query->orWhere('organization', 'like', '%'.$search.'%');
         }
         return $query->paginate(30, ['*'], 'page', $page);
     }
