@@ -49,10 +49,10 @@ class GetClientProjects {
         $status_id   = $request->get_param('status_id');
 
         $data = [];
-        $data['from']       = $from ?: date('Y-m-d', strtotime('-3 months'));
-        $data['to']         = $to ?: date('Y-m-d');
-        $data['status_id']     = $status_id;
-        $data['priority_id']   = $priority_id;
+        $data['from']          = $from ?: date('Y-m-d', strtotime('-3 months'));
+        $data['to']            = $to ?: date('Y-m-d');
+        $data['status_id']     = isset($status_id) ? intval($status_id) : null;
+        $data['priority_id']   = isset($priority_id) ? intval($priority_id) : null;
 
         if(!isset($client_id)) {
             return new \WP_REST_Response([
@@ -78,7 +78,9 @@ class GetClientProjects {
             ]);
         };
 
-        $projects = Project::getClientProjects($client_id, $page, $data['from'], $data['to']);
+        // return new \Wp_REST_Response($data);
+
+        $projects = Project::getClientProjects($client_id, $page, $data['from'], $data['to'], $data['priority_id'], $data['status_id']);
 
         if(!$projects) {
             return new \WP_REST_Response([
