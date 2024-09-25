@@ -68,9 +68,13 @@ const PlayGround = () => {
 	};
 
 	const getTest = () => {
-		axios.put(
-				eicApiSettings.rest_url + "wp-client-management/v1/note/update/3",
+		axios.post(
+				eicApiSettings.rest_url + "wp-client-management/v1/client/create",
 				{
+					name: 'obito',
+					email: 'obito@obito.com',
+					phone: '1234567890',
+					organization: 'Akatsuki'
 					// client_id: 4,
 					// subject: 'no subject',
 					// body: 'no body'
@@ -100,9 +104,9 @@ const PlayGround = () => {
 				// country: 'last country',
 				// state: 'last state'
 				// 	eic_crm_user_id: 1,
-					project_id: 2,
+					// project_id: 2,
 					// client_id: 1,
-					note: 'update hote hobe'
+					// note: 'update hote hobe'
 					// currency_id: 1,
 					// payment_method_id: 2,
 					// status_id: 7,
@@ -183,8 +187,7 @@ const PlayGround = () => {
 
 	const getTestData = () => {
 		axios.get(
-			//' ?from=2020-09-15&to=2024-09-30'
-			eicApiSettings.rest_url + "wp-client-management/v1/clients?search=soweb" ,
+			eicApiSettings.rest_url + "wp-client-management/v1/clients-overview",
 			{
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
