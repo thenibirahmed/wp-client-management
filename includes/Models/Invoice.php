@@ -56,11 +56,26 @@ class Invoice extends Model
                 ->get();
     }
 
-    public static function getClientInvoices($id ,$page)
+    public static function getClientInvoices($id ,$page, $from, $to, $status_id, $search = '')
     {
-        return self::with(['status','project','paymentMethod'])
+        $query = self::with(['status','project','paymentMethod'])
                 ->where('client_id',$id)
-                ->paginate(2, ['*'], 'invoice', $page);
+                ->whereBetween('date', [$from, $to]);
+
+        if(!empty($status_id)) {
+            $query->where('status_id', $status_id);
+        }
+
+        if (!empty($search)) {
+            $query->where(function($query) use ($search) {
+                $query->where('code', 'like', '%' . $search . '%')
+                      ->orWhereHas('project', function ($query) use ($search) {
+                          $query->where('title', 'like', '%' . $search . '%');
+                      });
+            });
+        }
+
+        return $query->paginate(5, ['*'] , 'invoice', $page);
     }
 
     public static function getSingleClientInvoices($id, $currency)

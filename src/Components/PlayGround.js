@@ -71,10 +71,10 @@ const PlayGround = () => {
 		axios.post(
 				eicApiSettings.rest_url + "wp-client-management/v1/client/create",
 				{
-					name: 'obito',
-					email: 'obito@obito.com',
-					phone: '1234567890',
-					organization: 'Akatsuki'
+					name: 'obitox',
+					email: 'obitox@obito.com',
+					phone: '636351',
+					organization: 'Pain'
 					// client_id: 4,
 					// subject: 'no subject',
 					// body: 'no body'
@@ -187,7 +187,7 @@ const PlayGround = () => {
 
 	const getTestData = () => {
 		axios.get(
-			eicApiSettings.rest_url + "wp-client-management/v1/client/1/projects?search=last&status_id=4",
+			eicApiSettings.rest_url + "wp-client-management/v1/clients",
 			{
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
@@ -240,7 +240,7 @@ const PlayGround = () => {
             <button onClick={getUsers}>Click me to get all users</button> <br/><br/>
             <button onClick={getSinglePost}>Click me to get single post</button> <br/><br/> */}
             {/*<button style={{padding: "10px",marginBottom: "5px", backgroundColor:"blue",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}} onClick={getTest}>Test me!</button><br/>*/}
-            <button style={{padding: "10px",backgroundColor:"black",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}} onClick={getTestData}>Test me!</button><br/>
+            <button onClick={getTestData} style={{padding: "10px",backgroundColor:"black",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}}>Test me!</button><br/>
 			<br/>
 			{/* <input type="serch" onChange={(e) => setSearch(e.target.value)}/> */}
         </div>

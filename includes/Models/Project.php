@@ -40,7 +40,7 @@ class Project extends Model
         })->get();
     }
 
-    public static function getClientProjects($id, $page, $from, $to, $priority_id, $status_id, $search)
+    public static function getClientProjects($id, $page, $from, $to, $priority_id, $status_id, $search = '')
     {
         $query = self::with('invoices','priority')
                 ->where('client_id', $id)
@@ -54,11 +54,11 @@ class Project extends Model
             $query->where('priority_id', $priority_id);
         }
 
-        if($search){
+        if(!empty($search)){
             $query->where('title', 'like', '%'.$search.'%');
         }
 
-        return $query->paginate(10, ['*'], 'project', $page);
+        return $query->paginate(2, ['*'], 'project', $page);
     }
 
     public static function getTeamMemberProjects($id, $page)

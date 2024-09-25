@@ -16,8 +16,8 @@ class GetClientProjects {
         'id'          => 'required|integer|exists:eic_clients,id',
         'from'        => 'nullable|date_format:Y-m-d',
         'to'          => 'nullable|date_format:Y-m-d',
-        'priority_id' => 'nullable|exists:eic_priorities,id',
         'status_id'   => 'nullable|exists:eic_statuses,id',
+        'priority_id' => 'nullable|exists:eic_priorities,id',
     ];
 
     protected array $validationMessages = [
@@ -78,8 +78,6 @@ class GetClientProjects {
                 'error' => 'Client does not exists.',
             ],404);
         };
-
-        // return new \Wp_REST_Response($data);
 
         $projects = Project::getClientProjects($client_id, $page, $data['from'], $data['to'], $data['priority_id'], $data['status_id'], $search);
 

@@ -40,8 +40,8 @@ class GetClients {
         $to     = $request->get_param('to');
 
         $data = [];
-        $data['from']   = $from ?: date('Y-m-d', strtotime('-3 months'));
-        $data['to']     = $to ?: date('Y-m-d');
+        $data['from']  = $from ?: date('Y-m-d', strtotime('-3 months'));
+        $data['to']    = $to ? $to . ' 23:59:59' : date('Y-m-d 23:59:59');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -53,6 +53,7 @@ class GetClients {
            ], 400);
            }
         }
+
 
         $clientsData = Client::getActiveClients($page, $data['from'], $data['to'], $search);
 
