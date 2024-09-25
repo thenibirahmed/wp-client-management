@@ -40,7 +40,7 @@ class ClientOverview {
         $to       = $request->get_param('to');
 
         $data = [];
-        $data['currency'] = $currency ? $currency : 'BDT';
+        $data['currency'] = $currency ?: 'USD';
         $data['from']     = $from ?: date('Y-m-d', strtotime('-3 months'));
         $data['to']       = $to ?: date('Y-m-d');
 

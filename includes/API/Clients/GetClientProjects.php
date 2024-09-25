@@ -47,17 +47,18 @@ class GetClientProjects {
         $to          = $request->get_param('to');
         $priority_id = $request->get_param('priority_id');
         $status_id   = $request->get_param('status_id');
+        $search      = $request->get_param('search');
 
         $data = [];
-        $data['from']       = $from ?: date('Y-m-d', strtotime('-3 months'));
-        $data['to']         = $to ?: date('Y-m-d');
-        $data['status_id']     = $status_id;
-        $data['priority_id']   = $priority_id;
+        $data['from']          = $from ?: date('Y-m-d', strtotime('-3 months'));
+        $data['to']            = $to ?: date('Y-m-d');
+        $data['status_id']     = isset($status_id) ? intval($status_id) : null;
+        $data['priority_id']   = isset($priority_id) ? intval($priority_id) : null;
 
         if(!isset($client_id)) {
             return new \WP_REST_Response([
                 'error' => 'Id param is required',
-            ]);
+            ],400);
         }
 
         $data['id']  = $client_id;
@@ -75,10 +76,12 @@ class GetClientProjects {
         if(!$client) {
             return new \WP_REST_Response([
                 'error' => 'Client does not exists.',
-            ]);
+            ],404);
         };
 
-        $projects = Project::getClientProjects($client_id, $page, $data['from'], $data['to']);
+        // return new \Wp_REST_Response($data);
+
+        $projects = Project::getClientProjects($client_id, $page, $data['from'], $data['to'], $data['priority_id'], $data['status_id'], $search);
 
         if(!$projects) {
             return new \WP_REST_Response([

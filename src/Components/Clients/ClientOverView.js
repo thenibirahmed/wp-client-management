@@ -16,22 +16,21 @@ import Skeleton from "../Skeleton";
 const ClientOverView = () => {
   const [selectCurrency, setSelectCurrency] = useState();
 
-  console.log("selectCurrency = ", selectCurrency);
   const [dateRange, setDateRange] = useState([
     dayjs().subtract(3, "month").toDate(),
     new Date(),
   ]);
   const [startDate, endDate] = dateRange;
 
-  const dateStart = dayjs(startDate).format("YYYY-MM-DD");
-  const dateEnd = dayjs(endDate).format("YYYY-MM-DD");
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
 
   const {
     isLoading,
     data: clientOverView,
     error,
     refetch,
-  } = useFetchClientOverView(dateStart, dateEnd, selectCurrency?.code, onError);
+  } = useFetchClientOverView(dateFrom, dateTo, selectCurrency?.code, onError);
 
   const {
     isLoading: isLoadingSelectCurrency,
@@ -39,7 +38,16 @@ const ClientOverView = () => {
     error: selecturrencyErr,
   } = useFetchSelectCurrency(onError);
 
-  useClientOverViewRefetch(dateStart, dateEnd, selectCurrency, refetch);
+  useClientOverViewRefetch(dateFrom, dateTo, selectCurrency, refetch);
+
+  useEffect(() => {
+    if (startDate && endDate && endDate !== "Invalid Date") {
+      const dateStart = dayjs(startDate).format("YYYY-MM-DD");
+      const dateEnd = dayjs(endDate).format("YYYY-MM-DD");
+      setDateFrom(dateStart);
+      setDateTo(dateEnd);
+    }
+  }, [dateRange]);
 
   function onError(err) {
     toast.error(err?.response?.data?.message?.errors || "Something went wrong");
@@ -49,7 +57,7 @@ const ClientOverView = () => {
   useEffect(() => {
     if (currencyLists?.currency.length > 0) {
       const usdCurrency = currencyLists?.currency?.find(
-        (item) => item.code === "USD"
+        (item) => item.code === "BDT"
       );
 
       setSelectCurrency(usdCurrency);
@@ -60,7 +68,13 @@ const ClientOverView = () => {
 
   const clrearFilter = () => {
     setDateRange([dayjs().subtract(3, "month").toDate(), new Date()]);
-    setSelectCurrency({ name: " -Select Currency-", id: null });
+    setDateFrom(null);
+    setDateTo(null);
+    const usdCurrency = currencyLists?.currency?.find(
+      (item) => item.code === "BDT"
+    );
+
+    setSelectCurrency(usdCurrency);
   };
 
   if (isLoading || isLoadingSelectCurrency) return <Skeleton />;

@@ -2,10 +2,22 @@ import { useQuery } from "react-query";
 import api from "../api/api";
 export const useFetchClientOverView = (dateStart, dateEnd, code, onError) => {
   return useQuery(
-    "client-overview",
+    "clients-overview",
     async () => {
-      const defaultcode = code ? code : "USD";
-      return await api.get(`/clients-overview?currency=${defaultcode}`);
+      const defaultcode = code ? code : "BDT";
+
+      let dateFrom = null;
+      let dateTo = null;
+      let query = "";
+
+      if (dateStart && dateEnd) {
+        dateFrom = dateStart;
+        dateTo = dateEnd;
+
+        query = `&from=${dateFrom}&to=${dateTo}`;
+      }
+
+      return await api.get(`/clients-overview?currency=${defaultcode}${query}`);
     },
     {
       select: (data) => {
@@ -41,11 +53,20 @@ export const useFetchClients = (pageinationUrl, onError) => {
     }
   );
 };
-export const useFetchSingleClientOverView = (clientId, onError) => {
+export const useFetchSingleClientOverView = (
+  clientId,
+  dateStart,
+  dateEnd,
+  code,
+  onError
+) => {
   return useQuery(
     ["single-client-overview", clientId],
     async () => {
-      return await api.get(`/client/${clientId}/overview/?currency=BDT`);
+      const defaultcode = code ? code : "USD";
+      return await api.get(
+        `/client/${clientId}/overview?currency=${defaultcode}`
+      );
     },
     {
       select: (data) => {

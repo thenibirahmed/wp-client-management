@@ -59,7 +59,7 @@ const ClientDetails = () => {
       ) : (
         <React.Fragment>
           <ClientInfo profile={singleClientOverView?.profile} />
-          <ClientOverView topBarData={singleClientOverView?.topBar} />
+          <ClientOverView />
           <div className="space-y-6">
             <Tab />
             <React.Fragment>
