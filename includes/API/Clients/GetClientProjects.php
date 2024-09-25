@@ -13,9 +13,11 @@ class GetClientProjects {
     private $endpoint  = '/client/(?P<id>\d+)/projects';
 
     protected array $rules = [
-        'id'   => 'required|integer|exists:eic_clients,id',
-        'from' => 'nullable|date_format:Y-m-d',
-        'to'   => 'nullable|date_format:Y-m-d',
+        'id'          => 'required|integer|exists:eic_clients,id',
+        'from'        => 'nullable|date_format:Y-m-d',
+        'to'          => 'nullable|date_format:Y-m-d',
+        'priority_id' => 'nullable|exists:eic_priorities,id',
+        'status_id'   => 'nullable|exists:eic_statuses,id',
     ];
 
     protected array $validationMessages = [
@@ -24,6 +26,8 @@ class GetClientProjects {
         'id.exists'          => 'The client does not exist.',
         'from.date_format'   => 'The from date is not valid.',
         'to.date_format'     => 'The from date is not valid.',
+        'status_id'          => 'The status ID is not valid.',
+        'priority_id'        => 'The priority ID is not valid.'
     ];
 
     public function __construct() {
@@ -37,14 +41,18 @@ class GetClientProjects {
     public function get_client_projects(\WP_REST_Request $request) {
         global $validator;
 
-        $client_id  = $request->get_param('id');
-        $page       = $request->get_param('project');
-        $from       = $request->get_param('from');
-        $to         = $request->get_param('to');
+        $client_id   = $request->get_param('id');
+        $page        = $request->get_param('project');
+        $from        = $request->get_param('from');
+        $to          = $request->get_param('to');
+        $priority_id = $request->get_param('priority_id');
+        $status_id   = $request->get_param('status_id');
 
         $data = [];
-        $data['from']  = $from ?: date('Y-m-d', strtotime('-3 months'));
-        $data['to']    = $to ?: date('Y-m-d');
+        $data['from']       = $from ?: date('Y-m-d', strtotime('-3 months'));
+        $data['to']         = $to ?: date('Y-m-d');
+        $data['status_id']     = $status_id;
+        $data['priority_id']   = $priority_id;
 
         if(!isset($client_id)) {
             return new \WP_REST_Response([
