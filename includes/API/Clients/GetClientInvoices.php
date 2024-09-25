@@ -13,18 +13,20 @@ class GetClientInvoices {
 
     protected array $rules = [
         'id'        => 'required|integer|exists:eic_clients,id',
-        'from'      => 'nullable|date_format:Y-m-d',
-        'to'        => 'nullable|date_format:Y-m-d',
+        'from'      => 'nullable|date',
+        'to'        => 'nullable|date',
         'status_id' => 'nullable|exists:eic_statuses,id',
+        'currency'  => 'nullable|exists:eic_currencies,code',
     ];
 
     protected array $validationMessages = [
-        'id.required'        => 'The client ID is required.',
-        'id.integer'         => 'The client ID must be an integer.',
-        'id.exists'          => 'The client does not exist.',
-        'from.date_format'   => 'The from date is not valid.',
-        'to.date_format'     => 'The from date is not valid.',
-        'status_id'          => 'The status ID is not valid.',
+        'id.required'   => 'The client ID is required.',
+        'id.integer'    => 'The client ID must be an integer.',
+        'id.exists'     => 'The client does not exist.',
+        'from.date'     => 'The from date is not valid.',
+        'to.date'       => 'The from date is not valid.',
+        'status_id'     => 'The status ID is not valid.',
+        'currency'      => 'The currency is not valid.',
     ];
 
     public function __construct() {
@@ -40,6 +42,7 @@ class GetClientInvoices {
 
         $client_id   = $request->get_param('id');
         $page        = $request->get_param('invoice');
+        $currency    = $request->get_param('currency');
         $from        = $request->get_param('from');
         $to          = $request->get_param('to');
         $status_id   = $request->get_param('status_id');
@@ -57,7 +60,7 @@ class GetClientInvoices {
         $data['to']          = $to ?: date('Y-m-d');
         $data['status_id']   = isset($status_id) ? intval($status_id) : null;
         $data['search']      = $search ?: '';
-
+        $data['currency']    = $currency ?: 'USD';
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -75,7 +78,7 @@ class GetClientInvoices {
             ]);
         }
 
-        $invoices = Invoice::getClientInvoices($client_id, $page, $data['from'], $data['to'], $data['status_id'], $data['search']);
+        $invoices = Invoice::getClientInvoices($client_id, $page, $data['currency'], $data['from'], $data['to'], $data['status_id'], $data['search']);
 
         if(!$invoices) {
             return new \WP_REST_Response([

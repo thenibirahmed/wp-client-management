@@ -12,13 +12,13 @@ class GetClients {
     private $endpoint  = '/clients';
 
     protected array $rules = [
-        'from'     => 'nullable|date_format:Y-m-d',
-        'to'       => 'nullable|date_format:Y-m-d',
+        'from'     => 'nullable|date',
+        'to'       => 'nullable|date',
     ];
 
     protected array $validationMessages = [
-        'from.date_format' => 'Invalid date format.',
-        'to'               => 'Invalid date format.',
+        'from.date' => 'Invalid date format.',
+        'to.date'   => 'Invalid date format.',
     ];
 
     public function __construct()
@@ -41,7 +41,7 @@ class GetClients {
 
         $data = [];
         $data['from']  = $from ?: date('Y-m-d', strtotime('-3 months'));
-        $data['to']    = $to ? $to . ' 23:59:59' : date('Y-m-d 23:59:59');
+        $data['to']    = $to ? $to : date('Y-m-d 23:59:59');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

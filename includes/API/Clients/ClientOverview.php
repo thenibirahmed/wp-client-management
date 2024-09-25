@@ -12,14 +12,14 @@ class ClientOverview {
 
     protected array $rules = [
         'currency' => 'nullable|exists:eic_currencies,code',
-        'from'     => 'nullable|date_format:Y-m-d',
-        'to'       => 'nullable|date_format:Y-m-d',
+        'from'     => 'nullable|date',
+        'to'       => 'nullable|date',
     ];
 
     protected array $validationMessages = [
         'currency.exists'  => 'Invalid currency code.',
-        'from.date_format' => 'Invalid date format.',
-        'to'               => 'Invalid date format.',
+        'from.date'        => 'Invalid date format.',
+        'to.date'          => 'Invalid date format.',
     ];
 
     public function __construct()
@@ -42,7 +42,7 @@ class ClientOverview {
         $data = [];
         $data['currency'] = $currency ?: 'USD';
         $data['from']     = $from ?: date('Y-m-d', strtotime('-3 months'));
-        $data['to']       = $to ?: date('Y-m-d');
+        $data['to']       = $to ?: date('Y-m-d 23:59:59');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

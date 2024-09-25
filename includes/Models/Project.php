@@ -58,7 +58,7 @@ class Project extends Model
             $query->where('title', 'like', '%'.$search.'%');
         }
 
-        return $query->paginate(2, ['*'], 'project', $page);
+        return $query->paginate(20, ['*'], 'project', $page);
     }
 
     public static function getTeamMemberProjects($id, $page)
