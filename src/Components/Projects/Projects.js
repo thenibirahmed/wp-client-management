@@ -35,21 +35,13 @@ const Projects = () => {
   const [isAllselected, setIsAllSelected] = useState(false);
 
   const {
-    isLoading: allProjectLoader,
+    isLoading,
     data: projects,
     error: allProjectError,
     refetch,
   } = useFetchAllProjects(paginationUrl, onError);
 
   useRefetch(paginationUrl, refetch);
-
-  const {
-    isLoading: projectOverViewLoader,
-    data: projectOverView,
-    error: projectOverViewError,
-  } = useFetchProjectOverView(onError);
-
-  let isLoading = allProjectLoader || projectOverViewLoader;
 
   function onError(err) {
     console.log(err);
@@ -80,7 +72,7 @@ const Projects = () => {
     return <Skeleton />;
   }
 
-  if (projectOverViewError || allProjectError) {
+  if (allProjectError) {
     return <Errors message="Internal Server Error" />;
   }
 
@@ -90,7 +82,7 @@ const Projects = () => {
         <ProjectTaskDetails />
       ) : (
         <>
-          <ProjectOverView projectOverView={projectOverView?.projectOverView} />
+          <ProjectOverView />
 
           <div className="space-y-6">
             <>

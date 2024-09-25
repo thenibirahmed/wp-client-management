@@ -18,7 +18,7 @@ class Client extends Model
         'status'
     ];
 
-    public static function getActiveClients($page, $from, $to, $search = null)
+    public static function getActiveClients($page, $from, $to, $search = '')
     {
         $query = self::with('eic_crm_user');
 
@@ -26,17 +26,16 @@ class Client extends Model
             return $query->paginate(3, ['*'], 'page', $page);
         }
 
-        if($from && $to) {
-            $query->whereBetween('created_at', [$from, $to]);
-        }
+        // if($from && $to) {
+        //     $query->whereBetween('created_at', [$from, $to]);
+        // }
 
         if($search) {
             $query->whereHas('eic_crm_user.wp_user', function ($query) use ($search) {
-                $query->where('user_login', 'like', '%'.$search.'%')
-                      ->orWhere('user_email', 'like', '%'.$search.'%');
+                $query->where('user_login', 'like', '%'.$search.'%');
             });
         }
-        return $query->paginate(3, ['*'], 'page', $page);
+        return $query->paginate(30, ['*'], 'page', $page);
     }
 
     // Older one.

@@ -445,11 +445,13 @@ export const useFetchAllProjects = (pageinationUrl, onError) => {
   );
 };
 
-export const useFetchProjectOverView = (onError) => {
+export const useFetchProjectOverView = (dateStart, dateEnd, code, onError) => {
   return useQuery(
     "project-overview",
     async () => {
-      return await api.get("/projects-overview?currency=BDT");
+      return await api.get(
+        `/projects-overview?currency=${code}&from=${dateStart}&to=${dateEnd}`
+      );
     },
     {
       select: (data) => {

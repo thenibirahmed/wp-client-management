@@ -10,9 +10,13 @@ import {
 import dayjs from "dayjs";
 import { useClientOverViewRefetch } from "../../hooks/useRefetch";
 import toast from "react-hot-toast";
+import Errors from "../Errors";
+import Skeleton from "../Skeleton";
 
 const ClientOverView = () => {
   const [selectCurrency, setSelectCurrency] = useState();
+
+  console.log("selectCurrency = ", selectCurrency);
   const [dateRange, setDateRange] = useState([
     dayjs().subtract(3, "month").toDate(),
     new Date(),
@@ -29,13 +33,13 @@ const ClientOverView = () => {
     refetch,
   } = useFetchClientOverView(dateStart, dateEnd, selectCurrency?.code, onError);
 
-  useClientOverViewRefetch(dateStart, dateEnd, selectCurrency, refetch);
-
   const {
     isLoading: isLoadingSelectCurrency,
     data: currencyLists,
     error: selecturrencyErr,
   } = useFetchSelectCurrency(onError);
+
+  useClientOverViewRefetch(dateStart, dateEnd, selectCurrency, refetch);
 
   function onError(err) {
     toast.error(err?.response?.data?.message?.errors || "Something went wrong");
@@ -43,16 +47,27 @@ const ClientOverView = () => {
   }
 
   useEffect(() => {
-    if (currencyLists?.currency.length > 0) {
-      setSelectCurrency(currencyLists?.currency[0]);
-    } else {
-      setSelectCurrency({ name: " -No Currency- ", id: null });
+    if (!selectCurrency) {
+      setSelectCurrency({ name: " -Select Currency-", id: null });
     }
   }, [currencyLists]);
 
   const clrearFilter = () => {
     setDateRange([dayjs().subtract(3, "month").toDate(), new Date()]);
+    setSelectCurrency({ name: " -Select Currency-", id: null });
   };
+
+  if (isLoading || isLoadingSelectCurrency) return <Skeleton />;
+
+  if (error || selecturrencyErr)
+    return (
+      <Errors
+        message={
+          error?.response?.data?.errors?.id[0] ||
+          "Failed to fetch Client Overview Data"
+        }
+      />
+    );
 
   return (
     <React.Fragment>

@@ -3,17 +3,45 @@ import { OvierViewItem } from "../helper/OverViewItem";
 import DateRangePicker from "../DateRangePicker";
 import { Calendar02Icon } from "../../utils/icons";
 import { SelectTextField } from "../helper/SelectTextField";
-import { useFetchSelectCurrency } from "../../hooks/useQuery";
+import {
+  useFetchProjectOverView,
+  useFetchSelectCurrency,
+} from "../../hooks/useQuery";
 import toast from "react-hot-toast";
 import ClearButton from "../ClearButton";
+import dayjs from "dayjs";
+import { useClientOverViewRefetch } from "../../hooks/useRefetch";
 
-const ProjectOverView = ({ projectOverView, projectDetails = false }) => {
+const ProjectOverView = ({ projectDetails = false }) => {
   const [selectCurrency, setSelectCurrency] = useState();
+  const [dateRange, setDateRange] = useState([
+    dayjs().subtract(3, "month").toDate(),
+    new Date(),
+  ]);
+  const [startDate, endDate] = dateRange;
+
+  const dateStart = dayjs(startDate).format("YYYY-MM-DD");
+  const dateEnd = dayjs(endDate).format("YYYY-MM-DD");
+
+  const {
+    isLoading: projectOverViewLoader,
+    data: projectOverView,
+    error: projectOverViewError,
+    refetch,
+  } = useFetchProjectOverView(
+    dateStart,
+    dateEnd,
+    selectCurrency?.code,
+    onError
+  );
+
   const {
     isLoading: isLoadingSelectCurrency,
     data: currencyLists,
     error: selecturrencyErr,
   } = useFetchSelectCurrency(onError);
+
+  useClientOverViewRefetch(dateStart, dateEnd, selectCurrency, refetch);
 
   function onError(err) {
     toast.error(err?.response?.data?.message?.errors || "Something went wrong");
@@ -21,12 +49,16 @@ const ProjectOverView = ({ projectOverView, projectDetails = false }) => {
   }
 
   useEffect(() => {
-    if (currencyLists?.currency.length > 0) {
-      setSelectCurrency(currencyLists?.currency[0]);
-    } else {
-      setSelectCurrency({ name: " -No Currency- ", id: null });
+    if (!selectCurrency) {
+      setSelectCurrency({ name: " -Select Currency-", id: null });
     }
   }, [currencyLists]);
+
+  const clrearFilter = () => {
+    setDateRange([dayjs().subtract(3, "month").toDate(), new Date()]);
+    setSelectCurrency({ name: " -Select Currency-", id: null });
+  };
+
   return (
     <React.Fragment>
       <div className="flex md:flex-row flex-col justify-between md:items-center md:gap-0 gap-3 ">
@@ -35,8 +67,8 @@ const ProjectOverView = ({ projectOverView, projectDetails = false }) => {
         </h1>
 
         <div className="sm:w-fit flex sm:flex-row flex-col  items-center gap-2 sm:justify-start justify-center w-full">
-          <ClearButton />
-          <DateRangePicker />
+          <ClearButton onClick={clrearFilter} />
+          <DateRangePicker dateRange={dateRange} setDateRange={setDateRange} />
           <SelectTextField
             select={selectCurrency}
             setSelect={setSelectCurrency}
@@ -48,34 +80,34 @@ const ProjectOverView = ({ projectOverView, projectDetails = false }) => {
       </div>
       <div className="flex   w-full  sm:flex-row flex-col  sm:justify-between  items-center border border-borderColor rounded-lg">
         <OvierViewItem
-          title={projectOverView?.due?.name}
-          amount={projectOverView?.due?.total}
-          invoice={projectOverView?.due?.subText}
+          title={projectOverView?.projectOverView?.due?.name}
+          amount={projectOverView?.projectOverView?.due?.total}
+          invoice={projectOverView?.projectOverView?.due?.subText}
         />{" "}
         <OvierViewItem
-          title={projectOverView?.invoice?.name}
-          amount={projectOverView?.invoice?.total}
-          invoice={projectOverView?.invoice?.subText}
+          title={projectOverView?.projectOverView?.invoice?.name}
+          amount={projectOverView?.projectOverView?.invoice?.total}
+          invoice={projectOverView?.projectOverView?.invoice?.subText}
         />
         {projectDetails ? (
           <OvierViewItem
             isProject
-            title={projectOverView?.employee?.name}
-            amount={projectOverView?.employee?.total}
-            invoice={projectOverView?.employee?.subText}
+            title={projectOverView?.projectOverView?.employee?.name}
+            amount={projectOverView?.projectOverView?.employee?.total}
+            invoice={projectOverView?.projectOverView?.employee?.subText}
           />
         ) : (
           <OvierViewItem
             isProject
-            title={projectOverView?.projects?.name}
-            amount={projectOverView?.projects?.count}
-            invoice={projectOverView?.projects?.subText}
+            title={projectOverView?.projectOverView?.projects?.name}
+            amount={projectOverView?.projectOverView?.projects?.count}
+            invoice={projectOverView?.projectOverView?.projects?.subText}
           />
         )}{" "}
         <OvierViewItem
-          title={projectOverView?.revenue?.name}
-          amount={projectOverView?.revenue?.total}
-          invoice={projectOverView?.revenue?.subText}
+          title={projectOverView?.projectOverView?.revenue?.name}
+          amount={projectOverView?.projectOverView?.revenue?.total}
+          invoice={projectOverView?.projectOverView?.revenue?.subText}
         />
       </div>
     </React.Fragment>
