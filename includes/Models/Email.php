@@ -19,11 +19,23 @@ class Email extends Model
         'sent'
     ];
 
-    public static function getClientEmails($id, $page)
+    public static function getClientEmails($id, $page, $from, $to, $search = '')
     {
-        return self::where('client_id', $id)
+        $query = self::where('client_id', $id)
                 ->with('eic_crm_user')
-                ->paginate(3, ['*'], 'email', $page);
+                ->whereBetween('created_at',[$from, $to]);
+
+        if(!empty($search)) {
+            $query->where(function($q) use ($search) {
+                $q->where('subject', 'like', '%' . $search . '%')
+                  ->orWhere('body', 'like', '%' . $search . '%')
+                  ->orWhereHas('eic_crm_user.wp_user', function($q2) use ($search) {
+                      $q2->where('user_login', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+
+        return $query->paginate(3, ['*'], 'email', $page);
     }
 
     public static function getProjectEmails($id, $page)
