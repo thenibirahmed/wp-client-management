@@ -54,7 +54,6 @@ class GetClients {
            }
         }
 
-
         $clientsData = Client::getActiveClients($page, $data['from'], $data['to'], $search);
 
         $wp_user_ids = $clientsData->pluck('eic_crm_user.wp_user_id')->toArray();

@@ -12,6 +12,20 @@ class GetAllProjects {
 
     private $endpoint = '/projects';
 
+    protected array $rules = [
+        'from'        => 'nullable|date',
+        'to'          => 'nullable|date',
+        'status_id'   => 'nullable|exists:eic_statuses,id',
+        'priority_id' => 'nullable|exists:eic_priorities,id',
+    ];
+
+    protected array $validationMessages = [
+        'from.date'    => 'The from date is not valid.',
+        'to.date'      => 'The from date is not valid.',
+        'status_id'    => 'The status ID is not valid.',
+        'priority_id'  => 'The priority ID is not valid.'
+    ];
+
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
@@ -20,12 +34,24 @@ class GetAllProjects {
         ]);
     }
 
-    public function get_all_projects(\WP_REST_Request $request) {
+    public function get_all_projects(\WP_REST_Request $request)
+    {
+        global $validator;
 
-        $page        = $request->get_param('page');
+        $page        = $request->get_param('project');
+        $from        = $request->get_param('from');
+        $to          = $request->get_param('to');
+        $priority_id = $request->get_param('priority_id');
+        $status_id   = $request->get_param('status_id');
+        $search      = $request->get_param('search');
 
-        $projects    = Project::with('client', 'status', 'priority')
-                     ->paginate(5, ['*'], 'page', $page);
+        $data = [];
+        $data['from']          = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to']            = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
+        $data['status_id']     = isset($status_id) ? intval($status_id) : null;
+        $data['priority_id']   = isset($priority_id) ? intval($priority_id) : null;
+
+        $projects    = Project::getAllProjects($page, $data['from'], $data['to'], $data['status_id'], $data['priority_id'], $search);
 
         $clients     = Client::whereHas('projects')->get();
 
