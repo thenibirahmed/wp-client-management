@@ -16,11 +16,17 @@ class Note extends Model
         'note',
     ];
 
-    public static function getClientNotes($id, $page)
+    public static function getClientNotes($id, $page, $from, $to,  $search = '')
     {
-        return self::with('eic_crm_user')
+        $query = self::with('eic_crm_user')
                     ->where('client_id',$id)
-                    ->paginate(5, ['*'], 'note', $page);
+                    ->whereBetween('created_at', [$from, $to]);
+
+        if(!empty($search)) {
+            $query->where('note', 'like', '%'.$search.'%');
+        }
+
+        return $query->paginate(30, ['*'], 'note', $page);
     }
 
     public static function getProjectNotes($id, $page)
