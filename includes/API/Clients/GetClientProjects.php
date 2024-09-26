@@ -50,8 +50,8 @@ class GetClientProjects {
         $search      = $request->get_param('search');
 
         $data = [];
-        $data['from']          = $from ?: date('Y-m-d', strtotime('-3 months'));
-        $data['to']            = $to ? $to : date('Y-m-d 23:59:59');
+        $data['from']          = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to']            = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
         $data['status_id']     = isset($status_id) ? intval($status_id) : null;
         $data['priority_id']   = isset($priority_id) ? intval($priority_id) : null;
 

@@ -46,8 +46,8 @@ class GetClientNotes {
 
         $data = [];
         $data['id']   = $client_id;
-        $data['from'] = $from ?: date('Y-m-d', strtotime('-3 months'));
-        $data['to']   = $to ?: date('Y-m-d 23:59:59');
+        $data['from'] = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to']   = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -92,7 +92,7 @@ class GetClientNotes {
 
             $data[] = [
                 'id'      => $note->id,
-                'creator' => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
+                'creator' => $wpUsers[$wp_user_id]['name'] ?? 'N/A',
                 'note'    => $note->note,
                 'time'    => $note->created_at ? human_time_diff(strtotime($note->created_at), current_time('timestamp')) . ' ago' : null,
             ];

@@ -23,7 +23,12 @@ class Note extends Model
                     ->whereBetween('created_at', [$from, $to]);
 
         if(!empty($search)) {
-            $query->where('note', 'like', '%'.$search.'%');
+            $query->where(function($q) use ($search) {
+                $q->where('note', 'like', '%' . $search . '%')
+                  ->orWhereHas('eic_crm_user.wp_user', function($q2) use ($search) {
+                      $q2->where('user_login', 'like', '%' . $search . '%');
+                  });
+            });
         }
 
         return $query->paginate(30, ['*'], 'note', $page);
