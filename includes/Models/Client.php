@@ -37,6 +37,7 @@ class Client extends Model
         return $query->paginate(30, ['*'], 'page', $page);
     }
 
+
     // Older one.
     // public static function getActiveClients($page)
     // {
