@@ -60,7 +60,7 @@ class Project extends Model
                   });
         }
 
-        return $query->paginate(20, ['*'], 'project', $page);
+        return $query->paginate(3, ['*'], 'project', $page);
     }
 
     public static function getClientProjects($id, $page, $from, $to, $priority_id, $status_id, $search = '')

@@ -99,15 +99,17 @@ class Invoice extends Model
         return $query->get();
     }
 
-    public static function getSingleProjectInvoices($id, $currency)
+    public static function getSingleProjectInvoices($id, $currency, $from, $to)
     {
         $query = self::with(['status'])
-                ->where('project_id',$id);
+                ->where('project_id',$id)
+                ->whereBetween('date', [$from, $to]);
 
+        if($currency){
             $query->whereHas('currency', function ($q) use ($currency) {
                 $q->where('code', $currency);
             });
-
+        }
         return $query->get();
     }
 
