@@ -57,7 +57,7 @@ class GetClientInvoices {
         $data = [];
         $data['id']          = intval($client_id);
         $data['from']        = $from ?: date('Y-m-d', strtotime('-3 months'));
-        $data['to']          = $to ?: date('Y-m-d');
+        $data['to']          = $to ?: date('Y-m-d 23:59:59');
         $data['status_id']   = isset($status_id) ? intval($status_id) : null;
         $data['search']      = $search ?: '';
         $data['currency']    = $currency ?: 'USD';
@@ -86,9 +86,9 @@ class GetClientInvoices {
             ]);
         }
 
-        $data = [];
+        $invoiceData = [];
         foreach($invoices as $invoice) {
-            $data[] = [
+            $invoiceData[] = [
                 'id'             => $invoice->id,
                 'code'           => $invoice->code,
                 'project'        => $invoice->project->title,
@@ -100,7 +100,8 @@ class GetClientInvoices {
         };
 
         $response = [
-            'invoices'   => $data,
+            'invoices'   => $invoiceData,
+            'currency'   => $data['currency'],
             'pagination' => [
                 'total'         => $invoices->total(),
                 'per_page'      => $invoices->perPage(),
