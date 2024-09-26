@@ -33,7 +33,7 @@ class Client extends Model
             });
         }
 
-        return $query->paginate(30, ['*'], 'page', $page);
+        return $query->paginate(3, ['*'], 'page', $page);
     }
 
 

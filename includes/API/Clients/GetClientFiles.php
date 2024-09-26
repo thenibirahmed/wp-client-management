@@ -34,6 +34,9 @@ class GetClientFiles {
 
         $client_id  = $request->get_param('id');
         $page       = $request->get_param('file');
+        $from       = $request->get_param('from');
+        $to         = $request->get_param('to');
+        $search     = $request->get_param('search');
 
         if(!isset($client_id)) {
             return new \WP_REST_Response([
@@ -41,7 +44,10 @@ class GetClientFiles {
             ]);
         }
 
-        $data = ['id' => $client_id];
+        $data = [];
+        $data['id']    = intval($client_id);
+        $data['from']  = $from ? $from : date('Y-m-d', strtotime('-3 months'));
+        $data['to']    = $to ? $to : date('Y-m-d 23:59:59');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -59,7 +65,7 @@ class GetClientFiles {
             ]);
         }
 
-        $files = File::getClientFiles($client_id, $page);
+        $files = File::getClientFiles($client_id, $page, $data['from'], $data['to'], $search);
 
         if(!$files) {
             return new \WP_REST_Response([
@@ -82,7 +88,7 @@ class GetClientFiles {
 
         $data = [];
         foreach ($files as $file) {
-            $wp_user_id = $file->eic_crm_user->wp_user_id;
+            $wp_user_id = $file->eic_crm_user?->wp_user_id;
 
             $data[] = [
                 'id'     => $file->id,

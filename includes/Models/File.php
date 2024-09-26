@@ -18,11 +18,13 @@ class File extends Model
         'type'
     ];
 
-    public static function getClientFiles($id, $page)
+    public static function getClientFiles($id, $page, $from, $to, $search)
     {
-        return self::where('client_id', $id)
+        $query = self::where('client_id', $id)
                 ->with('project')
-                ->paginate(3, ['*'], 'file', $page);
+                ->whereBetween('created_at', [$from, $to]);
+
+         return $query ->paginate(30, ['*'], 'file', $page);
     }
 
     public static function getProjectFiles($id, $page)

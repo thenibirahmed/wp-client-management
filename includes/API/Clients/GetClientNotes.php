@@ -12,13 +12,17 @@ class GetClientNotes {
     private $endpoint  = '/client/(?P<id>\d+)/notes';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:eic_clients,id',
+        'id'   => 'required|integer|exists:eic_clients,id',
+        'from' => 'nullable|date',
+        'to'   => 'nullable|date'
     ];
 
     protected array $validationMessages = [
         'id.required' => 'The client ID is required.',
         'id.integer'  => 'The client ID must be an integer.',
         'id.exists'   => 'The client does not exist.',
+        'from.date'   => 'The from date must be a valid date.',
+        'to.date'     => 'The to date must be a valid date.'
     ];
 
     public function __construct() {
