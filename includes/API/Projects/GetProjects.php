@@ -6,7 +6,7 @@ use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
 
-class GetAllProjects {
+class GetProjects {
 
     private $namespace = 'wp-client-management/v1';
 

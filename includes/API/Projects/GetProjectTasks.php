@@ -4,6 +4,7 @@ namespace WpClientManagement\API\Projects;
 
 use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Project;
+use WpClientManagement\Models\Task;
 
 class GetProjectTasks {
 
@@ -60,9 +61,7 @@ class GetProjectTasks {
             ], 404);
         }
 
-        $tasks         = $project->tasks()
-                        ->with('status', 'priority')
-                        ->paginate(5, ['*'], 'task', $page);
+        $tasks         = Task::getProjectTasks($id, $page);
 
         $eic_crm_users = EicCrmUser::selectManager(false);
 
