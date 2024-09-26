@@ -118,9 +118,10 @@ class Invoice extends Model
                     ->paginate(5, ['*'] , 'invoice', $page);
     }
 
-    public static function getAllProjectInvoices($projectIds, $currency)
+    public static function getAllProjectInvoices($projectIds, $currency, $from, $to)
     {
-        $query = self::whereIn('project_id', $projectIds);
+        $query = self::whereIn('project_id', $projectIds)
+                ->whereBetween('date', [$from, $to]);
 
         if($currency) {
             $query->whereHas('currency', function ($q) use ($currency) {

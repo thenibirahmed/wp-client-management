@@ -32,8 +32,13 @@ class ProjectOverview {
         global $validator;
 
         $currency = $request->get_param('currency');
+        $from     = $request->get_param('from');
+        $to       = $request->get_param('to');
 
-        $data      = ['currency' => $currency ? $currency : 'USD'];
+        $data = [];
+        $data['currency'] = $currency ?: 'USD';
+        $data['from']     = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to']       = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -45,7 +50,7 @@ class ProjectOverview {
 
         $projects     = Project::pluck('id')->toArray();
         $projectCount = count($projects);
-        $invoices     = Invoice::getAllProjectInvoices($projects, $data['currency']);
+        $invoices     = Invoice::getAllProjectInvoices($projects, $data['currency'], $data['from'], $data['to']);
 
         $totalInvoicesAmount = $invoices->sum('total');
         $totalInvoiceCount   = $invoices->count();
