@@ -13,6 +13,8 @@ class GetSingleClientOverview {
     protected array $rules = [
         'id'       => 'required|integer|exists:eic_clients,id',
         'currency' => 'nullable|exists:eic_currencies,code',
+        'from'     => 'nullable|date',
+        'to'       => 'nullable|date'
     ];
 
     protected array $validationMessages = [
@@ -20,6 +22,8 @@ class GetSingleClientOverview {
         'id.integer'      => 'The client ID must be an integer.',
         'id.exists'       => 'The client does not exist.',
         'currency.exists' => 'Invalid currency code.',
+        'from.date'       => 'Invalid from date.',
+        'to.date'         => 'Invalid to date.',
     ];
 
     public function __construct()
@@ -37,6 +41,8 @@ class GetSingleClientOverview {
 
         $id       = $request->get_param('id');
         $currency = $request->get_param('currency');
+        $from     = $request->get_param('from');
+        $to       = $request->get_param('to');
 
         if(!isset($id)) {
             return new \WP_REST_Response([
@@ -44,8 +50,11 @@ class GetSingleClientOverview {
             ]);
         }
 
-        $data = ['id' => $id];
+        $data = [];
+        $data['id']       = $id;
         $data['currency'] = $currency ? $currency : 'USD';
+        $data['from']     = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to']       = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -68,7 +77,7 @@ class GetSingleClientOverview {
         ];
 
         $totalProjects  = Project::where('client_id', $data['id'])->count();
-        $clientInvoices = Invoice::getSingleClientInvoices($data['id'], $data['currency']);
+        $clientInvoices = Invoice::getSingleClientInvoices($data['id'], $data['currency'], $data['from'], $data['to']);
 
         $totalInvoiceAmount = $clientInvoices->sum('total');
         $totalInvoiceCount  = $clientInvoices->count();

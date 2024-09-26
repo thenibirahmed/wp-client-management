@@ -85,10 +85,11 @@ class Invoice extends Model
         return $query->paginate(5, ['*'] , 'invoice', $page);
     }
 
-    public static function getSingleClientInvoices($id, $currency)
+    public static function getSingleClientInvoices($id, $currency, $from, $to)
     {
         $query =  self::with(['status'])
-                    ->where('client_id',$id);
+                    ->where('client_id',$id)
+                    ->whereBetween('date', [$from, $to]);
 
         if($currency) {
             $query->whereHas('currency', function ($q) use ($currency) {
