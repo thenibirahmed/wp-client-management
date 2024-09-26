@@ -18,13 +18,23 @@ class File extends Model
         'type'
     ];
 
-    public static function getClientFiles($id, $page, $from, $to, $search)
+    public static function getClientFiles($id, $page, $from, $to, $search = '')
     {
         $query = self::where('client_id', $id)
                 ->with('project')
                 ->whereBetween('created_at', [$from, $to]);
 
-         return $query ->paginate(30, ['*'], 'file', $page);
+        if(!empty($search)) {
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', '%' . $search . '%')
+                ->orWhere('url', 'like', '%' . $search . '%')
+                ->orWhereHas('eic_crm_user.wp_user', function($q2) use ($search) {
+                      $q2->where('user_login', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+
+        return $query ->paginate(30, ['*'], 'file', $page);
     }
 
     public static function getProjectFiles($id, $page)
