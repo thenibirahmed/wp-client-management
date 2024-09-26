@@ -20,8 +20,17 @@ import Skeleton from "../Skeleton";
 import Errors from "../Errors";
 import useHashRouting from "../../utils/useHashRouting";
 import { useRefetch } from "../../hooks/useRefetch";
+import dayjs from "dayjs";
 
 const Client = () => {
+  const [dateRange, setDateRange] = useState([
+    dayjs().subtract(3, "month").toDate(),
+    new Date(),
+  ]);
+
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
+
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "page=1";
@@ -37,15 +46,16 @@ const Client = () => {
 
   const [selectedClient, setSelectedClient] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
+  const [searchText, setSearchText] = useState(false);
 
   const {
     isLoading,
     data: clientList,
     error,
     refetch,
-  } = useFetchClients(paginationUrl, onError);
+  } = useFetchClients(paginationUrl, searchText, dateFrom, dateTo, onError);
 
-  useRefetch(paginationUrl, refetch);
+  useRefetch(paginationUrl, searchText, refetch);
 
   useEffect(() => {
     setCreateInvoice(false);
@@ -87,7 +97,14 @@ const Client = () => {
 
   return (
     <React.Fragment>
-      <ClientOverView />
+      <ClientOverView
+        dateRange={dateRange}
+        setDateRange={setDateRange}
+        dateFrom={dateFrom}
+        setDateFrom={setDateFrom}
+        dateTo={dateTo}
+        setDateTo={setDateTo}
+      />
       <div className="space-y-6">
         <div className="flex md:flex-row  md:justify-between flex-col md:items-center md:gap-0 gap-4">
           <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
@@ -102,7 +119,7 @@ const Client = () => {
                 </button>
               </>
             )}
-            <ClientSearchInput />
+            <ClientSearchInput setSearchText={setSearchText} />
             <button
               onClick={() => setCreateClient(true)}
               type="button"

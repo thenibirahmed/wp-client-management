@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import ClientOverView from "./ClientOverView";
 import ClientInfo from "./ClientInfo";
@@ -11,6 +11,7 @@ import Skeleton from "../Skeleton";
 import useHashRouting from "../../utils/useHashRouting";
 import toast from "react-hot-toast";
 import Errors from "../Errors";
+import dayjs from "dayjs";
 
 const extractProjectId = (url) => {
   const match = url.match(/clients\/#\/(\d+)/);
@@ -18,6 +19,14 @@ const extractProjectId = (url) => {
 };
 
 const ClientDetails = () => {
+  const [dateRange, setDateRange] = useState([
+    dayjs().subtract(3, "month").toDate(),
+    new Date(),
+  ]);
+
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
+
   const currentPath = useHashRouting("");
 
   const clientId = extractProjectId(currentPath);
@@ -27,7 +36,8 @@ const ClientDetails = () => {
     isLoading,
     data: singleClientOverView,
     error,
-  } = useFetchSingleClientOverView(clientId, onError);
+    refetch,
+  } = useFetchSingleClientOverView(clientId, "", "", "", onError);
 
   if (isLoading) return <Skeleton />;
 
@@ -59,7 +69,14 @@ const ClientDetails = () => {
       ) : (
         <React.Fragment>
           <ClientInfo profile={singleClientOverView?.profile} />
-          <ClientOverView />
+          <ClientOverView
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            dateFrom={dateFrom}
+            setDateFrom={setDateFrom}
+            dateTo={dateTo}
+            setDateTo={setDateTo}
+          />
           <div className="space-y-6">
             <Tab />
             <React.Fragment>

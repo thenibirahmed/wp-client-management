@@ -13,17 +13,17 @@ import toast from "react-hot-toast";
 import Errors from "../Errors";
 import Skeleton from "../Skeleton";
 
-const ClientOverView = () => {
+const ClientOverView = ({
+  dateRange,
+  setDateRange,
+  dateFrom,
+  setDateFrom,
+  dateTo,
+  setDateTo,
+}) => {
   const [selectCurrency, setSelectCurrency] = useState();
 
-  const [dateRange, setDateRange] = useState([
-    dayjs().subtract(3, "month").toDate(),
-    new Date(),
-  ]);
   const [startDate, endDate] = dateRange;
-
-  const [dateFrom, setDateFrom] = useState(null);
-  const [dateTo, setDateTo] = useState(null);
 
   const {
     isLoading,

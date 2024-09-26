@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 import Errors from "../Errors";
 import useHashRouting from "../../utils/useHashRouting";
 import { useRefetch } from "../../hooks/useRefetch";
+import dayjs from "dayjs";
 
 const Projects = () => {
   const {
@@ -34,6 +35,14 @@ const Projects = () => {
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
+  const [dateRange, setDateRange] = useState([
+    dayjs().subtract(3, "month").toDate(),
+    new Date(),
+  ]);
+
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
+
   const {
     isLoading,
     data: projects,
@@ -41,7 +50,7 @@ const Projects = () => {
     refetch,
   } = useFetchAllProjects(paginationUrl, onError);
 
-  useRefetch(paginationUrl, refetch);
+  useRefetch(paginationUrl, "", refetch);
 
   function onError(err) {
     console.log(err);
@@ -82,7 +91,14 @@ const Projects = () => {
         <ProjectTaskDetails />
       ) : (
         <>
-          <ProjectOverView />
+          <ProjectOverView
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            dateFrom={dateFrom}
+            setDateFrom={setDateFrom}
+            dateTo={dateTo}
+            setDateTo={setDateTo}
+          />
 
           <div className="space-y-6">
             <>

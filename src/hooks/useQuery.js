@@ -1,58 +1,74 @@
 import { useQuery } from "react-query";
 import api from "../api/api";
+
 export const useFetchClientOverView = (dateStart, dateEnd, code, onError) => {
   return useQuery(
     "clients-overview",
     async () => {
-      const defaultcode = code ? code : "BDT";
+      const defaultCode = code || "BDT";
 
-      let dateFrom = null;
-      let dateTo = null;
-      let query = "";
+      const params = new URLSearchParams();
+      params.append("currency", defaultCode);
 
       if (dateStart && dateEnd) {
-        dateFrom = dateStart;
-        dateTo = dateEnd;
-
-        query = `&from=${dateFrom}&to=${dateTo}`;
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
       }
 
-      return await api.get(`/clients-overview?currency=${defaultcode}${query}`);
+      const queryString = params.toString();
+      const fullUrl = `/clients-overview?${queryString}`;
+
+      return await api.get(fullUrl);
     },
     {
-      select: (data) => {
-        const sendData = {
-          topBar: data.data.topBar,
-        };
-
-        return sendData;
-      },
-
+      select: (data) => ({
+        topBar: data.data.topBar,
+      }),
       onError,
       staleTime: 5000,
     }
   );
 };
-export const useFetchClients = (pageinationUrl, onError) => {
+
+export const useFetchClients = (
+  paginationUrl,
+  searchText,
+  dateStart,
+  dateEnd,
+  onError
+) => {
   return useQuery(
     "clients",
     async () => {
-      return await api.get(`/clients/?${pageinationUrl}`);
+      const params = new URLSearchParams();
+
+      if (searchText) {
+        params.append("search", searchText);
+      }
+
+      if (dateStart && dateEnd) {
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
+      }
+
+      const queryString = params.toString();
+      const url = `/clients/?${paginationUrl}${
+        queryString ? `&${queryString}` : ""
+      }`;
+
+      return await api.get(url);
     },
     {
-      select: (data) => {
-        const sendData = {
-          clients: data.data.clients,
-          pagination: data.data.pagination,
-        };
-
-        return sendData;
-      },
+      select: (data) => ({
+        clients: data.data.clients,
+        pagination: data.data.pagination,
+      }),
       onError,
       staleTime: 5000,
     }
   );
 };
+
 export const useFetchSingleClientOverView = (
   clientId,
   dateStart,
@@ -63,7 +79,7 @@ export const useFetchSingleClientOverView = (
   return useQuery(
     ["single-client-overview", clientId],
     async () => {
-      const defaultcode = code ? code : "USD";
+      const defaultcode = code ? code : "BDT";
       return await api.get(
         `/client/${clientId}/overview?currency=${defaultcode}`
       );

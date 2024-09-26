@@ -14,20 +14,20 @@ class GetClientProjects {
 
     protected array $rules = [
         'id'          => 'required|integer|exists:eic_clients,id',
-        'from'        => 'nullable|date_format:Y-m-d',
-        'to'          => 'nullable|date_format:Y-m-d',
-        'priority_id' => 'nullable|exists:eic_priorities,id',
+        'from'        => 'nullable|date',
+        'to'          => 'nullable|date',
         'status_id'   => 'nullable|exists:eic_statuses,id',
+        'priority_id' => 'nullable|exists:eic_priorities,id',
     ];
 
     protected array $validationMessages = [
-        'id.required'        => 'The client ID is required.',
-        'id.integer'         => 'The client ID must be an integer.',
-        'id.exists'          => 'The client does not exist.',
-        'from.date_format'   => 'The from date is not valid.',
-        'to.date_format'     => 'The from date is not valid.',
-        'status_id'          => 'The status ID is not valid.',
-        'priority_id'        => 'The priority ID is not valid.'
+        'id.required'  => 'The client ID is required.',
+        'id.integer'   => 'The client ID must be an integer.',
+        'id.exists'    => 'The client does not exist.',
+        'from.date'    => 'The from date is not valid.',
+        'to.date'      => 'The from date is not valid.',
+        'status_id'    => 'The status ID is not valid.',
+        'priority_id'  => 'The priority ID is not valid.'
     ];
 
     public function __construct() {
@@ -51,7 +51,7 @@ class GetClientProjects {
 
         $data = [];
         $data['from']          = $from ?: date('Y-m-d', strtotime('-3 months'));
-        $data['to']            = $to ?: date('Y-m-d');
+        $data['to']            = $to ? $to : date('Y-m-d 23:59:59');
         $data['status_id']     = isset($status_id) ? intval($status_id) : null;
         $data['priority_id']   = isset($priority_id) ? intval($priority_id) : null;
 
@@ -78,8 +78,6 @@ class GetClientProjects {
                 'error' => 'Client does not exists.',
             ],404);
         };
-
-        // return new \Wp_REST_Response($data);
 
         $projects = Project::getClientProjects($client_id, $page, $data['from'], $data['to'], $data['priority_id'], $data['status_id'], $search);
 

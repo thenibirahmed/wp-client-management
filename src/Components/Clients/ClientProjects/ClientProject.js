@@ -31,7 +31,7 @@ const ClientProject = ({ clientId }) => {
     refetch,
   } = useFetchClientProject(clientId, paginationUrl, onError);
 
-  useRefetch(paginationUrl, refetch);
+  useRefetch(paginationUrl, "", refetch);
 
   const handler = () => {
     setOpenProjectModal(true);

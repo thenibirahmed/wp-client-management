@@ -20,14 +20,11 @@ class Client extends Model
 
     public static function getActiveClients($page, $from, $to, $search = '')
     {
-        $query = self::with('eic_crm_user');
+        $query = self::with('eic_crm_user')
+                ->whereBetween('created_at', [$from, $to]);
 
         if(!$from && !$to && !$search) {
             return $query->paginate(3, ['*'], 'page', $page);
-        }
-
-        if($from && $to) {
-            $query->whereBetween('created_at', [$from, $to]);
         }
 
         if($search) {

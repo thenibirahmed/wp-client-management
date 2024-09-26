@@ -11,29 +11,28 @@ import toast from "react-hot-toast";
 import ClearButton from "../ClearButton";
 import dayjs from "dayjs";
 import { useClientOverViewRefetch } from "../../hooks/useRefetch";
+import Errors from "../Errors";
+import Skeleton from "../Skeleton";
 
-const ProjectOverView = ({ projectDetails = false }) => {
+const ProjectOverView = ({
+  dateRange,
+  setDateRange,
+  dateFrom,
+  setDateFrom,
+  dateTo,
+  setDateTo,
+  projectDetails = false,
+}) => {
   const [selectCurrency, setSelectCurrency] = useState();
-  const [dateRange, setDateRange] = useState([
-    dayjs().subtract(3, "month").toDate(),
-    new Date(),
-  ]);
-  const [startDate, endDate] = dateRange;
 
-  const dateStart = dayjs(startDate).format("YYYY-MM-DD");
-  const dateEnd = dayjs(endDate).format("YYYY-MM-DD");
+  const [startDate, endDate] = dateRange;
 
   const {
     isLoading: projectOverViewLoader,
     data: projectOverView,
     error: projectOverViewError,
     refetch,
-  } = useFetchProjectOverView(
-    dateStart,
-    dateEnd,
-    selectCurrency?.code,
-    onError
-  );
+  } = useFetchProjectOverView(dateFrom, dateTo, selectCurrency?.code, onError);
 
   const {
     isLoading: isLoadingSelectCurrency,
@@ -41,12 +40,16 @@ const ProjectOverView = ({ projectDetails = false }) => {
     error: selecturrencyErr,
   } = useFetchSelectCurrency(onError);
 
-  useClientOverViewRefetch(dateStart, dateEnd, selectCurrency, refetch);
+  useClientOverViewRefetch(dateFrom, dateTo, selectCurrency, refetch);
 
-  function onError(err) {
-    toast.error(err?.response?.data?.message?.errors || "Something went wrong");
-    console.log(err);
-  }
+  useEffect(() => {
+    if (startDate && endDate && endDate !== "Invalid Date") {
+      const dateStart = dayjs(startDate).format("YYYY-MM-DD");
+      const dateEnd = dayjs(endDate).format("YYYY-MM-DD");
+      setDateFrom(dateStart);
+      setDateTo(dateEnd);
+    }
+  }, [dateRange]);
 
   useEffect(() => {
     if (currencyLists?.currency.length > 0) {
@@ -62,8 +65,24 @@ const ProjectOverView = ({ projectDetails = false }) => {
 
   const clrearFilter = () => {
     setDateRange([dayjs().subtract(3, "month").toDate(), new Date()]);
-    setSelectCurrency({ name: " -Select Currency-", id: null });
+    setDateFrom(null);
+    setDateTo(null);
+    const usdCurrency = currencyLists?.currency?.find(
+      (item) => item.code === "BDT"
+    );
+
+    setSelectCurrency(usdCurrency);
   };
+
+  function onError(err) {
+    toast.error(err?.response?.data?.message?.errors || "Something went wrong");
+    console.log(err);
+  }
+
+  if (projectOverViewLoader || isLoadingSelectCurrency) return <Skeleton />;
+
+  if (projectOverViewError || selecturrencyErr)
+    return <Errors message={"Internal Server Error"} />;
 
   return (
     <React.Fragment>

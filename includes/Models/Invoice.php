@@ -56,11 +56,33 @@ class Invoice extends Model
                 ->get();
     }
 
-    public static function getClientInvoices($id ,$page)
+    public static function getClientInvoices($id ,$page, $currency, $from, $to, $status_id, $search = '')
     {
-        return self::with(['status','project','paymentMethod'])
+        $query = self::with(['status','project','paymentMethod'])
                 ->where('client_id',$id)
-                ->paginate(2, ['*'], 'invoice', $page);
+                ->whereBetween('date', [$from, $to]);
+
+        if (!empty($currency)) {
+            $query->whereHas('currency', function ($query) use ($currency) {
+                $query->where('code', $currency);
+            });
+        }
+
+        if(!empty($status_id)) {
+            $query->where('status_id', $status_id);
+        }
+
+        if (!empty($search)) {
+            $query->where(function($query) use ($search) {
+                $query->where('code', 'like', '%' . $search . '%')
+                      ->orWhere('total', 'like', '%' . $search . '%')
+                      ->orWhereHas('project', function ($query) use ($search) {
+                          $query->where('title', 'like', '%' . $search . '%');
+                      });
+            });
+        }
+
+        return $query->paginate(5, ['*'] , 'invoice', $page);
     }
 
     public static function getSingleClientInvoices($id, $currency)
@@ -118,16 +140,13 @@ class Invoice extends Model
 
     public static function getActiveClientsInvoices($clientIds, $currency, $from, $to)
     {
-        $query = self::whereIn('client_id', $clientIds);
+        $query = self::whereIn('client_id', $clientIds)
+                ->whereBetween('created_at', [$from, $to]);
 
         if($currency) {
             $query->whereHas('currency', function ($query) use ($currency) {
                 $query->where('code', $currency);
             });
-        }
-
-        if($from && $to){
-            $query->whereBetween('date', [$from, $to]);
         }
 
         return $query->get();
