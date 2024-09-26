@@ -8,8 +8,7 @@ use WpClientManagement\Models\Project;
 class GetSingleClientOverview {
 
     private $namespace = 'wp-client-management/v1';
-    // private $endpoint  = '/client/(?P<id>\d+)/overview';
-    private $endpoint = '/client/(?P<id>\d+)/overview(?:/(?P<currency>[a-zA-Z0-9_-]+))?';
+    private $endpoint  = '/client/(?P<id>\d+)/overview';
 
     protected array $rules = [
         'id'       => 'required|integer|exists:eic_clients,id',
@@ -68,7 +67,7 @@ class GetSingleClientOverview {
             'organization' => $clientData->organization,
         ];
 
-        $totalProjects  = Project::getClientProjects($data['id'],false)->count();
+        $totalProjects  = Project::where('client_id', $data['id'])->count();
         $clientInvoices = Invoice::getSingleClientInvoices($data['id'], $data['currency']);
 
         $totalInvoiceAmount = $clientInvoices->sum('total');
