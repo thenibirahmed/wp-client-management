@@ -14,7 +14,8 @@ import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 
 const ClientFiles = ({ clientId }) => {
-  const { openFileModal, setOpenFileModal } = useStoreContext();
+  const { openFileModal, setOpenFileModal, dateFrom, dateTo } =
+    useStoreContext();
 
   const [selectedFile, setSelectedFile] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
@@ -22,15 +23,24 @@ const ClientFiles = ({ clientId }) => {
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "file=1";
+  const [searchText, setSearchText] = useState(false);
 
   const {
     isLoading,
     data: clientFiles,
     error,
     refetch,
-  } = useFetchProjectFiles(clientId, paginationUrl, "client", onError);
+  } = useFetchProjectFiles(
+    clientId,
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    "client",
+    onError
+  );
 
-  useRefetch(paginationUrl, refetch);
+  useRefetch(paginationUrl, searchText, dateFrom, dateTo, refetch);
 
   function onError(err) {
     console.log(err);
@@ -68,6 +78,7 @@ const ClientFiles = ({ clientId }) => {
         btnTitle="Add File"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
+        setSearchText={setSearchText}
       />
 
       {clientFiles?.files?.length > 0 ? (

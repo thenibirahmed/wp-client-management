@@ -20,10 +20,13 @@ const ClientNotes = ({ clientId }) => {
     setUpdateNotes,
     setNoteId,
     noteId,
+    dateFrom,
+    dateTo,
   } = useStoreContext();
 
   const [selectedNote, setSelectedNote] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
+  const [searchText, setSearchText] = useState(false);
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -34,9 +37,17 @@ const ClientNotes = ({ clientId }) => {
     data: clientNotes,
     error,
     refetch,
-  } = useFetchProjectNotes(clientId, paginationUrl, "client", onError);
+  } = useFetchProjectNotes(
+    clientId,
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    "client",
+    onError
+  );
 
-  useRefetch(paginationUrl, refetch);
+  useRefetch(paginationUrl, searchText, dateFrom, dateTo, refetch);
 
   function onError(err) {
     console.log(err);
@@ -80,6 +91,7 @@ const ClientNotes = ({ clientId }) => {
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
         check={false}
+        setSearchText={setSearchText}
       />
 
       {createNote || updateNotes ? (

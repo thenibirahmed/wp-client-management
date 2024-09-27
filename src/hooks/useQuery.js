@@ -680,11 +680,36 @@ export const useFetchProjectInvoice = (
   );
 };
 
-export const useFetchProjectNotes = (id, pageinationUrl, type, onError) => {
+export const useFetchProjectNotes = (
+  id,
+  pageinationUrl,
+  searchText,
+  dateStart,
+  dateEnd,
+  type,
+  onError
+) => {
   return useQuery(
     [`${type}-notes`, id],
     async () => {
-      return await api.get(`/${type}/${id}/notes/?${pageinationUrl}`);
+      const params = new URLSearchParams();
+
+      if (searchText) {
+        params.append("search", searchText);
+      }
+
+      if (dateStart && dateEnd) {
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
+      }
+
+      const queryString = params.toString();
+
+      return await api.get(
+        `/${type}/${id}/notes/?${pageinationUrl}${
+          queryString ? `&${queryString}` : ""
+        }`
+      );
     },
     {
       select: (data) => {
@@ -705,13 +730,33 @@ export const useFetchProjectNotes = (id, pageinationUrl, type, onError) => {
 export const useFetchProjectFiles = (
   projectId,
   pageinationUrl,
+  searchText,
+  dateStart,
+  dateEnd,
   type,
   onError
 ) => {
   return useQuery(
     [`${type}-files`, projectId],
     async () => {
-      return await api.get(`/${type}/${projectId}/files/?${pageinationUrl}`);
+      const params = new URLSearchParams();
+
+      if (searchText) {
+        params.append("search", searchText);
+      }
+
+      if (dateStart && dateEnd) {
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
+      }
+
+      const queryString = params.toString();
+
+      return await api.get(
+        `/${type}/${projectId}/files/?${pageinationUrl}${
+          queryString ? `&${queryString}` : ""
+        }`
+      );
     },
     {
       select: (data) => {
@@ -731,13 +776,33 @@ export const useFetchProjectFiles = (
 export const useFetchProjectEmails = (
   projectId,
   pageinationUrl,
+  searchText,
+  dateStart,
+  dateEnd,
   type,
   onError
 ) => {
   return useQuery(
     [`${type}-email`, projectId],
     async () => {
-      return await api.get(`/${type}/${projectId}/emails/?${pageinationUrl}`);
+      const params = new URLSearchParams();
+
+      if (searchText) {
+        params.append("search", searchText);
+      }
+
+      if (dateStart && dateEnd) {
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
+      }
+
+      const queryString = params.toString();
+
+      return await api.get(
+        `/${type}/${projectId}/emails/?${pageinationUrl}${
+          queryString ? `&${queryString}` : ""
+        }`
+      );
     },
     {
       select: (data) => {

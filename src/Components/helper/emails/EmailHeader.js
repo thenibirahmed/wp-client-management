@@ -7,8 +7,14 @@ import {
   Search01Icon,
 } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
+import Filter from "../Filter";
 
-const EmailHeader = ({ selectedEmail, onDeleteAction, onEmailBox }) => {
+const EmailHeader = ({
+  selectedEmail,
+  onDeleteAction,
+  onEmailBox,
+  setSearchText,
+}) => {
   const { createEmail, setCreateEmail } = useStoreContext();
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
@@ -26,7 +32,7 @@ const EmailHeader = ({ selectedEmail, onDeleteAction, onEmailBox }) => {
             </button>
           </>
         )}
-        <Search01Icon />
+        <Filter setSearchText={setSearchText} />
         {createEmail ? (
           <>
             <button
