@@ -48,9 +48,9 @@ const Projects = () => {
     data: projects,
     error: allProjectError,
     refetch,
-  } = useFetchAllProjects(paginationUrl, onError);
+  } = useFetchAllProjects(paginationUrl, dateFrom, dateTo, onError);
 
-  useRefetch(paginationUrl, "", refetch);
+  useRefetch(paginationUrl, null, dateFrom, dateTo, refetch);
 
   function onError(err) {
     console.log(err);

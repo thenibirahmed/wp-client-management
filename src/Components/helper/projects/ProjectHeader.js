@@ -20,6 +20,7 @@ const ProjectHeader = ({
   onCheckAction,
   filter = true,
   check = true,
+  setSearchText,
 }) => {
   const { updateNotes, setUpdateNotes } = useStoreContext();
   return (
@@ -40,7 +41,7 @@ const ProjectHeader = ({
             )}
           </>
         )}
-        <Search />
+        <Search setSearchText={setSearchText} />
         {filter && <Filter />}
 
         {openModal ? (

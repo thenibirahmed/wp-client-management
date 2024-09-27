@@ -23,7 +23,7 @@ class GetClientNotes {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE,
+            'methods'  => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_client_notes'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -34,6 +34,9 @@ class GetClientNotes {
 
         $client_id  = $request->get_param('id');
         $page       = $request->get_param('note');
+        $from       = $request->get_param('from');
+        $to         = $request->get_param('to');
+        $search     = $request->get_param('search');
 
         if(!isset($client_id)) {
             return new \WP_REST_Response([
@@ -41,7 +44,10 @@ class GetClientNotes {
             ]);
         }
 
-        $data = ['id' => $client_id];
+        $data = [];
+        $data['id']   = $client_id;
+        $data['from'] = $from ?: date('Y-m-d', strtotime('-3 months'));
+        $data['to']   = $to ?: date('Y-m-d 23:59:59');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -59,7 +65,7 @@ class GetClientNotes {
             ]);
         }
 
-        $notes = Note::getClientNotes($client_id, $page);
+        $notes = Note::getClientNotes($client_id, $page, $data['from'], $data['to'], $search);
 
         if(!$notes) {
             return new \WP_REST_Response([
@@ -80,10 +86,9 @@ class GetClientNotes {
             ];
         }
 
-
         $data = [];
         foreach ($notes as $note) {
-            $wp_user_id = $note->eic_crm_user->wp_user_id;
+            $wp_user_id = $note->eic_crm_user?->wp_user_id;
 
             $data[] = [
                 'id'      => $note->id,

@@ -80,9 +80,19 @@ export const useFetchSingleClientOverView = (
     ["single-client-overview", clientId],
     async () => {
       const defaultcode = code ? code : "BDT";
-      return await api.get(
-        `/client/${clientId}/overview?currency=${defaultcode}`
-      );
+
+      const params = new URLSearchParams();
+      params.append("currency", defaultcode);
+
+      if (dateStart && dateEnd) {
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
+      }
+
+      const queryString = params.toString();
+      const fullUrl = `/client/${clientId}/overview?${queryString}`;
+
+      return await api.get(fullUrl);
     },
     {
       select: (data) => {
@@ -333,11 +343,35 @@ export const useFetchInvoiceEditDetails = (id, update, onError) => {
   );
 };
 
-export const useFetchClientProject = (clientId, paginationUrl, onError) => {
+export const useFetchClientProject = (
+  clientId,
+  searchText,
+  dateStart,
+  dateEnd,
+  paginationUrl,
+  onError
+) => {
   return useQuery(
     ["client-projects", clientId],
     async () => {
-      return await api.get(`/client/${clientId}/projects/?${paginationUrl}`);
+      const params = new URLSearchParams();
+
+      if (searchText) {
+        params.append("search", searchText);
+      }
+
+      if (dateStart && dateEnd) {
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
+      }
+
+      const queryString = params.toString();
+
+      const url = `/client/${clientId}/projects/?${paginationUrl}${
+        queryString ? `&${queryString}` : ""
+      }`;
+
+      return await api.get(url);
     },
     {
       select: (data) => {
@@ -460,11 +494,29 @@ export const useFetchStatus = (type, onError) => {
   );
 };
 
-export const useFetchAllProjects = (pageinationUrl, onError) => {
+export const useFetchAllProjects = (
+  pageinationUrl,
+  dateStart,
+  dateEnd,
+  onError
+) => {
   return useQuery(
     "projects",
     async () => {
-      return await api.get(`/projects/?${pageinationUrl}`);
+      const params = new URLSearchParams();
+
+      if (dateStart && dateEnd) {
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
+      }
+
+      const queryString = params.toString();
+
+      const url = `/projects/?${pageinationUrl}${
+        queryString ? `&${queryString}` : ""
+      }`;
+
+      return await api.get(url);
     },
     {
       select: (data) => {

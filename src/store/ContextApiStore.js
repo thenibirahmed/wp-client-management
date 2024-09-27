@@ -1,8 +1,17 @@
+import dayjs from "dayjs";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 const ContextApi = createContext();
 
 export const ContextProvider = ({ children }) => {
+  const [dateRange, setDateRange] = useState([
+    dayjs().subtract(3, "month").toDate(),
+    new Date(),
+  ]);
+
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
+
   const [openTask, setOpenTask] = useState(false);
   const [openUpdateTask, setOpenUpdateTask] = useState(false);
   const [deleteTask, setDeleteTask] = useState(false);
@@ -124,6 +133,12 @@ export const ContextProvider = ({ children }) => {
     setIsFetching,
     commentReplyId,
     setCommentReplyId,
+    dateRange,
+    setDateRange,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

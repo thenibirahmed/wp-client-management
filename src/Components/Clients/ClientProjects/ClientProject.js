@@ -15,7 +15,13 @@ import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 
 const ClientProject = ({ clientId }) => {
-  const { openProjectModal, setOpenProjectModal } = useStoreContext();
+  const {
+    openProjectModal,
+    setOpenProjectModal,
+    dateFrom,
+
+    dateTo,
+  } = useStoreContext();
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -23,15 +29,23 @@ const ClientProject = ({ clientId }) => {
 
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
+  const [searchText, setSearchText] = useState(false);
 
   const {
     isLoading,
     data: clientProjects,
     error,
     refetch,
-  } = useFetchClientProject(clientId, paginationUrl, onError);
+  } = useFetchClientProject(
+    clientId,
+    searchText,
+    dateFrom,
+    dateTo,
+    paginationUrl,
+    onError
+  );
 
-  useRefetch(paginationUrl, "", refetch);
+  useRefetch(paginationUrl, searchText, dateFrom, dateTo, refetch);
 
   const handler = () => {
     setOpenProjectModal(true);
@@ -72,6 +86,7 @@ const ClientProject = ({ clientId }) => {
         btnTitle="Add Project"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
+        setSearchText={setSearchText}
       />
       {clientProjects?.projects?.length > 0 ? (
         <>

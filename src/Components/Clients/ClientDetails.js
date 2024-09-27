@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import ClientOverView from "./ClientOverView";
 import ClientInfo from "./ClientInfo";
@@ -6,12 +6,16 @@ import ClientDetailsLayout from "./ClientDetailsLayout";
 import { useStoreContext } from "../../store/ContextApiStore";
 import Tab from "../helper/Tabs";
 import AddNewInvoice from "../helper/invoices/addNewInvoice/AddNewInvoice";
-import { useFetchSingleClientOverView } from "../../hooks/useQuery";
+import {
+  useFetchSelectCurrency,
+  useFetchSingleClientOverView,
+} from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
 import useHashRouting from "../../utils/useHashRouting";
 import toast from "react-hot-toast";
 import Errors from "../Errors";
 import dayjs from "dayjs";
+import { useClientOverViewRefetch } from "../../hooks/useRefetch";
 
 const extractProjectId = (url) => {
   const match = url.match(/clients\/#\/(\d+)/);
@@ -19,34 +23,64 @@ const extractProjectId = (url) => {
 };
 
 const ClientDetails = () => {
-  const [dateRange, setDateRange] = useState([
-    dayjs().subtract(3, "month").toDate(),
-    new Date(),
-  ]);
+  const [selectCurrency, setSelectCurrency] = useState();
 
-  const [dateFrom, setDateFrom] = useState(null);
-  const [dateTo, setDateTo] = useState(null);
+  const {
+    createInvoice,
+    updateInvoice,
+    dateRange,
+    setDateRange,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo,
+  } = useStoreContext();
 
   const currentPath = useHashRouting("");
 
   const clientId = extractProjectId(currentPath);
 
-  const { createInvoice, updateInvoice } = useStoreContext();
   const {
     isLoading,
     data: singleClientOverView,
     error,
     refetch,
-  } = useFetchSingleClientOverView(clientId, "", "", "", onError);
+  } = useFetchSingleClientOverView(
+    clientId,
+    dateFrom,
+    dateTo,
+    selectCurrency?.code,
+    onError
+  );
 
-  if (isLoading) return <Skeleton />;
+  useClientOverViewRefetch(dateFrom, dateTo, selectCurrency, refetch);
+
+  const {
+    isLoading: isLoadingSelectCurrency,
+    data: currencyLists,
+    error: selecturrencyErr,
+  } = useFetchSelectCurrency(onError);
+
+  useEffect(() => {
+    if (currencyLists?.currency.length > 0) {
+      const usdCurrency = currencyLists?.currency?.find(
+        (item) => item.code === "BDT"
+      );
+
+      setSelectCurrency(usdCurrency);
+    } else {
+      setSelectCurrency({ name: " -No Currency- ", id: null });
+    }
+  }, [currencyLists]);
+
+  if (isLoading || isLoadingSelectCurrency) return <Skeleton />;
 
   function onError(err) {
     console.log(err);
     toast.error("Failed to fetchClientOverView data");
   }
 
-  if (error)
+  if (error || selecturrencyErr)
     return (
       <Errors
         message={

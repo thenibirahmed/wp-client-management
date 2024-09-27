@@ -55,7 +55,7 @@ const Client = () => {
     refetch,
   } = useFetchClients(paginationUrl, searchText, dateFrom, dateTo, onError);
 
-  useRefetch(paginationUrl, searchText, refetch);
+  useRefetch(paginationUrl, searchText, dateFrom, dateTo, refetch);
 
   useEffect(() => {
     setCreateInvoice(false);

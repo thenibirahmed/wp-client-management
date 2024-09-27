@@ -1,15 +1,21 @@
 import React, { useEffect } from "react";
 
-export const useRefetch = (paginationUrl, searchText, refetch) => {
+export const useRefetch = (
+  paginationUrl,
+  searchText,
+  dateFrom,
+  dateTo,
+  refetch
+) => {
   useEffect(() => {
     const refetchHandler = async () => {
       await refetch();
     };
 
-    if (paginationUrl || searchText) {
+    if (paginationUrl || searchText || dateFrom || dateTo) {
       refetchHandler();
     }
-  }, [paginationUrl, searchText]);
+  }, [paginationUrl, searchText, dateFrom, dateTo]);
 };
 
 export const useInvoiceRefetch = (paginationUrl, isFetching, refetch) => {
