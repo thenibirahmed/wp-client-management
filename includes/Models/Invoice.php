@@ -63,8 +63,8 @@ class Invoice extends Model
                 ->whereBetween('date', [$from, $to]);
 
         if (!empty($currency)) {
-            $query->whereHas('currency', function ($query) use ($currency) {
-                $query->where('code', $currency);
+            $query->whereHas('currency', function ($q) use ($currency) {
+                $q->where('code', $currency);
             });
         }
 
@@ -73,41 +73,44 @@ class Invoice extends Model
         }
 
         if (!empty($search)) {
-            $query->where(function($query) use ($search) {
-                $query->where('code', 'like', '%' . $search . '%')
-                      ->orWhere('total', 'like', '%' . $search . '%')
-                      ->orWhereHas('project', function ($query) use ($search) {
-                          $query->where('title', 'like', '%' . $search . '%');
-                      });
+            $query->where(function($q) use ($search) {
+                $q->where('code', 'like', '%' . $search . '%')
+                  ->orWhere('total', 'like', '%' . $search . '%')
+                  ->orWhereHas('project', function($q2) use ($search) {
+                      $q2->where('title', 'like', '%' . $search . '%');
+                  });
             });
         }
 
         return $query->paginate(5, ['*'] , 'invoice', $page);
     }
 
-    public static function getSingleClientInvoices($id, $currency)
+    public static function getSingleClientInvoices($id, $currency, $from, $to)
     {
         $query =  self::with(['status'])
-                    ->where('client_id',$id);
+                    ->where('client_id',$id)
+                    ->whereBetween('date', [$from, $to]);
 
         if($currency) {
-            $query->whereHas('currency', function ($query) use ($currency) {
-                $query->where('code', $currency);
+            $query->whereHas('currency', function ($q) use ($currency) {
+                $q->where('code', $currency);
             });
         }
 
         return $query->get();
     }
 
-    public static function getSingleProjectInvoices($id, $currency)
+    public static function getSingleProjectInvoices($id, $currency, $from, $to)
     {
         $query = self::with(['status'])
-                ->where('project_id',$id);
+                ->where('project_id',$id)
+                ->whereBetween('date', [$from, $to]);
 
-            $query->whereHas('currency', function ($query) use ($currency) {
-                $query->where('code', $currency);
+        if($currency){
+            $query->whereHas('currency', function ($q) use ($currency) {
+                $q->where('code', $currency);
             });
-
+        }
         return $query->get();
     }
 
@@ -118,13 +121,14 @@ class Invoice extends Model
                     ->paginate(5, ['*'] , 'invoice', $page);
     }
 
-    public static function getAllProjectInvoices($projectIds, $currency)
+    public static function getAllProjectInvoices($projectIds, $currency, $from, $to)
     {
-        $query = self::whereIn('project_id', $projectIds);
+        $query = self::whereIn('project_id', $projectIds)
+                ->whereBetween('date', [$from, $to]);
 
         if($currency) {
-            $query->whereHas('currency', function ($query) use ($currency) {
-                $query->where('code', $currency);
+            $query->whereHas('currency', function ($q) use ($currency) {
+                $q->where('code', $currency);
             });
         }
 
@@ -144,8 +148,8 @@ class Invoice extends Model
                 ->whereBetween('created_at', [$from, $to]);
 
         if($currency) {
-            $query->whereHas('currency', function ($query) use ($currency) {
-                $query->where('code', $currency);
+            $query->whereHas('currency', function ($q) use ($currency) {
+                $q->where('code', $currency);
             });
         }
 

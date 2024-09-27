@@ -8,17 +8,17 @@ use WpClientManagement\Models\Project;
 class GetSingleProjectOverview {
 
     private $namespace = 'wp-client-management/v1';
-    private $endpoint  = '/project/(?P<id>\d+)/overview(?:/(?P<currency>[a-zA-Z0-9_-]+))?';
+    private $endpoint  = '/project/(?P<id>\d+)/overview';
 
     protected array $rules = [
-        'id'       => 'required|integer|exists:eic_projects,id',
-        'currency' => 'nullable|exists:eic_currencies,code',
+        'id'          => 'required|integer|exists:eic_projects,id',
+        'currency'    => 'nullable|exists:eic_currencies,code',
     ];
 
     protected array $validationMessages = [
-        'id.required' => 'The client ID is required.',
-        'id.integer'  => 'The client ID must be an integer.',
-        'id.exists'   => 'The client does not exist.',
+        'id.required'     => 'The client ID is required.',
+        'id.integer'      => 'The client ID must be an integer.',
+        'id.exists'       => 'The client does not exist.',
         'currency.exists' => 'Invalid currency code.',
     ];
 
@@ -35,8 +35,10 @@ class GetSingleProjectOverview {
     {
         global $validator;
 
-        $id       = $request->get_param('id');
-        $currency = $request->get_param('currency');
+        $id          = $request->get_param('id');
+        $currency    = $request->get_param('currency');
+        $from        = $request->get_param('from');
+        $to          = $request->get_param('to');
 
         if(!isset($id)) {
             return new \WP_REST_Response([
@@ -44,8 +46,11 @@ class GetSingleProjectOverview {
             ]);
         }
 
-        $data              = ['id' => $id];
-        $data['currency']  = $currency ?: 'USD';
+        $data= [];
+        $data['id']             = intval($id);
+        $data['currency']       = $currency ?: 'USD';
+        $data['from']           = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to']             = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -78,7 +83,7 @@ class GetSingleProjectOverview {
             'priority'     => $projectData->priority->name,
         ];
 
-        $invoices = Invoice::getSingleProjectInvoices($id, $data['currency']);
+        $invoices = Invoice::getSingleProjectInvoices($id, $data['currency'], $data['from'], $data['to']);
 
         $totalInvoiceAmount = $invoices->sum('total');
         $totalInvoiceCount  = $invoices->count();

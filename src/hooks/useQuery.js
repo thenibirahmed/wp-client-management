@@ -496,6 +496,7 @@ export const useFetchStatus = (type, onError) => {
 
 export const useFetchAllProjects = (
   pageinationUrl,
+  searchText,
   dateStart,
   dateEnd,
   onError
@@ -508,6 +509,10 @@ export const useFetchAllProjects = (
       if (dateStart && dateEnd) {
         params.append("from", dateStart);
         params.append("to", dateEnd);
+      }
+
+      if (searchText) {
+        params.append("search", searchText);
       }
 
       const queryString = params.toString();
@@ -537,7 +542,20 @@ export const useFetchProjectOverView = (dateStart, dateEnd, code, onError) => {
   return useQuery(
     "project-overview",
     async () => {
-      return await api.get(`/projects-overview`);
+      const defaultCode = code || "BDT";
+
+      const params = new URLSearchParams();
+      params.append("currency", defaultCode);
+
+      if (dateStart && dateEnd) {
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
+      }
+
+      const queryString = params.toString();
+      const fullUrl = `/projects-overview?${queryString}`;
+
+      return await api.get(fullUrl);
     },
     {
       select: (data) => {
@@ -553,11 +571,30 @@ export const useFetchProjectOverView = (dateStart, dateEnd, code, onError) => {
   );
 };
 
-export const useFetchSingleProjectOverView = (projectId, onError) => {
+export const useFetchSingleProjectOverView = (
+  projectId,
+  dateStart,
+  dateEnd,
+  code,
+  onError
+) => {
   return useQuery(
     ["single-project-overview", projectId],
     async () => {
-      return await api.get(`/project/${projectId}/overview/BDT`);
+      const defaultCode = code || "BDT";
+
+      const params = new URLSearchParams();
+      params.append("currency", defaultCode);
+
+      if (dateStart && dateEnd) {
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
+      }
+
+      const queryString = params.toString();
+      const fullUrl = `/project/${projectId}/overview?${queryString}`;
+
+      return await api.get(fullUrl);
     },
     {
       select: (data) => {
@@ -568,6 +605,7 @@ export const useFetchSingleProjectOverView = (projectId, onError) => {
 
         return sendData;
       },
+      enabled: !!projectId,
       onError,
       staleTime: 5000,
     }

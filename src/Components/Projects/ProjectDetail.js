@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useStoreContext } from "../../store/ContextApiStore";
 import ProjectInfo from "./ProjectInfo";
@@ -8,10 +8,14 @@ import ProjectDetailsLayout from "./ProjectDetailsLayout";
 import Tab from "../helper/Tabs";
 import AddNewInvoice from "../helper/invoices/addNewInvoice/AddNewInvoice";
 import useHashRouting from "../../utils/useHashRouting";
-import { useFetchSingleProjectOverView } from "../../hooks/useQuery";
+import {
+  useFetchSelectCurrency,
+  useFetchSingleProjectOverView,
+} from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
 import Errors from "../Errors";
 import ProjectTaskDetails from "./ProjectTask/ProjectTaskDetails";
+import { useClientOverViewRefetch } from "../../hooks/useRefetch";
 
 const extractProjectId = (url) => {
   const match = url.match(/projects\/#\/(\d+)/);
@@ -28,15 +32,37 @@ const ProjectDetail = () => {
     setCreateInvoice,
     setUpdateInvoice,
     setOpenTaskDesc,
+    dateRange,
+    setDateRange,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo,
   } = useStoreContext();
 
   const projectId = extractProjectId(currentPath);
+  const [selectCurrency, setSelectCurrency] = useState();
 
   const {
     isLoading,
     data: singleProjectOverView,
     error,
-  } = useFetchSingleProjectOverView(projectId, onError);
+    refetch,
+  } = useFetchSingleProjectOverView(
+    projectId,
+    dateFrom,
+    dateTo,
+    selectCurrency?.code,
+    onError
+  );
+
+  useClientOverViewRefetch(dateFrom, dateTo, selectCurrency, refetch);
+
+  const {
+    isLoading: isLoadingSelectCurrency,
+    data: currencyLists,
+    error: selecturrencyErr,
+  } = useFetchSelectCurrency(onError);
 
   function onError(err) {
     console.log(err);
@@ -53,9 +79,21 @@ const ProjectDetail = () => {
     }
   }, [createInvoice, updateInvoice, openTaskDesc]);
 
-  if (isLoading) return <Skeleton />;
+  useEffect(() => {
+    if (currencyLists?.currency.length > 0) {
+      const usdCurrency = currencyLists?.currency?.find(
+        (item) => item.code === "BDT"
+      );
 
-  if (error) {
+      setSelectCurrency(usdCurrency);
+    } else {
+      setSelectCurrency({ name: " -No Currency- ", id: null });
+    }
+  }, [currencyLists]);
+
+  if (isLoading || isLoadingSelectCurrency) return <Skeleton />;
+
+  if (error || selecturrencyErr) {
     return (
       <Errors
         message={
@@ -70,10 +108,16 @@ const ProjectDetail = () => {
     <React.Fragment>
       {!createInvoice && !updateInvoice && !openTaskDesc ? (
         <React.Fragment>
-          <ProjectInfo projectHeader={singleProjectOverView.header} />
+          <ProjectInfo projectHeader={singleProjectOverView?.header} />
           <ProjectOverView
-            projectOverView={singleProjectOverView.topBar}
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            dateFrom={dateFrom}
+            setDateFrom={setDateFrom}
+            dateTo={dateTo}
+            setDateTo={setDateTo}
             projectDetails
+            topBar={singleProjectOverView?.topBar}
           />
           <div className="space-y-6">
             <Tab task={true} />

@@ -30,7 +30,7 @@ const ProjectTask = ({ projectId }) => {
     refetch,
   } = useFetchProjectTask(projectId, paginationUrl, onError);
 
-  useRefetch(paginationUrl, refetch);
+  useRefetch(paginationUrl, null, null, null, refetch);
 
   const handler = () => {
     setOpenProjectModal(true);

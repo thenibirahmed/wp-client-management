@@ -71,7 +71,7 @@ use WpClientManagement\API\Priorities\UpdatePriority;
 use WpClientManagement\API\Projects\CreateProject;
 use WpClientManagement\API\Projects\DeleteProject;
 use WpClientManagement\API\Projects\EditProject;
-use WpClientManagement\API\Projects\GetAllProjects;
+use WpClientManagement\API\Projects\GetProjects;
 use WpClientManagement\API\Projects\GetProjectEmails;
 use WpClientManagement\API\Projects\GetProjectInvoices;
 use WpClientManagement\API\Projects\GetProjectNotes;
@@ -216,7 +216,7 @@ class API {
         new SelectPriority();
 
         // Project
-        new GetAllProjects();
+        new GetProjects();
         new GetSingleProject();
         new DeleteProject();
         new CreateProject();

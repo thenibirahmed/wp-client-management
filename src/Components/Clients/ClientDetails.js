@@ -110,6 +110,8 @@ const ClientDetails = () => {
             setDateFrom={setDateFrom}
             dateTo={dateTo}
             setDateTo={setDateTo}
+            singleClient
+            topBar={singleClientOverView?.topBar}
           />
           <div className="space-y-6">
             <Tab />

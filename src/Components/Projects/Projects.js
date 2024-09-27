@@ -9,10 +9,7 @@ import ProjectHeader from "../helper/projects/ProjectHeader";
 import ProjectTable from "../helper/projects/ProjectTable";
 import AddNewProjectForm from "../helper/forms/AddNewProjectForm";
 import ProjectTaskDetails from "./ProjectTask/ProjectTaskDetails";
-import {
-  useFetchAllProjects,
-  useFetchProjectOverView,
-} from "../../hooks/useQuery";
+import { useFetchAllProjects } from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
 import toast from "react-hot-toast";
 import Errors from "../Errors";
@@ -34,6 +31,7 @@ const Projects = () => {
 
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
+  const [searchText, setSearchText] = useState(false);
 
   const [dateRange, setDateRange] = useState([
     dayjs().subtract(3, "month").toDate(),
@@ -48,9 +46,9 @@ const Projects = () => {
     data: projects,
     error: allProjectError,
     refetch,
-  } = useFetchAllProjects(paginationUrl, dateFrom, dateTo, onError);
+  } = useFetchAllProjects(paginationUrl, searchText, dateFrom, dateTo, onError);
 
-  useRefetch(paginationUrl, null, dateFrom, dateTo, refetch);
+  useRefetch(paginationUrl, searchText, dateFrom, dateTo, refetch);
 
   function onError(err) {
     console.log(err);
@@ -109,6 +107,7 @@ const Projects = () => {
                 btnTitle="Add Project"
                 onDeleteAction={onDeleteAction}
                 onCheckAction={onCheckAction}
+                setSearchText={setSearchText}
               />
             </>
             <React.Fragment>

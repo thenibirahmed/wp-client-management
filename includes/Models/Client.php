@@ -21,20 +21,19 @@ class Client extends Model
     public static function getActiveClients($page, $from, $to, $search = '')
     {
         $query = self::with('eic_crm_user')
-                ->whereBetween('created_at', [$from, $to]);
+                    ->whereBetween('created_at', [$from, $to]);
 
-        if(!$from && !$to && !$search) {
-            return $query->paginate(3, ['*'], 'page', $page);
-        }
-
-        if($search) {
-            $query->whereHas('eic_crm_user.wp_user', function ($query) use ($search) {
-                $query->where('user_login', 'like', '%'.$search.'%')
-                    ->orWhere('user_email', 'like', '%'.$search.'%');
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('eic_crm_user.wp_user', function ($q2) use ($search) {
+                    $q2->where('user_login', 'like', '%' . $search . '%')
+                       ->orWhere('user_email', 'like', '%' . $search . '%');
+                })
+                ->orWhere('organization', 'like', '%' . $search . '%');
             });
-            $query->orWhere('organization', 'like', '%'.$search.'%');
         }
-        return $query->paginate(30, ['*'], 'page', $page);
+
+        return $query->paginate(3, ['*'], 'page', $page);
     }
 
 

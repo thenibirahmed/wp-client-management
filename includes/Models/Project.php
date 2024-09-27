@@ -40,6 +40,29 @@ class Project extends Model
         })->get();
     }
 
+    public static function getAllProjects($page, $from, $to, $status_id, $priority_id, $search = '')
+    {
+        $query = self::with('invoices','priority')
+                ->whereBetween('start_date', [$from, $to]);
+
+        if($status_id){
+            $query->where('status_id', $status_id);
+        }
+
+        if($priority_id){
+            $query->where('priority_id', $priority_id);
+        }
+
+        if(!empty($search)){
+            $query->where('title', 'like', '%'.$search.'%')
+                  ->orWhereHas('client.eic_crm_user.wp_user', function ($q) use ($search) {
+                     $q->where('user_login', 'like', '%'.$search.'%');
+                  });
+        }
+
+        return $query->paginate(3, ['*'], 'project', $page);
+    }
+
     public static function getClientProjects($id, $page, $from, $to, $priority_id, $status_id, $search = '')
     {
         $query = self::with('invoices','priority')

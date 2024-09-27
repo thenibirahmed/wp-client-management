@@ -20,6 +20,8 @@ const ClientOverView = ({
   setDateFrom,
   dateTo,
   setDateTo,
+  singleClient = false,
+  topBar,
 }) => {
   const [selectCurrency, setSelectCurrency] = useState();
 
@@ -110,26 +112,57 @@ const ClientOverView = ({
       </div>
 
       <div className="flex   w-full  sm:flex-row flex-col  sm:justify-between  items-center border border-borderColor rounded-lg">
-        <OvierViewItem
-          title={clientOverView?.topBar?.invoice?.name}
-          amount={clientOverView?.topBar?.invoice?.amount}
-          invoice={clientOverView?.topBar?.invoice?.subText}
-        />
-        <OvierViewItem
-          title={clientOverView?.topBar?.revenue?.name}
-          amount={clientOverView?.topBar?.revenue?.amount}
-          invoice={clientOverView?.topBar?.revenue?.subText}
-        />
-        <OvierViewItem
-          title={clientOverView?.topBar?.due?.name}
-          amount={clientOverView?.topBar?.due?.amount}
-          invoice={clientOverView?.topBar?.due?.subText}
-        />
-        <OvierViewItem
-          title={clientOverView?.topBar?.project?.name}
-          amount={clientOverView?.topBar?.project?.amount}
-          invoice={clientOverView?.topBar?.project?.subText}
-        />
+        {singleClient ? (
+          <>
+            {" "}
+            <OvierViewItem
+              title={topBar?.invoice?.name}
+              amount={topBar?.invoice?.amount}
+              invoice={topBar?.invoice?.subText}
+            />
+            <OvierViewItem
+              title={topBar?.revenue?.name}
+              amount={topBar?.revenue?.amount}
+              invoice={topBar?.revenue?.subText}
+            />
+            <OvierViewItem
+              title={topBar?.due?.name}
+              amount={topBar?.due?.amount}
+              invoice={topBar?.due?.subText}
+            />
+            <OvierViewItem
+              title={topBar?.project?.name}
+              amount={topBar?.project?.amount}
+              invoice={topBar?.project?.subText}
+              isProject
+            />
+          </>
+        ) : (
+          <>
+            {" "}
+            <OvierViewItem
+              title={clientOverView?.topBar?.invoice?.name}
+              amount={clientOverView?.topBar?.invoice?.amount}
+              invoice={clientOverView?.topBar?.invoice?.subText}
+            />
+            <OvierViewItem
+              title={clientOverView?.topBar?.revenue?.name}
+              amount={clientOverView?.topBar?.revenue?.amount}
+              invoice={clientOverView?.topBar?.revenue?.subText}
+            />
+            <OvierViewItem
+              title={clientOverView?.topBar?.due?.name}
+              amount={clientOverView?.topBar?.due?.amount}
+              invoice={clientOverView?.topBar?.due?.subText}
+            />
+            <OvierViewItem
+              title={clientOverView?.topBar?.project?.name}
+              amount={clientOverView?.topBar?.project?.amount}
+              invoice={clientOverView?.topBar?.project?.subText}
+              isProject
+            />
+          </>
+        )}
       </div>
     </React.Fragment>
   );

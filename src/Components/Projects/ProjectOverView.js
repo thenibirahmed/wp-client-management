@@ -22,6 +22,7 @@ const ProjectOverView = ({
   dateTo,
   setDateTo,
   projectDetails = false,
+  topBar,
 }) => {
   const [selectCurrency, setSelectCurrency] = useState();
 
@@ -54,7 +55,7 @@ const ProjectOverView = ({
   useEffect(() => {
     if (currencyLists?.currency.length > 0) {
       const usdCurrency = currencyLists?.currency?.find(
-        (item) => item.code === "USD"
+        (item) => item.code === "BDT"
       );
 
       setSelectCurrency(usdCurrency);
@@ -104,36 +105,57 @@ const ProjectOverView = ({
         </div>
       </div>
       <div className="flex   w-full  sm:flex-row flex-col  sm:justify-between  items-center border border-borderColor rounded-lg">
-        <OvierViewItem
-          title={projectOverView?.projectOverView?.due?.name}
-          amount={projectOverView?.projectOverView?.due?.total}
-          invoice={projectOverView?.projectOverView?.due?.subText}
-        />{" "}
-        <OvierViewItem
-          title={projectOverView?.projectOverView?.invoice?.name}
-          amount={projectOverView?.projectOverView?.invoice?.total}
-          invoice={projectOverView?.projectOverView?.invoice?.subText}
-        />
         {projectDetails ? (
-          <OvierViewItem
-            isProject
-            title={projectOverView?.projectOverView?.employee?.name}
-            amount={projectOverView?.projectOverView?.employee?.total}
-            invoice={projectOverView?.projectOverView?.employee?.subText}
-          />
+          <>
+            {" "}
+            <OvierViewItem
+              title={topBar?.due?.name}
+              amount={topBar?.due?.total}
+              invoice={topBar?.due?.subText}
+            />{" "}
+            <OvierViewItem
+              title={topBar?.invoice?.name}
+              amount={topBar?.invoice?.total}
+              invoice={topBar?.invoice?.subText}
+            />
+            <OvierViewItem
+              isProject
+              title={topBar?.employee?.name}
+              amount={topBar?.employee?.total}
+              invoice={topBar?.employee?.subText}
+            />
+            <OvierViewItem
+              title={topBar?.revenue?.name}
+              amount={topBar?.revenue?.total}
+              invoice={topBar?.revenue?.subText}
+            />
+          </>
         ) : (
-          <OvierViewItem
-            isProject
-            title={projectOverView?.projectOverView?.projects?.name}
-            amount={projectOverView?.projectOverView?.projects?.count}
-            invoice={projectOverView?.projectOverView?.projects?.subText}
-          />
-        )}{" "}
-        <OvierViewItem
-          title={projectOverView?.projectOverView?.revenue?.name}
-          amount={projectOverView?.projectOverView?.revenue?.total}
-          invoice={projectOverView?.projectOverView?.revenue?.subText}
-        />
+          <>
+            {" "}
+            <OvierViewItem
+              title={projectOverView?.projectOverView?.due?.name}
+              amount={projectOverView?.projectOverView?.due?.total}
+              invoice={projectOverView?.projectOverView?.due?.subText}
+            />{" "}
+            <OvierViewItem
+              title={projectOverView?.projectOverView?.invoice?.name}
+              amount={projectOverView?.projectOverView?.invoice?.total}
+              invoice={projectOverView?.projectOverView?.invoice?.subText}
+            />
+            <OvierViewItem
+              isProject
+              title={projectOverView?.projectOverView?.projects?.name}
+              amount={projectOverView?.projectOverView?.projects?.count}
+              invoice={projectOverView?.projectOverView?.projects?.subText}
+            />
+            <OvierViewItem
+              title={projectOverView?.projectOverView?.revenue?.name}
+              amount={projectOverView?.projectOverView?.revenue?.total}
+              invoice={projectOverView?.projectOverView?.revenue?.subText}
+            />
+          </>
+        )}
       </div>
     </React.Fragment>
   );
