@@ -2,6 +2,7 @@
 
 namespace WpClientManagement;
 
+use WpClientManagement\API\Clients\ClientBulkDelete;
 use WpClientManagement\API\Clients\ClientOverview;
 use WpClientManagement\API\Clients\CreateClient;
 use WpClientManagement\API\Clients\DeleteClient;
@@ -149,6 +150,7 @@ class API {
         new GetClientEmails();
         new GetSingleClientOverview();
         new EditClient();
+        new ClientBulkDelete();
 
         // DealPipeline
         new GetDealPipelines();

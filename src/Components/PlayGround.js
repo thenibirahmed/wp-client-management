@@ -186,14 +186,17 @@ const PlayGround = () => {
 // ***
 
 	const getTestData = () => {
-		axios.get(
-			eicApiSettings.rest_url + "wp-client-management/v1/team-members?search=rin",
+		axios.delete(
+			eicApiSettings.rest_url + "wp-client-management/v1/client/bulk-delete",
 			{
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
 					// 'Content-Type' : 'application/json'
-					},
-				}
+				},
+				data: {
+					bulk_ids : [25],
+				},
+			}
 			)
 
 			.then((response) => {
