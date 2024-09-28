@@ -47,19 +47,24 @@ use WpClientManagement\API\EicCrmUsers\SelectEmployee;
 use WpClientManagement\API\EicCrmUsers\UpdateEicCrmUser;
 use WpClientManagement\API\Emails\CreateEmail;
 use WpClientManagement\API\Emails\DeleteEmail;
+use WpClientManagement\API\Emails\EmailsBulkDelete;
 use WpClientManagement\API\Emails\UpdateEmail;
 use WpClientManagement\API\Files\CreateFile;
 use WpClientManagement\API\Files\DeleteFile;
 use WpClientManagement\API\Files\EditFile;
+use WpClientManagement\API\Files\FilesBulkDelete;
 use WpClientManagement\API\Files\UpdateFile;
+use WpClientManagement\API\Invoices\InvoiceBulkDelete;
 use WpClientManagement\API\InvoiceItems\CreateInvoiceItem;
 use WpClientManagement\API\Invoices\CreateInvoice;
 use WpClientManagement\API\Invoices\DeleteInvoice;
 use WpClientManagement\API\Invoices\EditInvoice;
+use WpClientManagement\API\Invoices\InvoiceBulkComplete;
 use WpClientManagement\API\Invoices\UpdateInvoice;
 use WpClientManagement\API\Notes\CreateNote;
 use WpClientManagement\API\Notes\DeleteNote;
 use WpClientManagement\API\Notes\EditNote;
+use WpClientManagement\API\Notes\NoteBulkDelete;
 use WpClientManagement\API\Notes\UpdateNote;
 use WpClientManagement\API\PaymentMethods\SelectPaymentMethod;
 use WpClientManagement\API\Posts\GetSinglePost;
@@ -103,10 +108,12 @@ use WpClientManagement\API\Tasks\DeleteTask;
 use WpClientManagement\API\Tasks\EditTask;
 use WpClientManagement\API\Tasks\GetSingleTask;
 use WpClientManagement\API\Tasks\GetTasks;
+use WpClientManagement\API\Tasks\TasksBulkDelete;
 use WpClientManagement\API\Tasks\UpdateTask;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMember;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMemberProjects;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMemberTasks;
+use WpClientManagement\API\TeamMembers\TeamMembersBulkDelete;
 use WpClientManagement\API\TestApi;
 use WpClientManagement\API\Users\DeleteUser;
 use WpClientManagement\API\Users\GetSingleUser;
@@ -178,6 +185,7 @@ class API {
         new GetSingleTeamMemberTasks();
         new UpdateTeamMember();
         new DeleteTeamMember();
+        new TeamMembersBulkDelete();
 
         // Email
         new GetEmails();
@@ -185,6 +193,7 @@ class API {
         new DeleteEmail();
         new CreateEmail();
         new UpdateEmail();
+        new EmailsBulkDelete();
 
         // File
         new GetFiles();
@@ -193,6 +202,7 @@ class API {
         new CreateFile();
         new UpdateFile();
         new EditFile();
+        new FilesBulkDelete();
 
         // Invoice
         new GetInvoices();
@@ -202,6 +212,8 @@ class API {
         new UpdateInvoice();
         new CreateInvoiceItem();
         new EditInvoice();
+        new InvoiceBulkDelete();
+        new InvoiceBulkComplete();
 
         // Note
         new GetNotes();
@@ -210,6 +222,7 @@ class API {
         new CreateNote();
         new UpdateNote();
         new EditNote();
+        new NoteBulkDelete();
 
         // Priority
         new GetPriorities();
@@ -262,6 +275,7 @@ class API {
         new CreateTask();
         new UpdateTask();
         new EditTask();
+        new TasksBulkDelete();
 
         // TaskComment
         new AddTaskComment();

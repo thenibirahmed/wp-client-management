@@ -187,14 +187,14 @@ const PlayGround = () => {
 
 	const getTestData = () => {
 		axios.delete(
-			eicApiSettings.rest_url + "wp-client-management/v1/project/bulk-complete",
+			eicApiSettings.rest_url + "wp-client-management/v1/tasks/bulk-delete",
 			{
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
 					// 'Content-Type' : 'application/json'
 				},
 				data: {
-					bulk_ids : [2,3],
+					bulk_ids : [8,9,10],
 				},
 			}
 			)

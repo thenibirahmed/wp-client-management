@@ -1,14 +1,14 @@
 <?php
 
-namespace WpClientManagement\API\Projects;
+namespace WpClientManagement\API\Tasks;
 
-use WpClientManagement\Models\Project;
+use WpClientManagement\Models\Task;
 
-class ProjectBulkDelete {
+class TasksBulkDelete {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/projects/bulk-delete';
+    private $endpoint = '/tasks/bulk-delete';
 
     protected array $rules = [
         'bulk_ids'   => 'nullable|array',
@@ -22,12 +22,12 @@ class ProjectBulkDelete {
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::DELETABLE,
-            'callback' => array($this, 'bulk_delete_project'),
+            'callback' => array($this, 'bulk_delete_invoices'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function bulk_delete_project(\WP_REST_Request $request) {
+    public function bulk_delete_invoices(\WP_REST_Request $request) {
         global $validator;
 
         $bulk_ids  = $request->get_param('bulk_ids');
@@ -49,14 +49,14 @@ class ProjectBulkDelete {
             ], 400);
         }
 
-        $bulk_delete_projects = Project::whereIn('id', $bulk_ids)->get();
+        $bulk_delete_tasks = Task::whereIn('id', $bulk_ids)->get();
 
-        foreach ($bulk_delete_projects as $project) {
+        foreach ($bulk_delete_tasks as $project) {
             $project->delete();
         }
 
         return new \WP_REST_Response([
-            'message' => 'Projects deleted successfully.',
+            'message' => 'Tasks deleted successfully.',
         ], 200);
     }
 }

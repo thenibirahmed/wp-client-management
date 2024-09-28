@@ -8,7 +8,7 @@ class ClientBulkDelete {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/client/bulk-delete';
+    private $endpoint = '/clients/bulk-delete';
 
     protected array $rules = [
         'bulk_ids'   => 'nullable|array',
