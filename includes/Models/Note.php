@@ -31,7 +31,7 @@ class Note extends Model
             });
         }
 
-        return $query->paginate(30, ['*'], 'note', $page);
+        return $query->paginate(3, ['*'], 'note', $page);
     }
 
     public static function getProjectNotes($id, $page, $from, $to, $search)
@@ -47,7 +47,7 @@ class Note extends Model
                   });
         }
 
-        return $query->paginate(30, ['*'], 'note', $page);
+        return $query->paginate(3, ['*'], 'note', $page);
     }
 
     public function eic_crm_user() {

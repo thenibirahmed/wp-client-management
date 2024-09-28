@@ -48,7 +48,7 @@ class Task extends Model
                   });
         }
 
-        return $query->paginate(50, ['*'], 'task', $page);
+        return $query->paginate(3, ['*'], 'task', $page);
     }
 
     public static function getTeamMemberTasks($id, $page)

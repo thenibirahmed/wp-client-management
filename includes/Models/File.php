@@ -34,7 +34,7 @@ class File extends Model
             });
         }
 
-        return $query ->paginate(30, ['*'], 'file', $page);
+        return $query ->paginate(3, ['*'], 'file', $page);
     }
 
     public static function getProjectFiles($id, $page, $from, $to, $search = '')

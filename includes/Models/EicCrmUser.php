@@ -23,10 +23,21 @@ class EicCrmUser extends Model
         'designation'
     ];
 
-    public static function getTeamMembers($page)
+    public static function getTeamMembers($page, $search = '')
     {
-        return EicCrmUser::where('role', 'admin')
-                    ->paginate(5, ['*'], 'page', $page);
+        $clientIds = Client::pluck('eic_crm_user_id')->toArray();
+
+        $query = self::whereNotIn('id', $clientIds);
+
+        if ($search) {
+            $query->where('phone', 'like', '%' . $search . '%')
+                ->orWhereHas('wp_user', function ($query) use ($search) {
+                $query->where('user_login', 'like', '%' . $search . '%')
+                    ->orWhere('user_email', 'like', '%' . $search . '%');
+            });
+        }
+
+        return $query->paginate(3, ['*'], 'member', $page);
     }
 
     public static function selectManager()
