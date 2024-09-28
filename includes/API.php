@@ -79,6 +79,7 @@ use WpClientManagement\API\Projects\GetProjectNotes;
 use WpClientManagement\API\Projects\GetProjectTasks;
 use WpClientManagement\API\Projects\GetSingleProject;
 use WpClientManagement\API\Projects\GetSingleProjectOverview;
+use WpClientManagement\API\Projects\ProjectBulkComplete;
 use WpClientManagement\API\Projects\ProjectBulkDelete;
 use WpClientManagement\API\Projects\ProjectOverview;
 use WpClientManagement\API\Projects\SelectClientForProject;
@@ -237,6 +238,7 @@ class API {
         new GetSelectedClientDetails();
         new EditProject();
         new ProjectBulkDelete();
+        new ProjectBulkComplete();
 
         // Schedule
         new GetSchedules();
