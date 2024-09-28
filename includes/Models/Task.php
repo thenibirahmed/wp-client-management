@@ -24,13 +24,31 @@ class Task extends Model
         'description'
     ];
 
-    public static function getProjectTasks($id, $page)
+    public static function getProjectTasks($id, $page, $from, $to, $status_id, $priority_id, $search = '')
     {
         $query = self::where('project_id',$id)
-                ->with('eic_crm_user', 'assigned_user', 'status', 'priority');
+                ->with('eic_crm_user', 'assigned_user', 'status', 'priority')
+                ->whereBetween('start_date', [$from, $to]);
 
+        if(!empty($status_id)) {
+            $query->where('status_id', $status_id);
+        }
 
-        return $query->paginate(20, ['*'], 'task', $page);
+        if(!empty($priority_id)) {
+            $query->where('priority_id', $priority_id);
+        }
+
+        if(!empty($search)) {
+            $query->where('title', 'like', '%' . $search . '%')
+                  ->orWhereHas('eic_crm_user.wp_user', function($q) use ($search) {
+                      $q->where('user_login', 'like', '%' . $search . '%');
+                  })
+                  ->orWhereHas('assigned_user.wp_user', function($q) use ($search) {
+                      $q->where('user_login', 'like', '%' . $search . '%');
+                  });
+        }
+
+        return $query->paginate(50, ['*'], 'task', $page);
     }
 
     public static function getTeamMemberTasks($id, $page)

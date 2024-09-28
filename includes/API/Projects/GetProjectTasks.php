@@ -34,8 +34,13 @@ class GetProjectTasks {
     {
         global $validator;
 
-        $id   = $request->get_param('id');
-        $page = $request->get_param('task');
+        $id          = $request->get_param('id');
+        $page        = $request->get_param('task');
+        $from        = $request->get_param('from');
+        $to          = $request->get_param('to');
+        $priority_id = $request->get_param('priority_id');
+        $status_id   = $request->get_param('status_id');
+        $search      = $request->get_param('search');
 
         if(!isset($id)) {
             return new \WP_REST_Response([
@@ -43,7 +48,12 @@ class GetProjectTasks {
             ]);
         }
 
-        $data = ['id' => $id];
+        $data[] = [];
+        $data['id'] = $id;
+        $data['from'] = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to'] = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
+        $data['status_id'] = isset($status_id) ? intval($status_id) : null;
+        $data['priority_id'] = isset($priority_id) ? intval($priority_id) : null;
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -61,7 +71,7 @@ class GetProjectTasks {
             ], 404);
         }
 
-        $tasks         = Task::getProjectTasks($id, $page);
+        $tasks         = Task::getProjectTasks($id, $page, $data['from'], $data['to'], $data['status_id'], $data['priority_id'], $search);
 
         $eic_crm_users = EicCrmUser::selectManager(false);
 
