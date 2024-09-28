@@ -114,11 +114,32 @@ class Invoice extends Model
         return $query->get();
     }
 
-    public static function getPorjectInvoices($id, $page)
+    public static function getPorjectInvoices($id, $page, $currency, $from, $to, $status_id, $payment_method_id, $search)
     {
-        return self::with(['status','project','paymentMethod'])
+        $query =  self::with(['status','project','paymentMethod'])
                     ->where('project_id', $id)
-                    ->paginate(5, ['*'] , 'invoice', $page);
+                    ->whereBetween('date', [$from, $to])
+                    ->whereHas('currency', function ($q) use ($currency) {
+                        $q->where('code', $currency);
+                    });
+
+        if(!empty($status_id)) {
+            $query->where('status_id', $status_id);
+        }
+
+        if(!empty($payment_method_id)) {
+            $query->where('payment_method_id', $payment_method_id);
+        }
+
+        if (!empty($search)) {
+            $query->where('code', 'like', '%' . $search . '%')
+                  ->orWhere('total', 'like', '%' . $search . '%')
+                  ->orWhereHas('client.eic_crm_user.wp_user', function($q2) use ($search) {
+                      $q2->where('user_login', 'like', '%' . $search . '%');
+                  });
+        }
+
+        return $query->paginate(5, ['*'] , 'invoice', $page);
     }
 
     public static function getAllProjectInvoices($projectIds, $currency, $from, $to)

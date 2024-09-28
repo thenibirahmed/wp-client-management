@@ -13,18 +13,28 @@ class GetProjectInvoices {
     private $endpoint  = '/project/(?P<id>\d+)/invoices';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:eic_projects,id',
+        'id'                => 'required|integer|exists:eic_projects,id',
+        'currency'          => 'nullable|exists:eic_currencies,code',
+        'from'              => 'nullable|date',
+        'to'                => 'nullable|date',
+        'status_id'         => 'nullable|integer|exists:eic_statuses,id',
+        'payment_method_id' => 'nullable|integer|exists:eic_payment_methods,id',
     ];
 
     protected array $validationMessages = [
-        'id.required' => 'The project ID is required.',
-        'id.integer'  => 'The project ID must be an integer.',
-        'id.exists'   => 'The project does not exist.',
+        'id.required'               => 'The project ID is required.',
+        'id.integer'                => 'The project ID must be an integer.',
+        'id.exists'                 => 'The project does not exist.',
+        'currency.exists'           => 'The currency does not exist.',
+        'status_id.exists'          => 'The status does not exist.',
+        'from.date'                 => 'The from date must be a valid date.',
+        'to.date'                   => 'The to date must be a valid date.',
+        'payment_method_id.exists'  => 'The payment method does not exist.',
     ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE,
+            'methods'  => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_project_invoices'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -35,6 +45,12 @@ class GetProjectInvoices {
 
         $project_id  = $request->get_param('id');
         $page        = $request->get_param('invoice');
+        $currency    = $request->get_param('currency');
+        $from        = $request->get_param('from');
+        $to          = $request->get_param('to');
+        $status_id   = $request->get_param('status_id');
+        $pay_method  = $request->get_param('payment_method_id');
+        $search      = $request->get_param('search');
 
         if(!isset($project_id)) {
             return new \WP_REST_Response([
@@ -42,7 +58,13 @@ class GetProjectInvoices {
             ]);
         }
 
-        $data = ['id' => $project_id];
+        $data[] = [];
+        $data['id']                = intval($project_id);
+        $data['currency']          = $currency ?: 'USD';
+        $data['from']              = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to']                = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
+        $data['status_id']         = isset($status_id) ? intval($status_id) : null;
+        $data['payment_method_id'] = isset($pay_method) ? intval($pay_method) : null;
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -60,7 +82,7 @@ class GetProjectInvoices {
             ]);
         }
 
-        $invoices = Invoice::getPorjectInvoices($data['id'], $page);
+        $invoices = Invoice::getPorjectInvoices($data['id'], $page, $data['currency'], $data['from'], $data['to'], $data['status_id'], $data['payment_method_id'], $search);
 
         if(!$invoices) {
             return new \WP_REST_Response([

@@ -12,7 +12,11 @@ class GetProjectTasks {
     private $endpoint  = '/project/(?P<id>\d+)/tasks';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:eic_projects,id',
+        'id'           => 'required|integer|exists:eic_projects,id',
+        'from'         => 'nullable|date',
+        'to'           => 'nullable|date',
+        'priority_id'  => 'nullable|exists:eic_priorities,id',
+        'status_id'    => 'nullable|exists:eic_statuses,id',
     ];
 
     protected array $validationMessages = [
@@ -24,7 +28,7 @@ class GetProjectTasks {
     public function __construct()
     {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE,
+            'methods'  => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_project_tasks'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -49,11 +53,11 @@ class GetProjectTasks {
         }
 
         $data[] = [];
-        $data['id'] = $id;
-        $data['from'] = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
-        $data['to'] = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
-        $data['status_id'] = isset($status_id) ? intval($status_id) : null;
-        $data['priority_id'] = isset($priority_id) ? intval($priority_id) : null;
+        $data['id']           = $id;
+        $data['from']         = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to']           = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
+        $data['status_id']    = isset($status_id) ? intval($status_id) : null;
+        $data['priority_id']  = isset($priority_id) ? intval($priority_id) : null;
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
