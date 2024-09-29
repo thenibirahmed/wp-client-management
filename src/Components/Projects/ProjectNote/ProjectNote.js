@@ -44,7 +44,7 @@ const ProjectNote = ({ projectId }) => {
     );
   }
 
-  useRefetch(paginationUrl, refetch);
+  useRefetch(paginationUrl, "", "", "", "", "", refetch);
 
   const handler = () => {
     setCreateNote(true);

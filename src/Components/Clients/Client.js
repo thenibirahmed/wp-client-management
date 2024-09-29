@@ -46,7 +46,7 @@ const Client = () => {
 
   const [selectedClient, setSelectedClient] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
-  const [searchText, setSearchText] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const {
     isLoading,
@@ -55,7 +55,7 @@ const Client = () => {
     refetch,
   } = useFetchClients(paginationUrl, searchText, dateFrom, dateTo, onError);
 
-  useRefetch(paginationUrl, searchText, dateFrom, dateTo, refetch);
+  useRefetch(paginationUrl, searchText, dateFrom, dateTo, null, null, refetch);
 
   useEffect(() => {
     setCreateInvoice(false);
@@ -104,6 +104,10 @@ const Client = () => {
         setDateFrom={setDateFrom}
         dateTo={dateTo}
         setDateTo={setDateTo}
+        setSearchText={setSearchText}
+        setSelectStatus={() => {}}
+        setSelectPriority={() => {}}
+        setSelectedFilter={() => {}}
       />
       <div className="space-y-6">
         <div className="flex md:flex-row  md:justify-between flex-col md:items-center md:gap-0 gap-4">
@@ -119,7 +123,10 @@ const Client = () => {
                 </button>
               </>
             )}
-            <ClientSearchInput setSearchText={setSearchText} />
+            <ClientSearchInput
+              setSearchText={setSearchText}
+              searchText={searchText}
+            />
             <button
               onClick={() => setCreateClient(true)}
               type="button"

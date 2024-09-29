@@ -34,6 +34,11 @@ const ClientDetails = () => {
     setDateFrom,
     dateTo,
     setDateTo,
+    selectStatus,
+    setSelectStatus,
+    selectPriority,
+    setSelectPriority,
+    setSelectedFilter,
   } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -112,6 +117,10 @@ const ClientDetails = () => {
             setDateTo={setDateTo}
             singleClient
             topBar={singleClientOverView?.topBar}
+            setSearchText={() => {}}
+            setSelectStatus={setSelectStatus}
+            setSelectPriority={setSelectPriority}
+            setSelectedFilter={setSelectedFilter}
           />
           <div className="space-y-6">
             <Tab />

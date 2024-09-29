@@ -348,6 +348,8 @@ export const useFetchClientProject = (
   searchText,
   dateStart,
   dateEnd,
+  selectStatus,
+  selectPriority,
   paginationUrl,
   onError
 ) => {
@@ -363,6 +365,12 @@ export const useFetchClientProject = (
       if (dateStart && dateEnd) {
         params.append("from", dateStart);
         params.append("to", dateEnd);
+      }
+      if (selectStatus) {
+        params.append("status_id", selectStatus);
+      }
+      if (selectPriority) {
+        params.append("priority_id", selectPriority);
       }
 
       const queryString = params.toString();
@@ -499,6 +507,8 @@ export const useFetchAllProjects = (
   searchText,
   dateStart,
   dateEnd,
+  selectStatus,
+  selectPriority,
   onError
 ) => {
   return useQuery(
@@ -513,6 +523,13 @@ export const useFetchAllProjects = (
 
       if (searchText) {
         params.append("search", searchText);
+      }
+
+      if (selectStatus) {
+        params.append("status_id", selectStatus);
+      }
+      if (selectPriority) {
+        params.append("priority_id", selectPriority);
       }
 
       const queryString = params.toString();
@@ -632,11 +649,43 @@ export const useFetchAssignee = (onError) => {
   );
 };
 
-export const useFetchProjectTask = (projectId, pageinationUrl, onError) => {
+export const useFetchProjectTask = (
+  projectId,
+  searchText,
+  dateStart,
+  dateEnd,
+  selectStatus,
+  selectPriority,
+  pageinationUrl,
+  onError
+) => {
   return useQuery(
     ["project-tasks", projectId],
     async () => {
-      return await api.get(`/project/${projectId}/tasks/?${pageinationUrl}`);
+      const params = new URLSearchParams();
+
+      if (searchText) {
+        params.append("search", searchText);
+      }
+
+      if (dateStart && dateEnd) {
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
+      }
+      if (selectStatus) {
+        params.append("status_id", selectStatus);
+      }
+      if (selectPriority) {
+        params.append("priority_id", selectPriority);
+      }
+
+      const queryString = params.toString();
+
+      const url = `/project/${projectId}/tasks/?${pageinationUrl}${
+        queryString ? `&${queryString}` : ""
+      }`;
+
+      return await api.get(url);
     },
     {
       select: (data) => {
@@ -656,13 +705,41 @@ export const useFetchProjectTask = (projectId, pageinationUrl, onError) => {
 export const useFetchProjectInvoice = (
   projectId,
   paginationUrl,
+  searchText,
+  dateStart,
+  dateEnd,
+  selectStatus,
+  selectPriority,
   type,
   onError
 ) => {
   return useQuery(
     [`${type}-invoice`, projectId],
     async () => {
-      return await api.get(`/${type}/${projectId}/invoices/?${paginationUrl}`);
+      const params = new URLSearchParams();
+
+      if (searchText) {
+        params.append("search", searchText);
+      }
+
+      if (dateStart && dateEnd) {
+        params.append("from", dateStart);
+        params.append("to", dateEnd);
+      }
+      if (selectStatus) {
+        params.append("status_id", selectStatus);
+      }
+      if (selectPriority) {
+        params.append("priority_id", selectPriority);
+      }
+
+      const queryString = params.toString();
+
+      const url = `/${type}/${projectId}/invoices/?${paginationUrl}${
+        queryString ? `&${queryString}` : ""
+      }`;
+
+      return await api.get(url);
     },
     {
       select: (data) => {

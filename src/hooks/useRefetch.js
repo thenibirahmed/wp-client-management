@@ -5,6 +5,8 @@ export const useRefetch = (
   searchText,
   dateFrom,
   dateTo,
+  selectStatus,
+  selectPriority,
   refetch
 ) => {
   useEffect(() => {
@@ -12,10 +14,24 @@ export const useRefetch = (
       await refetch();
     };
 
-    if (paginationUrl || searchText || dateFrom || dateTo) {
+    if (
+      paginationUrl ||
+      searchText ||
+      dateFrom ||
+      dateTo ||
+      selectStatus ||
+      selectPriority
+    ) {
       refetchHandler();
     }
-  }, [paginationUrl, searchText, dateFrom, dateTo]);
+  }, [
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    selectPriority,
+  ]);
 };
 
 export const useInvoiceRefetch = (paginationUrl, isFetching, refetch) => {

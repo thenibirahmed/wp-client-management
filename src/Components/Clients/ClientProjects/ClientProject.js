@@ -21,6 +21,10 @@ const ClientProject = ({ clientId }) => {
     dateFrom,
 
     dateTo,
+    selectStatus,
+    setSelectStatus,
+    selectPriority,
+    setSelectPriority,
   } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -29,7 +33,7 @@ const ClientProject = ({ clientId }) => {
 
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
-  const [searchText, setSearchText] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const {
     isLoading,
@@ -41,11 +45,21 @@ const ClientProject = ({ clientId }) => {
     searchText,
     dateFrom,
     dateTo,
+    selectStatus,
+    selectPriority,
     paginationUrl,
     onError
   );
 
-  useRefetch(paginationUrl, searchText, dateFrom, dateTo, refetch);
+  useRefetch(
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    selectPriority,
+    refetch
+  );
 
   const handler = () => {
     setOpenProjectModal(true);
@@ -86,7 +100,9 @@ const ClientProject = ({ clientId }) => {
         btnTitle="Add Project"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
+        searchText={searchText}
         setSearchText={setSearchText}
+        filter
       />
       {clientProjects?.projects?.length > 0 ? (
         <>

@@ -15,9 +15,19 @@ import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectTask = ({ projectId }) => {
-  const { openTask, setOpenTask } = useStoreContext();
+  const {
+    openTask,
+    setOpenTask,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    setSelectStatus,
+    selectPriority,
+    setSelectPriority,
+  } = useStoreContext();
   const [selectedProjectTask, setSelectedProjectTask] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -28,9 +38,26 @@ const ProjectTask = ({ projectId }) => {
     data: projectTask,
     error,
     refetch,
-  } = useFetchProjectTask(projectId, paginationUrl, onError);
+  } = useFetchProjectTask(
+    projectId,
+    searchText,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    selectPriority,
+    paginationUrl,
+    onError
+  );
 
-  useRefetch(paginationUrl, null, null, null, refetch);
+  useRefetch(
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    selectPriority,
+    refetch
+  );
 
   const handler = () => {
     setOpenProjectModal(true);
@@ -69,6 +96,9 @@ const ProjectTask = ({ projectId }) => {
         btnTitle="Add Task"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
+        setSearchText={setSearchText}
+        searchText={searchText}
+        filter
       />
 
       <React.Fragment>

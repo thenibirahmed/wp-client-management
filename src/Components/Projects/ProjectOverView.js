@@ -21,6 +21,9 @@ const ProjectOverView = ({
   setDateFrom,
   dateTo,
   setDateTo,
+  setSelectStatus,
+  setSelectPriority,
+  setSelectedFilter,
   projectDetails = false,
   topBar,
 }) => {
@@ -68,6 +71,9 @@ const ProjectOverView = ({
     setDateRange([dayjs().subtract(3, "month").toDate(), new Date()]);
     setDateFrom(null);
     setDateTo(null);
+    setSelectStatus("");
+    setSelectPriority("");
+    setSelectedFilter("Filter");
     const usdCurrency = currencyLists?.currency?.find(
       (item) => item.code === "BDT"
     );

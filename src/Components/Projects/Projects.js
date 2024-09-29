@@ -24,6 +24,11 @@ const Projects = () => {
     setAllTabItems,
     openTaskDetail,
     setOpenTaskDesc,
+    selectStatus,
+    setSelectStatus,
+    selectPriority,
+    setSelectPriority,
+    setSelectedFilter,
   } = useStoreContext();
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -46,9 +51,25 @@ const Projects = () => {
     data: projects,
     error: allProjectError,
     refetch,
-  } = useFetchAllProjects(paginationUrl, searchText, dateFrom, dateTo, onError);
+  } = useFetchAllProjects(
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    selectPriority,
+    onError
+  );
 
-  useRefetch(paginationUrl, searchText, dateFrom, dateTo, refetch);
+  useRefetch(
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    selectPriority,
+    refetch
+  );
 
   function onError(err) {
     console.log(err);
@@ -96,6 +117,9 @@ const Projects = () => {
             setDateFrom={setDateFrom}
             dateTo={dateTo}
             setDateTo={setDateTo}
+            setSelectStatus={setSelectStatus}
+            setSelectPriority={setSelectPriority}
+            setSelectedFilter={setSelectedFilter}
           />
 
           <div className="space-y-6">
@@ -108,6 +132,7 @@ const Projects = () => {
                 onDeleteAction={onDeleteAction}
                 onCheckAction={onCheckAction}
                 setSearchText={setSearchText}
+                filter
               />
             </>
             <React.Fragment>

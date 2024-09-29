@@ -22,6 +22,10 @@ const ClientOverView = ({
   setDateTo,
   singleClient = false,
   topBar,
+  setSearchText,
+  setSelectStatus,
+  setSelectPriority,
+  setSelectedFilter,
 }) => {
   const [selectCurrency, setSelectCurrency] = useState();
 
@@ -77,6 +81,10 @@ const ClientOverView = ({
     );
 
     setSelectCurrency(usdCurrency);
+    setSearchText("");
+    setSelectStatus("");
+    setSelectPriority("");
+    setSelectedFilter("Filter");
   };
 
   if (isLoading || isLoadingSelectCurrency) return <Skeleton />;

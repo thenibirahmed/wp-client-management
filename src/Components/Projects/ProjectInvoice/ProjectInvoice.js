@@ -11,10 +11,20 @@ import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectInvoice = ({ projectId }) => {
-  const { setCreateInvoice, updateInvoice, setUpdateInvoice } =
-    useStoreContext();
+  const {
+    setCreateInvoice,
+    updateInvoice,
+    setUpdateInvoice,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    setSelectStatus,
+    selectPriority,
+    setSelectPriority,
+  } = useStoreContext();
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -25,9 +35,27 @@ const ProjectInvoice = ({ projectId }) => {
     data: invoiceList,
     error: inoiceErr,
     refetch,
-  } = useFetchProjectInvoice(projectId, paginationUrl, "project", onError);
+  } = useFetchProjectInvoice(
+    projectId,
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    selectPriority,
+    "project",
+    onError
+  );
 
-  useRefetch(paginationUrl, refetch);
+  useRefetch(
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    selectPriority,
+    refetch
+  );
 
   const handler = () => {
     setCreateInvoice(true);
@@ -65,9 +93,12 @@ const ProjectInvoice = ({ projectId }) => {
         selectedProject={selectedInvoices}
         title="Invoices"
         setOpenModal={updateInvoice ? setUpdateInvoice : setCreateInvoice}
-        btnTitle={"Create Invoice"}
+        btnTitle="Create Invoice"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
+        searchText={searchText}
+        setSearchText={setSearchText}
+        filter
       />
 
       {invoiceList?.invoices.length > 0 ? (

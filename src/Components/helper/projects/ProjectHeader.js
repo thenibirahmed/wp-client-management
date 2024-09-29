@@ -18,9 +18,10 @@ const ProjectHeader = ({
   cancelTitle,
   onDeleteAction,
   onCheckAction,
-  filter = true,
+  filter = false,
   check = true,
   setSearchText,
+  searchText,
 }) => {
   const { updateNotes, setUpdateNotes } = useStoreContext();
   return (

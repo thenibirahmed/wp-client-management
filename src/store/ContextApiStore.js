@@ -9,6 +9,10 @@ export const ContextProvider = ({ children }) => {
     new Date(),
   ]);
 
+  const [selectStatus, setSelectStatus] = useState("");
+  const [selectPriority, setSelectPriority] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("Filter");
+
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
 
@@ -139,6 +143,12 @@ export const ContextProvider = ({ children }) => {
     setDateFrom,
     dateTo,
     setDateTo,
+    selectStatus,
+    setSelectStatus,
+    selectPriority,
+    setSelectPriority,
+    selectedFilter,
+    setSelectedFilter,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;
