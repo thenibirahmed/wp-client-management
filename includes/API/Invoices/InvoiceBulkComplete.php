@@ -22,7 +22,7 @@ class InvoiceBulkComplete {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods'  => \WP_REST_Server::DELETABLE,
+            'methods'  => \WP_REST_Server::EDITABLE,
             'callback' => array($this, 'bulk_complete_invoice'),
             'permission_callback' => 'is_user_logged_in',
         ]);

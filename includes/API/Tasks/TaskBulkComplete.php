@@ -1,15 +1,15 @@
 <?php
 
-namespace WpClientManagement\API\Projects;
+namespace WpClientManagement\API\Tasks;
 
-use WpClientManagement\Models\Project;
 use WpClientManagement\Models\Status;
+use WpClientManagement\Models\Task;
 
-class ProjectBulkComplete {
+class TaskBulkComplete {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/project/bulk-complete';
+    private $endpoint = '/tasks/bulk-complete';
 
     protected array $rules = [
         'bulk_ids'   => 'nullable|array',
@@ -22,13 +22,13 @@ class ProjectBulkComplete {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::EDITABLE,
-            'callback' => array($this, 'bulk_complete_project'),
+            'methods'  => \WP_REST_Server::EDITABLE,
+            'callback' => array($this, 'bulk_complete_invoice'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function bulk_complete_project(\WP_REST_Request $request) {
+    public function bulk_complete_invoice(\WP_REST_Request $request) {
         global $validator;
 
         $bulk_ids  = $request->get_param('bulk_ids');
@@ -50,21 +50,21 @@ class ProjectBulkComplete {
             ], 400);
         }
 
-        $bulk_delete_projects = Project::whereIn('id', $bulk_ids)->get();
+        $bulk_tasks = Task::whereIn('id', $bulk_ids)->get();
 
-        $project_complete_status_id = Status::where('type','project')
-                                    ->where('name','completed')
-                                    ->first()
-                                    ->id;
+        $task_done_status_id = Status::where('type','task')
+                                ->where('name','Done')
+                                ->first()
+                                ->id;
 
-        foreach ($bulk_delete_projects as $project) {
-            $project->update([
-                'status_id' => $project_complete_status_id
+        foreach ($bulk_tasks as $task) {
+            $task->update([
+                'status_id' => $task_done_status_id
             ]);
         }
 
         return new \WP_REST_Response([
-            'message' => 'Projects updated successfully.',
+            'message' => 'Tasks updated successfully.',
         ], 200);
     }
 }

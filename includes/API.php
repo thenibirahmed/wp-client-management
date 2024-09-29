@@ -60,6 +60,7 @@ use WpClientManagement\API\Invoices\CreateInvoice;
 use WpClientManagement\API\Invoices\DeleteInvoice;
 use WpClientManagement\API\Invoices\EditInvoice;
 use WpClientManagement\API\Invoices\InvoiceBulkComplete;
+use WpClientManagement\API\Tasks\TaskBulkComplete;
 use WpClientManagement\API\Invoices\UpdateInvoice;
 use WpClientManagement\API\Notes\CreateNote;
 use WpClientManagement\API\Notes\DeleteNote;
@@ -276,6 +277,7 @@ class API {
         new UpdateTask();
         new EditTask();
         new TasksBulkDelete();
+        new TaskBulkComplete();
 
         // TaskComment
         new AddTaskComment();
