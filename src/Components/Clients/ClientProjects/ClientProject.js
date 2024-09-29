@@ -19,12 +19,13 @@ const ClientProject = ({ clientId }) => {
     openProjectModal,
     setOpenProjectModal,
     dateFrom,
-
     dateTo,
     selectStatus,
     setSelectStatus,
     selectPriority,
     setSelectPriority,
+    searchText,
+    setSearchText,
   } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -33,7 +34,6 @@ const ClientProject = ({ clientId }) => {
 
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
-  const [searchText, setSearchText] = useState("");
 
   const {
     isLoading,

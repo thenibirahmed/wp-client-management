@@ -759,10 +759,10 @@ export const useFetchProjectInvoice = (
 
 export const useFetchProjectNotes = (
   id,
-  pageinationUrl,
   searchText,
   dateStart,
   dateEnd,
+  pageinationUrl,
   type,
   onError
 ) => {

@@ -39,6 +39,9 @@ const ClientDetails = () => {
     selectPriority,
     setSelectPriority,
     setSelectedFilter,
+
+    searchText,
+    setSearchText,
   } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -117,7 +120,7 @@ const ClientDetails = () => {
             setDateTo={setDateTo}
             singleClient
             topBar={singleClientOverView?.topBar}
-            setSearchText={() => {}}
+            setSearchText={setSearchText}
             setSelectStatus={setSelectStatus}
             setSelectPriority={setSelectPriority}
             setSelectedFilter={setSelectedFilter}

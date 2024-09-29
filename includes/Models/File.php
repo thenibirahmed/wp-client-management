@@ -34,14 +34,24 @@ class File extends Model
             });
         }
 
-        return $query ->paginate(30, ['*'], 'file', $page);
+        return $query ->paginate(3, ['*'], 'file', $page);
     }
 
-    public static function getProjectFiles($id, $page)
+    public static function getProjectFiles($id, $page, $from, $to, $search = '')
     {
-        return self::with('eic_crm_user')
+        $query = self::with('eic_crm_user')
                     ->where('project_id', $id)
-                    ->paginate(5, ['*'], 'file', $page);
+                    ->whereBetween('created_at', [$from, $to]);
+
+        if(!empty($search)) {
+            $query->where('title', 'like', '%' . $search . '%')
+                  ->orWhere('url', 'like', '%' . $search . '%')
+                  ->orWhereHas('eic_crm_user.wp_user', function($q2) use ($search) {
+                      $q2->where('user_login', 'like', '%' . $search . '%');
+                  });
+        }
+
+        return $query->paginate(5, ['*'], 'file', $page);
     }
 
     public function client() {

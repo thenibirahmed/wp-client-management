@@ -25,6 +25,7 @@ export const Search = ({ setSearchText }) => {
         <Search01Icon aria-hidden="true" className="h-5 w-5 text-textColor2" />
       </div>
       <input
+        value={inputValue}
         onChange={handleChange}
         id="email"
         name="email"

@@ -12,18 +12,22 @@ class GetProjectNotes {
     private $endpoint  = '/project/(?P<id>\d+)/notes';
 
     protected array $rules = [
-        'id' => 'required|integer|exists:eic_projects,id',
+        'id'    => 'required|integer|exists:eic_projects,id',
+        'from'  => 'nullable|date',
+        'to'    => 'nullable|date',
     ];
 
     protected array $validationMessages = [
         'id.required' => 'The Project ID is required.',
         'id.integer'  => 'The Project ID must be an integer.',
         'id.exists'   => 'The Project does not exist.',
+        'from.date'   => 'The From date is not a valid date.',
+        'to.date'     => 'The To date is not a valid date.',
     ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE,
+            'methods'  => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_projects_notes'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -34,6 +38,9 @@ class GetProjectNotes {
 
         $project_id  = $request->get_param('id');
         $page        = $request->get_param('note');
+        $from        = $request->get_param('from');
+        $to          = $request->get_param('to');
+        $search      = $request->get_param('search');
 
         if(!isset($project_id)) {
             return new \WP_REST_Response([
@@ -41,7 +48,10 @@ class GetProjectNotes {
             ]);
         }
 
-        $data = ['id' => $project_id];
+        $data = [];
+        $data['id']      = $project_id;
+        $data['from']    = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to']      = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -59,7 +69,7 @@ class GetProjectNotes {
             ]);
         }
 
-        $notes = Note::getProjectNotes($project->id, $page);
+        $notes = Note::getProjectNotes($project->id, $page, $data['from'], $data['to'], $search);
 
         if(!$notes) {
             return new \WP_REST_Response([

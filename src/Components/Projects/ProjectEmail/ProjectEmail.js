@@ -13,7 +13,14 @@ import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectEmail = ({ projectId }) => {
-  const { createEmail, setCreateEmail } = useStoreContext();
+  const {
+    createEmail,
+    setCreateEmail,
+    dateFrom,
+    dateTo,
+    searchText,
+    setSearchText,
+  } = useStoreContext();
 
   const [selectedEmail, setSelectedEmail] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
@@ -27,9 +34,17 @@ const ProjectEmail = ({ projectId }) => {
     data: projectEmail,
     error,
     refetch,
-  } = useFetchProjectEmails(projectId, paginationUrl, "project", onError);
+  } = useFetchProjectEmails(
+    projectId,
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    "project",
+    onError
+  );
 
-  useRefetch(paginationUrl, refetch);
+  useRefetch(paginationUrl, searchText, dateFrom, dateTo, null, null, refetch);
 
   function onError(err) {
     console.log(err);
@@ -67,6 +82,8 @@ const ProjectEmail = ({ projectId }) => {
         selectedEmail={selectedEmail}
         onDeleteAction={onDeleteAction}
         onEmailBox={onEmailBox}
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
 
       {createEmail ? (

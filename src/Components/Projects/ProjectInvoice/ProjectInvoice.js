@@ -21,10 +21,12 @@ const ProjectInvoice = ({ projectId }) => {
     setSelectStatus,
     selectPriority,
     setSelectPriority,
+    searchText,
+    setSearchText,
   } = useStoreContext();
+
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
-  const [searchText, setSearchText] = useState("");
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];

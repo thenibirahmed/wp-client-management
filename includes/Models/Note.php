@@ -31,14 +31,23 @@ class Note extends Model
             });
         }
 
-        return $query->paginate(30, ['*'], 'note', $page);
+        return $query->paginate(3, ['*'], 'note', $page);
     }
 
-    public static function getProjectNotes($id, $page)
+    public static function getProjectNotes($id, $page, $from, $to, $search)
     {
-        return self::with('eic_crm_user')
+        $query = self::with('eic_crm_user')
                     ->where('project_id',$id)
-                    ->paginate(3, ['*'], 'note', $page);
+                    ->whereBetween('created_at', [$from, $to]);
+
+        if(!empty($search)) {
+            $query->where('note', 'like', '%' . $search . '%')
+                  ->orWhereHas('eic_crm_user.wp_user', function($q) use ($search) {
+                      $q->where('user_login', 'like', '%' . $search . '%');
+                  });
+        }
+
+        return $query->paginate(3, ['*'], 'note', $page);
     }
 
     public function eic_crm_user() {

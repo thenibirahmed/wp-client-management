@@ -9,12 +9,13 @@ export const ContextProvider = ({ children }) => {
     new Date(),
   ]);
 
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
+
   const [selectStatus, setSelectStatus] = useState("");
   const [selectPriority, setSelectPriority] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("Filter");
-
-  const [dateFrom, setDateFrom] = useState(null);
-  const [dateTo, setDateTo] = useState(null);
+  const [searchText, setSearchText] = useState("");
 
   const [openTask, setOpenTask] = useState(false);
   const [openUpdateTask, setOpenUpdateTask] = useState(false);
@@ -149,6 +150,8 @@ export const ContextProvider = ({ children }) => {
     setSelectPriority,
     selectedFilter,
     setSelectedFilter,
+    searchText,
+    setSearchText,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

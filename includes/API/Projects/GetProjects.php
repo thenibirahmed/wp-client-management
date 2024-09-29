@@ -51,6 +51,14 @@ class GetProjects {
         $data['status_id']     = isset($status_id) ? intval($status_id) : null;
         $data['priority_id']   = isset($priority_id) ? intval($priority_id) : null;
 
+        $validator = $validator->make($data, $this->rules, $this->validationMessages);
+
+        if ($validator->fails()) {
+            return new \WP_REST_Response([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
         $projects    = Project::getAllProjects($page, $data['from'], $data['to'], $data['status_id'], $data['priority_id'], $search);
 
         $clients     = Client::whereHas('projects')->get();

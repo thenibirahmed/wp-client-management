@@ -11,8 +11,20 @@ import Errors from "../../Errors";
 import useHashRouting from "../../../utils/useHashRouting";
 
 const ClientInvoices = ({ clientId }) => {
-  const { setCreateInvoice, updateInvoice, setUpdateInvoice, isFetching } =
-    useStoreContext();
+  const {
+    setCreateInvoice,
+    updateInvoice,
+    setUpdateInvoice,
+    isFetching,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    setSelectStatus,
+    selectPriority,
+    setSelectPriority,
+    searchText,
+    setSearchText,
+  } = useStoreContext();
 
   const [selectedInvoices, setSelectedInvoices] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
@@ -26,9 +38,27 @@ const ClientInvoices = ({ clientId }) => {
     data: invoiceList,
     error: inoiceErr,
     refetch,
-  } = useFetchProjectInvoice(clientId, paginationUrl, "client", onError);
+  } = useFetchProjectInvoice(
+    clientId,
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    selectPriority,
+    "client",
+    onError
+  );
 
-  useInvoiceRefetch(paginationUrl, isFetching, refetch);
+  useRefetch(
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    selectPriority,
+    refetch
+  );
 
   const handler = () => {
     setCreateInvoice(true);
@@ -66,6 +96,9 @@ const ClientInvoices = ({ clientId }) => {
         btnTitle="Create Invoice"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
+        searchText={searchText}
+        setSearchText={setSearchText}
+        filter
       />
 
       {invoiceList?.invoices.length > 0 ? (

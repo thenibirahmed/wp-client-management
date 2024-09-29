@@ -1,10 +1,21 @@
 import React, { useEffect } from "react";
 import { useStoreContext } from "../../store/ContextApiStore";
+import dayjs from "dayjs";
 
 const Tab = ({ task = false }) => {
-  const { allTabItems, setAllTabItems } = useStoreContext();
+  const {
+    allTabItems,
+    setAllTabItems,
+    setSearchText,
+    setSelectStatus,
+    setSelectPriority,
+  } = useStoreContext();
 
   const onTabChangeHandler = (selectedTab) => {
+    setSearchText("");
+    setSelectStatus("");
+    setSelectPriority("");
+
     let updatedTab = {};
 
     for (let keys in allTabItems) {

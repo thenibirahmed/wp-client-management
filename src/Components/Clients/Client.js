@@ -14,23 +14,14 @@ import ClientOverView from "./ClientOverView";
 import { useStoreContext } from "../../store/ContextApiStore";
 import Modal from "../helper/Modal";
 import AddClientForm from "./AddClientForm";
-import { useFetchClientOverView, useFetchClients } from "../../hooks/useQuery";
+import { useFetchClients } from "../../hooks/useQuery";
 import toast from "react-hot-toast";
 import Skeleton from "../Skeleton";
 import Errors from "../Errors";
 import useHashRouting from "../../utils/useHashRouting";
 import { useRefetch } from "../../hooks/useRefetch";
-import dayjs from "dayjs";
 
 const Client = () => {
-  const [dateRange, setDateRange] = useState([
-    dayjs().subtract(3, "month").toDate(),
-    new Date(),
-  ]);
-
-  const [dateFrom, setDateFrom] = useState(null);
-  const [dateTo, setDateTo] = useState(null);
-
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "page=1";
@@ -42,6 +33,12 @@ const Client = () => {
     setCreateClient,
     updateClient,
     setUpdateClient,
+    dateRange,
+    setDateRange,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo,
   } = useStoreContext();
 
   const [selectedClient, setSelectedClient] = useState([]);
@@ -117,7 +114,6 @@ const Client = () => {
           <div className="flex sm:flex-row flex-wrap gap-5 items-center">
             {selectedClient.length > 0 && (
               <>
-                {" "}
                 <button onClick={() => onDeleteAction(selectedClient)}>
                   <Delete03Icon className="text-textColor2" />
                 </button>

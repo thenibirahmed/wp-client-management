@@ -13,7 +13,14 @@ import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
 
 const ClientEmails = ({ clientId }) => {
-  const { createEmail, setCreateEmail, dateFrom, dateTo } = useStoreContext();
+  const {
+    createEmail,
+    setCreateEmail,
+    dateFrom,
+    dateTo,
+    searchText,
+    setSearchText,
+  } = useStoreContext();
 
   const [selectedEmail, setSelectedEmail] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
@@ -21,7 +28,6 @@ const ClientEmails = ({ clientId }) => {
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "email=1";
-  const [searchText, setSearchText] = useState(false);
 
   const {
     isLoading,
@@ -38,7 +44,7 @@ const ClientEmails = ({ clientId }) => {
     onError
   );
 
-  useRefetch(paginationUrl, searchText, dateFrom, dateTo, refetch);
+  useRefetch(paginationUrl, searchText, dateFrom, dateTo, null, null, refetch);
 
   function onError(err) {
     console.log(err);
@@ -71,6 +77,7 @@ const ClientEmails = ({ clientId }) => {
         selectedEmail={selectedEmail}
         onDeleteAction={onDeleteAction}
         onEmailBox={onEmailBox}
+        searchText={searchText}
         setSearchText={setSearchText}
       />
 

@@ -12,9 +12,17 @@ import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
+import ProjectHeader from "../../helper/projects/ProjectHeader";
 
 const ProjectFile = ({ projectId }) => {
-  const { openFileModal, setOpenFileModal } = useStoreContext();
+  const {
+    openFileModal,
+    setOpenFileModal,
+    dateFrom,
+    dateTo,
+    searchText,
+    setSearchText,
+  } = useStoreContext();
 
   const [selectedFile, setSelectedFile] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
@@ -28,9 +36,17 @@ const ProjectFile = ({ projectId }) => {
     data: projectFiles,
     error,
     refetch,
-  } = useFetchProjectFiles(projectId, paginationUrl, "project", onError);
+  } = useFetchProjectFiles(
+    projectId,
+    paginationUrl,
+    searchText,
+    dateFrom,
+    dateTo,
+    "project",
+    onError
+  );
 
-  useRefetch(paginationUrl, refetch);
+  useRefetch(paginationUrl, searchText, dateFrom, dateTo, null, null, refetch);
 
   const handler = () => {
     setOpenFileModal(true);
@@ -42,6 +58,13 @@ const ProjectFile = ({ projectId }) => {
       err?.response?.data?.message || "Failed To Fetch Project Files"
     );
   }
+
+  const onDeleteAction = (ids) => {
+    alert(ids[0].id);
+  };
+  const onCheckAction = (ids) => {
+    alert(ids[0].id);
+  };
 
   if (error) {
     return (
@@ -56,7 +79,16 @@ const ProjectFile = ({ projectId }) => {
 
   return (
     <React.Fragment>
-      <FileHeader />
+      <ProjectHeader
+        selectedProject={selectedFile}
+        title="Files"
+        setOpenModal={setOpenFileModal}
+        btnTitle="Add File"
+        onDeleteAction={onDeleteAction}
+        onCheckAction={onCheckAction}
+        setSearchText={setSearchText}
+        searchText={searchText}
+      />
       <React.Fragment>
         {isLoading ? (
           <Skeleton />

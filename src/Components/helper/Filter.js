@@ -19,6 +19,7 @@ const Filter = () => {
     selectedFilter,
     setSelectedFilter,
   } = useStoreContext();
+  console.log();
 
   // State for the selected filter
 
@@ -91,10 +92,13 @@ const Filter = () => {
                     <button
                       key={status.id}
                       onClick={() => {
-                        setSelectedFilter(status.name);
                         setSelectStatus(status.id);
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-textColor2 hover:bg-gray-100"
+                      className={`block ${
+                        selectStatus == status.id
+                          ? "bg-indigo-600 text-white"
+                          : ""
+                      } w-full text-left px-4 py-2 text-sm text-textColor2 `}
                     >
                       {status.name}
                     </button>
@@ -128,10 +132,13 @@ const Filter = () => {
                     <button
                       key={priority.id}
                       onClick={() => {
-                        setSelectedFilter(priority.name);
                         setSelectPriority(priority.id);
                       }}
-                      className="block w-full text-left px-4 py-2 text-sm text-textColor2 hover:bg-gray-100"
+                      className={`block w-full text-left px-4 py-2 text-sm text-textColor2 ${
+                        selectPriority == priority.id
+                          ? "bg-indigo-600 text-white"
+                          : ""
+                      }`}
                     >
                       {priority.name}
                     </button>

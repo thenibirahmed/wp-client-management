@@ -23,9 +23,9 @@ const ProjectOverView = ({
   setDateTo,
   setSelectStatus,
   setSelectPriority,
-  setSelectedFilter,
   projectDetails = false,
   topBar,
+  setSearchText,
 }) => {
   const [selectCurrency, setSelectCurrency] = useState();
 
@@ -73,12 +73,13 @@ const ProjectOverView = ({
     setDateTo(null);
     setSelectStatus("");
     setSelectPriority("");
-    setSelectedFilter("Filter");
+
     const usdCurrency = currencyLists?.currency?.find(
       (item) => item.code === "BDT"
     );
 
     setSelectCurrency(usdCurrency);
+    setSearchText("");
   };
 
   function onError(err) {

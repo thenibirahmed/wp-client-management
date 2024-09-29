@@ -21,9 +21,10 @@ class GetTeamMembers {
 
     public function get_team_members(\WP_REST_Request $request)
     {
-        $page        = $request->get_param('page');
+        $page        = $request->get_param('member');
+        $search      = $request->get_param('search');
 
-        $teamMembers = EicCrmUser::getTeamMembers($page);
+        $teamMembers = EicCrmUser::getTeamMembers($page, $search);
 
         $wp_user_ids = $teamMembers->pluck('wp_user_id')->toArray();
 

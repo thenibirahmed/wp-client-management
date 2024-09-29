@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Listbox,
   ListboxButton,
@@ -17,6 +17,22 @@ export const MultiSelectTextField = ({
   allIds,
   update = false,
 }) => {
+  const [state, setState] = useState(false);
+
+  useEffect(() => {
+    if (isSubmitting && allIds?.length === 0) {
+      setState(true);
+    }
+
+    if (allIds?.length > 0) {
+      setState(false);
+    }
+  }, [isSubmitting, allIds]);
+
+  console.log("allids", allIds);
+  console.log("length = ", allIds?.length);
+  console.log("isSubmitting = ", isSubmitting);
+
   const handleSelect = (person) => {
     const isIncluded = select?.some((item) => item.id === person.id);
     if (isIncluded) {
@@ -33,7 +49,11 @@ export const MultiSelectTextField = ({
           {label}
         </label>
         <div className="relative ">
-          <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+          <ListboxButton
+            className={`relative w-full cursor-default border rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900  focus:outline-none sm:text-sm sm:leading-6 ${
+              state ? "border-customRed" : "border-borderColor"
+            }`}
+          >
             <span className="block truncate">
               {select?.length > 0
                 ? select?.map((p) => p.name).join(", ")
@@ -80,6 +100,11 @@ export const MultiSelectTextField = ({
             ))}
           </ListboxOptions>
         </div>
+        {state && (
+          <p className="text-xs font-semibold text-customRed -mt-1">
+            Assignee is required*
+          </p>
+        )}
       </div>
     </Listbox>
   );

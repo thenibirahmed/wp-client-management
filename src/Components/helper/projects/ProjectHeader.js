@@ -8,6 +8,7 @@ import {
 import { Search } from "../Search";
 import Filter from "../Filter";
 import { useStoreContext } from "../../../store/ContextApiStore";
+import { ClientSearchInput } from "../../Clients/SearchInput";
 
 const ProjectHeader = ({
   selectedProject,
@@ -42,7 +43,10 @@ const ProjectHeader = ({
             )}
           </>
         )}
-        <Search setSearchText={setSearchText} />
+        <ClientSearchInput
+          setSearchText={setSearchText}
+          searchText={searchText}
+        />
         {filter && <Filter />}
 
         {openModal ? (

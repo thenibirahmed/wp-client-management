@@ -8,11 +8,13 @@ import {
 } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import Filter from "../Filter";
+import { ClientSearchInput } from "../../Clients/SearchInput";
 
 const EmailHeader = ({
   selectedEmail,
   onDeleteAction,
   onEmailBox,
+  searchText,
   setSearchText,
 }) => {
   const { createEmail, setCreateEmail } = useStoreContext();
@@ -32,7 +34,10 @@ const EmailHeader = ({
             </button>
           </>
         )}
-        <Filter setSearchText={setSearchText} />
+        <ClientSearchInput
+          setSearchText={setSearchText}
+          searchText={searchText}
+        />
         {createEmail ? (
           <>
             <button

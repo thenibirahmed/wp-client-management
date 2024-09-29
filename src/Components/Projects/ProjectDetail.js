@@ -38,6 +38,12 @@ const ProjectDetail = () => {
     setDateFrom,
     dateTo,
     setDateTo,
+    selectStatus,
+    setSelectStatus,
+    selectPriority,
+    setSelectPriority,
+    searchText,
+    setSearchText,
   } = useStoreContext();
 
   const projectId = extractProjectId(currentPath);
@@ -118,6 +124,9 @@ const ProjectDetail = () => {
             setDateTo={setDateTo}
             projectDetails
             topBar={singleProjectOverView?.topBar}
+            setSearchText={setSearchText}
+            setSelectStatus={setSelectStatus}
+            setSelectPriority={setSelectPriority}
           />
           <div className="space-y-6">
             <Tab task={true} />

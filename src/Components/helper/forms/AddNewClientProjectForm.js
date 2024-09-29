@@ -98,6 +98,11 @@ const AddNewClientProjectForm = ({
     if (!selectProjectManager?.id || !selectStatus?.id || !selectPriority?.id) {
       return setError("This field is required*");
     }
+
+    if (allIds?.length === 0) {
+      return;
+    }
+
     setSubmitLoader(true);
 
     const idsLists = allIds.map((item) => item);

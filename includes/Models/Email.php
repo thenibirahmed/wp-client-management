@@ -38,10 +38,23 @@ class Email extends Model
         return $query->paginate(3, ['*'], 'email', $page);
     }
 
-    public static function getProjectEmails($id, $page)
+    public static function getProjectEmails($id, $page, $from, $to, $search = '')
     {
-        return self::where('project_id', $id)
-                ->paginate(3, ['*'], 'email', $page);
+        $query = self::where('project_id', $id)
+                ->with('eic_crm_user')
+                ->whereBetween('created_at',[$from, $to]);
+
+        if(!empty($search)) {
+            $query->where(function($q) use ($search) {
+                $q->where('subject', 'like', '%' . $search . '%')
+                  ->orWhere('body', 'like', '%' . $search . '%')
+                  ->orWhereHas('eic_crm_user.wp_user', function($q2) use ($search) {
+                      $q2->where('user_login', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+
+        return $query->paginate(3, ['*'], 'email', $page);
     }
 
     public function client() {

@@ -29,6 +29,8 @@ const Projects = () => {
     selectPriority,
     setSelectPriority,
     setSelectedFilter,
+    searchText,
+    setSearchText,
   } = useStoreContext();
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -36,7 +38,6 @@ const Projects = () => {
 
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
-  const [searchText, setSearchText] = useState(false);
 
   const [dateRange, setDateRange] = useState([
     dayjs().subtract(3, "month").toDate(),
@@ -120,6 +121,7 @@ const Projects = () => {
             setSelectStatus={setSelectStatus}
             setSelectPriority={setSelectPriority}
             setSelectedFilter={setSelectedFilter}
+            setSearchText={setSearchText}
           />
 
           <div className="space-y-6">
@@ -131,6 +133,7 @@ const Projects = () => {
                 btnTitle="Add Project"
                 onDeleteAction={onDeleteAction}
                 onCheckAction={onCheckAction}
+                searchText={searchText}
                 setSearchText={setSearchText}
                 filter
               />

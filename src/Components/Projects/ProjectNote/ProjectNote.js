@@ -21,6 +21,10 @@ const ProjectNote = ({ projectId }) => {
     updateNotes,
     setNoteId,
     noteId,
+    dateFrom,
+    dateTo,
+    searchText,
+    setSearchText,
   } = useStoreContext();
 
   const [selectedNote, setSelectedNote] = useState([]);
@@ -35,7 +39,17 @@ const ProjectNote = ({ projectId }) => {
     data: projectNotes,
     error,
     refetch,
-  } = useFetchProjectNotes(projectId, paginationUrl, "project", onError);
+  } = useFetchProjectNotes(
+    projectId,
+    searchText,
+    dateFrom,
+    dateTo,
+    paginationUrl,
+    "project",
+    onError
+  );
+
+  useRefetch(paginationUrl, searchText, dateFrom, dateTo, null, null, refetch);
 
   function onError(err) {
     console.log(err);
@@ -43,8 +57,6 @@ const ProjectNote = ({ projectId }) => {
       err?.response?.data?.message || "Failed To Fetch Project Notes"
     );
   }
-
-  useRefetch(paginationUrl, "", "", "", "", "", refetch);
 
   const handler = () => {
     setCreateNote(true);
@@ -79,6 +91,8 @@ const ProjectNote = ({ projectId }) => {
         cancelTitle="Cancel"
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
+        setSearchText={setSearchText}
+        searchText={searchText}
       />
 
       {createNote || updateNotes ? (
