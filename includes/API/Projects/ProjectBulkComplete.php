@@ -9,7 +9,7 @@ class ProjectBulkComplete {
 
     private $namespace = 'wp-client-management/v1';
 
-    private $endpoint = '/project/bulk-complete';
+    private $endpoint = '/projects/bulk-complete';
 
     protected array $rules = [
         'bulk_ids'   => 'nullable|array',
