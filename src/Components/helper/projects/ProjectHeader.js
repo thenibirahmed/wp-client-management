@@ -34,11 +34,11 @@ const ProjectHeader = ({
         {selectedProject?.length > 0 && (
           <>
             <button onClick={() => onDeleteAction(selectedProject)}>
-              <Delete03Icon className="text-textColor2" />
+              <Delete03Icon className="text-customRed" />
             </button>
             {check && (
               <button onClick={() => onCheckAction(selectedProject)}>
-                <CheckmarkCircle02Icon className="text-textColor2" />
+                <CheckmarkCircle02Icon className="text-customBlue" />
               </button>
             )}
           </>

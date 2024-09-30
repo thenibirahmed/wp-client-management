@@ -13,6 +13,7 @@ import { useRefetch } from "../../../hooks/useRefetch";
 import useHashRouting from "../../../utils/useHashRouting";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
+import api from "../../../api/api";
 
 const ClientProject = ({ clientId }) => {
   const {
@@ -66,10 +67,18 @@ const ClientProject = ({ clientId }) => {
   };
 
   const onDeleteAction = (ids) => {
-    alert(ids[0].id);
+    const selectedItems = ids.map((item) => item.id);
+    console.log("selected check", selectedItems);
   };
-  const onCheckAction = (ids) => {
-    alert(ids[0].id);
+  const onCheckAction = async (ids) => {
+    const bulk_ids = ids.map((item) => item.id);
+
+    try {
+      const { data } = await api.put(" /project/bulk-complete", bulk_ids);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   if (isLoading) return <Skeleton />;
