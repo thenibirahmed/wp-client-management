@@ -40,10 +40,10 @@ const ClientNotes = ({ clientId }) => {
     refetch,
   } = useFetchProjectNotes(
     clientId,
-    paginationUrl,
     searchText,
     dateFrom,
     dateTo,
+    paginationUrl,
     "client",
     onError
   );

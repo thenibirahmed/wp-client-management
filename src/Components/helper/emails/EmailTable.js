@@ -45,8 +45,6 @@ const EmailTable = ({
   );
 
   const viewEmailHandler = (emailId) => {
-    setOpenEmailModal(true);
-
     const findEmail = emailsData?.find((email) => email.id === emailId);
 
     setSelectedViewEmail(findEmail);
@@ -153,7 +151,10 @@ const EmailTable = ({
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
                           <button
-                            onClick={() => viewEmailHandler(item.id)}
+                            onClick={() => {
+                              setSelectedViewEmail(item.id);
+                              setOpenEmailModal(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <ViewIcon

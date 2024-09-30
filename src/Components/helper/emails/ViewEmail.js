@@ -13,7 +13,9 @@ const ViewEmail = () => {
     isLoading,
     data: emailData,
     error,
-  } = useFetchSingleEmailView(selectedViewEmail?.id, onError);
+  } = useFetchSingleEmailView(selectedViewEmail, onError);
+
+  console.log("emailData", emailData);
 
   function onError(err) {
     console.log(err);
@@ -33,7 +35,7 @@ const ViewEmail = () => {
         />
         <div>
           <h3 className="font-metropolis font-semibold text-[16px] leading-[16px] text-textColor">
-            Tanvir
+            {emailData?.from}
           </h3>
           <span className="font-metropolis text-xs font-normal leading-none">
             {emailData?.date}
