@@ -206,12 +206,15 @@ class Installer {
 
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_schedules` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-                        `client_id` bigint UNSIGNED NOT NULL,
-                        `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
-                        `date` datetime NOT NULL,
-                        `duration` int DEFAULT NULL,
+                        `created_by` bigint UNSIGNED NOT NULL,
+                        `hosted_by` bigint UNSIGNED NOT NULL,
+                        `guest_ids`  JSON DEFAULT NULL,
+                        `topic` varchar(255) NOT NULL,
+                        `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                        `scheduled_at` datetime NOT NULL,
                         `link` text COLLATE utf8mb4_unicode_ci,
-                        `hosts` json DEFAULT NULL,
+                        `duration` int DEFAULT NULL,
+                        `duration_type` varchar(255) DEFAULT NULL,
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,
                         PRIMARY KEY (`id`)
