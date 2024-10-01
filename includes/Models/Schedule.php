@@ -18,6 +18,8 @@ class Schedule extends Model
         'hosts'
     ];
 
+    public const DURATION_TYPES = ['minutes', 'hours', 'days'];
+
     public function eic_crm_user() {
         return $this->belongsTo(EicCrmUser::class);
     }

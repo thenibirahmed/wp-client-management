@@ -6,13 +6,15 @@ import EmailTable from "../../helper/emails/EmailTable";
 import AddNewEmail from "../../helper/emails/AddNewEmail";
 import EmailHeader from "../../helper/emails/EmailHeader";
 import useHashRouting from "../../../utils/useHashRouting";
-import { useFetchProjectEmails } from "../../../hooks/useQuery";
+import { useBulkDelete, useFetchProjectEmails } from "../../../hooks/useQuery";
 import { useRefetch } from "../../../hooks/useRefetch";
 import EmptyTable from "../../helper/EmptyTable";
 import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
+import api from "../../../api/api";
 
 const ClientEmails = ({ clientId }) => {
+  const [loader, setLoader] = useState(false);
   const {
     createEmail,
     setCreateEmail,
@@ -57,12 +59,10 @@ const ClientEmails = ({ clientId }) => {
     setCreateEmail(true);
   };
 
-  const onDeleteAction = (ids) => {
-    alert(ids[0].id);
+  const onDeleteAction = async (ids) => {
+    useBulkDelete("/emails/bulk-delete", ids, refetch, setLoader, false);
   };
-  const onEmailBox = (ids) => {
-    alert(ids[0].id);
-  };
+  const onEmailBox = (ids) => {};
 
   if (error)
     return (
@@ -79,6 +79,7 @@ const ClientEmails = ({ clientId }) => {
         onEmailBox={onEmailBox}
         searchText={searchText}
         setSearchText={setSearchText}
+        loader={loader}
       />
 
       {createEmail ? (

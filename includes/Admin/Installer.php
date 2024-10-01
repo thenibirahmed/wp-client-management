@@ -2,6 +2,8 @@
 
 namespace WpClientManagement\Admin;
 
+use WpClientManagement\Seeders\DatabaseSeeder;
+
 /**
  * Admin Installer Class
  */
@@ -21,6 +23,16 @@ class Installer {
             update_option( 'wp_client_management_installed', time() );
         }
 
+    }
+
+
+    /**
+     * Seed table
+     * @return void
+     */
+    public function seed_tables() {
+        $seeder = new DatabaseSeeder();
+        $seeder->run();
     }
 
     /**
@@ -44,7 +56,7 @@ class Installer {
                         `state` varchar(255) DEFAULT NULL,
                         `zip` varchar(255) DEFAULT NULL,
                         `country` varchar(255) DEFAULT NULL,
-                        `role` varchar(255) DEFAULT NULL,
+                        `role_id` bigint UNSIGNED NOT NULL,
                         `designation` varchar(255) DEFAULT NULL,
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,
@@ -76,6 +88,12 @@ class Installer {
                         `name` varchar(255) NOT NULL,
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_roles` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `name` varchar(255) NOT NULL,
                         PRIMARY KEY (`id`)
                     ) {$collate}";
 
@@ -206,12 +224,15 @@ class Installer {
 
         $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_schedules` (
                         `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-                        `client_id` bigint UNSIGNED NOT NULL,
-                        `eic_crm_user_id` bigint UNSIGNED DEFAULT NULL,
-                        `date` datetime NOT NULL,
-                        `duration` int DEFAULT NULL,
+                        `created_by` bigint UNSIGNED NOT NULL,
+                        `hosted_by` bigint UNSIGNED NOT NULL,
+                        `guest_ids`  JSON DEFAULT NULL,
+                        `topic` varchar(255) NOT NULL,
+                        `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                        `scheduled_at` datetime NOT NULL,
                         `link` text COLLATE utf8mb4_unicode_ci,
-                        `hosts` json DEFAULT NULL,
+                        `duration` int DEFAULT NULL,
+                        `duration_type` varchar(255) DEFAULT NULL,
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,
                         PRIMARY KEY (`id`)
@@ -266,6 +287,8 @@ class Installer {
         }
 
         dbDelta( $schema );
+
+        $this->seed_tables();
     }
 
     public function create_roles()

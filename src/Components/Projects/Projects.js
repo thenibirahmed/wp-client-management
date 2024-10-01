@@ -9,15 +9,21 @@ import ProjectHeader from "../helper/projects/ProjectHeader";
 import ProjectTable from "../helper/projects/ProjectTable";
 import AddNewProjectForm from "../helper/forms/AddNewProjectForm";
 import ProjectTaskDetails from "./ProjectTask/ProjectTaskDetails";
-import { useFetchAllProjects } from "../../hooks/useQuery";
+import {
+  useBulkComplete,
+  useBulkDelete,
+  useFetchAllProjects,
+} from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
 import toast from "react-hot-toast";
 import Errors from "../Errors";
 import useHashRouting from "../../utils/useHashRouting";
 import { useRefetch } from "../../hooks/useRefetch";
 import dayjs from "dayjs";
+import api from "../../api/api";
 
 const Projects = () => {
+  const [loader, setLoader] = useState(false);
   const {
     openProjectModal,
     setOpenProjectModal,
@@ -90,11 +96,11 @@ const Projects = () => {
     setOpenTaskDesc(false);
   }, []);
 
-  const onDeleteAction = (ids) => {
-    alert(ids[0].id);
+  const onDeleteAction = async (ids) => {
+    useBulkDelete("/projects/bulk-delete", ids, refetch, setLoader, false);
   };
-  const onCheckAction = (ids) => {
-    alert(ids[0].id);
+  const onCheckAction = async (ids) => {
+    useBulkComplete("/projects/bulk-complete", ids, refetch, setLoader, false);
   };
 
   if (isLoading) {
@@ -135,6 +141,7 @@ const Projects = () => {
                 onCheckAction={onCheckAction}
                 searchText={searchText}
                 setSearchText={setSearchText}
+                loader={loader}
                 filter
               />
             </>

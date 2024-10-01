@@ -8,12 +8,14 @@ import FileTable from "../../helper/files/FileTable";
 import AddNewFileForm from "../../helper/forms/AddNewFileForm";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import useHashRouting from "../../../utils/useHashRouting";
-import { useFetchProjectFiles } from "../../../hooks/useQuery";
+import { useBulkDelete, useFetchProjectFiles } from "../../../hooks/useQuery";
 import { useRefetch } from "../../../hooks/useRefetch";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
+import api from "../../../api/api";
 
 const ClientFiles = ({ clientId }) => {
+  const [loader, setLoader] = useState(false);
   const {
     openFileModal,
     setOpenFileModal,
@@ -56,12 +58,10 @@ const ClientFiles = ({ clientId }) => {
     setOpenFileModal(true);
   };
 
-  const onDeleteAction = (ids) => {
-    alert(ids[0].id);
+  const onDeleteAction = async (ids) => {
+    useBulkDelete("/files/bulk-delete", ids, refetch, setLoader, false);
   };
-  const onCheckAction = (ids) => {
-    alert(ids[0].id);
-  };
+  const onCheckAction = (ids) => {};
 
   if (error) {
     return (
@@ -85,6 +85,8 @@ const ClientFiles = ({ clientId }) => {
         onCheckAction={onCheckAction}
         setSearchText={setSearchText}
         searchText={searchText}
+        check={false}
+        loader={loader}
       />
 
       {clientFiles?.files?.length > 0 ? (

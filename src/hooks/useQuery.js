@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
 import api from "../api/api";
+import toast from "react-hot-toast";
 
 export const useFetchClientOverView = (dateStart, dateEnd, code, onError) => {
   return useQuery(
@@ -1131,4 +1132,61 @@ export const useFetchSingleTask = (taskId, onError) => {
       staleTime: 5000,
     }
   );
+};
+
+export const useBulkDelete = async (
+  url,
+  ids,
+  refetch,
+  setLoader,
+  nestedId = false
+) => {
+  let bulk_ids;
+
+  if (nestedId) {
+    bulk_ids = ids.map((item) => item.client_id);
+  } else {
+    bulk_ids = ids.map((item) => item.id);
+  }
+
+  try {
+    setLoader(true);
+    const { data } = await api.delete(`${url}?bulk_ids=${bulk_ids}`);
+
+    toast.success(data?.message || "Delete Successful");
+    await refetch();
+  } catch (err) {
+    console.log(err);
+    toast.error(err?.response?.data?.message || "Operation Failed");
+  } finally {
+    setLoader(false);
+  }
+};
+export const useBulkComplete = async (
+  url,
+  ids,
+  refetch,
+  setLoader,
+  nestedId = false
+) => {
+  let bulk_ids;
+
+  if (nestedId) {
+    bulk_ids = ids.map((item) => item.client_id);
+  } else {
+    bulk_ids = ids.map((item) => item.id);
+  }
+
+  try {
+    setLoader(true);
+    const { data } = await api.put(`${url}?bulk_ids=${bulk_ids}`);
+
+    toast.success(data?.message || "Delete Successful");
+    await refetch();
+  } catch (err) {
+    console.log(err);
+    toast.error(err?.response?.data?.message || "Operation Failed");
+  } finally {
+    setLoader(false);
+  }
 };

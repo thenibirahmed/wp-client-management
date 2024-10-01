@@ -7,14 +7,16 @@ import Modal from "../../helper/Modal";
 import FileTable from "../../helper/files/FileTable";
 import FileHeader from "../../helper/files/FileHeader";
 import AddNewFileForm from "../../helper/forms/AddNewFileForm";
-import { useFetchProjectFiles } from "../../../hooks/useQuery";
+import { useBulkDelete, useFetchProjectFiles } from "../../../hooks/useQuery";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
+import api from "../../../api/api";
 
 const ProjectFile = ({ projectId }) => {
+  const [loader, setLoader] = useState(false);
   const {
     openFileModal,
     setOpenFileModal,
@@ -59,12 +61,10 @@ const ProjectFile = ({ projectId }) => {
     );
   }
 
-  const onDeleteAction = (ids) => {
-    alert(ids[0].id);
+  const onDeleteAction = async (ids) => {
+    useBulkDelete("/files/bulk-delete", ids, refetch, setLoader, false);
   };
-  const onCheckAction = (ids) => {
-    alert(ids[0].id);
-  };
+  const onCheckAction = (ids) => {};
 
   if (error) {
     return (
@@ -88,6 +88,8 @@ const ProjectFile = ({ projectId }) => {
         onCheckAction={onCheckAction}
         setSearchText={setSearchText}
         searchText={searchText}
+        check={false}
+        loader={loader}
       />
       <React.Fragment>
         {isLoading ? (

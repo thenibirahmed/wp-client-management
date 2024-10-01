@@ -4,6 +4,7 @@ namespace WpClientManagement\API\Contacts;
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Project;
+use WpClientManagement\Models\Role;
 
 class AddTeamMember {
 
@@ -46,7 +47,7 @@ class AddTeamMember {
         $data['name']        = sanitize_user($data['name'], true);
         $data['email']       = sanitize_email($data['email']);
         $data['phone']       = sanitize_text_field($data['phone']);
-        $data['designation'] = sanitize_text_field($data['designation']);
+        $data['designation'] = isset($data['designation']) ? sanitize_text_field($data['designation']) : '';
         $data['projectIds']  = isset($data['projectIds']) ? $data['projectIds'] : [];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
@@ -77,7 +78,7 @@ class AddTeamMember {
             'wp_user_id' => intval($wp_user_id),
             'phone'      => $data['phone'],
             'designation' => $data['designation'],
-            'role'       => 'admin',
+            'role_id'     => Role::where('name', 'team-member')->first()->id
         );
 
         $eic_crm_user = EicCrmUser::create($eic_crm_user_data);

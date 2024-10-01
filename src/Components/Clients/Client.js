@@ -14,14 +14,17 @@ import ClientOverView from "./ClientOverView";
 import { useStoreContext } from "../../store/ContextApiStore";
 import Modal from "../helper/Modal";
 import AddClientForm from "./AddClientForm";
-import { useFetchClients } from "../../hooks/useQuery";
+import { useBulkDelete, useFetchClients } from "../../hooks/useQuery";
 import toast from "react-hot-toast";
 import Skeleton from "../Skeleton";
 import Errors from "../Errors";
 import useHashRouting from "../../utils/useHashRouting";
 import { useRefetch } from "../../hooks/useRefetch";
+import Loaders from "../Loaders";
 
 const Client = () => {
+  const [loader, setLoader] = useState(false);
+
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "page=1";
@@ -71,6 +74,10 @@ const Client = () => {
     setCreateClient(true);
   };
 
+  const onDeleteAction = async (ids) => {
+    useBulkDelete("/clients/bulk-delete", ids, refetch, setLoader, true);
+  };
+
   function onError(err) {
     console.log(err);
     toast.error("Failed to fetchClientOverView data");
@@ -87,10 +94,6 @@ const Client = () => {
         }
       />
     );
-
-  const onDeleteAction = (ids) => {
-    alert(ids[0].client_id);
-  };
 
   return (
     <React.Fragment>
@@ -114,8 +117,14 @@ const Client = () => {
           <div className="flex sm:flex-row flex-wrap gap-5 items-center">
             {selectedClient.length > 0 && (
               <>
-                <button onClick={() => onDeleteAction(selectedClient)}>
-                  <Delete03Icon className="text-textColor2" />
+                {loader && <Loaders />}
+                <button
+                  disabled={loader}
+                  onClick={() => onDeleteAction(selectedClient)}
+                >
+                  <Delete03Icon
+                    className={`text-customRed ${loader ? "opacity-50" : ""}`}
+                  />
                 </button>
               </>
             )}

@@ -13,6 +13,7 @@ import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
 import { UserCircle02Icon } from "../../../utils/icons";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
+import api from "../../../api/api";
 
 const ContactTeam = () => {
   const [open, setOpen] = useState(false);
@@ -35,8 +36,17 @@ const ContactTeam = () => {
     console.log(err);
     toast.error(err?.response?.data?.errors, "Failed to fetch team members");
   }
-  const onDeleteAction = (ids) => {
-    alert(ids[0].id);
+  const onDeleteAction = async (ids) => {
+    const bulk_ids = ids.map((item) => item.id);
+
+    try {
+      const { data } = await api.delete(
+        `/team-members/bulk-delete?bulk_ids=${bulk_ids}`
+      );
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
   };
   const onCheckAction = (ids) => {
     alert(ids[0].id);
@@ -55,6 +65,7 @@ const ContactTeam = () => {
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
         filter={false}
+        check={false}
       />
 
       <React.Fragment>

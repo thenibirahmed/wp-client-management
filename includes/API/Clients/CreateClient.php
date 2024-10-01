@@ -1,6 +1,7 @@
 <?php
 namespace WpClientManagement\API\Clients;
 
+use WpClientManagement\Models\Role;
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
 
@@ -78,7 +79,6 @@ class CreateClient {
             'user_pass'     => $data['name'],
         );
 
-
         $wp_user_id = wp_insert_user($wp_user_data);
 
         if (is_wp_error($wp_user_id)) {
@@ -90,13 +90,14 @@ class CreateClient {
         $wp_user = get_userData($wp_user_id);
 
         $eic_crm_user_data = array(
-            'wp_user_id'   => intval($wp_user_id),
+            'wp_user_id'   => intval($wp_user->ID),
             'phone'        => $data['phone'],
             'address'      => $data['address'],
             'city'         => $data['city'],
             'state'        => $data['state'],
             'zip'          => $data['zip'],
             'country'      => $data['country'],
+            'role_id'      => Role::where('name', 'client')->first()->id,
             'organization' => $data['organization'],
         );
 

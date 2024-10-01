@@ -6,13 +6,16 @@ import NoteTable from "../../helper/notes/NoteTable";
 import AddNewNote from "../../helper/notes/AddNewNote";
 import { Task01Icon } from "../../../utils/icons";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
-import { useFetchProjectNotes } from "../../../hooks/useQuery";
+import { useBulkDelete, useFetchProjectNotes } from "../../../hooks/useQuery";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
 import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
+import api from "../../../api/api";
 
 const ClientNotes = ({ clientId }) => {
+  const [loader, setLoader] = useState(false);
+
   const {
     createNote,
     setCreateNote,
@@ -61,12 +64,10 @@ const ClientNotes = ({ clientId }) => {
     setCreateNote(true);
   };
 
-  const onDeleteAction = (ids) => {
-    alert(ids[0].id);
+  const onDeleteAction = async (ids) => {
+    useBulkDelete("/notes/bulk-delete", ids, refetch, setLoader, false);
   };
-  const onCheckAction = (ids) => {
-    alert(ids[0].id);
-  };
+  const onCheckAction = (ids) => {};
 
   if (error) {
     console.log("project task error", error?.response?.data?.errors);
@@ -92,6 +93,7 @@ const ClientNotes = ({ clientId }) => {
         onDeleteAction={onDeleteAction}
         onCheckAction={onCheckAction}
         check={false}
+        loader={loader}
         setSearchText={setSearchText}
         searchText={searchText}
       />

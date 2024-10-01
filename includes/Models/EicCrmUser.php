@@ -19,7 +19,7 @@ class EicCrmUser extends Model
         'country',
         'state',
         'zip',
-        'role',
+        'role_id',
         'designation'
     ];
 
@@ -70,5 +70,11 @@ class EicCrmUser extends Model
     {
         return $this->belongsTo(WpUser::class,'wp_user_id');
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
 
 }

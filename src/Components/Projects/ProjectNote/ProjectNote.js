@@ -10,10 +10,11 @@ import toast from "react-hot-toast";
 import Skeleton from "../../Skeleton";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import useHashRouting from "../../../utils/useHashRouting";
-import { useFetchProjectNotes } from "../../../hooks/useQuery";
+import { useBulkDelete, useFetchProjectNotes } from "../../../hooks/useQuery";
 import { useRefetch } from "../../../hooks/useRefetch";
 
 const ProjectNote = ({ projectId }) => {
+  const [loader, setLoader] = useState(false);
   const {
     createNote,
     setCreateNote,
@@ -62,12 +63,10 @@ const ProjectNote = ({ projectId }) => {
     setCreateNote(true);
   };
 
-  const onDeleteAction = (ids) => {
-    alert(ids[0].id);
+  const onDeleteAction = async (ids) => {
+    useBulkDelete("/notes/bulk-delete", ids, refetch, setLoader, false);
   };
-  const onCheckAction = (ids) => {
-    alert(ids[0].id);
-  };
+  const onCheckAction = (ids) => {};
 
   if (error) {
     return (
@@ -93,6 +92,8 @@ const ProjectNote = ({ projectId }) => {
         onCheckAction={onCheckAction}
         setSearchText={setSearchText}
         searchText={searchText}
+        check={false}
+        loader={loader}
       />
 
       {createNote || updateNotes ? (

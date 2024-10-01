@@ -36,23 +36,17 @@ class DeleteClient {
         global $validator;
 
         $client_id = $request->get_param('id');
-        $bulk_ids  = $request->get_param('bulk_ids');
 
         $data = [];
         $data['id'] = $client_id;
-        $data['bulk_ids'] = isset($bulk_ids) ? $bulk_ids : null;
 
-        // $validator = $validator->make($data, $this->rules, $this->validationMessages);
+        $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
-        // if ($validator->fails()) {
-        //     return new \WP_REST_Response([
-        //         'errors' => $validator->errors(),
-        //     ], 400);
-        // }
-
-        return new \WP_REST_Response([
-           'data' => $data
-        ]);
+        if ($validator->fails()) {
+            return new \WP_REST_Response([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
 
         $client = Client::find($client_id);
 
@@ -62,16 +56,26 @@ class DeleteClient {
             ], 404);
         }
 
-        $user = get_user_by('id', $client->eic_crm_user->wp_user_id);
+        if($client->eic_crm_user && $client->eic_crm_user->wp_user_id) {
 
-        if ($user) {
-            wp_delete_user($user->ID);
+            if($client->eic_crm_user->wp_user_id == get_current_user_id()) {
+                return new \WP_REST_Response([
+                    'message' => 'You cannot delete your own client.',
+                ], 400);
+            }
+
+            $user = get_user_by('id', $client->eic_crm_user->wp_user_id);
+
+            if ($user) {
+                wp_delete_user($user->ID);
+            }
+
+            if ($client->eic_crm_user) {
+                $client->eic_crm_user->delete();
+            }
         }
 
-        $client->eic_crm_user->delete();
-
         $client->delete();
-
 
         return new \WP_REST_Response([
             'message' => 'Client deleted successfully.',

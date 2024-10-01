@@ -7,7 +7,11 @@ import { useStoreContext } from "../../../store/ContextApiStore";
 import Modal from "../../helper/Modal";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import AddNewClientProjectForm from "../../helper/forms/AddNewClientProjectForm";
-import { useFetchClientProject } from "../../../hooks/useQuery";
+import {
+  useBulkComplete,
+  useBulkDelete,
+  useFetchClientProject,
+} from "../../../hooks/useQuery";
 import toast from "react-hot-toast";
 import { useRefetch } from "../../../hooks/useRefetch";
 import useHashRouting from "../../../utils/useHashRouting";
@@ -16,6 +20,7 @@ import Skeleton from "../../Skeleton";
 import api from "../../../api/api";
 
 const ClientProject = ({ clientId }) => {
+  const [loader, setLoader] = useState(false);
   const {
     openProjectModal,
     setOpenProjectModal,
@@ -67,33 +72,10 @@ const ClientProject = ({ clientId }) => {
   };
 
   const onDeleteAction = async (ids) => {
-    const bulk_ids = ids.map((item) => item.id);
-    console.log("bulk_ids", bulk_ids);
-    try {
-      const { data } = await api.delete(`/projects/bulk-delete`, {
-        headers: {
-          data: {
-            bulk_ids,
-          },
-        },
-      });
-
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
+    useBulkDelete("/projects/bulk-delete", ids, refetch, setLoader, false);
   };
   const onCheckAction = async (ids) => {
-    const bulk_ids = ids.map((item) => item.id);
-
-    try {
-      const { data } = await api.put(
-        `/projects/bulk-complete?bulk_ids=${bulk_ids}`
-      );
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
+    useBulkComplete("/projects/bulk-complete", ids, refetch, setLoader, false);
   };
 
   if (isLoading) return <Skeleton />;
@@ -126,6 +108,7 @@ const ClientProject = ({ clientId }) => {
         onCheckAction={onCheckAction}
         searchText={searchText}
         setSearchText={setSearchText}
+        loader={loader}
         filter
       />
       {clientProjects?.projects?.length > 0 ? (

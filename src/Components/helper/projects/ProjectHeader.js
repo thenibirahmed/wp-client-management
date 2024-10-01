@@ -9,6 +9,7 @@ import { Search } from "../Search";
 import Filter from "../Filter";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { ClientSearchInput } from "../../Clients/SearchInput";
+import Loaders from "../../Loaders";
 
 const ProjectHeader = ({
   selectedProject,
@@ -23,6 +24,7 @@ const ProjectHeader = ({
   check = true,
   setSearchText,
   searchText,
+  loader,
 }) => {
   const { updateNotes, setUpdateNotes } = useStoreContext();
   return (
@@ -33,12 +35,23 @@ const ProjectHeader = ({
       <div className="flex sm:flex-row flex-wrap gap-5 items-center">
         {selectedProject?.length > 0 && (
           <>
-            <button onClick={() => onDeleteAction(selectedProject)}>
-              <Delete03Icon className="text-customRed" />
+            {loader && <Loaders />}
+            <button
+              disabled={loader}
+              onClick={() => onDeleteAction(selectedProject)}
+            >
+              <Delete03Icon
+                className={`text-customRed ${loader ? "opacity-50" : ""}`}
+              />
             </button>
             {check && (
-              <button onClick={() => onCheckAction(selectedProject)}>
-                <CheckmarkCircle02Icon className="text-customBlue" />
+              <button
+                disabled={loader}
+                onClick={() => onCheckAction(selectedProject)}
+              >
+                <CheckmarkCircle02Icon
+                  className={`text-customBlue ${loader ? "opacity-50" : ""}`}
+                />
               </button>
             )}
           </>

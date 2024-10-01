@@ -6,15 +6,21 @@ import { useStoreContext } from "../../../store/ContextApiStore";
 import Modal from "../../helper/Modal";
 import ProjectTaskTable from "../../helper/projectTask/ProjectTaskTable";
 import AddNewTaskForm from "../../helper/projectTask/AddNewTaskForm";
-import { useFetchProjectTask } from "../../../hooks/useQuery";
+import {
+  useBulkComplete,
+  useBulkDelete,
+  useFetchProjectTask,
+} from "../../../hooks/useQuery";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 import toast from "react-hot-toast";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
+import api from "../../../api/api";
 
 const ProjectTask = ({ projectId }) => {
+  const [loader, setLoader] = useState(false);
   const {
     openTask,
     setOpenTask,
@@ -60,15 +66,15 @@ const ProjectTask = ({ projectId }) => {
     refetch
   );
 
-  const handler = () => {
-    setOpenProjectModal(true);
+  const onDeleteAction = async (ids) => {
+    useBulkDelete("/tasks/bulk-delete", ids, refetch, setLoader, false);
+  };
+  const onCheckAction = async (ids) => {
+    useBulkComplete("/tasks/bulk-complete", ids, refetch, setLoader, false);
   };
 
-  const onDeleteAction = (ids) => {
-    alert(ids[0].id);
-  };
-  const onCheckAction = (ids) => {
-    alert(ids[0].id);
+  const handler = () => {
+    setOpenProjectModal(true);
   };
 
   function onError(err) {
@@ -77,7 +83,7 @@ const ProjectTask = ({ projectId }) => {
   }
 
   if (error) {
-    console.log("project task error", error?.response?.data?.errors);
+    console.log("project task error", error);
     return (
       <Errors
         message={
@@ -100,6 +106,7 @@ const ProjectTask = ({ projectId }) => {
         setSearchText={setSearchText}
         searchText={searchText}
         filter
+        loader={loader}
       />
 
       <React.Fragment>
