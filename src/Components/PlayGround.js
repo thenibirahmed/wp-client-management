@@ -75,7 +75,7 @@ const PlayGround = () => {
 					email: 'kakashi@kakashi.com',
 					phone: '020202',
 					organization: 'Life',
-					designation: 'Care taker'
+					designation: 'Care'
 					// client_id: 4,
 					// subject: 'no subject',
 					// body: 'no body'
@@ -189,7 +189,7 @@ const PlayGround = () => {
 	const getTestData = () => {
 		const bulk_ids = [4,5];
 		axios.get(
-			eicApiSettings.rest_url + "wp-client-management/v1/client/1/invoices",
+			eicApiSettings.rest_url + "wp-client-management/v1/client/1/overview",
 			// eicApiSettings.rest_url + `wp-client-management/v1/projects/bulk-complete?bulk_ids=${bulk_ids}`,
 			// {
 			// 	bulk_ids: bulk_ids
@@ -248,7 +248,7 @@ const PlayGround = () => {
             <button onClick={getUsers}>Click me to get all users</button> <br/><br/>
             <button onClick={getSinglePost}>Click me to get single post</button> <br/><br/> */}
             {/*<button style={{padding: "10px",marginBottom: "5px", backgroundColor:"blue",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}} onClick={getTest}>Test me!</button><br/>*/}
-            <button onClick={getTest} style={{padding: "10px",backgroundColor:"black",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}}>Test me!</button><br/>
+            <button onClick={getTestData} style={{padding: "10px",backgroundColor:"black",color:"white",borderRadius:"5px",cursor:"pointer",border:"none",width:"80vw"}}>Test me!</button><br/>
 			<br/>
 			{/* <input type="serch" onChange={(e) => setSearch(e.target.value)}/> */}
         </div>

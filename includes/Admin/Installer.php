@@ -23,6 +23,31 @@ class Installer {
 
     }
 
+
+    /**
+     * Seed the payment methods table
+     * @return void
+     */
+    public function seed_payment_methods() {
+        global $wpdb;
+
+        $wpdb->insert(
+            "{$wpdb->prefix}eic_payment_methods",
+            [
+                'name' => 'Cash',
+            ]
+        );
+
+        $wpdb->insert(
+            "{$wpdb->prefix}eic_payment_methods",
+            [
+                'name' => 'Cheque',
+            ]
+        );
+    }
+
+
+
     /**
      * Create Database tables when activating the plugin
      *
@@ -275,6 +300,8 @@ class Installer {
         }
 
         dbDelta( $schema );
+
+        $this->seed_payment_methods();
     }
 
     public function create_roles()
