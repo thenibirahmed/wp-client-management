@@ -55,6 +55,12 @@ class ClientBulkDelete {
                         })
                         ->get();
 
+        if ($bulk_delete_clients->isEmpty()) {
+            return new \WP_REST_Response([
+                'message' => 'No clients found.',
+            ], 404);
+        }
+
         foreach ($bulk_delete_clients as $client) {
 
             wp_delete_user($client->eic_crm_user->wp_user_id);
