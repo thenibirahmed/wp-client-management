@@ -186,7 +186,7 @@ const PlayGround = () => {
 // ***
 
 	const getTestData = () => {
-		const bulk_ids = [30,31];
+		const bulk_ids = [33,34];
 		axios.delete(
 			// eicApiSettings.rest_url + "wp-client-management/v1/clients/bulk-delete",
 			eicApiSettings.rest_url + `wp-client-management/v1/clients/bulk-delete?bulk_ids=${bulk_ids}`,

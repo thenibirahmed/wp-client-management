@@ -48,6 +48,12 @@ class ClientBulkDelete {
             ], 400);
         }
 
+        if (empty($bulk_ids)) {
+            return new \WP_REST_Response([
+                'message' => 'No IDs provided for deletion.',
+            ], 400);
+        }
+
         $bulk_delete_clients = Client::with('eic_crm_user.wp_user')
                         ->whereIn('id', $data['bulk_ids'])
                         ->whereHas('eic_crm_user', function($query) {
@@ -61,13 +67,17 @@ class ClientBulkDelete {
             ], 404);
         }
 
-        foreach ($bulk_delete_clients as $client) {
-
-            wp_delete_user($client->eic_crm_user->wp_user_id);
-
-            $client->eic_crm_user->delete();
-
-            $client->delete();
+        try {
+            foreach ($bulk_delete_clients as $client) {
+                wp_delete_user($client->eic_crm_user->wp_user_id);
+                $client->eic_crm_user->delete();
+                $client->delete();
+            }
+        } catch (\Exception $e) {
+            return new \WP_REST_Response([
+                'message' => 'An error occurred while deleting clients.',
+                'error'   => $e->getMessage(),
+            ], 500);
         }
 
         return new \WP_REST_Response([
