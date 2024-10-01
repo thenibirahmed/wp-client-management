@@ -36,23 +36,17 @@ class DeleteClient {
         global $validator;
 
         $client_id = $request->get_param('id');
-        $bulk_ids  = $request->get_param('bulk_ids');
 
         $data = [];
         $data['id'] = $client_id;
-        $data['bulk_ids'] = isset($bulk_ids) ? $bulk_ids : null;
 
-        // $validator = $validator->make($data, $this->rules, $this->validationMessages);
+        $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
-        // if ($validator->fails()) {
-        //     return new \WP_REST_Response([
-        //         'errors' => $validator->errors(),
-        //     ], 400);
-        // }
-
-        return new \WP_REST_Response([
-           'data' => $data
-        ]);
+        if ($validator->fails()) {
+            return new \WP_REST_Response([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
 
         $client = Client::find($client_id);
 
@@ -68,7 +62,9 @@ class DeleteClient {
             wp_delete_user($user->ID);
         }
 
-        $client->eic_crm_user->delete();
+        if ($client->eic_crm_user) {
+            $client->eic_crm_user->delete();
+        }
 
         $client->delete();
 

@@ -186,8 +186,8 @@ const PlayGround = () => {
 // ***
 
 	const getTestData = () => {
-		axios.get(
-			eicApiSettings.rest_url + "wp-client-management/v1/project/1/invoices",
+		axios.delete(
+			eicApiSettings.rest_url + "wp-client-management/v1/client/delete/26",
 			// {
 			// 	bulk_ids : [1,2,3],
 			// },
