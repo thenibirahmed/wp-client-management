@@ -69,12 +69,13 @@ const PlayGround = () => {
 
 	const getTest = () => {
 		axios.post(
-				eicApiSettings.rest_url + "wp-client-management/v1/client/create",
+				eicApiSettings.rest_url + "wp-client-management/v1/team-member/create",
 				{
-					name: 'obito',
-					email: 'obito@obito.com',
+					name: 'kakashi',
+					email: 'kakashi@kakashi.com',
 					phone: '020202',
-					organization: 'Hell'
+					organization: 'Life',
+					designation: 'Care taker'
 					// client_id: 4,
 					// subject: 'no subject',
 					// body: 'no body'
