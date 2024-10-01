@@ -66,15 +66,30 @@ const ClientProject = ({ clientId }) => {
     setOpenProjectModal(true);
   };
 
-  const onDeleteAction = (ids) => {
-    const selectedItems = ids.map((item) => item.id);
-    console.log("selected check", selectedItems);
+  const onDeleteAction = async (ids) => {
+    const bulk_ids = ids.map((item) => item.id);
+    console.log("bulk_ids", bulk_ids);
+    try {
+      const { data } = await api.delete(`/projects/bulk-delete`, {
+        headers: {
+          data: {
+            bulk_ids,
+          },
+        },
+      });
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
   };
   const onCheckAction = async (ids) => {
     const bulk_ids = ids.map((item) => item.id);
 
     try {
-      const { data } = await api.put(" /project/bulk-complete", bulk_ids);
+      const { data } = await api.put(
+        `/projects/bulk-complete?bulk_ids=${bulk_ids}`
+      );
       console.log(data);
     } catch (err) {
       console.log(err);

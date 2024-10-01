@@ -598,7 +598,7 @@ export const useFetchSingleProjectOverView = (
   return useQuery(
     ["single-project-overview", projectId],
     async () => {
-      const defaultCode = code || "BDT";
+      const defaultCode = code ? code : "BDT";
 
       const params = new URLSearchParams();
       params.append("currency", defaultCode);

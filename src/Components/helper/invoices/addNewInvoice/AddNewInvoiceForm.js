@@ -153,7 +153,7 @@ const AddNewInvoiceForm = ({
     setSubmitLoader(true);
 
     const sendData = {
-      project_id: selectedProject?.id,
+      project_id: Number(selectedProject?.id),
       title: data.title,
       invoice_number: Number(data.invoicenumber),
       payment_method_id: selectPayMethod?.id,
@@ -179,11 +179,11 @@ const AddNewInvoiceForm = ({
 
     if (update) {
       if (clientId) {
-        sendData.client_id = clientInvoice?.client_id;
+        sendData.client_id = Number(clientInvoice?.client_id);
       }
     } else {
       if (clientId) {
-        sendData.client_id = clientId;
+        sendData.client_id = Number(clientId);
       }
     }
     setIsFetching(true);
