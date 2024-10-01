@@ -186,17 +186,20 @@ const PlayGround = () => {
 // ***
 
 	const getTestData = () => {
+		const bulk_ids = [30,31];
 		axios.delete(
-			eicApiSettings.rest_url + "wp-client-management/v1/client/delete/28",
+			// eicApiSettings.rest_url + "wp-client-management/v1/clients/bulk-delete",
+			eicApiSettings.rest_url + `wp-client-management/v1/clients/bulk-delete?bulk_ids=${bulk_ids}`,
 			{
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
 					// 'Content-Type' : 'application/json'
 				},
+				// data: {
+				// 	bulk_ids: [1, 2, 3],
+				// },
 			}
 			)
-
-
 			.then((response) => {
 				console.log(response.data);
 				setPost(response.data);
