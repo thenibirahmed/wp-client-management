@@ -44,7 +44,7 @@ class Installer {
                         `state` varchar(255) DEFAULT NULL,
                         `zip` varchar(255) DEFAULT NULL,
                         `country` varchar(255) DEFAULT NULL,
-                        `role` varchar(255) DEFAULT NULL,
+                        `role_id` bigint UNSIGNED NOT NULL,
                         `designation` varchar(255) DEFAULT NULL,
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,
@@ -76,6 +76,12 @@ class Installer {
                         `name` varchar(255) NOT NULL,
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,
+                        PRIMARY KEY (`id`)
+                    ) {$collate}";
+
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}eic_roles` (
+                        `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `name` varchar(255) NOT NULL,
                         PRIMARY KEY (`id`)
                     ) {$collate}";
 
