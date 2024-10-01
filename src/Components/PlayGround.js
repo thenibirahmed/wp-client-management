@@ -186,13 +186,13 @@ const PlayGround = () => {
 // ***
 
 	const getTestData = () => {
-		const bulk_ids = [1,2,3];
-		axios.put(
-			eicApiSettings.rest_url + "wp-client-management/v1/projects/bulk-complete",
+		const bulk_ids = [4,5];
+		axios.get(
+			eicApiSettings.rest_url + "wp-client-management/v1/client/1/invoices",
 			// eicApiSettings.rest_url + `wp-client-management/v1/projects/bulk-complete?bulk_ids=${bulk_ids}`,
-			{
-				bulk_ids: bulk_ids
-			},
+			// {
+			// 	bulk_ids: bulk_ids
+			// },
 			{
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
