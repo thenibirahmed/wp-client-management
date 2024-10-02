@@ -12,6 +12,12 @@ class WpUser extends Model
         'user_pass'
     ];
 
+    public function eic_crm_user()
+    {
+        return $this->hasOne(EicCrmUser::class);
+    }
+
+
 }
 
 ?>

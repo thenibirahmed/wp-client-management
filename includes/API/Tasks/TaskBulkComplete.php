@@ -11,12 +11,10 @@ class TaskBulkComplete {
     private $endpoint  = '/tasks/bulk-complete';
 
     protected array $rules = [
-        'bulk_ids' => 'required|array',
+        'bulk_ids' => 'nullable|array',
     ];
 
-    
     protected array $validationMessages = [
-        'bulk_ids.required'  => 'The bulk IDs are required.',
         'bulk_ids.array'     => 'The bulk IDs must be an array.',
         'bulk_ids.*.integer' => 'The bulk IDs must be integers.',
     ];
@@ -59,7 +57,7 @@ class TaskBulkComplete {
             ], 404);
         }
 
-        $task_done_status = Status::where('type', 'task')->where('name', 'Done')->first();
+        $task_done_status = Status::where('type', 'task')->where('name', 'done')->first();
 
         if (!$task_done_status) {
             return new \WP_REST_Response([

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 import ClientOverView from "./ClientOverView";
 import ClientInfo from "./ClientInfo";
@@ -6,15 +7,13 @@ import ClientDetailsLayout from "./ClientDetailsLayout";
 import { useStoreContext } from "../../store/ContextApiStore";
 import Tab from "../helper/Tabs";
 import AddNewInvoice from "../helper/invoices/addNewInvoice/AddNewInvoice";
+import Skeleton from "../Skeleton";
+import useHashRouting from "../../utils/useHashRouting";
+import Errors from "../Errors";
 import {
   useFetchSelectCurrency,
   useFetchSingleClientOverView,
 } from "../../hooks/useQuery";
-import Skeleton from "../Skeleton";
-import useHashRouting from "../../utils/useHashRouting";
-import toast from "react-hot-toast";
-import Errors from "../Errors";
-import dayjs from "dayjs";
 import { useClientOverViewRefetch } from "../../hooks/useRefetch";
 
 const extractProjectId = (url) => {
