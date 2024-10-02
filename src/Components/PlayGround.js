@@ -212,17 +212,12 @@ const PlayGround = () => {
   // ***
 
   const getTestData = () => {
-    const bulk_ids = [9, 10];
+    const bulk_ids = [23, 24];
     axios
       .delete(
         eicApiSettings.rest_url +
-          "wp-client-management/v1/projects/bulk-delete",
-        // {
-        // name: 'test3',
-        // email: 'test3@test.com',
-        // organization: 'test organization',
-        // bulk_ids: bulk_ids,
-        // },
+          `wp-client-management/v1/notes/bulk-delete?bulk_ids=${bulk_ids}`,
+
         {
           headers: {
             "X-WP-Nonce": eicApiSettings.nonce,
