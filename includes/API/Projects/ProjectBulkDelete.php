@@ -37,10 +37,6 @@ class ProjectBulkDelete {
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
-        return new \WP_REST_Response([
-            'data' => $data
-        ]);
-
         if ($validator->fails()) {
             return new \WP_REST_Response([
                 'errors' => $validator->errors(),
@@ -60,6 +56,10 @@ class ProjectBulkDelete {
                 'message' => 'No projects found.',
             ], 404);
         }
+
+        return new \WP_REST_Response([
+            'data' => $data
+        ]);
 
         foreach ($bulk_delete_projects as $project) {
             $project->delete();
