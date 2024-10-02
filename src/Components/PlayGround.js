@@ -187,21 +187,22 @@ const PlayGround = () => {
 // ***
 
 	const getTestData = () => {
-		const bulk_ids = [4,5];
-		axios.get(
-			eicApiSettings.rest_url + "wp-client-management/v1/client/1/overview",
-			// eicApiSettings.rest_url + `wp-client-management/v1/projects/bulk-complete?bulk_ids=${bulk_ids}`,
+		const bulk_ids = [6,7,8];
+		axios.delete(
+			eicApiSettings.rest_url + "wp-client-management/v1/projects/bulk-delete",
 			// {
-			// 	bulk_ids: bulk_ids
+			// 	name: 'test3',
+			// 	email: 'test3@test.com',
+			// 	organization: 'test organization',
 			// },
 			{
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
 					// 'Content-Type' : 'application/json'
 				},
-				// data: {
-				// 	bulk_ids: [1, 2, 3],
-				// },
+				data: {
+					bulk_ids: bulk_ids
+				}
 			}
 			)
 			.then((response) => {

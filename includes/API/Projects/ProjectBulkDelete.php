@@ -43,13 +43,19 @@ class ProjectBulkDelete {
             ], 400);
         }
 
-        if(empty($bulk_ids) || !is_array($bulk_ids)) {
+        if (empty($bulk_ids)) {
             return new \WP_REST_Response([
-                'message' => 'The bulk IDs must be an array.',
+                'message' => 'No IDs provided for deletion.',
             ], 400);
         }
 
         $bulk_delete_projects = Project::whereIn('id', $bulk_ids)->get();
+
+        if ($bulk_delete_projects->isEmpty()) {
+            return new \WP_REST_Response([
+                'message' => 'No projects found.',
+            ], 404);
+        }
 
         foreach ($bulk_delete_projects as $project) {
             $project->delete();
