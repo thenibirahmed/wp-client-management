@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+
 import {
-  CheckmarkCircle02Icon,
   Delete03Icon,
-  Invoice01Icon,
   UserAdd02Icon,
   UserCircle02Icon,
 } from "../../utils/icons";
-
 import ClientTable from "./ClientTable";
 import EmptyTable from "../helper/EmptyTable";
 import { ClientSearchInput } from "./SearchInput";
@@ -15,7 +14,6 @@ import { useStoreContext } from "../../store/ContextApiStore";
 import Modal from "../helper/Modal";
 import AddClientForm from "./AddClientForm";
 import { useBulkDelete, useFetchClients } from "../../hooks/useQuery";
-import toast from "react-hot-toast";
 import Skeleton from "../Skeleton";
 import Errors from "../Errors";
 import useHashRouting from "../../utils/useHashRouting";
@@ -57,6 +55,15 @@ const Client = () => {
 
   useRefetch(paginationUrl, searchText, dateFrom, dateTo, null, null, refetch);
 
+  const addNewClient = () => {
+    setCreateClient(true);
+  };
+
+  const onDeleteAction = async (ids) => {
+    await useBulkDelete("/clients/bulk-delete", ids, refetch, setLoader, true);
+    setSelectedClient([]);
+  };
+
   useEffect(() => {
     setCreateInvoice(false);
     setAllTabItems({
@@ -69,14 +76,6 @@ const Client = () => {
       info: false,
     });
   }, []);
-
-  const addNewClient = () => {
-    setCreateClient(true);
-  };
-
-  const onDeleteAction = async (ids) => {
-    useBulkDelete("/clients/bulk-delete", ids, refetch, setLoader, true);
-  };
 
   function onError(err) {
     console.log(err);

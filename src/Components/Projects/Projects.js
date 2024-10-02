@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import dayjs from "dayjs";
 
 import EmptyTable from "../helper/EmptyTable";
 import ProjectOverView from "./ProjectOverView";
@@ -19,11 +20,10 @@ import toast from "react-hot-toast";
 import Errors from "../Errors";
 import useHashRouting from "../../utils/useHashRouting";
 import { useRefetch } from "../../hooks/useRefetch";
-import dayjs from "dayjs";
-import api from "../../api/api";
 
 const Projects = () => {
   const [loader, setLoader] = useState(false);
+
   const {
     openProjectModal,
     setOpenProjectModal,
@@ -38,6 +38,7 @@ const Projects = () => {
     searchText,
     setSearchText,
   } = useStoreContext();
+
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "page=1";
@@ -78,10 +79,26 @@ const Projects = () => {
     refetch
   );
 
-  function onError(err) {
-    console.log(err);
-    toast.error("Failed to fetch all projects or project Overview data");
-  }
+  const onDeleteAction = async (ids) => {
+    await useBulkDelete(
+      "/projects/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false
+    );
+    setSelectedProject([]);
+  };
+  const onCheckAction = async (ids) => {
+    await useBulkComplete(
+      "/projects/bulk-complete",
+      ids,
+      refetch,
+      setLoader,
+      false
+    );
+    setSelectedProject([]);
+  };
 
   useEffect(() => {
     setAllTabItems({
@@ -96,12 +113,10 @@ const Projects = () => {
     setOpenTaskDesc(false);
   }, []);
 
-  const onDeleteAction = async (ids) => {
-    useBulkDelete("/projects/bulk-delete", ids, refetch, setLoader, false);
-  };
-  const onCheckAction = async (ids) => {
-    useBulkComplete("/projects/bulk-complete", ids, refetch, setLoader, false);
-  };
+  function onError(err) {
+    console.log(err);
+    toast.error("Failed to fetch all projects or project Overview data");
+  }
 
   if (isLoading) {
     return <Skeleton />;

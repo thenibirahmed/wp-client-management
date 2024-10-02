@@ -17,10 +17,8 @@ import { useRefetch } from "../../../hooks/useRefetch";
 import useHashRouting from "../../../utils/useHashRouting";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
-import api from "../../../api/api";
 
 const ClientProject = ({ clientId }) => {
-  const [loader, setLoader] = useState(false);
   const {
     openProjectModal,
     setOpenProjectModal,
@@ -33,6 +31,8 @@ const ClientProject = ({ clientId }) => {
     searchText,
     setSearchText,
   } = useStoreContext();
+
+  const [loader, setLoader] = useState(false);
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -72,10 +72,25 @@ const ClientProject = ({ clientId }) => {
   };
 
   const onDeleteAction = async (ids) => {
-    useBulkDelete("/projects/bulk-delete", ids, refetch, setLoader, false);
+    await useBulkDelete(
+      "/projects/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false
+    );
+    setSelectedProject([]);
   };
+
   const onCheckAction = async (ids) => {
-    useBulkComplete("/projects/bulk-complete", ids, refetch, setLoader, false);
+    await useBulkComplete(
+      "/projects/bulk-complete",
+      ids,
+      refetch,
+      setLoader,
+      false
+    );
+    setSelectedProject([]);
   };
 
   if (isLoading) return <Skeleton />;

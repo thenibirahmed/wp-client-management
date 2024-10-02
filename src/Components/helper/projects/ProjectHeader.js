@@ -33,9 +33,9 @@ const ProjectHeader = ({
         {title}
       </h1>
       <div className="flex sm:flex-row flex-wrap gap-5 items-center">
+        {loader && <Loaders />}
         {selectedProject?.length > 0 && (
           <>
-            {loader && <Loaders />}
             <button
               disabled={loader}
               onClick={() => onDeleteAction(selectedProject)}

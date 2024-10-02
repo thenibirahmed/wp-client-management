@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useStoreContext } from "../../../store/ContextApiStore";
+import toast from "react-hot-toast";
 
+import { useStoreContext } from "../../../store/ContextApiStore";
 import { Mail02Icon } from "../../../utils/icons";
 import EmailTable from "../../helper/emails/EmailTable";
 import AddNewEmail from "../../helper/emails/AddNewEmail";
@@ -11,7 +12,6 @@ import { useRefetch } from "../../../hooks/useRefetch";
 import EmptyTable from "../../helper/EmptyTable";
 import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
-import api from "../../../api/api";
 
 const ClientEmails = ({ clientId }) => {
   const [loader, setLoader] = useState(false);
@@ -48,21 +48,22 @@ const ClientEmails = ({ clientId }) => {
 
   useRefetch(paginationUrl, searchText, dateFrom, dateTo, null, null, refetch);
 
+  const handler = () => {
+    setCreateEmail(true);
+  };
+
+  const onDeleteAction = async (ids) => {
+    await useBulkDelete("/emails/bulk-delete", ids, refetch, setLoader, false);
+    setSelectedEmail([]);
+  };
+  const onEmailBox = (ids) => {};
+
   function onError(err) {
     console.log(err);
     toast.error(
       err?.response?.data?.message || "Failed To Fetch Project Email"
     );
   }
-
-  const handler = () => {
-    setCreateEmail(true);
-  };
-
-  const onDeleteAction = async (ids) => {
-    useBulkDelete("/emails/bulk-delete", ids, refetch, setLoader, false);
-  };
-  const onEmailBox = (ids) => {};
 
   if (error)
     return (

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 import EmptyTable from "../../helper/EmptyTable";
 import { useStoreContext } from "../../../store/ContextApiStore";
@@ -6,7 +7,6 @@ import NoteTable from "../../helper/notes/NoteTable";
 import AddNewNote from "../../helper/notes/AddNewNote";
 import { Task01Icon } from "../../../utils/icons";
 import Errors from "../../Errors";
-import toast from "react-hot-toast";
 import Skeleton from "../../Skeleton";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import useHashRouting from "../../../utils/useHashRouting";
@@ -52,21 +52,22 @@ const ProjectNote = ({ projectId }) => {
 
   useRefetch(paginationUrl, searchText, dateFrom, dateTo, null, null, refetch);
 
+  const handler = () => {
+    setCreateNote(true);
+  };
+
+  const onDeleteAction = async (ids) => {
+    await useBulkDelete("/notes/bulk-delete", ids, refetch, setLoader, false);
+    setSelectedNote([]);
+  };
+  const onCheckAction = (ids) => {};
+
   function onError(err) {
     console.log(err);
     toast.error(
       err?.response?.data?.message || "Failed To Fetch Project Notes"
     );
   }
-
-  const handler = () => {
-    setCreateNote(true);
-  };
-
-  const onDeleteAction = async (ids) => {
-    useBulkDelete("/notes/bulk-delete", ids, refetch, setLoader, false);
-  };
-  const onCheckAction = (ids) => {};
 
   if (error) {
     return (

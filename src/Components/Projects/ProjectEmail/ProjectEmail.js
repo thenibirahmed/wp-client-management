@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { Mail02Icon } from "../../../utils/icons";
@@ -11,7 +12,6 @@ import Skeleton from "../../Skeleton";
 import EmptyTable from "../../helper/EmptyTable";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
-import api from "../../../api/api";
 
 const ProjectEmail = ({ projectId }) => {
   const [loader, setLoader] = useState(false);
@@ -48,6 +48,16 @@ const ProjectEmail = ({ projectId }) => {
 
   useRefetch(paginationUrl, searchText, dateFrom, dateTo, null, null, refetch);
 
+  const handler = () => {
+    setCreateEmail(true);
+  };
+
+  const onDeleteAction = async (ids) => {
+    await useBulkDelete("/emails/bulk-delete", ids, refetch, setLoader, false);
+    setSelectedEmail([]);
+  };
+  const onEmailBox = (ids) => {};
+
   function onError(err) {
     console.log(err);
     toast.error(
@@ -55,17 +65,8 @@ const ProjectEmail = ({ projectId }) => {
     );
   }
 
-  const handler = () => {
-    setCreateEmail(true);
-  };
-
-  const onDeleteAction = async (ids) => {
-    useBulkDelete("/emails/bulk-delete", ids, refetch, setLoader, false);
-  };
-  const onEmailBox = (ids) => {};
-
   if (error) {
-    console.log("project task error", error?.response?.data?.errors);
+    console.log("project task error", error);
     return (
       <Errors
         message={

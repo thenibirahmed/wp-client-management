@@ -1162,6 +1162,7 @@ export const useBulkDelete = async (
     setLoader(false);
   }
 };
+
 export const useBulkComplete = async (
   url,
   ids,

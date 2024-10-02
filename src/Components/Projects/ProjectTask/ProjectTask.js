@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 import EmptyTable from "../../helper/EmptyTable";
 import { Task01Icon } from "../../../utils/icons";
@@ -13,14 +14,13 @@ import {
 } from "../../../hooks/useQuery";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
-import toast from "react-hot-toast";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
-import api from "../../../api/api";
 
 const ProjectTask = ({ projectId }) => {
   const [loader, setLoader] = useState(false);
+
   const {
     openTask,
     setOpenTask,
@@ -33,6 +33,7 @@ const ProjectTask = ({ projectId }) => {
     searchText,
     setSearchText,
   } = useStoreContext();
+
   const [selectedProjectTask, setSelectedProjectTask] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
@@ -67,10 +68,19 @@ const ProjectTask = ({ projectId }) => {
   );
 
   const onDeleteAction = async (ids) => {
-    useBulkDelete("/tasks/bulk-delete", ids, refetch, setLoader, false);
+    await useBulkDelete("/tasks/bulk-delete", ids, refetch, setLoader, false);
+    setSelectedProjectTask([]);
   };
+
   const onCheckAction = async (ids) => {
-    useBulkComplete("/tasks/bulk-complete", ids, refetch, setLoader, false);
+    await useBulkComplete(
+      "/tasks/bulk-complete",
+      ids,
+      refetch,
+      setLoader,
+      false
+    );
+    setSelectedProjectTask([]);
   };
 
   const handler = () => {

@@ -12,7 +12,7 @@ export const ClientSearchInput = ({ setSearchText, searchText }) => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearchText(inputValue); // Sync inputValue with searchText after debounce
-    }, 700);
+    }, 500);
 
     return () => {
       clearTimeout(handler);

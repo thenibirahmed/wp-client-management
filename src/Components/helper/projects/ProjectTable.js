@@ -9,33 +9,10 @@ import Pagination from "../../Clients/Pagination";
 import Modal from "../../helper/Modal";
 import AddNewProjectForm from "../../helper/forms/AddNewProjectForm";
 import { useStoreContext } from "../../../store/ContextApiStore";
+import { DeleteModal } from "../../DeleteModal";
 
-let assignee = [
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
+let imageSrc =
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80";
 
 const ProjectTable = ({
   projectData,
@@ -53,8 +30,12 @@ const ProjectTable = ({
   );
 
   const [projectId, setProjectId] = useState();
-  const { openProjectUpdateModal, setOpenProjectUpdateModal } =
-    useStoreContext();
+  const {
+    openProjectUpdateModal,
+    setOpenProjectUpdateModal,
+    deleteProject,
+    setDeleteProject,
+  } = useStoreContext();
 
   return (
     <div className="mt-8 flow-root">
@@ -191,19 +172,24 @@ const ProjectTable = ({
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6  ">
                         <div className="flex ">
                           <>
-                            {assignee.slice(0, 3).map((img, i) => {
-                              return (
-                                <img
-                                  src={img.src}
-                                  alt=""
-                                  className={`w-6 h-6 object-cover rounded-full ${
-                                    i === 0 ? "ml-0" : "-ml-1"
-                                  }`}
-                                />
-                              );
-                            })}
+                            {[...Array(item?.assignee).keys()]
+                              .slice(0, 4)
+                              .map((_, i) => {
+                                return (
+                                  <img
+                                    key={i}
+                                    src={imageSrc}
+                                    alt={`Assignee ${i + 1}`}
+                                    className={`w-6 h-6 object-cover rounded-full ${
+                                      i === 0 ? "ml-0" : "-ml-1"
+                                    }`}
+                                  />
+                                );
+                              })}
                             <div className="w-6 h-6 flex justify-center items-center bg-customBg2 border border-borderColor text-textColor2 font-metropolis rounded-full text-[8px] font-medium">
-                              +{assignee.length}
+                              {item?.assignee > 8
+                                ? +item?.assignee
+                                : item?.assignee}
                             </div>
                           </>
                         </div>
@@ -255,7 +241,14 @@ const ProjectTable = ({
                               height="20px"
                             />
                           </button>
-                          <button className="text-indigo-600 hover:text-indigo-900">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setProjectId(item?.id);
+                              setDeleteProject(true);
+                            }}
+                            className="text-indigo-600 hover:text-indigo-900"
+                          >
                             <Delete03Icon
                               className="text-customRed"
                               width="20px"
@@ -272,7 +265,7 @@ const ProjectTable = ({
             <Pagination
               pagination={pagination}
               slug="projects"
-              query="/?page"
+              query="/?project"
             />
           </div>
         </div>
@@ -289,6 +282,14 @@ const ProjectTable = ({
           projectId={projectId}
         />
       </Modal>
+      <DeleteModal
+        open={deleteProject}
+        setOpen={setDeleteProject}
+        id={projectId}
+        refetch={refetch}
+        path="project"
+        title="Delete Project"
+      />
     </div>
   );
 };

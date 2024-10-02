@@ -8,7 +8,7 @@ export const Search = ({ setSearchText }) => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearchText(inputValue);
-    }, 700);
+    }, 500);
 
     return () => {
       clearTimeout(handler);

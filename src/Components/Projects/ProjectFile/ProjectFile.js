@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 import { FileAddIcon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import EmptyTable from "../../helper/EmptyTable";
 import Modal from "../../helper/Modal";
 import FileTable from "../../helper/files/FileTable";
-import FileHeader from "../../helper/files/FileHeader";
 import AddNewFileForm from "../../helper/forms/AddNewFileForm";
 import { useBulkDelete, useFetchProjectFiles } from "../../../hooks/useQuery";
 import Errors from "../../Errors";
@@ -13,7 +13,6 @@ import Skeleton from "../../Skeleton";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
-import api from "../../../api/api";
 
 const ProjectFile = ({ projectId }) => {
   const [loader, setLoader] = useState(false);
@@ -54,17 +53,18 @@ const ProjectFile = ({ projectId }) => {
     setOpenFileModal(true);
   };
 
+  const onDeleteAction = async (ids) => {
+    await useBulkDelete("/files/bulk-delete", ids, refetch, setLoader, false);
+    setSelectedFile([]);
+  };
+  const onCheckAction = (ids) => {};
+
   function onError(err) {
     console.log(err);
     toast.error(
       err?.response?.data?.message || "Failed To Fetch Project Files"
     );
   }
-
-  const onDeleteAction = async (ids) => {
-    useBulkDelete("/files/bulk-delete", ids, refetch, setLoader, false);
-  };
-  const onCheckAction = (ids) => {};
 
   if (error) {
     return (

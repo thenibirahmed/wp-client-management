@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 import { FileAddIcon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
@@ -12,7 +13,6 @@ import { useBulkDelete, useFetchProjectFiles } from "../../../hooks/useQuery";
 import { useRefetch } from "../../../hooks/useRefetch";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
-import api from "../../../api/api";
 
 const ClientFiles = ({ clientId }) => {
   const [loader, setLoader] = useState(false);
@@ -59,7 +59,8 @@ const ClientFiles = ({ clientId }) => {
   };
 
   const onDeleteAction = async (ids) => {
-    useBulkDelete("/files/bulk-delete", ids, refetch, setLoader, false);
+    await useBulkDelete("/files/bulk-delete", ids, refetch, setLoader, false);
+    setSelectedFile([]);
   };
   const onCheckAction = (ids) => {};
 
