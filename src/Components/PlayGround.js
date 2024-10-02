@@ -1,3 +1,4 @@
+import { data } from "autoprefixer";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
@@ -188,19 +189,22 @@ const PlayGround = () => {
 
 	const getTestData = () => {
 		const bulk_ids = [9,10];
-		axios.put(
-			eicApiSettings.rest_url + "wp-client-management/v1/tasks/bulk-complete",
-			{
+		axios.delete(
+			eicApiSettings.rest_url + "wp-client-management/v1/projects/bulk-delete",
+			// {
 				// name: 'test3',
 				// email: 'test3@test.com',
 				// organization: 'test organization',
-				bulk_ids: bulk_ids,
-			},
+				// bulk_ids: bulk_ids,
+			// },
 			{
 				headers: {
 					"X-WP-Nonce": eicApiSettings.nonce,
 					// 'Content-Type' : 'application/json'
 				},
+				data: {
+					bulk_ids: bulk_ids,
+				}
 			}
 			)
 			.then((response) => {

@@ -37,6 +37,10 @@ class ProjectBulkDelete {
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
+        return new \WP_REST_Response([
+            'data' => $data
+        ]);
+
         if ($validator->fails()) {
             return new \WP_REST_Response([
                 'errors' => $validator->errors(),
