@@ -10,11 +10,10 @@ class TasksBulkDelete {
     private $endpoint = '/tasks/bulk-delete';
 
     protected array $rules = [
-        'bulk_ids' => 'required|array',
+        'bulk_ids' => 'nullable|array',
     ];
 
     protected array $validationMessages = [
-        'bulk_ids.required'  => 'The bulk IDs are required.',
         'bulk_ids.array'     => 'The bulk IDs must be an array.',
         'bulk_ids.*.integer' => 'The bulk IDs must be integers.',
     ];

@@ -187,9 +187,9 @@ const PlayGround = () => {
 // ***
 
 	const getTestData = () => {
-		const bulk_ids = [6,7,8];
+		const bulk_ids = [2,3];
 		axios.delete(
-			eicApiSettings.rest_url + "wp-client-management/v1/projects/bulk-delete",
+			eicApiSettings.rest_url + "wp-client-management/v1/tasks/bulk-delete",
 			// {
 			// 	name: 'test3',
 			// 	email: 'test3@test.com',
