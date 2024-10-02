@@ -11,10 +11,12 @@ class ProjectBulkDelete {
     private $endpoint = '/projects/bulk-delete';
 
     protected array $rules = [
-        'bulk_ids'   => 'nullable|array',
+        'bulk_ids'   => 'required|array',
+        'bulk_ids.*' => 'integer',
     ];
 
     protected array $validationMessages = [
+        'bulk_ids.required'  => 'The bulk IDs are required.',
         'bulk_ids.array'     => 'The bulk IDs must be an array.',
         'bulk_ids.*.integer' => 'The bulk IDs must be integers.',
     ];
@@ -28,12 +30,14 @@ class ProjectBulkDelete {
     }
 
     public function bulk_delete_project(\WP_REST_Request $request) {
+
         global $validator;
 
-        $bulk_ids  = $request->get_param('bulk_ids');
+        $bulk_ids = is_string($request->get_param('bulk_ids')) ? explode(',', $request->get_param('bulk_ids')): $request->get_param('bulk_ids');
+        $bulk_ids = array_map('intval', $bulk_ids);
 
         $data = [];
-        $data['bulk_ids'] = isset($bulk_ids) ? $bulk_ids : null;
+        $data['bulk_ids'] = isset($bulk_ids) ? $bulk_ids : [];
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -49,7 +53,7 @@ class ProjectBulkDelete {
             ], 400);
         }
 
-        $bulk_delete_projects = Project::whereIn('id', $bulk_ids)->get();
+        $bulk_delete_projects = Project::whereIn('id', $data['bulk_ids'])->get();
 
         if ($bulk_delete_projects->isEmpty()) {
             return new \WP_REST_Response([
@@ -57,12 +61,15 @@ class ProjectBulkDelete {
             ], 404);
         }
 
-        return new \WP_REST_Response([
-            'data' => $data
-        ]);
-
-        foreach ($bulk_delete_projects as $project) {
-            $project->delete();
+        try {
+            foreach ($bulk_delete_projects as $project) {
+                $project->delete();
+            }
+        } catch (\Exception $e) {
+            return new \WP_REST_Response([
+                'message' => 'An error occurred while deleting projects.',
+                'error'   => $e->getMessage(),
+            ], 500);
         }
 
         return new \WP_REST_Response([

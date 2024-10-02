@@ -12,6 +12,7 @@ class ClientBulkDelete {
 
     protected array $rules = [
         'bulk_ids'   => 'required|array',
+        'bulk_ids.*' => 'required|integer',
     ];
 
     protected array $validationMessages = [
@@ -34,7 +35,7 @@ class ClientBulkDelete {
 
         global $validator;
 
-        $bulk_ids = is_string($request->get_param('bulk_ids')) ? explode(',', $request->get_param('bulk_ids')) : $request->get_param('bulk_ids');
+        $bulk_ids = is_string($request->get_param('bulk_ids')) ? explode(',', $request->get_param('bulk_ids')): $request->get_param('bulk_ids');
         $bulk_ids = array_map('intval', $bulk_ids);
 
         $data = [];
