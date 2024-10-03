@@ -22,6 +22,7 @@ import Loaders from "../Loaders";
 
 const Client = () => {
   const [loader, setLoader] = useState(false);
+  const [selectCurrency, setSelectCurrency] = useState();
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -107,6 +108,8 @@ const Client = () => {
         setSelectStatus={() => {}}
         setSelectPriority={() => {}}
         setSelectedFilter={() => {}}
+        selectCurrency={selectCurrency}
+        setSelectCurrency={setSelectCurrency}
       />
       <div className="space-y-6">
         <div className="flex md:flex-row  md:justify-between flex-col md:items-center md:gap-0 gap-4">

@@ -22,6 +22,7 @@ import {
   useFetchSelectCurrency,
   useFetchSelectPaymentMethod,
   useFetchSelectProjects,
+  useFetchStatus,
 } from "../../../../hooks/useQuery";
 import { useUpdateDefaultInvoiceValue } from "../../../../hooks/useRefetch";
 
@@ -64,6 +65,7 @@ const AddNewInvoiceForm = ({
 
   const [selectClient, setSelectClient] = useState();
 
+  const [selectStatus, setSelectStatus] = useState();
   const [selectEmplyoee, setSelectEmployee] = useState();
   const [selectedProject, setSelectedProject] = useState();
   const [selectCurrency, setSelectCurrency] = useState();
@@ -107,6 +109,12 @@ const AddNewInvoiceForm = ({
     data: employeeLists,
     error: pManagerErr,
   } = useFetchAssignee(onError);
+
+  const {
+    isLoading: isLoadingStatus,
+    data: statuses,
+    error: pStatusErr,
+  } = useFetchStatus("project", onError);
 
   const { isLoading: isLoadingCliDetails, data: client } =
     useFetchClientDetails(selectClient?.id, onClientErr);
@@ -158,6 +166,7 @@ const AddNewInvoiceForm = ({
       invoice_number: Number(data.invoicenumber),
       payment_method_id: selectPayMethod?.id,
       currency_id: selectCurrency?.id,
+      status_id: selectStatus?.id,
       date: dayjs(invoiceDate).format("YYYY-MM-DD"),
       due_date: dayjs(dueDate).format("YYYY-MM-DD"),
       billing_address: data?.caddress,
@@ -325,6 +334,19 @@ const AddNewInvoiceForm = ({
         employeeLists,
       });
     }
+
+    if (statuses?.statuses.length > 0) {
+      if (!update) {
+        setSelectStatus(statuses?.statuses[0]);
+      } else if (update && clientInvoice) {
+        const statusLists = statuses?.statuses.find(
+          (item) => item.id === clientInvoice?.status_id
+        );
+        setSelectStatus(statusLists);
+      }
+    } else {
+      setSelectStatus({ name: " -No Status- ", id: null });
+    }
   }, [
     clientLists,
     projectsLists,
@@ -333,6 +355,7 @@ const AddNewInvoiceForm = ({
     employeeLists,
     update,
     clientInvoice,
+    statuses,
   ]);
 
   function onClientErr(err) {
@@ -449,6 +472,16 @@ const AddNewInvoiceForm = ({
                 isSubmitting={isSubmitting}
               />
             </div>
+
+            <div className="flex-1">
+              <SelectTextField
+                label="Status"
+                select={selectStatus}
+                setSelect={setSelectStatus}
+                lists={statuses?.statuses}
+                isSubmitting={isSubmitting}
+              />
+            </div>
           </div>
           <div className="flex md:flex-row flex-col gap-4 w-full">
             <SelectTextField
@@ -468,30 +501,6 @@ const AddNewInvoiceForm = ({
             <React.Fragment>
               <div className="flex flex-col gap-2 w-full   ">
                 <label className="font-medium text-sm  font-metropolis text-textColor">
-                  Due Date
-                </label>
-                <div
-                  className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}
-                >
-                  <DatePicker
-                    ref={datePickerDueRef}
-                    className="font-metropolis text-sm text-textColor w-full outline-none"
-                    selected={dueDate}
-                    onChange={(date) => setDueDate(date)}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => datePickerDueRef.current.setFocus()}
-                    className="absolute right-0 top-0 bottom-0 m-auto"
-                  >
-                    <Calendar02Icon />
-                  </button>
-                </div>
-              </div>
-            </React.Fragment>
-            <React.Fragment>
-              <div className="flex flex-col gap-2 w-full   ">
-                <label className="font-medium text-sm  font-metropolis text-textColor">
                   Invoice Date
                 </label>
                 <div
@@ -506,6 +515,30 @@ const AddNewInvoiceForm = ({
                   <button
                     type="button"
                     onClick={() => datePickerInvoiceRef.current.setFocus()}
+                    className="absolute right-0 top-0 bottom-0 m-auto"
+                  >
+                    <Calendar02Icon />
+                  </button>
+                </div>
+              </div>
+            </React.Fragment>
+            <React.Fragment>
+              <div className="flex flex-col gap-2 w-full   ">
+                <label className="font-medium text-sm  font-metropolis text-textColor">
+                  Due Date
+                </label>
+                <div
+                  className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}
+                >
+                  <DatePicker
+                    ref={datePickerDueRef}
+                    className="font-metropolis text-sm text-textColor w-full outline-none"
+                    selected={dueDate}
+                    onChange={(date) => setDueDate(date)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => datePickerDueRef.current.setFocus()}
                     className="absolute right-0 top-0 bottom-0 m-auto"
                   >
                     <Calendar02Icon />

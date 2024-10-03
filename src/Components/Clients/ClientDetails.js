@@ -22,8 +22,6 @@ const extractProjectId = (url) => {
 };
 
 const ClientDetails = () => {
-  const [selectCurrency, setSelectCurrency] = useState();
-
   const {
     createInvoice,
     updateInvoice,
@@ -41,6 +39,9 @@ const ClientDetails = () => {
 
     searchText,
     setSearchText,
+    selectCurrency,
+    setSelectCurrency,
+    isFetching,
   } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -60,7 +61,13 @@ const ClientDetails = () => {
     onError
   );
 
-  useClientOverViewRefetch(dateFrom, dateTo, selectCurrency, refetch);
+  useClientOverViewRefetch(
+    dateFrom,
+    dateTo,
+    selectCurrency,
+    refetch,
+    isFetching
+  );
 
   const {
     isLoading: isLoadingSelectCurrency,
@@ -71,7 +78,7 @@ const ClientDetails = () => {
   useEffect(() => {
     if (currencyLists?.currency.length > 0) {
       const usdCurrency = currencyLists?.currency?.find(
-        (item) => item.code === "BDT"
+        (item) => item.code === "USD"
       );
 
       setSelectCurrency(usdCurrency);
@@ -123,6 +130,8 @@ const ClientDetails = () => {
             setSelectStatus={setSelectStatus}
             setSelectPriority={setSelectPriority}
             setSelectedFilter={setSelectedFilter}
+            selectCurrency={selectCurrency}
+            setSelectCurrency={setSelectCurrency}
           />
           <div className="space-y-6">
             <Tab />

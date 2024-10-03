@@ -44,10 +44,12 @@ const ProjectDetail = () => {
     setSelectPriority,
     searchText,
     setSearchText,
+    selectCurrency,
+    setSelectCurrency,
+    isFetching,
   } = useStoreContext();
 
   const projectId = extractProjectId(currentPath);
-  const [selectCurrency, setSelectCurrency] = useState();
 
   const {
     isLoading,
@@ -62,7 +64,13 @@ const ProjectDetail = () => {
     onError
   );
 
-  useClientOverViewRefetch(dateFrom, dateTo, selectCurrency, refetch);
+  useClientOverViewRefetch(
+    dateFrom,
+    dateTo,
+    selectCurrency,
+    refetch,
+    isFetching
+  );
 
   const {
     isLoading: isLoadingSelectCurrency,
@@ -88,7 +96,7 @@ const ProjectDetail = () => {
   useEffect(() => {
     if (currencyLists?.currency.length > 0) {
       const usdCurrency = currencyLists?.currency?.find(
-        (item) => item.code === "BDT"
+        (item) => item.code === "USD"
       );
 
       setSelectCurrency(usdCurrency);
@@ -122,11 +130,13 @@ const ProjectDetail = () => {
             setDateFrom={setDateFrom}
             dateTo={dateTo}
             setDateTo={setDateTo}
-            projectDetails
+            projectDetails={true}
             topBar={singleProjectOverView?.topBar}
             setSearchText={setSearchText}
             setSelectStatus={setSelectStatus}
             setSelectPriority={setSelectPriority}
+            selectCurrency={selectCurrency}
+            setSelectCurrency={setSelectCurrency}
           />
           <div className="space-y-6">
             <Tab task={true} />

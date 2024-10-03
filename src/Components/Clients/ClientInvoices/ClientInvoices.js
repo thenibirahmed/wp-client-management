@@ -1,21 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
 import EmptyTable from "../../helper/EmptyTable";
 import { Invoice01Icon } from "../../../utils/icons";
 import InvoiceTable from "../../helper/invoices/InvoiceTable";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
-import { useFetchProjectInvoice } from "../../../hooks/useQuery";
+import {
+  useBulkComplete,
+  useBulkDelete,
+  useFetchProjectInvoice,
+  useFetchSelectCurrency,
+} from "../../../hooks/useQuery";
 import { useInvoiceRefetch, useRefetch } from "../../../hooks/useRefetch";
 import Errors from "../../Errors";
 import useHashRouting from "../../../utils/useHashRouting";
 
 const ClientInvoices = ({ clientId }) => {
+  const [loader, setLoader] = useState(false);
   const {
     setCreateInvoice,
     updateInvoice,
     setUpdateInvoice,
-    isFetching,
+
     dateFrom,
     dateTo,
     selectStatus,
@@ -24,6 +30,10 @@ const ClientInvoices = ({ clientId }) => {
     setSelectPriority,
     searchText,
     setSearchText,
+    selectCurrency,
+    setSelectCurrency,
+    isFetching,
+    setIsFetching,
   } = useStoreContext();
 
   const [selectedInvoices, setSelectedInvoices] = useState([]);
@@ -44,6 +54,7 @@ const ClientInvoices = ({ clientId }) => {
     searchText,
     dateFrom,
     dateTo,
+    selectCurrency?.code,
     selectStatus,
     selectPriority,
     "client",
@@ -56,19 +67,54 @@ const ClientInvoices = ({ clientId }) => {
     dateFrom,
     dateTo,
     selectStatus,
-    selectPriority,
-    refetch
+    null,
+    refetch,
+    selectCurrency
   );
+
+  const {
+    isLoading: isLoadingSelectCurrency,
+    data: currencyLists,
+    error: selecturrencyErr,
+  } = useFetchSelectCurrency(onError);
+
+  useEffect(() => {
+    if (currencyLists?.currency.length > 0) {
+      const usdCurrency = currencyLists?.currency?.find(
+        (item) => item.code === "USD"
+      );
+
+      setSelectCurrency(usdCurrency);
+    } else {
+      setSelectCurrency({ name: " -No Currency- ", id: null });
+    }
+  }, [currencyLists]);
 
   const handler = () => {
     setCreateInvoice(true);
   };
 
-  const onDeleteAction = (ids) => {
-    alert(ids[0].id);
+  const onDeleteAction = async (ids) => {
+    setIsFetching(true);
+    await useBulkDelete(
+      "/invoices/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false
+    );
+    setSelectedInvoices([]);
+    setIsFetching(false);
   };
-  const onCheckAction = (ids) => {
-    alert(ids[0].id);
+  const onCheckAction = async (ids) => {
+    await useBulkComplete(
+      "/invoices/bulk-complete",
+      ids,
+      refetch,
+      setLoader,
+      false
+    );
+    setSelectedInvoices([]);
   };
 
   function onError(err) {
@@ -99,6 +145,8 @@ const ClientInvoices = ({ clientId }) => {
         searchText={searchText}
         setSearchText={setSearchText}
         filter
+        loader={loader}
+        noPriority
       />
 
       {invoiceList?.invoices.length > 0 ? (
@@ -115,6 +163,7 @@ const ClientInvoices = ({ clientId }) => {
                 setSelectedInvoices={setSelectedInvoices}
                 isAllselected={isAllselected}
                 setIsAllSelected={setIsAllSelected}
+                refetch={refetch}
                 isClient
                 slug="clients"
               />

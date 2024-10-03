@@ -23,6 +23,7 @@ import { useRefetch } from "../../hooks/useRefetch";
 
 const Projects = () => {
   const [loader, setLoader] = useState(false);
+  const [selectCurrency, setSelectCurrency] = useState();
 
   const {
     openProjectModal,
@@ -143,6 +144,8 @@ const Projects = () => {
             setSelectPriority={setSelectPriority}
             setSelectedFilter={setSelectedFilter}
             setSearchText={setSearchText}
+            selectCurrency={selectCurrency}
+            setSelectCurrency={setSelectCurrency}
           />
 
           <div className="space-y-6">

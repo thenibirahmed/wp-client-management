@@ -5,6 +5,7 @@ import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
+import { DeleteModal } from "../../DeleteModal";
 
 const InvoiceTable = ({
   invoiceList,
@@ -14,6 +15,7 @@ const InvoiceTable = ({
   setSelectedInvoices,
   isAllselected,
   setIsAllSelected,
+  refetch,
   isClient = false,
   slug,
 }) => {
@@ -22,8 +24,15 @@ const InvoiceTable = ({
     setIsAllSelected,
     setSelectedInvoices
   );
-  const { createInvoice, updateInvoice, setUpdateInvoice, setInvoiceId } =
-    useStoreContext();
+  const {
+    createInvoice,
+    updateInvoice,
+    setUpdateInvoice,
+    invoiceId,
+    setInvoiceId,
+    deleteInvoice,
+    setDeleteInvoice,
+  } = useStoreContext();
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -166,7 +175,14 @@ const InvoiceTable = ({
                               height="20px"
                             />
                           </button>
-                          <button className="text-indigo-600 hover:text-indigo-900">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeleteInvoice(true);
+                              setInvoiceId(item?.id);
+                            }}
+                            className="text-indigo-600 hover:text-indigo-900"
+                          >
                             <Delete03Icon
                               className="text-customRed"
                               width="20px"
@@ -189,6 +205,14 @@ const InvoiceTable = ({
           </div>
         </div>
       </div>
+      <DeleteModal
+        open={deleteInvoice}
+        setOpen={setDeleteInvoice}
+        id={invoiceId}
+        refetch={refetch}
+        title="Delete Invoice"
+        path="invoice"
+      />
     </div>
   );
 };

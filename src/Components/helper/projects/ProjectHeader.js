@@ -25,6 +25,7 @@ const ProjectHeader = ({
   setSearchText,
   searchText,
   loader,
+  noPriority = false,
 }) => {
   const { updateNotes, setUpdateNotes } = useStoreContext();
   return (
@@ -60,7 +61,7 @@ const ProjectHeader = ({
           setSearchText={setSearchText}
           searchText={searchText}
         />
-        {filter && <Filter />}
+        {filter && <Filter noPriority={noPriority} />}
 
         {openModal ? (
           <>

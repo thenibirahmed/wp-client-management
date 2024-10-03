@@ -9,6 +9,8 @@ export const ContextProvider = ({ children }) => {
     new Date(),
   ]);
 
+  const [selectCurrency, setSelectCurrency] = useState();
+
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
 
@@ -38,6 +40,7 @@ export const ContextProvider = ({ children }) => {
   const [invoiceId, setInvoiceId] = useState(false);
   const [createInvoice, setCreateInvoice] = useState(false);
   const [updateInvoice, setUpdateInvoice] = useState(false);
+  const [deleteInvoice, setDeleteInvoice] = useState(false);
 
   const [createNote, setCreateNote] = useState(false);
   const [deleteNote, setDeleteNote] = useState(false);
@@ -152,6 +155,10 @@ export const ContextProvider = ({ children }) => {
     setSelectedFilter,
     searchText,
     setSearchText,
+    selectCurrency,
+    setSelectCurrency,
+    deleteInvoice,
+    setDeleteInvoice,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

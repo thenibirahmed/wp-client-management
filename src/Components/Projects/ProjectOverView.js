@@ -26,8 +26,10 @@ const ProjectOverView = ({
   projectDetails = false,
   topBar,
   setSearchText,
+  selectCurrency,
+  setSelectCurrency,
 }) => {
-  const [selectCurrency, setSelectCurrency] = useState();
+  console.log("topBar", topBar);
 
   const [startDate, endDate] = dateRange;
 
@@ -58,7 +60,7 @@ const ProjectOverView = ({
   useEffect(() => {
     if (currencyLists?.currency.length > 0) {
       const usdCurrency = currencyLists?.currency?.find(
-        (item) => item.code === "BDT"
+        (item) => item.code === "USD"
       );
 
       setSelectCurrency(usdCurrency);
@@ -75,7 +77,7 @@ const ProjectOverView = ({
     setSelectPriority("");
 
     const usdCurrency = currencyLists?.currency?.find(
-      (item) => item.code === "BDT"
+      (item) => item.code === "USD"
     );
 
     setSelectCurrency(usdCurrency);
@@ -114,7 +116,6 @@ const ProjectOverView = ({
       <div className="flex   w-full  sm:flex-row flex-col  sm:justify-between  items-center border border-borderColor rounded-lg">
         {projectDetails ? (
           <>
-            {" "}
             <OvierViewItem
               title={topBar?.due?.name}
               amount={topBar?.due?.total}
@@ -139,7 +140,6 @@ const ProjectOverView = ({
           </>
         ) : (
           <>
-            {" "}
             <OvierViewItem
               title={projectOverView?.projectOverView?.due?.name}
               amount={projectOverView?.projectOverView?.due?.total}

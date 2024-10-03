@@ -10,7 +10,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Filter = () => {
+const Filter = ({ noPriority }) => {
   const {
     selectStatus,
     setSelectStatus,
@@ -109,44 +109,46 @@ const Filter = () => {
           </Disclosure>
 
           {/* Priorities Disclosure */}
-          <Disclosure>
-            {({ open }) => (
-              <>
-                <Disclosure.Button
-                  className={classNames(
-                    "group flex items-center justify-between gap-x-3 w-full p-2 rounded-md bg-white text-sm font-[500] font-metropolis text-textColor2 hover:bg-gray-100",
-                    open ? "bg-gray-100" : ""
-                  )}
-                >
-                  <span>Priorities</span>
-                  <ChevronRightIcon
+          {!noPriority && (
+            <Disclosure>
+              {({ open }) => (
+                <>
+                  <Disclosure.Button
                     className={classNames(
-                      "h-5 w-5 shrink-0 text-textColor2",
-                      open ? "rotate-90 transform" : ""
+                      "group flex items-center justify-between gap-x-3 w-full p-2 rounded-md bg-white text-sm font-[500] font-metropolis text-textColor2 hover:bg-gray-100",
+                      open ? "bg-gray-100" : ""
                     )}
-                    aria-hidden="true"
-                  />
-                </Disclosure.Button>
-                <Disclosure.Panel className="mt-2 space-y-1">
-                  {priorities?.priorities?.map((priority) => (
-                    <button
-                      key={priority.id}
-                      onClick={() => {
-                        setSelectPriority(priority.id);
-                      }}
-                      className={`block w-full text-left px-4 py-2 text-sm text-textColor2 ${
-                        selectPriority == priority.id
-                          ? "bg-indigo-600 text-white"
-                          : ""
-                      }`}
-                    >
-                      {priority.name}
-                    </button>
-                  ))}
-                </Disclosure.Panel>
-              </>
-            )}
-          </Disclosure>
+                  >
+                    <span>Priorities</span>
+                    <ChevronRightIcon
+                      className={classNames(
+                        "h-5 w-5 shrink-0 text-textColor2",
+                        open ? "rotate-90 transform" : ""
+                      )}
+                      aria-hidden="true"
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="mt-2 space-y-1">
+                    {priorities?.priorities?.map((priority) => (
+                      <button
+                        key={priority.id}
+                        onClick={() => {
+                          setSelectPriority(priority.id);
+                        }}
+                        className={`block w-full text-left px-4 py-2 text-sm text-textColor2 ${
+                          selectPriority == priority.id
+                            ? "bg-indigo-600 text-white"
+                            : ""
+                        }`}
+                      >
+                        {priority.name}
+                      </button>
+                    ))}
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+          )}
         </div>
       </Menu.Items>
     </Menu>

@@ -6,7 +6,7 @@ export const useFetchClientOverView = (dateStart, dateEnd, code, onError) => {
   return useQuery(
     "clients-overview",
     async () => {
-      const defaultCode = code || "BDT";
+      const defaultCode = code ? code : "USD";
 
       const params = new URLSearchParams();
       params.append("currency", defaultCode);
@@ -80,7 +80,7 @@ export const useFetchSingleClientOverView = (
   return useQuery(
     ["single-client-overview", clientId],
     async () => {
-      const defaultcode = code ? code : "BDT";
+      const defaultcode = code ? code : "USD";
 
       const params = new URLSearchParams();
       params.append("currency", defaultcode);
@@ -560,7 +560,7 @@ export const useFetchProjectOverView = (dateStart, dateEnd, code, onError) => {
   return useQuery(
     "project-overview",
     async () => {
-      const defaultCode = code || "BDT";
+      const defaultCode = code ? code : "USD";
 
       const params = new URLSearchParams();
       params.append("currency", defaultCode);
@@ -599,7 +599,7 @@ export const useFetchSingleProjectOverView = (
   return useQuery(
     ["single-project-overview", projectId],
     async () => {
-      const defaultCode = code ? code : "BDT";
+      const defaultCode = code ? code : "USD";
 
       const params = new URLSearchParams();
       params.append("currency", defaultCode);
@@ -709,6 +709,7 @@ export const useFetchProjectInvoice = (
   searchText,
   dateStart,
   dateEnd,
+  code,
   selectStatus,
   selectPriority,
   type,
@@ -718,6 +719,10 @@ export const useFetchProjectInvoice = (
     [`${type}-invoice`, projectId],
     async () => {
       const params = new URLSearchParams();
+
+      const defaultCode = code ? code : "USD";
+
+      params.append("currency", defaultCode);
 
       if (searchText) {
         params.append("search", searchText);
@@ -729,9 +734,6 @@ export const useFetchProjectInvoice = (
       }
       if (selectStatus) {
         params.append("status_id", selectStatus);
-      }
-      if (selectPriority) {
-        params.append("priority_id", selectPriority);
       }
 
       const queryString = params.toString();

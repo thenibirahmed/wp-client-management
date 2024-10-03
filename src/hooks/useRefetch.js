@@ -7,7 +7,8 @@ export const useRefetch = (
   dateTo,
   selectStatus,
   selectPriority,
-  refetch
+  refetch,
+  selectCurrency = null
 ) => {
   useEffect(() => {
     const refetchHandler = async () => {
@@ -20,7 +21,8 @@ export const useRefetch = (
       dateFrom ||
       dateTo ||
       selectStatus ||
-      selectPriority
+      selectPriority ||
+      selectCurrency
     ) {
       refetchHandler();
     }
@@ -31,6 +33,7 @@ export const useRefetch = (
     dateTo,
     selectStatus,
     selectPriority,
+    selectCurrency,
   ]);
 };
 
@@ -259,15 +262,16 @@ export const useClientOverViewRefetch = (
   dateStart,
   dateEnd,
   selectCurrency,
-  refetch
+  refetch,
+  isFetching = false
 ) => {
   useEffect(() => {
     const refetchHandler = async () => {
       await refetch();
     };
 
-    if (dateStart || dateEnd || selectCurrency) {
+    if (dateStart || dateEnd || selectCurrency || isFetching) {
       refetchHandler();
     }
-  }, [dateStart, dateEnd, selectCurrency]);
+  }, [dateStart, dateEnd, selectCurrency, isFetching]);
 };

@@ -26,9 +26,9 @@ const ClientOverView = ({
   setSelectStatus,
   setSelectPriority,
   setSelectedFilter,
+  selectCurrency,
+  setSelectCurrency,
 }) => {
-  const [selectCurrency, setSelectCurrency] = useState();
-
   const [startDate, endDate] = dateRange;
 
   const {
@@ -63,7 +63,7 @@ const ClientOverView = ({
   useEffect(() => {
     if (currencyLists?.currency.length > 0) {
       const usdCurrency = currencyLists?.currency?.find(
-        (item) => item.code === "BDT"
+        (item) => item.code === "USD"
       );
 
       setSelectCurrency(usdCurrency);
@@ -77,7 +77,7 @@ const ClientOverView = ({
     setDateFrom(null);
     setDateTo(null);
     const usdCurrency = currencyLists?.currency?.find(
-      (item) => item.code === "BDT"
+      (item) => item.code === "USD"
     );
 
     setSelectCurrency(usdCurrency);
