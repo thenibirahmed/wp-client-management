@@ -3,15 +3,13 @@
 namespace WpClientManagement\API\Projects;
 
 use WpClientManagement\Helpers\AuthUser;
-use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
-use WpClientManagement\Models\WpUser;
 
 class ProjectOverview {
 
     private $namespace = 'wp-client-management/v1';
-    private $endpoint  = '/projects-overview(?:/(?P<currency>[a-zA-Z0-9_-]+))?';
+    private $endpoint  = '/projects-overview';
 
     protected array $rules = [
         'currency' => 'nullable|exists:eic_currencies,code',

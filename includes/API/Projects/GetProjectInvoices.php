@@ -115,16 +115,16 @@ class GetProjectInvoices {
 
         $invoiceWithDetails = $invoices->map(function ($invoice) use ($wpUsers) {
            $client     = $invoice->client;
-           $wp_user_id = $client->eic_crm_user->wp_user_id;
+           $wp_user_id = $client?->eic_crm_user->wp_user_id;
            $wp_user    = $wpUsers[$wp_user_id] ?? [];
 
            return [
                'id'             => $invoice->id,
                'code'           => $invoice->code,
-               'client_name'    => $wp_user['name'],
+               'client_name'    => $wp_user['name'] ?? '',
                'total'          => $invoice->total,
                'status'         => $invoice->status->name,
-               'payment_method' => $invoice->paymentMethod->name,
+               'payment_method' => $invoice->paymentMethod?->name,
                'due_date'       => $invoice->due_date ? date('M d, Y', strtotime($invoice->due_date)) : '',
            ];
 
