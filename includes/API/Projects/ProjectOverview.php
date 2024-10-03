@@ -10,7 +10,6 @@ use WpClientManagement\Models\WpUser;
 
 class ProjectOverview {
 
-    use AuthUser;
     private $namespace = 'wp-client-management/v1';
     private $endpoint  = '/projects-overview(?:/(?P<currency>[a-zA-Z0-9_-]+))?';
 
@@ -53,7 +52,7 @@ class ProjectOverview {
         }
 
         return new \WP_REST_Response([
-            'data' => $this->AuthUser()['role']
+            'data' => AuthUser::user(),
         ]);
 
         $projects     = Project::pluck('id')->toArray();

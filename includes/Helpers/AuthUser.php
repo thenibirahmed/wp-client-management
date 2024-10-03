@@ -5,24 +5,34 @@ namespace WpClientManagement\Helpers;
 use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\WpUser;
 
-trait AuthUser
+class AuthUser
 {
-    public function AuthUser()
+    public static function user()
     {
         $me = wp_get_current_user();
+
         $wp_user = WpUser::find($me->ID);
+
+        if (!$wp_user) {
+            return null;
+        }
+
         $eic_user = EicCrmUser::where('wp_user_id', $wp_user->ID)->first();
-        $role= $eic_user->role->name;
 
-        $responses = [
-            'name'         => $wp_user->user_login,
-            'email'        => $wp_user->user_email,
-            'designation'  => $eic_user->designation ?? '',
-            'organization' => $eic_user->client?->organization ?? '',
-            'role'         => $role
-        ];
+        if (!$eic_user) {
+            return null;
+        }
 
-        return $responses;
+        if($eic_user && $wp_user) {
+            return (object) [
+                'id' => $eic_user->id,
+                'name' => $wp_user->user_login,
+                'email' => $wp_user->user_email,
+                'role' => $eic_user->role->name,
+            ];
+        }
+
+        return null;
     }
 }
 
