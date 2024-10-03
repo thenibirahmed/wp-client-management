@@ -25,7 +25,7 @@ const ClientInfo = ({ profile }) => {
             {profile?.name}
           </h1>
           <span className="text-xs  text-textColor2 font-metropolis font-normal ">
-            {profile?.organization}
+            {profile?.designation}
           </span>
         </div>
       </div>

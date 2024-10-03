@@ -7,7 +7,7 @@ import {
 import { ContactSearch } from "./ContactSearch";
 import { useStoreContext } from "../../store/ContextApiStore";
 
-const TabHeader = ({ setOpen, btn }) => {
+const TabHeader = ({ setOpen, btn, selectedClient }) => {
   const { contactTabs } = useStoreContext();
   return (
     <div className="flex md:flex-row  md:justify-between flex-col md:items-center md:gap-0 gap-4">
@@ -15,12 +15,14 @@ const TabHeader = ({ setOpen, btn }) => {
         {contactTabs["team"] ? "Team" : "Client"}
       </h1>
       <div className="flex sm:flex-row flex-wrap gap-5 items-center">
-        <button>
-          <Delete03Icon className="text-textColor2" />
-        </button>
-        <button>
+        {selectedClient?.length > 0 && (
+          <button>
+            <Delete03Icon className="text-customRed" />
+          </button>
+        )}
+        {/* <button>
           <CheckmarkCircle02Icon className="text-textColor2" />
-        </button>
+        </button> */}
         <ContactSearch />
         <button
           onClick={() => setOpen(true)}

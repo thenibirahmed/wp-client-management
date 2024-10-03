@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useStoreContext } from "../../../../store/ContextApiStore";
 
-const ContactTeamDetailsTabs = () => {
+const ContactTeamDetailsTabs = ({ bottomTab }) => {
   const {
     contactTabs,
     setContactTabs,
@@ -37,13 +37,14 @@ const ContactTeamDetailsTabs = () => {
         className={`${activeClass("project")} pb-3 w-[120px]`}
         onClick={() => onTabChangeHandler("project")}
       >
-        Project <span className="text-textColor2">(125)</span>
+        Project{" "}
+        <span className="text-textColor2">({bottomTab?.projectsCount})</span>
       </button>
       <button
         className={`${activeClass("task")} pb-3 w-[120px]`}
         onClick={() => onTabChangeHandler("task")}
       >
-        Task <span className="text-textColor2">(155)</span>
+        Task <span className="text-textColor2">({bottomTab?.tasksCount})</span>
       </button>
     </div>
   );

@@ -173,7 +173,11 @@ const ContactTeamTable = ({
                 })}
               </tbody>
             </table>
-            <Pagination pagination={pagination} slug="contact" query="/?page" />
+            <Pagination
+              pagination={pagination}
+              slug="contact"
+              query="/?member"
+            />
           </div>
         </div>
       </div>

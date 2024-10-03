@@ -3,6 +3,9 @@ import ClientInfo from "../../../Clients/ClientInfo";
 import ContactTeamDetailsLayout from "./ContactTeamDetailsLayout";
 import ContactTeamDetailsTabs from "./ContactTeamDetailsTabs copy";
 import useHashRouting from "../../../../utils/useHashRouting";
+import { useFetchSingleTeamOverview } from "../../../../hooks/useQuery";
+import toast from "react-hot-toast";
+import Skeleton from "../../../Skeleton";
 const extractProjectId = (url) => {
   const match = url.match(/contact\/#\/(\d+)/);
   return match ? match[1] : null;
@@ -13,12 +16,26 @@ const ContactTeamDetails = () => {
 
   const teamId = extractProjectId(currentPath);
 
+  const {
+    isLoading,
+    data: overview,
+    error,
+    refetch,
+  } = useFetchSingleTeamOverview(teamId, onError);
+
+  function onError(err) {
+    console.log(err);
+    toast.error(err?.response?.data?.errors || "Failed to fetch team data");
+  }
+
+  if (isLoading) return <Skeleton />;
+
   return (
     <React.Fragment>
       <React.Fragment>
-        <ClientInfo teamId={teamId} />
+        <ClientInfo profile={overview?.profile} />
         <div className="space-y-6">
-          <ContactTeamDetailsTabs />
+          <ContactTeamDetailsTabs bottomTab={overview?.bottomTab} />
           <React.Fragment>
             <ContactTeamDetailsLayout teamId={teamId} />
           </React.Fragment>

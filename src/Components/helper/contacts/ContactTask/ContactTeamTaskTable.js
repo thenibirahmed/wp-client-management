@@ -68,7 +68,7 @@ const ContactTeamTaskTable = ({
                     scope="col"
                     className="px-3 py-3.5 uppercase text-left text-sm font-semibold text-textColor2"
                   >
-                    Due date
+                    End Date
                   </th>{" "}
                   <th
                     scope="col"
@@ -136,7 +136,7 @@ const ContactTeamTaskTable = ({
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-medium">
-                        {item.due_date}
+                        {item.end_date}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
                         <div className="flex items-center  gap-0">

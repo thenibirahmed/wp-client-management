@@ -113,7 +113,7 @@ const ProjectOverView = ({
           />
         </div>
       </div>
-      <div className="flex   w-full  sm:flex-row flex-col  sm:justify-between  items-center border border-borderColor rounded-lg">
+      <div className="flex   w-full  md:flex-row flex-col  md:justify-between  items-center border border-borderColor rounded-lg">
         {projectDetails ? (
           <>
             <OvierViewItem

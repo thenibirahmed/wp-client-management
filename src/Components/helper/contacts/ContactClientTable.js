@@ -8,34 +8,38 @@ import useHashRouting from "../../../utils/useHashRouting";
 import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 
-const tableData = [
-  {
-    id: 1,
-    name: "Easin",
-    email: "easin@gmail.com",
-    phone: "(405) 555-0128",
-    position: "CEO",
-    createdDate: "May 9, 2014",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 2,
-    name: "Tanvir",
-    email: "tanvir@gmail.com",
-    position: "CEO",
-    phone: "(405) 555-0128",
-    createdDate: "May 9, 2014",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
+// const tableData = [
+//   {
+//     id: 1,
+//     name: "Easin",
+//     email: "easin@gmail.com",
+//     phone: "(405) 555-0128",
+//     position: "CEO",
+//     createdDate: "May 9, 2014",
+//     image:
+//       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//   },
+//   {
+//     id: 2,
+//     name: "Tanvir",
+//     email: "tanvir@gmail.com",
+//     position: "CEO",
+//     phone: "(405) 555-0128",
+//     createdDate: "May 9, 2014",
+//     image:
+//       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+//   },
+// ];
 
-const ContactClientTable = () => {
+const ContactClientTable = ({
+  clientData,
+  selectedClient,
+  setSelectedClient,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
-  const [selectedClient, setSelectedClient] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
 
   const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
     selectedClient,
@@ -63,7 +67,7 @@ const ContactClientTable = () => {
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, clientData)
                       }
                       type="checkbox"
                     />
@@ -101,9 +105,9 @@ const ContactClientTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
-                  const isChecked = selectedClient.some(
-                    (client) => client.id === item.id
+                {clientData?.map((item) => {
+                  const isChecked = selectedClient?.some(
+                    (client) => client?.id === item?.id
                   );
                   return (
                     <tr>
@@ -122,7 +126,9 @@ const ContactClientTable = () => {
                         <div className="flex  gap-3">
                           <img
                             className="h-8 w-8 rounded-full bg-gray-50"
-                            src={item.image}
+                            src={
+                              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            }
                             alt={item.name}
                           />
                           <div>
@@ -130,7 +136,7 @@ const ContactClientTable = () => {
                               {item.name}
                             </h3>
                             <span className="text-xs  text-textColor2 font-metropolis font-normal leading-3">
-                              {item.position}
+                              {item.organization}
                             </span>
                           </div>
                         </div>
@@ -142,7 +148,7 @@ const ContactClientTable = () => {
                         {item.phone}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-normal">
-                        {item.createdDate}
+                        {item.createdAt}
                       </td>
 
                       <td className="whitespace-nowrap   px-3 py-4 ">

@@ -30,7 +30,7 @@ const ContactTeam = () => {
     refetch,
   } = useFetchContactTeamMembers(paginationUrl, onError);
 
-  useRefetch(paginationUrl, refetch);
+  useRefetch(paginationUrl, null, null, null, null, null, refetch);
 
   function onError(err) {
     console.log(err);
