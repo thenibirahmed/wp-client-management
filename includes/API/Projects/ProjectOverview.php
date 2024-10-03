@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Projects;
 
+use WpClientManagement\Helpers\AuthUser;
 use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
@@ -9,6 +10,7 @@ use WpClientManagement\Models\WpUser;
 
 class ProjectOverview {
 
+    use AuthUser;
     private $namespace = 'wp-client-management/v1';
     private $endpoint  = '/projects-overview(?:/(?P<currency>[a-zA-Z0-9_-]+))?';
 
@@ -50,10 +52,9 @@ class ProjectOverview {
             ], 400);
         }
 
-        $me = wp_get_current_user();
-        $wp_user = WpUser::find($me->ID);
-        $eic_user = EicCrmUser::where('wp_user_id', $wp_user->ID)->first();
-        $role= $eic_user->role->name;
+        return new \WP_REST_Response([
+            'data' => $this->AuthUser()['role']
+        ]);
 
         $projects     = Project::pluck('id')->toArray();
         $projectCount = count($projects);
