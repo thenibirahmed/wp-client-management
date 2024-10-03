@@ -186,28 +186,23 @@ const PlayGround = () => {
 	// }, [])
 
 // ***
-
 	const getTestData = () => {
-		const bulk_ids = [9,10];
-		axios.delete(
-			eicApiSettings.rest_url + `wp-client-management/v1/notes/bulk-delete?bulk_ids=${bulk_ids}`,
-			{
-				headers: {
-					"X-WP-Nonce": eicApiSettings.nonce,
-					// 'Content-Type' : 'application/json'
-				},
-			}
-			)
-			.then((response) => {
-				console.log(response.data);
-				setPost(response.data);
-			})
-			.catch((error) => {
-				console.log(
-					"Error:",
-					error.response ? error.response.data : error.message
-				);
-			});
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/projects-overview',
+		{
+			headers: {
+				'X-WP-Nonce': eicApiSettings.nonce,
+			},
+		})
+		.then((response) => {
+			console.log(response.data);
+			setPost(response.data);
+		})
+		.catch((error) => {
+			console.log(
+				"Error:",
+				error.response ? error.response.data : error.message
+			);
+		});
 	};
 
 	// const setSearch = (e) => {

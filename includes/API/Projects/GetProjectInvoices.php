@@ -82,6 +82,10 @@ class GetProjectInvoices {
             ]);
         }
 
+        // return new \WP_REST_Response([
+        //     'data' => $data
+        // ]);
+
         $invoices = Invoice::getPorjectInvoices($data['id'], $page, $data['currency'], $data['from'], $data['to'], $data['status_id'], $data['payment_method_id'], $search);
 
         if(!$invoices) {

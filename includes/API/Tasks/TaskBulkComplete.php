@@ -65,6 +65,10 @@ class TaskBulkComplete {
             ], 404);
         }
 
+        return new \WP_REST_Response([
+            'data' =>  $data
+        ]);
+
         try {
             foreach ($bulk_tasks as $task) {
                 $task->update(['status_id' => $task_done_status->id]);

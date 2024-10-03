@@ -50,18 +50,23 @@ class ProjectOverview {
             ], 400);
         }
 
-        // $me = wp_get_current_user();
-        // $wp_user = WpUser::find($me->ID);
-        // $eic_user = EicCrmUser::where('wp_user_id', $wp_user->ID)->first();
-        // $role= $eic_user->role->name;
-        // return new \WP_REST_Response([
-        //     'user' => $eic_user,
-        //     'role' => $role
-        // ]);
+        $me = wp_get_current_user();
+        $wp_user = WpUser::find($me->ID);
+        $eic_user = EicCrmUser::where('wp_user_id', $wp_user->ID)->first();
+        $role= $eic_user->role->name;
 
         $projects     = Project::pluck('id')->toArray();
         $projectCount = count($projects);
-        $invoices     = Invoice::getAllProjectInvoices($projects, $data['currency'], $data['from'], $data['to']);
+
+        if($role == 'admin') {
+            $invoices     = Invoice::getAllProjectInvoices($projects, $data['currency'], $data['from'], $data['to']);
+        }elseif($role == 'client') {
+            $invoices = Invoice::getSingleClientInvoices($eic_user->client->id, $data['currency'], $data['from'], $data['to']);
+        }else{
+            return new \WP_REST_Response([
+                'error' => 'Unauthorized.',
+            ], 401);
+        }
 
         $totalInvoicesAmount = $invoices->sum('total');
         $totalInvoiceCount   = $invoices->count();
