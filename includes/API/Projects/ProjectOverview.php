@@ -51,17 +51,13 @@ class ProjectOverview {
             ], 400);
         }
 
-        return new \WP_REST_Response([
-            'data' => AuthUser::user(),
-        ]);
-
         $projects     = Project::pluck('id')->toArray();
         $projectCount = count($projects);
 
-        if($role == 'admin') {
+        if(AuthUser::user()->role == 'admin') {
             $invoices     = Invoice::getAllProjectInvoices($projects, $data['currency'], $data['from'], $data['to']);
-        }elseif($role == 'client') {
-            $invoices = Invoice::getSingleClientInvoices($eic_user->client->id, $data['currency'], $data['from'], $data['to']);
+        }elseif(AuthUser::user()->role == 'client') {
+            $invoices = Invoice::getSingleClientInvoices(AuthUser::user()->id, $data['currency'], $data['from'], $data['to']);
         }else{
             return new \WP_REST_Response([
                 'error' => 'Unauthorized.',
