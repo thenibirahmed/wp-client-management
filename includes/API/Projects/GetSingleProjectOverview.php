@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Projects;
 
+use WpClientManagement\Models\Currency;
 use WpClientManagement\Models\Email;
 use WpClientManagement\Models\File;
 use WpClientManagement\Models\Invoice;
@@ -98,6 +99,8 @@ class GetSingleProjectOverview {
         $totalDueAmount     = $totalInvoiceAmount - $totalPaidInvoiceAmount;
         $unpaidInvoiceCount = $totalInvoiceCount - $paidInvoiceCount;
 
+        $currency = Currency::getCurrencyData($data['currency']);
+
         $topBar = [
             "invoice" => [
                 'name'    => 'Total Invoice',
@@ -119,7 +122,7 @@ class GetSingleProjectOverview {
                 'total'   => $working_employee,
                 'subText' => $working_employee . ($working_employee == 1 ? ' employee' : ' employees')
             ],
-            'currency' => $data['currency']
+            'currency' => $currency
         ];
 
         $tabs = [
