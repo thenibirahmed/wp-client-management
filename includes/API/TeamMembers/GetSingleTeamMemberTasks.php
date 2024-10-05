@@ -33,8 +33,9 @@ class GetSingleTeamMemberTasks {
     {
         global $validator;
 
-        $id   = $request->get_param('id');
-        $page = $request->get_param('task');
+        $id     = $request->get_param('id');
+        $page   = $request->get_param('task');
+        $search = $request->get_param('search');
 
         if(!isset($id)) {
             return new \WP_REST_Response([
@@ -60,7 +61,7 @@ class GetSingleTeamMemberTasks {
             ]);
         }
 
-        $tasks = Task::getTeamMemberTasks($id, $page);
+        $tasks = Task::getTeamMemberTasks($id, $search, $page);
         $eic_crm_user_ids = $tasks->pluck('eic_crm_user_id');
 
         $eic_crm_users = EicCrmUser::whereIn('id',$eic_crm_user_ids)->get();
