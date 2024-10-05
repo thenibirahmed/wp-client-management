@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Emails;
 
+use WpClientManagement\Helpers\AuthUser;
 use WpClientManagement\Models\Email;
 
 class GetEmails {
@@ -9,26 +10,6 @@ class GetEmails {
     private $namespace = 'wp-client-management/v1';
 
     private $endpoint = '/emails';
-
-    protected array $rules = [
-        'eic_crm_user_id' => 'required',
-        'project_id'      => 'required',
-        'client_id'       => 'required',
-        'subject'         => 'nullable|string|max:255',
-        'body'            => 'required',
-        'date'            => 'required|date'
-    ];
-
-    protected array $validationMessages = [
-        'eic_crm_user_id.required' => 'The eic_crm_user_id field is required.',
-        'project_id.required'      => 'The project_id field is required.',
-        'client_id.required'       => 'The client_id field is required.',
-        'subject.string'           => 'The subject must be a string.',
-        'subject.max'              => 'The subject may not be greater than 255 characters.',
-        'body.required'            => 'The body field is required.',
-        'date.required'            => 'The date field is required.',
-        'date.date'                => 'The date field must be a valid date.',
-    ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
@@ -40,10 +21,26 @@ class GetEmails {
 
     public function get_emails(\WP_REST_Request $request) {
 
-        $page = $request->get_params('page');
+        $page       = $request->get_param('email');
+        $from       = $request->get_param('from');
+        $to         = $request->get_param('to');
+        $search     = $request->get_param('search');
+
+        $data = [];
+        $data['from']  = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to']    = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
 
 
-        $emails = Email::paginate(5, ['*'], 'page', $page);
+        if(AuthUser::user()->role == 'admin'){
+            $emails = Email::getClientEmails(false, $page, $data['from'], $data['to'], $search);
+        }elseif(AuthUser::user()->role == 'client'){
+            $emails = Email::getClientEmails(AuthUser::user()->id, $page, $data['from'], $data['to'], $search);
+        }else {
+            return new \WP_REST_Response([
+                'error' => 'Unauthorized',
+            ],401);
+        }
+
 
         $data = [];
         foreach ($emails as $email) {
