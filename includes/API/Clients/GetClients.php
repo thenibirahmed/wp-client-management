@@ -110,6 +110,8 @@ class GetClients {
                 'invoice'       => $invoices ?? [],
                 'name'          => $wpUser['name'] ?? null,
                 'email'         => $wpUser['email'] ?? null,
+                'phone'         => $client->eic_crm_user->phone ?? '',
+                'created_at'    => $client->created_at->format('Y-m-d'),
             ];
         });
 
