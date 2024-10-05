@@ -111,6 +111,7 @@ use WpClientManagement\API\Tasks\GetSingleTask;
 use WpClientManagement\API\Tasks\GetTasks;
 use WpClientManagement\API\Tasks\TasksBulkDelete;
 use WpClientManagement\API\Tasks\UpdateTask;
+use WpClientManagement\API\TeamMembers\GetSelectedTeamMemberDetails;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMember;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMemberProjects;
 use WpClientManagement\API\TeamMembers\GetSingleTeamMemberTasks;
@@ -187,6 +188,7 @@ class API {
         new UpdateTeamMember();
         new DeleteTeamMember();
         new TeamMembersBulkDelete();
+        new GetSelectedTeamMemberDetails();
 
         // Email
         new GetEmails();
