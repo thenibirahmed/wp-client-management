@@ -12,7 +12,7 @@ import { useUpdateDefaultFileValue } from "../../../hooks/useRefetch";
 import Skeleton from "../../Skeleton";
 
 const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
-  const { setOpenFileModal } = useStoreContext();
+  const { setOpenFileModal, setIsFetching } = useStoreContext();
   const [imageUrl, setImageUrl] = useState();
   const [submitLoader, setSubmitLoader] = useState(false);
   const imageRef = useRef();
@@ -47,7 +47,7 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
 
   const addNewFileHandler = async (data) => {
     setSubmitLoader(true);
-
+    setIsFetching(true);
     const sendData = {
       title: data.title,
       url: data.url,
@@ -86,6 +86,7 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
       toast.error("Create new file failed");
     } finally {
       setSubmitLoader(false);
+      setIsFetching(false);
     }
   };
 

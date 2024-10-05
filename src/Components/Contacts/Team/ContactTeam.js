@@ -8,14 +8,20 @@ import AddContactTeamForm from "./AddContactTeamForm";
 import ContactTeamTable from "../../helper/contacts/ContactTeamTable";
 import useHashRouting from "../../../utils/useHashRouting";
 import toast from "react-hot-toast";
-import { useFetchContactTeamMembers } from "../../../hooks/useQuery";
+import {
+  useBulkDelete,
+  useFetchContactTeamMembers,
+} from "../../../hooks/useQuery";
 import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
 import { UserCircle02Icon } from "../../../utils/icons";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import api from "../../../api/api";
+import { useStoreContext } from "../../../store/ContextApiStore";
 
 const ContactTeam = () => {
+  const { searchText, setSearchText } = useStoreContext();
+  const [loader, setLoader] = useState(false);
   const [open, setOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
@@ -28,25 +34,23 @@ const ContactTeam = () => {
     data: teamMemberLists,
     error: allTeamError,
     refetch,
-  } = useFetchContactTeamMembers(paginationUrl, onError);
+  } = useFetchContactTeamMembers(paginationUrl, searchText, onError);
 
-  useRefetch(paginationUrl, null, null, null, null, null, refetch);
+  useRefetch(paginationUrl, searchText, null, null, null, null, refetch);
 
   function onError(err) {
     console.log(err);
     toast.error(err?.response?.data?.errors, "Failed to fetch team members");
   }
   const onDeleteAction = async (ids) => {
-    const bulk_ids = ids.map((item) => item.id);
-
-    try {
-      const { data } = await api.delete(
-        `/team-members/bulk-delete?bulk_ids=${bulk_ids}`
-      );
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
+    await useBulkDelete(
+      "/team-members/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false
+    );
+    setSelectedClient([]);
   };
   const onCheckAction = (ids) => {
     alert(ids[0].id);
@@ -66,6 +70,9 @@ const ContactTeam = () => {
         onCheckAction={onCheckAction}
         filter={false}
         check={false}
+        setSearchText={setSearchText}
+        searchText={searchText}
+        loader={loader}
       />
 
       <React.Fragment>

@@ -23,6 +23,7 @@ const ClientFiles = ({ clientId }) => {
     dateTo,
     searchText,
     setSearchText,
+    setIsFetching,
   } = useStoreContext();
 
   const [selectedFile, setSelectedFile] = useState([]);
@@ -59,8 +60,10 @@ const ClientFiles = ({ clientId }) => {
   };
 
   const onDeleteAction = async (ids) => {
+    setIsFetching(true);
     await useBulkDelete("/files/bulk-delete", ids, refetch, setLoader, false);
     setSelectedFile([]);
+    setIsFetching(false);
   };
   const onCheckAction = (ids) => {};
 

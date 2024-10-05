@@ -2,7 +2,16 @@ import React, { useEffect } from "react";
 import { useStoreContext } from "../../store/ContextApiStore";
 import dayjs from "dayjs";
 
-const Tab = ({ task = false }) => {
+const defaultValue = {
+  projects: 0,
+  invoice: 0,
+  notes: 0,
+  files: 0,
+  emails: 0,
+  tasks: 0,
+};
+
+const Tab = ({ task = false, tabCount = defaultValue }) => {
   const {
     allTabItems,
     setAllTabItems,
@@ -42,39 +51,39 @@ const Tab = ({ task = false }) => {
           className={`${activeClass("task")} pb-3 w-[120px]`}
           onClick={() => onTabChangeHandler("task")}
         >
-          Task (25)
+          Task ({tabCount?.tasks})
         </button>
       ) : (
         <button
           className={`${activeClass("project")} pb-3 w-[120px]`}
           onClick={() => onTabChangeHandler("project")}
         >
-          Projects (25)
+          Projects ({tabCount?.projects})
         </button>
       )}
       <button
         className={`${activeClass("invoice")} pb-3 w-[120px]`}
         onClick={() => onTabChangeHandler("invoice")}
       >
-        Invoices (10)
+        Invoices ({tabCount?.invoice})
       </button>
       <button
         className={`${activeClass("note")} pb-3 w-[120px]`}
         onClick={() => onTabChangeHandler("note")}
       >
-        Notes
+        Notes ({tabCount?.notes})
       </button>
       <button
         className={`${activeClass("file")} pb-3 w-[120px]`}
         onClick={() => onTabChangeHandler("file")}
       >
-        Files (25)
+        Files ({tabCount?.files})
       </button>
       <button
         className={`${activeClass("email")} pb-3 w-[120px]`}
         onClick={() => onTabChangeHandler("email")}
       >
-        Email
+        Email ({tabCount?.emails})
       </button>
       <button
         className={`${activeClass("info")} pb-3 w-[120px]`}

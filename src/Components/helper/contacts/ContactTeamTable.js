@@ -142,6 +142,7 @@ const ContactTeamTable = ({
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
+                              setContactId(item?.id);
                               setOpen(true);
                             }}
                             className="text-indigo-600 hover:text-indigo-900"
@@ -182,7 +183,12 @@ const ContactTeamTable = ({
         </div>
       </div>
       <Modal open={open} setOpen={setOpen} title="Update Member">
-        <AddContactTeamForm setOpen={setOpen} refetch={refetch} update />
+        <AddContactTeamForm
+          setOpen={setOpen}
+          refetch={refetch}
+          update={true}
+          teamId={contactId}
+        />
       </Modal>
       <DeleteModal
         open={openContact}

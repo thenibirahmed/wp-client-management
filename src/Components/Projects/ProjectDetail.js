@@ -139,7 +139,7 @@ const ProjectDetail = () => {
             setSelectCurrency={setSelectCurrency}
           />
           <div className="space-y-6">
-            <Tab task={true} />
+            <Tab task={true} tabCount={singleProjectOverView?.tabs} />
             <React.Fragment>
               <ProjectDetailsLayout projectId={projectId} />
             </React.Fragment>

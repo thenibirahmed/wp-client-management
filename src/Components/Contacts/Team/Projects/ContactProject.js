@@ -11,6 +11,9 @@ import EmptyTable from "../../../helper/EmptyTable";
 import { UserCircle02Icon } from "../../../../utils/icons";
 import Skeleton from "../../../Skeleton";
 import ProjectHeader from "../../../helper/projects/ProjectHeader";
+import Modal from "../../../helper/Modal";
+import AddNewProjectForm from "../../../helper/forms/AddNewProjectForm";
+import { useStoreContext } from "../../../../store/ContextApiStore";
 
 const ContactProject = ({ teamId }) => {
   const currentPath = useHashRouting("");
@@ -18,7 +21,8 @@ const ContactProject = ({ teamId }) => {
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "project=1";
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
-  console.log(teamId, "teamId");
+
+  const { openProjectModal, setOpenProjectModal } = useStoreContext();
 
   const {
     isLoading,
@@ -46,7 +50,7 @@ const ContactProject = ({ teamId }) => {
           <ProjectHeader
             selectedProject={selectedProject}
             title="Projects"
-            setOpenModal={() => {}}
+            setOpenModal={setOpenProjectModal}
             btnTitle="Add Project"
             onDeleteAction={onDeleteAction}
             onCheckAction={onCheckAction}
@@ -75,6 +79,19 @@ const ContactProject = ({ teamId }) => {
             />
           </>
         )}
+
+        <>
+          <Modal
+            open={openProjectModal}
+            setOpen={setOpenProjectModal}
+            title="Add Project"
+          >
+            <AddNewProjectForm
+              refetch={refetch}
+              setOpen={setOpenProjectModal}
+            />
+          </Modal>
+        </>
       </div>
     </React.Fragment>
   );

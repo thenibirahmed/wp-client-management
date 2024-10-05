@@ -27,6 +27,7 @@ const ClientNotes = ({ clientId }) => {
     dateTo,
     searchText,
     setSearchText,
+    setIsFetching,
   } = useStoreContext();
 
   const [selectedNote, setSelectedNote] = useState([]);
@@ -58,8 +59,10 @@ const ClientNotes = ({ clientId }) => {
   };
 
   const onDeleteAction = async (ids) => {
+    setIsFetching(true);
     await useBulkDelete("/notes/bulk-delete", ids, refetch, setLoader, false);
     setSelectedNote([]);
+    setIsFetching(false);
   };
 
   const onCheckAction = (ids) => {};

@@ -2,8 +2,13 @@
 
 namespace WpClientManagement\API\Projects;
 
+use WpClientManagement\Models\Currency;
+use WpClientManagement\Models\Email;
+use WpClientManagement\Models\File;
 use WpClientManagement\Models\Invoice;
+use WpClientManagement\Models\Note;
 use WpClientManagement\Models\Project;
+use WpClientManagement\Models\Task;
 
 class GetSingleProjectOverview {
 
@@ -94,6 +99,8 @@ class GetSingleProjectOverview {
         $totalDueAmount     = $totalInvoiceAmount - $totalPaidInvoiceAmount;
         $unpaidInvoiceCount = $totalInvoiceCount - $paidInvoiceCount;
 
+        $currency = Currency::getCurrencyData($data['currency']);
+
         $topBar = [
             "invoice" => [
                 'name'    => 'Total Invoice',
@@ -115,12 +122,22 @@ class GetSingleProjectOverview {
                 'total'   => $working_employee,
                 'subText' => $working_employee . ($working_employee == 1 ? ' employee' : ' employees')
             ],
-            'currency' => $data['currency']
+            'currency' => $currency
+        ];
+
+        $tabs = [
+            'tasks'           => Task::where('project_id', $data['id'])->count(),
+            'invoice'         => $totalInvoiceCount,
+            'notes'           => Note::where('project_id', $data['id'])->count(),
+            'files'           => File::where('project_id', $data['id'])->count(),
+            'emails'          => Email::where('project_id', $data['id'])->count(),
+            'additional info' => ''
         ];
 
         return new \WP_REST_Response([
             'header' => $projectHeader,
-            'topBar' => $topBar
+            'topBar' => $topBar,
+            'tabs'   => $tabs
         ]);
     }
 }

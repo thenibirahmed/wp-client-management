@@ -5,34 +5,50 @@ import TextField from "../../helper/TextField";
 import api from "../../../api/api";
 import toast from "react-hot-toast";
 import Loaders from "../../Loaders";
-import { useFetchSelectProjects } from "../../../hooks/useQuery";
+import {
+  useFetchSelectProjects,
+  useFetchTeamMemberEditDetails,
+} from "../../../hooks/useQuery";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 import { MultiSelectTextField } from "../../helper/MultiSelectTextField";
+import { useUpdateTeamValue } from "../../../hooks/useRefetch";
 
-const AddContactTeamForm = ({ setOpen, refetch, update = false }) => {
+const AddContactTeamForm = ({ setOpen, refetch, teamId, update = false }) => {
   const [imageUrl, setImageUrl] = useState("");
   const imageRef = useRef();
 
   const [submitLoader, setSubmitLoader] = useState(false);
   const [selectedProject, setSelectedProject] = useState([]);
+  const [allprojectLists, setAllprojectLists] = useState();
   const [projectIds, setProjectIds] = useState([]);
+
+  console.log("selectedProject", selectedProject);
 
   const {
     isLoading,
     data: projectLists,
     error,
   } = useFetchSelectProjects(onError);
-
+  console.log("projectLists", projectLists?.projects);
+  const {
+    isLoading: editLoader,
+    data: editTeam,
+    error: editErr,
+  } = useFetchTeamMemberEditDetails(teamId, update, onError);
+  console.log("editTeam", editTeam);
   const {
     register,
     handleSubmit,
     reset,
     setError,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched",
   });
+
+  useUpdateTeamValue(update, editTeam, setValue);
 
   const addNewContactTeamHandler = async (data) => {
     setSubmitLoader(true);
@@ -79,7 +95,23 @@ const AddContactTeamForm = ({ setOpen, refetch, update = false }) => {
   }
 
   useEffect(() => {
-    setProjectIds(selectedProject.map((item) => item.id));
+    if (projectLists?.projects?.length > 0) {
+      if (!update) {
+        setAllprojectLists(projectLists?.projects);
+      } else if (update && projectLists) {
+        const projectListsData = projectLists?.projects.filter((item) =>
+          editTeam?.id?.includes(item.id)
+        );
+
+        setSelectedProject(projectListsData);
+        setProjectIds(projectListsData.map((item) => item.id));
+        setAllprojectLists(projectLists?.projects);
+      }
+    }
+  }, [update, editTeam, projectLists]);
+
+  useEffect(() => {
+    setProjectIds(selectedProject?.map((item) => item?.id));
   }, [selectedProject]);
 
   if (isLoading) {
@@ -144,7 +176,7 @@ const AddContactTeamForm = ({ setOpen, refetch, update = false }) => {
               label="Add Projects"
               select={selectedProject}
               setSelect={setSelectedProject}
-              lists={projectLists?.projects}
+              lists={allprojectLists}
               isSubmitting={isSubmitting}
               project
             />

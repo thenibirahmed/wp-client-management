@@ -23,7 +23,8 @@ import dayjs from "dayjs";
 import { useUpdateDefaultTaskValue } from "../../../hooks/useRefetch";
 
 const AddNewTaskForm = ({ refetch, setOpen, update, taskId }) => {
-  const { setOpenProjectModal, setOpenUpdateTask } = useStoreContext();
+  const { setOpenProjectModal, setOpenUpdateTask, setIsFetching } =
+    useStoreContext();
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
   const imageRef = useRef();
@@ -86,6 +87,7 @@ const AddNewTaskForm = ({ refetch, setOpen, update, taskId }) => {
     const projectId = pathArray[1] ? Number(pathArray[1]) : null;
 
     setSubmitLoader(true);
+    setIsFetching(true);
     const sendData = {
       title: data.title,
       assigned_to: selectAssignee?.id,
@@ -120,6 +122,7 @@ const AddNewTaskForm = ({ refetch, setOpen, update, taskId }) => {
       toast.error("Create new task failed");
     } finally {
       setSubmitLoader(false);
+      setIsFetching(false);
     }
   };
 

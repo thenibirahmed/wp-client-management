@@ -22,6 +22,7 @@ const ClientEmails = ({ clientId }) => {
     dateTo,
     searchText,
     setSearchText,
+    setIsFetching,
   } = useStoreContext();
 
   const [selectedEmail, setSelectedEmail] = useState([]);
@@ -53,8 +54,10 @@ const ClientEmails = ({ clientId }) => {
   };
 
   const onDeleteAction = async (ids) => {
+    setIsFetching(true);
     await useBulkDelete("/emails/bulk-delete", ids, refetch, setLoader, false);
     setSelectedEmail([]);
+    setIsFetching(false);
   };
   const onEmailBox = (ids) => {};
 

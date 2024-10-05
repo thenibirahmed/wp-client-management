@@ -4,7 +4,6 @@ namespace WpClientManagement\Models;
 
 use WpClientManagement\Models\File;
 use WpClientManagement\Models\Note;
-use WpClientManagement\Models\User;
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Status;
 use WpClientManagement\Models\Invoice;
@@ -84,11 +83,18 @@ class Project extends Model
         return $query->paginate(20, ['*'], 'project', $page);
     }
 
-    public static function getTeamMemberProjects($id, $page)
+    public static function getTeamMemberProjects($id, $search, $page)
     {
-        return Project::with('status', 'priority')->whereHas('eicCrmUsers', function ($query) use ($id) {
+        $query = Project::with('status', 'priority')
+                    ->whereHas('eicCrmUsers', function ($query) use ($id) {
             $query->where('eic_crm_user_id', $id);
-        })->paginate(3, ['*'], 'project', $page);
+        });
+
+        if(!empty($search)){
+            $query->where('title', 'like', '%'.$search.'%');
+        }
+
+        return $query->paginate(3, ['*'], 'project', $page);
     }
 
     public static function getProjectData($id)

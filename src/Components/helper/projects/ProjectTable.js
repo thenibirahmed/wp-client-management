@@ -10,6 +10,7 @@ import Modal from "../../helper/Modal";
 import AddNewProjectForm from "../../helper/forms/AddNewProjectForm";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { DeleteModal } from "../../DeleteModal";
+import { roundNumber } from "../../../utils/roundNumber";
 
 let imageSrc =
   "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80";
@@ -198,10 +199,10 @@ const ProjectTable = ({
                         ${item.invoice}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-invoiceColor font-metropolis font-semibold">
-                        ${item.revenue}
+                        ${roundNumber(item.revenue)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-semibold">
-                        ${item.due}
+                        ${roundNumber(item.due)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
                         <div className="flex items-center gap-2">

@@ -2,15 +2,15 @@
 
 namespace WpClientManagement\API\Projects;
 
-use WpClientManagement\Models\EicCrmUser;
+use WpClientManagement\Helpers\AuthUser;
+use WpClientManagement\Models\Currency;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
-use WpClientManagement\Models\WpUser;
 
 class ProjectOverview {
 
     private $namespace = 'wp-client-management/v1';
-    private $endpoint  = '/projects-overview(?:/(?P<currency>[a-zA-Z0-9_-]+))?';
+    private $endpoint  = '/projects-overview';
 
     protected array $rules = [
         'currency' => 'nullable|exists:eic_currencies,code',
@@ -50,18 +50,18 @@ class ProjectOverview {
             ], 400);
         }
 
-        // $me = wp_get_current_user();
-        // $wp_user = WpUser::find($me->ID);
-        // $eic_user = EicCrmUser::where('wp_user_id', $wp_user->ID)->first();
-        // $role= $eic_user->role->name;
-        // return new \WP_REST_Response([
-        //     'user' => $eic_user,
-        //     'role' => $role
-        // ]);
-
         $projects     = Project::pluck('id')->toArray();
         $projectCount = count($projects);
-        $invoices     = Invoice::getAllProjectInvoices($projects, $data['currency'], $data['from'], $data['to']);
+
+        if(AuthUser::user()->role == 'admin') {
+            $invoices     = Invoice::getAllProjectInvoices($projects, $data['currency'], $data['from'], $data['to']);
+        }elseif(AuthUser::user()->role == 'client') {
+            $invoices = Invoice::getSingleClientInvoices(AuthUser::user()->id, $data['currency'], $data['from'], $data['to']);
+        }else{
+            return new \WP_REST_Response([
+                'error' => 'Unauthorized.',
+            ], 401);
+        }
 
         $totalInvoicesAmount = $invoices->sum('total');
         $totalInvoiceCount   = $invoices->count();
@@ -74,6 +74,8 @@ class ProjectOverview {
 
         $totalUnpaidInvoiceAmount = $totalInvoicesAmount - $totalPaidInvoiceAmount;
         $totalUnpaidInvoiceCount  = $totalInvoiceCount - $totalPaidInvoiceCount;
+
+        $currency = Currency::getCurrencyData($data['currency']);
 
         return new \WP_REST_Response([
             'topBar' => [
@@ -97,7 +99,7 @@ class ProjectOverview {
                     'count'   => $projectCount,
                     'subText' => 'Last 3 months'
                 ],
-                'currency' => $data['currency']
+                'currency' => $currency
             ]
         ]);
 

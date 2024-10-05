@@ -51,10 +51,18 @@ class Task extends Model
         return $query->paginate(3, ['*'], 'task', $page);
     }
 
-    public static function getTeamMemberTasks($id, $page)
+    public static function getTeamMemberTasks($id, $search, $page)
     {
-        return Task::where('assigned_to', $id)
-                ->paginate(2, ['*'], 'task', $page);
+        $query = self::where('assigned_to', $id);
+
+        if(!empty($search)) {
+            $query->where('title', 'like', '%' . $search . '%')
+                  ->orWhereHas('eic_crm_user.wp_user', function($q) use ($search) {
+                      $q->where('user_login', 'like', '%' . $search . '%');
+                  });
+        }
+
+        return $query->paginate(2, ['*'], 'task', $page);
     }
 
     public static function getProjectTask($id)

@@ -32,8 +32,9 @@ class GetSingleTeamMemberProjects {
     {
         global $validator;
 
-        $id   = $request->get_param('id');
-        $page = $request->get_param('project');
+        $id     = $request->get_param('id');
+        $page   = $request->get_param('project');
+        $search = $request->get_param('search');
 
         if(!isset($id)) {
             return new \WP_REST_Response([
@@ -59,7 +60,7 @@ class GetSingleTeamMemberProjects {
             ]);
         }
 
-        $projects = Project::getTeamMemberProjects($teamMember->id, $page);
+        $projects = Project::getTeamMemberProjects($teamMember->id, $search, $page);
 
         $data = [];
 

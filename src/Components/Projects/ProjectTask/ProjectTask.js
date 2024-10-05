@@ -32,6 +32,7 @@ const ProjectTask = ({ projectId }) => {
     setSelectPriority,
     searchText,
     setSearchText,
+    setIsFetching,
   } = useStoreContext();
 
   const [selectedProjectTask, setSelectedProjectTask] = useState([]);
@@ -68,8 +69,10 @@ const ProjectTask = ({ projectId }) => {
   );
 
   const onDeleteAction = async (ids) => {
+    setIsFetching(true);
     await useBulkDelete("/tasks/bulk-delete", ids, refetch, setLoader, false);
     setSelectedProjectTask([]);
+    setIsFetching(false);
   };
 
   const onCheckAction = async (ids) => {

@@ -21,9 +21,12 @@ class Email extends Model
 
     public static function getClientEmails($id, $page, $from, $to, $search = '')
     {
-        $query = self::where('client_id', $id)
-                ->with('eic_crm_user')
+        $query = self::with('eic_crm_user')
                 ->whereBetween('created_at',[$from, $to]);
+
+        if(!empty($id ?? null)) {
+            $query->where('client_id', $id);
+        }
 
         if(!empty($search)) {
             $query->where(function($q) use ($search) {

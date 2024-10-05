@@ -275,3 +275,32 @@ export const useClientOverViewRefetch = (
     }
   }, [dateStart, dateEnd, selectCurrency, isFetching]);
 };
+
+export const useUpdateTeamValue = (update, editTeam, setValue) => {
+  useEffect(() => {
+    if (update && editTeam) {
+      const {
+        id,
+        address,
+        city,
+        state,
+        zip,
+        country,
+        designation,
+        phone,
+        name,
+        email,
+      } = editTeam;
+
+      setValue("name", name);
+      setValue("email", email);
+      setValue("address", address);
+      setValue("city", city);
+      setValue("country", country);
+      setValue("designation", designation);
+      setValue("phone", phone);
+      setValue("state", state);
+      setValue("zip", zip);
+    }
+  }, [update, editTeam]);
+};

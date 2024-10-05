@@ -14,6 +14,7 @@ import {
   Link05Icon,
   SignatureIcon,
 } from "../../../utils/icons";
+import { useStoreContext } from "../../../store/ContextApiStore";
 
 const AddNewEmail = ({
   emailsData,
@@ -49,6 +50,7 @@ const EmailBox = ({ refetch, setOpen, slug, id }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
+  const { setIsFetching } = useStoreContext();
   const [editorContent, setEditorContent] = useState("");
   const [submitLoader, setSubmitLoader] = useState(false);
   const [subject, setSubject] = useState();
@@ -62,6 +64,7 @@ const EmailBox = ({ refetch, setOpen, slug, id }) => {
     if (!id) return toast.error("Id is required");
 
     setSubmitLoader(true);
+    setIsFetching(true);
     const sendData = {
       subject: subject,
       body: editorContent,
@@ -85,6 +88,7 @@ const EmailBox = ({ refetch, setOpen, slug, id }) => {
       toast.error("Email Send Failed");
     } finally {
       setSubmitLoader(false);
+      setIsFetching(false);
     }
   };
 

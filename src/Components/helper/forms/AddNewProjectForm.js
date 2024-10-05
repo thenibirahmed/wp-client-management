@@ -27,7 +27,8 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
   const imageRef = useRef();
-  const { setOpenProjectModal, setOpenProjectUpdateModal } = useStoreContext();
+  const { setOpenProjectModal, setOpenProjectUpdateModal, setIsFetching } =
+    useStoreContext();
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -115,6 +116,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
     }
 
     setSubmitLoader(true);
+    setIsFetching(true);
 
     const sendData = {
       title: data.title,
@@ -150,6 +152,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
       toast.error("Something went wrong");
     } finally {
       setSubmitLoader(false);
+      setIsFetching(false);
     }
   };
 

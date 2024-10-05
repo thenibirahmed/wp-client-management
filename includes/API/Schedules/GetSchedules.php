@@ -12,7 +12,7 @@ class GetSchedules {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE, // GET
+            'methods'  => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_schedules'),
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -20,7 +20,7 @@ class GetSchedules {
 
     public function get_schedules(\WP_REST_Request $request) {
 
-        $page = $request->get_params('page');
+        $page = $request->get_param('page');
 
         $schedules = Schedule::paginate(5, ['*'], 'page', $page);
 
@@ -28,12 +28,6 @@ class GetSchedules {
         foreach ($schedules as $schedule) {
             $data[] = [
                 'id' => $schedule->id,
-                'eic_crm_user' => $schedule->eic_crm_user,
-                'client' => $schedule->client,
-                'date' => $schedule->date,
-                'duration' => $schedule->duration,
-                'link' => $schedule->link,
-                'hosts' => $schedule->hosts
             ];
         }
 

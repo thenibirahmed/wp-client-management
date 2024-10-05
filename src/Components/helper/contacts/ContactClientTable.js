@@ -6,7 +6,7 @@ import {
 } from "../../../utils/icons";
 import useHashRouting from "../../../utils/useHashRouting";
 import Pagination from "../../Clients/Pagination";
-import useCheckedHandler from "../../../utils/useCheckedItem";
+import { useClientCheckedHandler } from "../../../utils/useCheckedItem";
 
 // const tableData = [
 //   {
@@ -33,6 +33,7 @@ import useCheckedHandler from "../../../utils/useCheckedItem";
 
 const ContactClientTable = ({
   clientData,
+  pagination,
   selectedClient,
   setSelectedClient,
   isAllselected,
@@ -41,13 +42,12 @@ const ContactClientTable = ({
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
-  const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
+  const { checkedAllClient, checkedSingleClient } = useClientCheckedHandler(
     selectedClient,
     setIsAllSelected,
     setSelectedClient
   );
 
-  console.log(selectedClient);
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -107,7 +107,7 @@ const ContactClientTable = ({
               <tbody className="divide-y divide-gray-200 bg-white">
                 {clientData?.map((item) => {
                   const isChecked = selectedClient?.some(
-                    (client) => client?.id === item?.id
+                    (client) => client?.client_id === item?.client_id
                   );
                   return (
                     <tr>
@@ -180,7 +180,7 @@ const ContactClientTable = ({
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination pagination={pagination} slug="contact" query="/?page" />
           </div>
         </div>
       </div>

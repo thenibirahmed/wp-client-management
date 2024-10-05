@@ -30,6 +30,7 @@ const ClientProject = ({ clientId }) => {
     setSelectPriority,
     searchText,
     setSearchText,
+    setIsFetching,
   } = useStoreContext();
 
   const [loader, setLoader] = useState(false);
@@ -72,6 +73,7 @@ const ClientProject = ({ clientId }) => {
   };
 
   const onDeleteAction = async (ids) => {
+    setIsFetching(true);
     await useBulkDelete(
       "/projects/bulk-delete",
       ids,
@@ -80,6 +82,7 @@ const ClientProject = ({ clientId }) => {
       false
     );
     setSelectedProject([]);
+    setIsFetching(false);
   };
 
   const onCheckAction = async (ids) => {

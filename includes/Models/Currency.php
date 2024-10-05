@@ -13,6 +13,11 @@ class Currency extends Model
         'code'
     ];
 
+    public static function getCurrencyData($code)
+    {
+        return self::where('code',$code)->select('code','symbol')->first();
+    }
+
     public function invoices()
     {
         return $this->hasMany(Invoice::class);

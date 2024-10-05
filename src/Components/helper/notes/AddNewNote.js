@@ -72,7 +72,7 @@ const AddNewNoteTextArea = ({
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
 
-  const { setCreateNote, setUpdateNotes } = useStoreContext();
+  const { setCreateNote, setUpdateNotes, setIsFetching } = useStoreContext();
   const [editorContent, setEditorContent] = useState("");
   const [submitLoader, setSubmitLoader] = useState(false);
   const [selectedId, setSelectedId] = useState("");
@@ -107,6 +107,7 @@ const AddNewNoteTextArea = ({
     if (!projectId) return toast.error("ProjectId is required");
 
     setSubmitLoader(true);
+    setIsFetching(true);
     const sendData = {
       note: editorContent,
     };
@@ -147,6 +148,7 @@ const AddNewNoteTextArea = ({
       toast.error("Create new note failed");
     } finally {
       setSubmitLoader(false);
+      setIsFetching(false);
     }
   };
 

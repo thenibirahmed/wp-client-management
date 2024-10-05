@@ -2,7 +2,11 @@
 namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
+use WpClientManagement\Models\Currency;
+use WpClientManagement\Models\Email;
+use WpClientManagement\Models\File;
 use WpClientManagement\Models\Invoice;
+use WpClientManagement\Models\Note;
 use WpClientManagement\Models\Project;
 
 class GetSingleClientOverview {
@@ -89,6 +93,8 @@ class GetSingleClientOverview {
         $unpaidInvoiceCount = $totalInvoiceCount - $paidInvoiceCount;
         $totalDueAmount     = $totalInvoiceAmount - $totalRevenueAmount;
 
+        $currency = Currency::getCurrencyData($data['currency']);
+
         $topBar = [
             "invoice" => [
                 'name'    => 'Total Invoice',
@@ -110,12 +116,22 @@ class GetSingleClientOverview {
                 'amount'  => $totalProjects,
                 'subText' => 'last 3 months'
             ],
-            'currency'    => $data['currency']
+            'currency'    => $currency,
+        ];
+
+        $tabs = [
+            'projects'        => $totalProjects,
+            'invoice'         => $totalInvoiceCount,
+            'notes'           => Note::where('client_id', $data['id'])->count(),
+            'files'           => File::where('client_id', $data['id'])->count(),
+            'emails'          => Email::where('client_id', $data['id'])->count(),
+            'additional info' => ''
         ];
 
         return new \WP_REST_Response([
             'profile'    => $profile,
-            'topBar'     => $topBar
+            'topBar'     => $topBar,
+            'tabs'       => $tabs,
         ]);
     }
 }

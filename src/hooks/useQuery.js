@@ -100,6 +100,7 @@ export const useFetchSingleClientOverView = (
         const sendData = {
           topBar: data.data.topBar,
           profile: data.data.profile,
+          tabs: data.data.tabs,
         };
 
         return sendData;
@@ -143,6 +144,32 @@ export const useFetchClientEditDetails = (id, update, onError) => {
           phone,
           state,
           zip,
+        };
+      },
+      enabled: !!id && update,
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchTeamMemberEditDetails = (id, update, onError) => {
+  return useQuery(
+    ["team-member-edit", id],
+    async () => {
+      return await api.get(`/team-member/${id}/details`);
+    },
+    {
+      select: (data) => {
+        const { designation, phone, name, email, id } =
+          data.data.employee_details;
+
+        return {
+          designation,
+          phone,
+          name,
+          email,
+          id,
         };
       },
       enabled: !!id && update,
@@ -619,6 +646,7 @@ export const useFetchSingleProjectOverView = (
         const sendData = {
           header: data.data.header,
           topBar: data.data.topBar,
+          tabs: data.data.tabs,
         };
 
         return sendData;
@@ -998,11 +1026,23 @@ export const useFetchClientDetails = (clientId, onError) => {
     }
   );
 };
-export const useFetchContactTeamMembers = (paginationUrl, onError) => {
+export const useFetchContactTeamMembers = (
+  paginationUrl,
+  searchText,
+  onError
+) => {
   return useQuery(
     "contact-team-members",
     async () => {
-      return await api.get(`/team-members/?${paginationUrl}`);
+      const params = new URLSearchParams();
+
+      if (searchText) {
+        params.append("search", searchText);
+      }
+      const queryString = params.toString();
+      return await api.get(
+        `/team-members/?${paginationUrl}${queryString ? `&${queryString}` : ""}`
+      );
     },
     {
       select: (data) => {

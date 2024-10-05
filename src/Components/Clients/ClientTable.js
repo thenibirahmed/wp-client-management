@@ -6,6 +6,7 @@ import { useStoreContext } from "../../store/ContextApiStore";
 import AddClientForm from "./AddClientForm";
 import Modal from "../helper/Modal";
 import { DeleteModal } from "../DeleteModal";
+import { roundNumber } from "../../utils/roundNumber";
 
 const ClientTable = ({
   clientData,
@@ -67,7 +68,7 @@ const ClientTable = ({
                     scope="col"
                     className="px-3 py-3.5 text-left text-sm font-semibold text-textColor2"
                   >
-                    # PROJECT(s)
+                    PROJECT(s)
                   </th>
                   <th
                     scope="col"
@@ -146,13 +147,13 @@ const ClientTable = ({
                         {item.project_count}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
-                        ${item.invoice.total}
+                        ${roundNumber(item.invoice.total)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-invoiceColor font-metropolis font-medium">
-                        ${item.invoice.revenue}
+                        ${roundNumber(item.invoice.revenue)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
-                        ${item.invoice.due}
+                        ${roundNumber(item.invoice.due)}
                       </td>
                       <td
                         onClick={(e) => e.stopPropagation()}

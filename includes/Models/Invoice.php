@@ -85,6 +85,34 @@ class Invoice extends Model
         return $query->paginate(5, ['*'] , 'invoice', $page);
     }
 
+    public static function getSingleProjectInvoices($id, $currency, $from, $to)
+    {
+        $query = self::with(['status'])
+                ->where('project_id',$id)
+                ->whereBetween('date', [$from, $to]);
+
+        if($currency){
+            $query->whereHas('currency', function ($q) use ($currency) {
+                $q->where('code', $currency);
+            });
+        }
+        return $query->get();
+    }
+
+    public static function getAllProjectInvoices($projectIds, $currency, $from, $to)
+    {
+        $query = self::whereIn('project_id', $projectIds)
+                ->whereBetween('date', [$from, $to]);
+
+        if($currency) {
+            $query->whereHas('currency', function ($q) use ($currency) {
+                $q->where('code', $currency);
+            });
+        }
+
+        return $query->get();
+    }
+
     public static function getSingleClientInvoices($id, $currency, $from, $to)
     {
         $query =  self::with(['status'])
@@ -97,20 +125,6 @@ class Invoice extends Model
             });
         }
 
-        return $query->get();
-    }
-
-    public static function getSingleProjectInvoices($id, $currency, $from, $to)
-    {
-        $query = self::with(['status'])
-                ->where('project_id',$id)
-                ->whereBetween('date', [$from, $to]);
-
-        if($currency){
-            $query->whereHas('currency', function ($q) use ($currency) {
-                $q->where('code', $currency);
-            });
-        }
         return $query->get();
     }
 
@@ -140,20 +154,6 @@ class Invoice extends Model
         }
 
         return $query->paginate(5, ['*'] , 'invoice', $page);
-    }
-
-    public static function getAllProjectInvoices($projectIds, $currency, $from, $to)
-    {
-        $query = self::whereIn('project_id', $projectIds)
-                ->whereBetween('date', [$from, $to]);
-
-        if($currency) {
-            $query->whereHas('currency', function ($q) use ($currency) {
-                $q->where('code', $currency);
-            });
-        }
-
-        return $query->get();
     }
 
     public static function getAllPaidInvoices()

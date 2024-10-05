@@ -32,7 +32,8 @@ const AddNewClientProjectForm = ({
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const { setOpenProjectModal, setOpenProjectUpdateModal } = useStoreContext();
+  const { setOpenProjectModal, setOpenProjectUpdateModal, setIsFetching } =
+    useStoreContext();
   const [selectStatus, setSelectStatus] = useState(2);
   const [selectPriority, setSelectPriority] = useState();
   const [selectProjectManager, setSelectProjectManager] = useState();
@@ -104,6 +105,7 @@ const AddNewClientProjectForm = ({
     }
 
     setSubmitLoader(true);
+    setIsFetching(true);
 
     const idsLists = allIds.map((item) => item);
     console.log("ids", idsLists);
@@ -142,6 +144,7 @@ const AddNewClientProjectForm = ({
       toast.error("Something went wrong");
     } finally {
       setSubmitLoader(false);
+      setIsFetching(false);
     }
   };
 

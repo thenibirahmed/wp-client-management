@@ -134,7 +134,7 @@ const ClientDetails = () => {
             setSelectCurrency={setSelectCurrency}
           />
           <div className="space-y-6">
-            <Tab />
+            <Tab tabCount={singleClientOverView?.tabs} />
             <React.Fragment>
               <ClientDetailsLayout clientId={clientId} />
             </React.Fragment>
