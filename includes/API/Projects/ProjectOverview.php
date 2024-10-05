@@ -3,6 +3,7 @@
 namespace WpClientManagement\API\Projects;
 
 use WpClientManagement\Helpers\AuthUser;
+use WpClientManagement\Models\Currency;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
 
@@ -74,6 +75,8 @@ class ProjectOverview {
         $totalUnpaidInvoiceAmount = $totalInvoicesAmount - $totalPaidInvoiceAmount;
         $totalUnpaidInvoiceCount  = $totalInvoiceCount - $totalPaidInvoiceCount;
 
+        $currency = Currency::getCurrencyData($data['currency']);
+
         return new \WP_REST_Response([
             'topBar' => [
                 'invoice' => [
@@ -96,7 +99,7 @@ class ProjectOverview {
                     'count'   => $projectCount,
                     'subText' => 'Last 3 months'
                 ],
-                'currency' => $data['currency']
+                'currency' => $currency
             ]
         ]);
 

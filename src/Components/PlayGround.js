@@ -187,14 +187,14 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/team-member/3/details',
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/projects-overview',
 		{
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
 			},
-			params: {
-				search: 'te',
-			}
+			// params: {
+			// 	search: 'te',
+			// }
 		})
 		.then((response) => {
 			console.log(response.data);
