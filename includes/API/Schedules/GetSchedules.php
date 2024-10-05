@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Schedules;
 
+use WpClientManagement\Helpers\AuthUser;
 use WpClientManagement\Models\Schedule;
 
 class GetSchedules {
@@ -22,7 +23,11 @@ class GetSchedules {
 
         $page = $request->get_param('page');
 
-        $schedules = Schedule::paginate(5, ['*'], 'page', $page);
+        if(AuthUser::user()->role == 'admin') {
+            $schedules = Schedule::paginate(5, ['*'], 'page', $page);
+        }elseif(AuthUser::user()->role == 'client') {
+            $schedules = Schedule::getClientSchedules(AuthUser::user()->id, $page);
+        }
 
         $data = [];
         foreach ($schedules as $schedule) {
@@ -34,10 +39,10 @@ class GetSchedules {
         return new \WP_REST_Response([
             'data' => $data,
             'pagination' => [
-                'total' => $schedules->total(),
-                'per_page' => $schedules->perPage(),
-                'current_page' => $schedules->currentPage(),
-                'last_page' => $schedules->lastPage(),
+                'total'         => $schedules->total(),
+                'per_page'      => $schedules->perPage(),
+                'current_page'  => $schedules->currentPage(),
+                'last_page'     => $schedules->lastPage(),
                 'next_page_url' => $schedules->nextPageUrl(),
                 'prev_page_url' => $schedules->previousPageUrl(),
             ],

@@ -20,6 +20,12 @@ class Schedule extends Model
 
     public const DURATION_TYPES = ['minutes', 'hours', 'days'];
 
+    public static function getClientSchedules($client_id, $page = 1) {
+
+        return Schedule::whereJsonContains('guest_ids->guest_ids', $client_id)->paginate(5, ['*'], 'page', $page);
+
+    }
+
     public function eic_crm_user() {
         return $this->belongsTo(EicCrmUser::class);
     }

@@ -45,6 +45,8 @@ class GetSelectedTeamMemberDetails{
             ]);
         }
 
+        $assignedProjects = $employee->assignedProjects->pluck('id')->toArray();
+
         return new \WP_REST_Response([
             'employee_details' => [
                 'id'          => $employee->id,
@@ -56,7 +58,8 @@ class GetSelectedTeamMemberDetails{
                 'designation' => $employee->designation,
                 'phone'       => $employee->phone,
                 'name'        => $wp_user->user_login,
-                'email'       => $wp_user->user_email
+                'email'       => $wp_user->user_email,
+                'project_ids' => $assignedProjects
             ]
             ]);
 
