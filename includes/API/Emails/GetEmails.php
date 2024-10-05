@@ -30,7 +30,6 @@ class GetEmails {
         $data['from']  = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
         $data['to']    = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
 
-
         if(AuthUser::user()->role == 'admin'){
             $emails = Email::getClientEmails(false, $page, $data['from'], $data['to'], $search);
         }elseif(AuthUser::user()->role == 'client'){
@@ -40,7 +39,6 @@ class GetEmails {
                 'error' => 'Unauthorized',
             ],401);
         }
-
 
         $data = [];
         foreach ($emails as $email) {

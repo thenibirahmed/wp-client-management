@@ -24,7 +24,7 @@ class Email extends Model
         $query = self::with('eic_crm_user')
                 ->whereBetween('created_at',[$from, $to]);
 
-        if(!empty($id)) {
+        if(!empty($id ?? null)) {
             $query->where('client_id', $id);
         }
 
