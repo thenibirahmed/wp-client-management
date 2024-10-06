@@ -187,14 +187,14 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.put(eicApiSettings.rest_url + 'wp-client-management/v1/team-member/update/3',
-			{
-				name:'test',
-				email: 'test@test.com',
-				address: 'ache',
-				city: 'ache',
-				projectIds: []
-			},
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/schedules',
+			// {
+			// 	name:'test',
+			// 	email: 'test@test.com',
+			// 	address: 'ache',
+			// 	city: 'ache',
+			// 	projectIds: [1,2,3],
+			// },
 		{
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
