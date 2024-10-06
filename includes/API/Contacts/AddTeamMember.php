@@ -92,7 +92,7 @@ class AddTeamMember {
         $activeProjects = Project::getActiveProjects();
         $projectIds = $activeProjects->pluck('id')->toArray();
 
-        if(isset($data['projectIds'])) {
+        if(!empty($data['projectIds'])) {
             $validateProjectIds = array_filter($data['projectIds'], function ($id) use ($projectIds) {
                 return in_array($id, $projectIds);
             });

@@ -10,20 +10,36 @@ class Schedule extends Model
     protected $table = 'eic_schedules';
 
     protected $fillable = [
-        'eic_crm_user_id',
-        'client_id',
-        'date',
-        'duration',
+        'created_by',
+        'hosted_by',
+        'guest_ids',
+        'topic',
+        'description',
+        'scheduled_at',
         'link',
-        'hosts'
+        'duration',
+        'duration_type',
     ];
 
-    public const DURATION_TYPES = ['minutes', 'hours', 'days'];
+    public const DURATION_TYPES = [
+        'minutes' => 'Minutes',
+        'hours'   => 'Hours',
+        'days'    => 'Days',
+    ];
 
-    public static function getClientSchedules($client_id, $page = 1) {
+    public static function getClientSchedules($client_id, $page) {
 
-        return Schedule::whereJsonContains('guest_ids->guest_ids', $client_id)->paginate(5, ['*'], 'page', $page);
+        return Schedule::whereRaw("JSON_CONTAINS(guest_ids, '$client_id')")->paginate(5, ['*'], 'page', $page);
+    }
 
+    public function creator()
+    {
+        return $this->belongsTo(EicCrmUser::class, 'created_by');
+    }
+
+    public function host()
+    {
+        return $this->belongsTo(EicCrmUser::class, 'hosted_by');
     }
 
     public function eic_crm_user() {

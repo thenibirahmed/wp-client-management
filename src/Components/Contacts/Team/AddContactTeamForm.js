@@ -23,8 +23,6 @@ const AddContactTeamForm = ({ setOpen, refetch, teamId, update = false }) => {
   const [allprojectLists, setAllprojectLists] = useState();
   const [projectIds, setProjectIds] = useState([]);
 
-  console.log("selectedProject", selectedProject);
-
   const {
     isLoading,
     data: projectLists,

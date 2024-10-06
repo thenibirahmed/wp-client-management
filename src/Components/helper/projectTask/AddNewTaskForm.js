@@ -100,7 +100,7 @@ const AddNewTaskForm = ({
     const projectId = pathArray[1] ? Number(pathArray[1]) : null;
 
     setSubmitLoader(true);
-    setIsFetching(true);
+
     const sendData = {
       title: data.title,
       assigned_to: selectAssignee?.id,
@@ -132,6 +132,7 @@ const AddNewTaskForm = ({
       toast.success(res?.message || "operation success");
       await refetch();
       setOpen(false);
+      setIsFetching(true);
       setOpenUpdateTask(false);
       reset();
     } catch (err) {
@@ -186,9 +187,9 @@ const AddNewTaskForm = ({
     if (projectsLists?.projects?.length > 0) {
       if (!update) {
         setSelectedProject(projectsLists?.projects[0]);
-      } else if (update && clientInvoice) {
+      } else if (update && projectTask) {
         const projectList = projectsLists?.projects.find(
-          (item) => item.id === clientInvoice?.project_id
+          (item) => item.id === projectTask?.project_id
         );
         setSelectedProject(projectList);
       }

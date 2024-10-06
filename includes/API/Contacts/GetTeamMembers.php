@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Contacts;
 
+use WpClientManagement\Middlewares\AuthMiddleware;
 use WpClientManagement\Models\EicCrmUser;
 
 class GetTeamMembers {
@@ -15,7 +16,8 @@ class GetTeamMembers {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_team_members'),
-            'permission_callback' => 'is_user_logged_in',
+            'permission_callback' => [AuthMiddleware::class, 'admin'],
+            
         ]);
     }
 

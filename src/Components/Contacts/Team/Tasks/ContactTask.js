@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import ContactTeamTaskTable from "../../../helper/contacts/ContactTask/ContactTeamTaskTable";
 import useHashRouting from "../../../../utils/useHashRouting";
-import { useFetchSingleTeamTasks } from "../../../../hooks/useQuery";
+import {
+  useBulkComplete,
+  useBulkDelete,
+  useFetchSingleTeamTasks,
+} from "../../../../hooks/useQuery";
 import EmptyTable from "../../../helper/EmptyTable";
 import toast from "react-hot-toast";
 import Skeleton from "../../../Skeleton";
@@ -14,43 +18,50 @@ import AddNewTaskForm from "../../../helper/projectTask/AddNewTaskForm";
 
 const ContactTask = ({ teamId }) => {
   const [loader, setLoader] = useState(false);
-  const {
-    openTask,
-    setOpenTask,
-    dateFrom,
-    dateTo,
-    selectStatus,
-    setSelectStatus,
-    selectPriority,
-    setSelectPriority,
-    searchText,
-    setSearchText,
-    setIsFetching,
-  } = useStoreContext();
+
+  const { openTask, setOpenTask, searchText, setSearchText, setIsFetching } =
+    useStoreContext();
+
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "task=1";
   const [selectedTask, setSelectedTask] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
+
   const {
     isLoading,
     data: taskLists,
     error,
     refetch,
-  } = useFetchSingleTeamTasks(teamId, paginationUrl, onError);
-  useRefetch(paginationUrl, refetch);
+  } = useFetchSingleTeamTasks(teamId, paginationUrl, searchText, onError);
+
+  useRefetch(paginationUrl, searchText, null, null, null, null, refetch);
+
+  const onDeleteAction = async (ids) => {
+    setIsFetching(true);
+    await useBulkDelete("/tasks/bulk-delete", ids, refetch, setLoader, false);
+    setSelectedTask([]);
+    setIsFetching(false);
+  };
+
+  const onCheckAction = async (ids) => {
+    await useBulkComplete(
+      "/tasks/bulk-complete",
+      ids,
+      refetch,
+      setLoader,
+      false
+    );
+    setSelectedTask([]);
+  };
+
+  if (isLoading) return <Skeleton />;
+
   function onError(err) {
     console.log(err);
     toast.error(err?.response?.data?.errors || "Failed to fetch task data");
   }
 
-  const onDeleteAction = (ids) => {
-    alert(ids[0].id);
-  };
-  const onCheckAction = (ids) => {
-    alert(ids[0].id);
-  };
-  if (isLoading) return <Skeleton />;
   return (
     <React.Fragment>
       <div className="space-y-6">
@@ -63,6 +74,8 @@ const ContactTask = ({ teamId }) => {
           onDeleteAction={onDeleteAction}
           onCheckAction={onCheckAction}
           loader={loader}
+          setSearchText={setSearchText}
+          searchText={searchText}
         />
         {taskLists?.task?.length > 0 ? (
           <ContactTeamTaskTable

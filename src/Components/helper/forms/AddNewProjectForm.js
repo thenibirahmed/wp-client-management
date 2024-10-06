@@ -116,7 +116,6 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
     }
 
     setSubmitLoader(true);
-    setIsFetching(true);
 
     const sendData = {
       title: data.title,
@@ -143,6 +142,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
       }
 
       toast.success(res?.message || "operation success");
+      setIsFetching(true);
       await refetch();
       reset();
       setOpen(false);

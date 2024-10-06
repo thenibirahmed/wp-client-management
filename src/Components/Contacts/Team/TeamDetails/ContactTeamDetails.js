@@ -1,11 +1,13 @@
 import React from "react";
 import ClientInfo from "../../../Clients/ClientInfo";
 import ContactTeamDetailsLayout from "./ContactTeamDetailsLayout";
-import ContactTeamDetailsTabs from "./ContactTeamDetailsTabs copy";
+import ContactTeamDetailsTabs from "./ContactTeamDetailsTabs";
 import useHashRouting from "../../../../utils/useHashRouting";
 import { useFetchSingleTeamOverview } from "../../../../hooks/useQuery";
 import toast from "react-hot-toast";
 import Skeleton from "../../../Skeleton";
+import { useClientOverViewRefetch } from "../../../../hooks/useRefetch";
+import { useStoreContext } from "../../../../store/ContextApiStore";
 const extractProjectId = (url) => {
   const match = url.match(/contact\/#\/(\d+)/);
   return match ? match[1] : null;
@@ -13,6 +15,8 @@ const extractProjectId = (url) => {
 
 const ContactTeamDetails = () => {
   const currentPath = useHashRouting("");
+
+  const { isFetching } = useStoreContext();
 
   const teamId = extractProjectId(currentPath);
 
@@ -22,6 +26,8 @@ const ContactTeamDetails = () => {
     error,
     refetch,
   } = useFetchSingleTeamOverview(teamId, onError);
+
+  useClientOverViewRefetch(null, null, null, refetch, isFetching);
 
   function onError(err) {
     console.log(err);

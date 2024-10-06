@@ -30,13 +30,13 @@ const ContactTabs = () => {
         className={`${activeClass("team")} pb-3 w-[120px]`}
         onClick={() => onTabChangeHandler("team")}
       >
-        Team <span className="text-textColor2">(125)</span>
+        Team <span className="text-textColor2"></span>
       </button>
       <button
         className={`${activeClass("client")} pb-3 w-[120px]`}
         onClick={() => onTabChangeHandler("client")}
       >
-        Clients <span className="text-textColor2">(155)</span>
+        Clients <span className="text-textColor2"></span>
       </button>
     </div>
   );

@@ -1121,11 +1121,27 @@ export const useFetchSingleTeamProject = (
   );
 };
 
-export const useFetchSingleTeamTasks = (teamId, paginationUrl, onError) => {
+export const useFetchSingleTeamTasks = (
+  teamId,
+  paginationUrl,
+  searchText,
+  onError
+) => {
   return useQuery(
     ["single-team-tasks", teamId],
     async () => {
-      return await api.get(`/team-member/${teamId}/tasks/?${paginationUrl}`);
+      const params = new URLSearchParams();
+
+      if (searchText) {
+        params.append("search", searchText);
+      }
+      const queryString = params.toString();
+
+      const url = `/team-member/${teamId}/tasks/?${paginationUrl}${
+        queryString ? `&${queryString}` : ""
+      }`;
+
+      return await api.get(url);
     },
     {
       select: (data) => {
@@ -1241,7 +1257,7 @@ export const useBulkComplete = async (
     setLoader(true);
     const { data } = await api.put(`${url}?bulk_ids=${bulk_ids}`);
 
-    toast.success(data?.message || "Delete Successful");
+    toast.success(data?.message || "Update Successful");
     await refetch();
   } catch (err) {
     console.log(err);
