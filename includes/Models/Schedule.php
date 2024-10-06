@@ -18,7 +18,15 @@ class Schedule extends Model
         'hosts'
     ];
 
-    public const DURATION_TYPES = ['minutes', 'hours', 'days'];
+    protected $casts = [
+        'geust_ids' => 'array'
+    ];
+
+    public const DURATION_TYPES = [
+        'minutes' => 'Minutes',
+        'hours'   => 'Hours',
+        'days'    => 'Days',
+    ];
 
     public static function getClientSchedules($client_id, $page) {
 

@@ -67,6 +67,7 @@ class GetSchedules {
                 'description'  => $schedule->description,
                 'scheduled_at' => $schedule->scheduled_at ? (new DateTime($schedule->scheduled_at))->format('D d F, Y h:i A') : '',
                 'guests'       => count($guestNames),
+                'duration'     => $schedule->duration . ' ' . Schedule::DURATION_TYPES[$schedule->duration_type] ?? '',
             ];
         }
 
