@@ -2,7 +2,9 @@
 
 namespace WpClientManagement\API\Schedules;
 
+use DateTime;
 use WpClientManagement\Helpers\AuthUser;
+use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Schedule;
 
 class GetSchedules {
@@ -29,10 +31,42 @@ class GetSchedules {
             $schedules = Schedule::getClientSchedules(AuthUser::user()->id, $page);
         }
 
+        if(!$schedules) {
+            return new \WP_REST_Response([
+                'error' => 'No Schedules found',
+            ]);
+        }
+
+        $guest_ids = [];
+
+        foreach ($schedules as $schedule) {
+            $ids = json_decode($schedule->guest_ids, true) ?? [];
+            $guest_ids = array_merge($guest_ids, $ids);
+        }
+
+        $guestIds = array_unique($guest_ids);
+
+        $guests = EicCrmUser::getGuests($guestIds);
+
         $data = [];
         foreach ($schedules as $schedule) {
+            $guestIdsInSchedule = json_decode($schedule->guest_ids, true) ?? [];
+            $guestNames = [];
+
+            foreach ($guestIdsInSchedule as $guestId) {
+                if (isset($guests[$guestId])) {
+                    $guestNames[] = $guests[$guestId]->wp_user->user_login;
+                }
+            }
+
             $data[] = [
                 'id' => $schedule->id,
+                'created_by'   => $schedule->creator->wp_user->user_login ?? '',
+                'hosted_by'    => $schedule->host->wp_user->user_login ?? '',
+                'topic'        => $schedule->topic,
+                'description'  => $schedule->description,
+                'scheduled_at' => $schedule->scheduled_at ? (new DateTime($schedule->scheduled_at))->format('D d F, Y h:i A') : '',
+                'guests'       => $guestNames,
             ];
         }
 

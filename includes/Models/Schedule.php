@@ -23,7 +23,16 @@ class Schedule extends Model
     public static function getClientSchedules($client_id, $page = 1) {
 
         return Schedule::whereJsonContains('guest_ids->guest_ids', $client_id)->paginate(5, ['*'], 'page', $page);
+    }
 
+    public function creator()
+    {
+        return $this->belongsTo(EicCrmUser::class, 'created_by');
+    }
+
+    public function host()
+    {
+        return $this->belongsTo(EicCrmUser::class, 'hosted_by');
     }
 
     public function eic_crm_user() {
