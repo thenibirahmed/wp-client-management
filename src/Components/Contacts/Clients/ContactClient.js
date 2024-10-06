@@ -62,6 +62,7 @@ const ContactClient = () => {
             setSelectedClient={setSelectedClient}
             isAllselected={isAllselected}
             setIsAllSelected={setIsAllSelected}
+            refetch={refetch}
           />
         </>
       ) : (

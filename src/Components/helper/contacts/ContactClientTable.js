@@ -7,29 +7,10 @@ import {
 import useHashRouting from "../../../utils/useHashRouting";
 import Pagination from "../../Clients/Pagination";
 import { useClientCheckedHandler } from "../../../utils/useCheckedItem";
-
-// const tableData = [
-//   {
-//     id: 1,
-//     name: "Easin",
-//     email: "easin@gmail.com",
-//     phone: "(405) 555-0128",
-//     position: "CEO",
-//     createdDate: "May 9, 2014",
-//     image:
-//       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//   },
-//   {
-//     id: 2,
-//     name: "Tanvir",
-//     email: "tanvir@gmail.com",
-//     position: "CEO",
-//     phone: "(405) 555-0128",
-//     createdDate: "May 9, 2014",
-//     image:
-//       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-//   },
-// ];
+import { useStoreContext } from "../../../store/ContextApiStore";
+import { DeleteModal } from "../../DeleteModal";
+import AddClientForm from "../../Clients/AddClientForm";
+import Modal from "../Modal";
 
 const ContactClientTable = ({
   clientData,
@@ -38,10 +19,14 @@ const ContactClientTable = ({
   setSelectedClient,
   isAllselected,
   setIsAllSelected,
+  refetch,
 }) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
 
+  const [clientInfo, setClientInfo] = useState();
+  const { updateClient, setUpdateClient, deleteClient, setDeleteClient } =
+    useStoreContext();
   const { checkedAllClient, checkedSingleClient } = useClientCheckedHandler(
     selectedClient,
     setIsAllSelected,
@@ -153,8 +138,12 @@ const ContactClientTable = ({
 
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={`#/clients/#/${item.name}`}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setUpdateClient(true);
+                              setClientInfo(item);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -162,9 +151,13 @@ const ContactClientTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
-                          <a
-                            href=""
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeleteClient(true);
+                              setClientInfo(item);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -172,7 +165,7 @@ const ContactClientTable = ({
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -184,6 +177,26 @@ const ContactClientTable = ({
           </div>
         </div>
       </div>
+      <Modal
+        open={updateClient}
+        setOpen={setUpdateClient}
+        title="Update Client"
+      >
+        <AddClientForm
+          refetch={refetch}
+          setOpen={setUpdateClient}
+          update
+          clientId={clientInfo?.client_id}
+        />
+      </Modal>
+      <DeleteModal
+        open={deleteClient}
+        setOpen={setDeleteClient}
+        id={clientInfo?.client_id}
+        refetch={refetch}
+        title="Delete Client"
+        path="client"
+      />
     </div>
   );
 };

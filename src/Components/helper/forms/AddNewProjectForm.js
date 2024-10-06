@@ -172,6 +172,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
         const clientLists = clients?.clients?.find(
           (item) => item.id === clientProjects?.client_id
         );
+
         setSelectClient(clientLists);
       }
     } else {

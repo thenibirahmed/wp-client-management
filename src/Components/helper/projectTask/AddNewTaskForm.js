@@ -12,6 +12,7 @@ import {
   useFetchAssignee,
   useFetchPriorities,
   useFetchProjectEditDetails,
+  useFetchSelectProjects,
   useFetchStatus,
   useFetchTaskEditDetails,
 } from "../../../hooks/useQuery";
@@ -22,7 +23,13 @@ import Loaders from "../../Loaders";
 import dayjs from "dayjs";
 import { useUpdateDefaultTaskValue } from "../../../hooks/useRefetch";
 
-const AddNewTaskForm = ({ refetch, setOpen, update, taskId }) => {
+const AddNewTaskForm = ({
+  refetch,
+  setOpen,
+  update,
+  taskId,
+  contact = false,
+}) => {
   const { setOpenProjectModal, setOpenUpdateTask, setIsFetching } =
     useStoreContext();
   const datePickerStartRef = useRef(null);
@@ -31,7 +38,7 @@ const AddNewTaskForm = ({ refetch, setOpen, update, taskId }) => {
 
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
-
+  const [selectedProject, setSelectedProject] = useState();
   const [selectPriority, setSelectPriority] = useState();
   const [selectStatus, setSelectStatus] = useState();
   const [selectAssignee, setSelectAssignee] = useState();
@@ -62,6 +69,12 @@ const AddNewTaskForm = ({ refetch, setOpen, update, taskId }) => {
     data: statuses,
     error: pStatusErr,
   } = useFetchStatus("project", onError);
+
+  const {
+    isLoading: isLoadingSelectProject,
+    data: projectsLists,
+    error: selectProjectErr,
+  } = useFetchSelectProjects(onError);
 
   const {
     register,
@@ -98,8 +111,12 @@ const AddNewTaskForm = ({ refetch, setOpen, update, taskId }) => {
       description: data.description,
     };
 
-    if (!update) {
-      sendData.project_id = projectId;
+    if (!contact) {
+      if (!update) {
+        sendData.project_id = projectId;
+      }
+    } else {
+      sendData.project_id = selectedProject?.id;
     }
 
     try {
@@ -165,7 +182,20 @@ const AddNewTaskForm = ({ refetch, setOpen, update, taskId }) => {
     } else {
       setSelectPriority({ name: " -No Priority- ", id: null });
     }
-  }, [assignee, priorities, statuses, projectTask]);
+
+    if (projectsLists?.projects?.length > 0) {
+      if (!update) {
+        setSelectedProject(projectsLists?.projects[0]);
+      } else if (update && clientInvoice) {
+        const projectList = projectsLists?.projects.find(
+          (item) => item.id === clientInvoice?.project_id
+        );
+        setSelectedProject(projectList);
+      }
+    } else {
+      setSelectedProject({ name: " -No Project- ", id: null });
+    }
+  }, [assignee, priorities, statuses, projectTask, projectsLists]);
 
   const onImageUploadHandler = () => {
     imageRef.current.click();
@@ -200,14 +230,27 @@ const AddNewTaskForm = ({ refetch, setOpen, update, taskId }) => {
             errors={errors}
           />
         </div>
-        <div className="w-full">
-          <SelectTextField
-            label="Assignee"
-            select={selectAssignee}
-            setSelect={setSelectAssignee}
-            lists={assignee?.employee}
-            isSubmitting={isSubmitting}
-          />
+        <div className="flex md:flex-row flex-col gap-4 w-full">
+          <div className="flex-1">
+            <SelectTextField
+              label="Assignee"
+              select={selectAssignee}
+              setSelect={setSelectAssignee}
+              lists={assignee?.employee}
+              isSubmitting={isSubmitting}
+            />
+          </div>
+          {contact && (
+            <div className="flex-1">
+              <SelectTextField
+                label="Project Title"
+                select={selectedProject}
+                setSelect={setSelectedProject}
+                lists={projectsLists?.projects}
+                isSubmitting={isSubmitting}
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex md:flex-row flex-col gap-4 w-full">

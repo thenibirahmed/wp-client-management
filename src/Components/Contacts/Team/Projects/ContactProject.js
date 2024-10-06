@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import ContactTeamProjectTable from "../../../helper/contacts/ContactProject/ContactTeamProjectTable";
 import useHashRouting from "../../../../utils/useHashRouting";
 import {
+  useBulkComplete,
+  useBulkDelete,
   useFetchSingleTeamOverview,
   useFetchSingleTeamProject,
   useFetchSingleTeamTasks,
@@ -14,27 +16,47 @@ import ProjectHeader from "../../../helper/projects/ProjectHeader";
 import Modal from "../../../helper/Modal";
 import AddNewProjectForm from "../../../helper/forms/AddNewProjectForm";
 import { useStoreContext } from "../../../../store/ContextApiStore";
+import { useRefetch } from "../../../../hooks/useRefetch";
 
 const ContactProject = ({ teamId }) => {
   const currentPath = useHashRouting("");
+  const [loader, setLoader] = useState(false);
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "project=1";
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
-  const { openProjectModal, setOpenProjectModal } = useStoreContext();
+  const { openProjectModal, setOpenProjectModal, searchText, setSearchText } =
+    useStoreContext();
 
   const {
     isLoading,
     data: teamLists,
     error,
     refetch,
-  } = useFetchSingleTeamProject(teamId, paginationUrl, onError);
-  const onDeleteAction = (ids) => {
-    alert(ids[0].id);
+  } = useFetchSingleTeamProject(teamId, paginationUrl, searchText, onError);
+
+  useRefetch(paginationUrl, searchText, null, null, null, null, refetch);
+
+  const onDeleteAction = async (ids) => {
+    await useBulkDelete(
+      "/projects/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false
+    );
+    setSelectedProject([]);
   };
-  const onCheckAction = (ids) => {
-    alert(ids[0].id);
+  const onCheckAction = async (ids) => {
+    await useBulkComplete(
+      "/projects/bulk-complete",
+      ids,
+      refetch,
+      setLoader,
+      false
+    );
+    setSelectedProject([]);
   };
   function onError(err) {
     console.log(err);
@@ -54,6 +76,8 @@ const ContactProject = ({ teamId }) => {
             btnTitle="Add Project"
             onDeleteAction={onDeleteAction}
             onCheckAction={onCheckAction}
+            setSearchText={setSearchText}
+            searchText={searchText}
           />
         </>
         {teamLists?.teamproject?.length > 0 ? (

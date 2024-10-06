@@ -161,7 +161,7 @@ export const useFetchTeamMemberEditDetails = (id, update, onError) => {
     },
     {
       select: (data) => {
-        const { designation, phone, name, email, id } =
+        const { designation, phone, name, email, id, project_ids } =
           data.data.employee_details;
 
         return {
@@ -169,6 +169,7 @@ export const useFetchTeamMemberEditDetails = (id, update, onError) => {
           phone,
           name,
           email,
+          project_ids,
           id,
         };
       },
@@ -1081,15 +1082,31 @@ export const useFetchSingleTeamOverview = (teamId, onError) => {
   );
 };
 
-export const useFetchSingleTeamProject = (teamId, paginationUrl, onError) => {
+export const useFetchSingleTeamProject = (
+  teamId,
+  paginationUrl,
+  searchText,
+  onError
+) => {
   return useQuery(
     ["single-team-projects", teamId],
     async () => {
-      return await api.get(`/team-member/${teamId}/projects/?${paginationUrl}`);
+      const params = new URLSearchParams();
+
+      if (searchText) {
+        params.append("search", searchText);
+      }
+
+      const queryString = params.toString();
+
+      return await api.get(
+        `/team-member/${teamId}/projects/?${paginationUrl}${
+          queryString ? `&${queryString}` : ""
+        }`
+      );
     },
     {
       select: (data) => {
-        console.log("projectTask", data.data);
         const sendData = {
           teamproject: data.data.projects,
           pagination: data.data.pagination,

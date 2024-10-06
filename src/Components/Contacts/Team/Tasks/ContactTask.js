@@ -8,8 +8,25 @@ import Skeleton from "../../../Skeleton";
 import { UserCircle02Icon } from "../../../../utils/icons";
 import { useRefetch } from "../../../../hooks/useRefetch";
 import ProjectHeader from "../../../helper/projects/ProjectHeader";
+import { useStoreContext } from "../../../../store/ContextApiStore";
+import Modal from "../../../helper/Modal";
+import AddNewTaskForm from "../../../helper/projectTask/AddNewTaskForm";
 
 const ContactTask = ({ teamId }) => {
+  const [loader, setLoader] = useState(false);
+  const {
+    openTask,
+    setOpenTask,
+    dateFrom,
+    dateTo,
+    selectStatus,
+    setSelectStatus,
+    selectPriority,
+    setSelectPriority,
+    searchText,
+    setSearchText,
+    setIsFetching,
+  } = useStoreContext();
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "task=1";
@@ -41,10 +58,11 @@ const ContactTask = ({ teamId }) => {
         <ProjectHeader
           selectedProject={selectedTask}
           title="Tasks"
-          setOpenModal={() => {}}
+          setOpenModal={setOpenTask}
           btnTitle="Add Task"
           onDeleteAction={onDeleteAction}
           onCheckAction={onCheckAction}
+          loader={loader}
         />
         {taskLists?.task?.length > 0 ? (
           <ContactTeamTaskTable
@@ -70,6 +88,9 @@ const ContactTask = ({ teamId }) => {
           </>
         )}
       </div>
+      <Modal open={openTask} setOpen={setOpenTask} title="Add Task">
+        <AddNewTaskForm refetch={refetch} setOpen={setOpenTask} contact />
+      </Modal>
     </React.Fragment>
   );
 };

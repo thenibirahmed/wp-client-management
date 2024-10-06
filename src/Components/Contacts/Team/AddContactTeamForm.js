@@ -62,8 +62,16 @@ const AddContactTeamForm = ({ setOpen, refetch, teamId, update = false }) => {
     };
 
     try {
-      const { data } = await api.post("/team-member/create", sendData);
-      toast.success(data?.message);
+      let res;
+      if (update) {
+        let { data } = await api.put(`/team-member/update/${teamId}`, sendData);
+        res = data;
+      } else {
+        let { data } = await api.post("/team-member/create", sendData);
+        res = data;
+      }
+
+      toast.success(res?.message || "operation success");
       await refetch();
       reset();
       setOpen(false);
@@ -100,7 +108,7 @@ const AddContactTeamForm = ({ setOpen, refetch, teamId, update = false }) => {
         setAllprojectLists(projectLists?.projects);
       } else if (update && projectLists) {
         const projectListsData = projectLists?.projects.filter((item) =>
-          editTeam?.id?.includes(item.id)
+          editTeam?.project_ids?.includes(item.id)
         );
 
         setSelectedProject(projectListsData);
