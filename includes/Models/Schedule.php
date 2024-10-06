@@ -16,14 +16,9 @@ class Schedule extends Model
         'topic',
         'description',
         'scheduled_at',
-        'date',
         'link',
         'duration',
         'duration_type',
-    ];
-
-    protected $casts = [
-        'guest_ids' => 'array'
     ];
 
     public const DURATION_TYPES = [

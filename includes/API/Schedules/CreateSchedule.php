@@ -1,6 +1,7 @@
 <?php
 namespace WpClientManagement\API\Schedules;
 
+use WpClientManagement\Middlewares\AuthMiddleware;
 use WpClientManagement\Models\Schedule;
 
 class CreateSchedule {
@@ -9,31 +10,39 @@ class CreateSchedule {
 
     private $endpoint = '/schedule/create';
 
-    protected array $rules = [
-        'eic_crm_user_id' => 'nullable|exists:eic_eic_crm_users,id',
-        'client_id' => 'required|exists:eic_clients,id',
-        'date' => 'required|date_format:Y-m-d H:i:s',
-        'duration' => 'nullable|integer',
-        'link' => 'nullable|string',
-        'hosts' => 'nullable|json',
-    ];
+    protected function rules()
+    {
+        return [
+            'created_by'    => 'required|exists:eic_eic_crm_users,id',
+            'hosted_by'     => 'required|exists:eic_eic_crm_users,id',
+            'guest_ids'     => 'nullable|array',
+            'topic'         => 'required|string',
+            'description'   => 'required|string',
+            'scheduled_at'  => 'nullable|date_format:Y-m-d H:i:s',
+            'duration'      => 'nullable|integer',
+            'duration_type' => 'nullable|string|in:'.implode(',', array_keys(Schedule::DURATION_TYPES)),
+            'link'          => 'nullable|string',
+        ];
+    }
 
     protected array $validationMessages = [
-        'eic_crm_user_id.exists' => 'The selected EicCrmUser does not exist.',
-        'client_id.required' => 'The Client ID is required.',
-        'client_id.exists' => 'The selected Client does not exist.',
-        'date.required' => 'The date and time is required.',
-        'date.date_format' => 'The date and time must be in the format Y-m-d H:i:s.',
-        'duration.integer' => 'The duration must be an integer.',
-        'link.string' => 'The link must be a valid string.',
-        'hosts.json' => 'The hosts must be a valid JSON string.',
+        'created_by.required'      => 'The created_by field is required.',
+        'created_by.exists'        => 'The created_by field is invalid.',
+        'hosted_by.required'       => 'The hosted_by field is required.',
+        'hosted_by.exists'         => 'The hosted_by field is invalid.',
+        'guest_ids.array'          => 'The guest_ids field is invalid.',
+        'topic'                    => 'The topic field is required.',
+        'description'              => 'The description field is required.',
+        'scheduled_at.date_format' => 'The scheduled_at field is invalid.',
+        'duration.integer'         => 'The duration field is invalid.',
+        'duration_type'            => 'The duration_type field is invalid.',
     ];
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::CREATABLE,
+            'methods'  => \WP_REST_Server::CREATABLE,
             'callback' => array($this, 'create_schedule'),
-            'permission_callback' => 'is_user_logged_in',
+            'permission_callback' => [AuthMiddleware::class, 'admin'],
         ]);
     }
 
@@ -41,15 +50,17 @@ class CreateSchedule {
         global $validator;
 
         $data = $request->get_params();
+        $data['created_by']     = isset($data['created_by'])     ? intval($data['created_by'])     : null;
+        $data['hosted_by']      = isset($data['hosted_by'])      ? intval($data['hosted_by'])      : null;
+        $data['guest_ids']      = isset($data['guest_ids'])      ? array_map('intval', $data['guest_ids']) : null;
+        $data['topic']          = isset($data['topic'])          ? sanitize_text_field($data['topic']) : null;
+        $data['description']    = isset($data['description'])    ? sanitize_text_field($data['description']) : null;
+        $data['scheduled_at']   = isset($data['scheduled_at'])   ? sanitize_text_field($data['scheduled_at']) : null;
+        $data['duration']       = isset($data['duration'])       ? intval($data['duration'])       : null;
+        $data['duration_type']  = isset($data['duration_type'])  ? sanitize_text_field($data['duration_type']) : null;
+        $data['link']           = isset($data['link'])           ? sanitize_text_field($data['link']) : null;
 
-        $data['eic_crm_user_id'] = isset($data['eic_crm_user_id']) ? intval($data['eic_crm_user_id']) : null;
-        $data['client_id'] = intval($data['client_id']);
-        $data['date'] = sanitize_text_field($data['date'] ?? '');
-        $data['duration'] = isset($data['duration']) ? intval($data['duration']) : null;
-        $data['link'] = sanitize_text_field($data['link'] ?? '');
-        $data['hosts'] = isset($data['hosts']) ? json_encode(array_map('sanitize_text_field', json_decode($data['hosts'], true) ?? [])) : json_encode([]);
-
-        $validator = $validator->make($data, $this->rules, $this->validationMessages);
+        $validator = $validator->make($data, $this->rules(), $this->validationMessages);
 
         if ($validator->fails()) {
             return new \WP_REST_Response([
@@ -57,13 +68,20 @@ class CreateSchedule {
             ], 400);
         }
 
+        // return new \WP_REST_Response([
+        //     'data' => $data,
+        // ]);
+
         $schedule = Schedule::create([
-            'eic_crm_user_id' => $data['eic_crm_user_id'],
-            'client_id' => $data['client_id'],
-            'date' => $data['date'],
-            'duration' => $data['duration'],
-            'link' => $data['link'],
-            'hosts' => $data['hosts'],
+            'created_by'    => $data['created_by'],
+            'hosted_by'     => $data['hosted_by'],
+            'guest_ids'     => json_encode($data['guest_ids'] ?? []),
+            'topic'         => $data['topic'],
+            'description'   => $data['description'],
+            'scheduled_at'  => $data['scheduled_at'],
+            'duration'      => $data['duration'],
+            'duration_type' => $data['duration_type'],
+            'link'          => $data['link'],
         ]);
 
         if(!$schedule) {

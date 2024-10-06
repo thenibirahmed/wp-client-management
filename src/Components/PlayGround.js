@@ -187,14 +187,18 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/schedules',
-			// {
-			// 	name:'test',
-			// 	email: 'test@test.com',
-			// 	address: 'ache',
-			// 	city: 'ache',
-			// 	projectIds: [1,2,3],
-			// },
+		axios.post(eicApiSettings.rest_url + 'wp-client-management/v1/schedule/create',
+		{
+			created_by: 1,
+			hosted_by: 1,
+			guest_ids: [1,2,3,4,5,6],
+			topic: 'emni',
+			description: 'kono description nai',
+			scheduled_at: '2024-09-15 12:00:00',
+			duration: 2,
+			duration_type: 'minutes',
+			link: 'nainainai'
+		},
 		{
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
