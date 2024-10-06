@@ -66,7 +66,7 @@ class GetSchedules {
                 'topic'        => $schedule->topic,
                 'description'  => $schedule->description,
                 'scheduled_at' => $schedule->scheduled_at ? (new DateTime($schedule->scheduled_at))->format('D d F, Y h:i A') : '',
-                'guests'       => $guestNames,
+                'guests'       => count($guestNames),
             ];
         }
 
