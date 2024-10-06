@@ -10,16 +10,20 @@ class Schedule extends Model
     protected $table = 'eic_schedules';
 
     protected $fillable = [
-        'eic_crm_user_id',
-        'client_id',
+        'created_by',
+        'hosted_by',
+        'guest_ids',
+        'topic',
+        'description',
+        'scheduled_at',
         'date',
-        'duration',
         'link',
-        'hosts'
+        'duration',
+        'duration_type',
     ];
 
     protected $casts = [
-        'geust_ids' => 'array'
+        'guest_ids' => 'array'
     ];
 
     public const DURATION_TYPES = [
