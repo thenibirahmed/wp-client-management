@@ -20,9 +20,9 @@ class Schedule extends Model
 
     public const DURATION_TYPES = ['minutes', 'hours', 'days'];
 
-    public static function getClientSchedules($client_id, $page = 1) {
+    public static function getClientSchedules($client_id, $page) {
 
-        return Schedule::whereJsonContains('guest_ids->guest_ids', $client_id)->paginate(5, ['*'], 'page', $page);
+        return Schedule::whereRaw("JSON_CONTAINS(guest_ids, '$client_id')")->paginate(5, ['*'], 'page', $page);
     }
 
     public function creator()
