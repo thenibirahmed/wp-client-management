@@ -187,7 +187,14 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/clients',
+		axios.put(eicApiSettings.rest_url + 'wp-client-management/v1/team-member/update/3',
+			{
+				name:'test',
+				email: 'test@test.com',
+				address: 'ache',
+				city: 'ache',
+				projectIds: []
+			},
 		{
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
@@ -207,6 +214,7 @@ const PlayGround = () => {
 			);
 		});
 	};
+
 
 	// const setSearch = (e) => {
 	// 	if (e.length > 2) {
