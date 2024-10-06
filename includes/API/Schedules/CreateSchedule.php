@@ -68,10 +68,6 @@ class CreateSchedule {
             ], 400);
         }
 
-        // return new \WP_REST_Response([
-        //     'data' => $data,
-        // ]);
-
         $schedule = Schedule::create([
             'created_by'    => $data['created_by'],
             'hosted_by'     => $data['hosted_by'],
@@ -92,7 +88,6 @@ class CreateSchedule {
 
         return new \WP_REST_Response([
             'message' => 'Schedule created successfully.',
-            'schedule' => $schedule,
         ], 201);
     }
 }

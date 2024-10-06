@@ -72,7 +72,7 @@ class GetSchedules {
         }
 
         return new \WP_REST_Response([
-            'data' => $data,
+            'schedules'  => $data,
             'pagination' => [
                 'total'         => $schedules->total(),
                 'per_page'      => $schedules->perPage(),
