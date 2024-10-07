@@ -187,7 +187,7 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/schedules',
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/files',
 		// {
 		// 	created_by: 1,
 		// 	hosted_by: 1,

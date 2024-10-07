@@ -2,6 +2,8 @@
 
 namespace WpClientManagement\API\Files;
 
+use WpClientManagement\Helpers\AuthUser;
+use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\File;
 
 class GetFiles {
@@ -10,63 +12,53 @@ class GetFiles {
 
     private $endpoint = '/files';
 
-    protected array $rules = [
-        'eic_crm_user_id' => 'required',
-        'project_id' => 'required',
-        'client_id' => 'required',
-        'title' => 'required|string|max:255',
-        'url' => 'required|string|max:255',
-        'type' => 'required',
-    ];
-
-    protected array $validationMessages = [
-        'eic_crm_user_id.required' => 'The eic_crm_user_id field is required.',
-        'project_id.required' => 'The project_id field is required.',
-        'client_id.required' => 'The client_id field is required.',
-        'title.required' => 'The title field is required.',
-        'title.string' => 'The title must be a string.',
-        'title.max' => 'The title may not be greater than 255 characters.',
-        'url.required' => 'The url field is required.',
-        'url.string' => 'The url must be a string.',
-        'url.max' => 'The url may not be greater than 255 characters.',
-        'type' => 'The type field is required.',
-    ];
-
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::READABLE,
-            'callback' => array($this, 'get_posts'),
+            'methods'  => \WP_REST_Server::READABLE,
+            'callback' => array($this, 'get_files'),
             'permission_callback' => 'is_user_logged_in',
         ]);
     }
 
-    public function get_posts(\WP_REST_Request $request) {
+    public function get_files(\WP_REST_Request $request) {
 
-        $page = $request->get_params('page');
+        $page = $request->get_param('page');
 
+        if(AuthUser::user()->role == 'admin') {
 
-        $files = File::paginate(5, ['*'], 'page', $page);
+            $files = File::paginate(5, ['*'], 'page', $page);
+
+        }elseif(AuthUser::user()->role == 'team-member') {
+
+            $authUser = EicCrmUser::find(AuthUser::user()->id);
+
+            $projecIds = $authUser->assignedProjects->pluck('id')->toArray();
+
+            $files = File::whereIn('project_id', $projecIds)->paginate(5, ['*'], 'page', $page);
+        }else{
+            return new \WP_REST_Response([
+                'error' => 'Unauthorized',
+            ],401);
+        }
 
         $data = [];
         foreach ($files as $file) {
             $data[] = [
-                'id' => $file->id,
-                'eic_crm_user' => $file->eic_crm_user,
-                'project' => $file->project,
-                'client' => $file->client,
-                'title' => $file->title,
-                'url' => $file->url,
-                'type' => $file->type
+                'id'          => $file->id,
+                'title'       => $file->title,
+                'url'         => $file->url,
+                'project_id'  => $file->project_id,
+                'created_at'  => $file->created_at,
             ];
         }
 
         return new \WP_REST_Response([
             'data' => $data,
             'pagination' => [
-                'total' => $files->total(),
-                'per_page' => $files->perPage(),
-                'current_page' => $files->currentPage(),
-                'last_page' => $files->lastPage(),
+                'total'         => $files->total(),
+                'per_page'      => $files->perPage(),
+                'current_page'  => $files->currentPage(),
+                'last_page'     => $files->lastPage(),
                 'next_page_url' => $files->nextPageUrl(),
                 'prev_page_url' => $files->previousPageUrl(),
             ],
