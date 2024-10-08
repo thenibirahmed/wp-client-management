@@ -7,6 +7,7 @@ import { renderComponent } from "./utils/renderComponents";
 import useHashRouting from "./utils/useHashRouting";
 import { ContextProvider } from "./store/ContextApiStore";
 import { Toaster } from "react-hot-toast";
+import LogIn from "./Components/LogIn/LogIn";
 
 export const App = () => {
   const currentPath = useHashRouting("");
@@ -17,14 +18,20 @@ export const App = () => {
   // console.log("currentPath", currentPath);
   // console.log("pathArray", pathArray);
   //console.log("getPaginationUrl", getPaginationUrl);
-  //console.log("paginationUrl", paginationUrl);
+  console.log("pathArray", pathArray);
+
+  const isLoginPage = pathArray[0] === "login";
 
   return (
     <ContextProvider>
-      <AppLayout>
-        <Toaster position="bottom-center" reverseOrder={false} />
-        {renderComponent(currentPath, pathArray[1], paginationUrl)}
-      </AppLayout>
+      {isLoginPage ? (
+        <LogIn />
+      ) : (
+        <AppLayout>
+          <Toaster position="bottom-center" reverseOrder={false} />
+          {renderComponent(currentPath, pathArray[1], paginationUrl)}
+        </AppLayout>
+      )}
     </ContextProvider>
   );
 };

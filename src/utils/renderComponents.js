@@ -16,6 +16,7 @@ import ProjectDetail from "../Components/Projects/ProjectDetail";
 import ProjectTaskDetails from "../Components/Projects/ProjectTask/ProjectTaskDetails";
 import ContactTeamDetails from "../Components/Contacts/Team/TeamDetails/ContactTeamDetails";
 import Errors from "../Components/Errors";
+import LogIn from "../Components/LogIn/LogIn";
 
 export const renderComponent = (path, activeUrl, paginationUrl) => {
   switch (path) {
@@ -66,6 +67,8 @@ export const renderComponent = (path, activeUrl, paginationUrl) => {
       return <Docs />;
     case "error":
       return <Errors />;
+    case "login":
+      return <LogIn />;
     default:
       return <Dashboard />;
   }
