@@ -78,7 +78,7 @@ class GetSingleTeamMember {
             'profile' => $teamMemberResponseData,
             'bottomTab' => [
                 'projectsCount' => $teamMemberProjects->count(),
-                'tasksCount' => $teamMemberTasks->count()
+                'tasksCount' => $teamMemberTasks->total()
             ]
         ]);
     }
