@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\TeamMembers;
 
+use WpClientManagement\Middlewares\AuthMiddleware;
 use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Task;
 
@@ -25,7 +26,7 @@ class GetSingleTeamMemberTasks {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_team_member_tasks'),
-            'permission_callback' => 'is_user_logged_in',
+            'permission_callback' => [AuthMiddleware::class, 'teamMember'],
         ]);
     }
 
@@ -81,7 +82,7 @@ class GetSingleTeamMemberTasks {
 
         $taskWithDetails = $tasks->map(function ($task) use ($wpUsers) {
             $eic_crm_user      = $task->eic_crm_user;
-            $WpUserId  = $eic_crm_user->wp_user_id;
+            $WpUserId          = $eic_crm_user->wp_user_id;
             $owner_wp_user     = $wpUsers[$WpUserId] ?? [];
             return [
                 'id'            => $task->id,
