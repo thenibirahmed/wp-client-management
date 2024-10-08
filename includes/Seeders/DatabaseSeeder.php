@@ -16,6 +16,26 @@ class DatabaseSeeder
         $this->seed_statuses();
         $this->seed_roles();
         $this->seed_currencies();
+        $this->seed_admin();
+    }
+
+    /**
+     * Seed the roles table
+     *
+     * @return void
+     */
+
+    protected function seed_admin() {
+        global $wpdb;
+        $existing_admin = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}eic_eic_crm_users");
+        if ($existing_admin > 0) {
+            return;
+        }
+        $wpdb->insert("{$wpdb->prefix}eic_eic_crm_users", [
+            'id'         => 1,
+            'wp_user_id' => 1,
+            'role_id'    => 1
+        ]);
     }
 
     /**
@@ -30,8 +50,8 @@ class DatabaseSeeder
             return;
         }
         $wpdb->insert("{$wpdb->prefix}eic_roles", ['name' => 'admin']);
-        $wpdb->insert("{$wpdb->prefix}eic_roles", ['name' => 'client']);
         $wpdb->insert("{$wpdb->prefix}eic_roles", ['name' => 'team-member']);
+        $wpdb->insert("{$wpdb->prefix}eic_roles", ['name' => 'client']);
     }
 
     /**
