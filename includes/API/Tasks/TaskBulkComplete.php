@@ -65,9 +65,9 @@ class TaskBulkComplete {
             ], 404);
         }
 
-        return new \WP_REST_Response([
-            'data' =>  $data
-        ]);
+        // return new \WP_REST_Response([
+        //     'data' =>  $data
+        // ]);
 
         try {
             foreach ($bulk_tasks as $task) {

@@ -115,7 +115,7 @@ class CreateInvoice {
         $data['billing_address']        = sanitize_textarea_field($data['billing_address'] ?? '');
         $data['billing_phone_number']   = sanitize_textarea_field($data['billing_phone_number'] ?? '');
         $data['billing_email']          = sanitize_textarea_field($data['billing_email'] ?? '');
-        $data['bill_from_id']           = isset($data['bill_from_id']) ? intval($data['bill_from_id']) : null;
+        $data['bill_to_id']             = isset($data['bill_to_id']) ? intval($data['bill_to_id']) : null;
         $data['bill_from_address']      = sanitize_textarea_field($data['bill_from_address'] ?? '');
         $data['bill_from_phone_number'] = sanitize_textarea_field($data['bill_from_phone_number'] ?? '');
         $data['bill_from_email']        = sanitize_textarea_field($data['bill_from_email'] ?? '');
@@ -140,6 +140,10 @@ class CreateInvoice {
                 'errors' => $validator->errors(),
             ], 400);
         }
+
+        return new \WP_REST_Response([
+            'data' => $data
+        ]);
 
         $invoice = Invoice::create($data);
 

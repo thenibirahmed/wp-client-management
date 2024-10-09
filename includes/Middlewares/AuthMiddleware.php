@@ -18,6 +18,15 @@ class AuthMiddleware
             return false;
         }
     }
+
+    public static function teamMember()
+    {
+        if(is_user_logged_in() && AuthUser::user()->role == 'team-member' || AuthUser::user()->role == 'admin') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 ?>

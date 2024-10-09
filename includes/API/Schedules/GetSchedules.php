@@ -29,6 +29,8 @@ class GetSchedules {
             $schedules = Schedule::paginate(5, ['*'], 'page', $page);
         }elseif(AuthUser::user()->role == 'client') {
             $schedules = Schedule::getClientSchedules(AuthUser::user()->id, $page);
+        }else {
+            $schedules = Schedule::getTeamMemberSchedules(AuthUser::user()->id, $page);
         }
 
         if(!$schedules) {
