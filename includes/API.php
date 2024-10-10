@@ -2,6 +2,7 @@
 
 namespace WpClientManagement;
 
+use WpClientManagement\API\Auth\Login;
 use WpClientManagement\API\Clients\ClientBulkDelete;
 use WpClientManagement\API\Clients\ClientOverview;
 use WpClientManagement\API\Clients\CreateClient;
@@ -132,6 +133,10 @@ class API {
 
         // Test
         new TestApi();
+
+
+        // Auth
+        new Login();
 
         // User
         new GetUsers();

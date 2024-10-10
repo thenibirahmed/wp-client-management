@@ -27,6 +27,16 @@ class AuthMiddleware
             return false;
         }
     }
+
+    public static function guest()
+    {
+        if(is_user_logged_in()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }
 
 ?>
