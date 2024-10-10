@@ -27,7 +27,7 @@ class Login {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods'  => \WP_REST_Server::CREATABLE,
             'callback' => array($this, 'login'),
-            // 'permission_callback' => [AuthMiddleware::class, 'guest'],
+            'permission_callback' => [AuthMiddleware::class, 'guest'],
         ]);
     }
 

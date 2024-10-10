@@ -187,10 +187,17 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.post(eicApiSettings.rest_url + 'wp-client-management/v1/login',
+		axios.put(eicApiSettings.rest_url + 'wp-client-management/v1/project/update/2',
 		{
-			username: "user",
-			password: 'admin'
+			client_id: 2,
+			status_id: 2,
+			priority_id: 1,
+			title: 'sam project',
+			start_date: '2024-09-15',
+			due_date: '2024-09-30',
+			budget: 5000.00,
+			description: 'sam description',
+			currency_id: 1
 		},
 		{
 			headers: {

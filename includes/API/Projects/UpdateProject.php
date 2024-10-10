@@ -3,6 +3,10 @@
 namespace WpClientManagement\API\Projects;
 
 use WpClientManagement\Models\EicCrmUser;
+use WpClientManagement\Models\Email;
+use WpClientManagement\Models\File;
+use WpClientManagement\Models\Invoice;
+use WpClientManagement\Models\Note;
 use WpClientManagement\Models\Priority;
 use WpClientManagement\Models\Project;
 use WpClientManagement\Models\Status;
@@ -42,7 +46,7 @@ class UpdateProject {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::EDITABLE,
+            'methods'  => \WP_REST_Server::EDITABLE,
             'callback' => [$this, 'update_project'],
             'permission_callback' => 'is_user_logged_in',
         ]);
@@ -94,6 +98,13 @@ class UpdateProject {
             'due_date'     => $data['due_date'],
             'description'  => $data['description'],
         ]);
+
+        if(isset($data['client_id'])) {
+            Invoice::where('project_id', $project->id)->update(['client_id' => $data['client_id']]);
+            Email::where('project_id',$project->id)->update(['client_id' => $data['client_id']]);
+            File::where('project_id',$project->id)->update(['client_id' => $data['client_id']]);
+            Note::where('project_id',$project->id)->update(['client_id' => $data['client_id']]);
+        }
 
         $team_members = EicCrmUser::getTeamMembers(false);
         $teamMemberIds = $team_members->pluck('id')->toArray();
