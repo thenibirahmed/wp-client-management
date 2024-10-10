@@ -1,74 +1,38 @@
-import React, { useState, useEffect } from "react";
-
-import useHashRouting from "../../../utils/useHashRouting";
-import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
+import React from "react";
 
 import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
+import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
+import { useStoreContext } from "../../../store/ContextApiStore";
+import { DeleteModal } from "../../DeleteModal";
+import { roundNumber } from "../../../utils/roundNumber";
 
-const tableData = [
-  {
-    id: 1,
-    invoiceId: "Inv-1231",
-    clientName: "Easin Tanvir",
-    total: 3500,
-    status: "Completed",
-    payMethod: "Cash",
-    dueDate: "July 05, 2024",
-  },
-  {
-    id: 2,
-    invoiceId: "Inv-1232",
-    clientName: "John Doe",
-    total: 4500,
-    status: "On Hold",
-    payMethod: "Credit Card",
-    dueDate: "July 06, 2024",
-  },
-  {
-    id: 3,
-    invoiceId: "Inv-1233",
-    clientName: "Jane Smith",
-    total: 2500,
-    status: "Cancelled",
-    payMethod: "Bank Transfer",
-    dueDate: "July 07, 2024",
-  },
-  {
-    id: 4,
-    invoiceId: "Inv-1234",
-    clientName: "Alice Johnson",
-    total: 5500,
-    status: "In progress",
-    payMethod: "Paypal",
-    dueDate: "July 08, 2024",
-  },
-  {
-    id: 5,
-    invoiceId: "Inv-1235",
-    clientName: "Bob Brown",
-    total: 1500,
-    status: "In Review",
-    payMethod: "Cash",
-    dueDate: "July 09, 2024",
-  },
-];
-
-const InvoiceTable = () => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-
-  const [selectedInvoices, setSelectedInvoices] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
-
-  console.log(selectedInvoices);
-
+const InvoiceTable = ({
+  invoiceList,
+  projectId,
+  pagination,
+  selectedInvoices,
+  setSelectedInvoices,
+  isAllselected,
+  setIsAllSelected,
+  refetch,
+  isClient = false,
+  slug,
+}) => {
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedInvoices,
     setIsAllSelected,
     setSelectedInvoices
   );
-
+  const {
+    createInvoice,
+    updateInvoice,
+    setUpdateInvoice,
+    invoiceId,
+    setInvoiceId,
+    deleteInvoice,
+    setDeleteInvoice,
+  } = useStoreContext();
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -83,12 +47,12 @@ const InvoiceTable = () => {
                   >
                     <input
                       checked={
-                        selectedInvoices.length > 0 && isAllselected
+                        selectedInvoices?.length > 0 && isAllselected
                           ? true
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, invoiceList)
                       }
                       type="checkbox"
                     />
@@ -103,13 +67,14 @@ const InvoiceTable = () => {
                     scope="col"
                     className="px-3 uppercase py-3.5 text-left text-sm font-semibold text-textColor2"
                   >
-                    client Name
+                    {isClient ? "Project Name" : "client Name"}
                   </th>{" "}
                   <th
                     scope="col"
                     className="px-3 uppercase py-3.5 text-left text-sm font-semibold text-textColor2"
                   >
-                    total
+                    {" "}
+                    {isClient ? "amount" : "total"}
                   </th>{" "}
                   <th
                     scope="col"
@@ -138,8 +103,8 @@ const InvoiceTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
-                  let itemStatus = item.status.toLowerCase();
+                {invoiceList?.map((item) => {
+                  let itemStatus = item.status;
 
                   const isChecked = selectedInvoices.some(
                     (client) => client.id === item.id
@@ -156,7 +121,7 @@ const InvoiceTable = () => {
                       ? "bg-customBg4 text-purple"
                       : itemStatus === "in review"
                       ? "bg-customBg5 text-customRed2"
-                      : "";
+                      : "bg-customBg4 text-purple";
 
                   return (
                     <tr>
@@ -172,14 +137,17 @@ const InvoiceTable = () => {
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.invoiceId}
+                          {item.code}
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-normal text-sm">
-                        {item.clientName}
+                        {isClient ? item.project : item.client_name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-semibold text-sm">
-                        ${item.total}
+                        ${" "}
+                        {isClient
+                          ? roundNumber(item.amount)
+                          : roundNumber(item.total)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm  font-metropolis font-medium">
                         <span
@@ -189,15 +157,19 @@ const InvoiceTable = () => {
                         </span>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-normal text-sm">
-                        {item.payMethod}
+                        {item.payment_method}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-normal text-sm">
-                        {item.dueDate}
+                        {item.due_date}
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={``}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setUpdateInvoice(true);
+                              setInvoiceId(item?.id);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -205,9 +177,13 @@ const InvoiceTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
-                          <a
-                            href=""
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeleteInvoice(true);
+                              setInvoiceId(item?.id);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -215,7 +191,7 @@ const InvoiceTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -223,10 +199,23 @@ const InvoiceTable = () => {
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug={slug}
+              query="/?invoice"
+              projectId={projectId}
+            />
           </div>
         </div>
       </div>
+      <DeleteModal
+        open={deleteInvoice}
+        setOpen={setDeleteInvoice}
+        id={invoiceId}
+        refetch={refetch}
+        title="Delete Invoice"
+        path="invoice"
+      />
     </div>
   );
 };

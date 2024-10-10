@@ -1,32 +1,93 @@
 import React, { useRef, useState, useEffect } from "react";
-
 import { useForm } from "react-hook-form";
 
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { Image02Icon } from "../../../utils/icons";
 import TextField from "../TextField";
+import toast from "react-hot-toast";
+import api from "../../../api/api";
+import Loaders from "../../Loaders";
+import { useFetchFileEditDetails } from "../../../hooks/useQuery";
+import { useUpdateDefaultFileValue } from "../../../hooks/useRefetch";
+import Skeleton from "../../Skeleton";
 
-const AddNewFileForm = () => {
-  const { setOpenFileModal } = useStoreContext();
+const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
+  const { setOpenFileModal, setIsFetching } = useStoreContext();
   const [imageUrl, setImageUrl] = useState();
+  const [submitLoader, setSubmitLoader] = useState(false);
   const imageRef = useRef();
+
+  const {
+    isLoading: fileLoader,
+    data: clientFile,
+    error,
+  } = useFetchFileEditDetails(id, update, onError);
+
+  function onError(err) {
+    toast.error(
+      err?.response?.data?.message?.errors || "Failed to fetch file data"
+    );
+    console.log(err);
+  }
+
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-    },
+    defaultValues: { client_id: "", project_id: "" },
     mode: "onTouched",
   });
 
-  const addNewClientHandler = (data) => {
-    console.log(data);
-    reset();
+  //custom hook for updating default value in the form to edit
+  useUpdateDefaultFileValue(update, clientFile, setValue, "client");
+
+  const addNewFileHandler = async (data) => {
+    setSubmitLoader(true);
+    setIsFetching(true);
+    const sendData = {
+      title: data.title,
+      url: data.url,
+    };
+
+    if (update) {
+      if (type === "project") {
+        sendData.project_id = clientFile.project_id;
+      } else {
+        sendData.client_id = clientFile.client_id;
+      }
+    } else {
+      if (type === "project") {
+        sendData.project_id = id;
+      } else {
+        sendData.client_id = id;
+      }
+    }
+
+    try {
+      let res;
+      if (update) {
+        let { data: res } = await api.put(`/file/update/${id}`, sendData);
+        res = data;
+      } else {
+        let { data: res } = await api.post("/file/create", sendData);
+        res = data;
+      }
+
+      toast.success(res?.message || "operation success");
+      await refetch();
+      setOpen(false);
+      reset();
+    } catch (err) {
+      console.log(err);
+      toast.error("Create new file failed");
+    } finally {
+      setSubmitLoader(false);
+      setIsFetching(false);
+    }
   };
 
   const onImageUploadHandler = () => {
@@ -39,9 +100,10 @@ const AddNewFileForm = () => {
     }
   }, [imageUrl]);
 
+  if (fileLoader) return <Skeleton />;
   return (
     <div className="py-5 relative h-full ">
-      <form className="space-y-4 " onSubmit={handleSubmit(addNewClientHandler)}>
+      <form className="space-y-4 " onSubmit={handleSubmit(addNewFileHandler)}>
         <TextField
           label="Title"
           required={!imageUrl}
@@ -55,7 +117,7 @@ const AddNewFileForm = () => {
         <TextField
           label="Add URL / Upload File"
           required={!imageUrl}
-          id="ul"
+          id="url"
           type="url"
           message="*Url is required"
           placeholder="2972 Westheimer Rd. Santa Ana, Illinois 85486 "
@@ -95,10 +157,11 @@ const AddNewFileForm = () => {
             Cancel
           </button>
           <button
+            disabled={submitLoader}
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            Save
+            {submitLoader ? <Loaders /> : <> {update ? "Update" : "Save"}</>}
           </button>
         </div>
       </form>

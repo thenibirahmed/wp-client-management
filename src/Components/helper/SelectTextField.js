@@ -16,32 +16,41 @@ export const SelectTextField = ({
   setSelect,
   lists,
   isSubmitting,
+  currency = false,
 }) => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (select?.id === 1 && isSubmitting) {
+    if (!select?.id && isSubmitting) {
       setError("This field is required*");
     }
 
-    if (select?.id !== 1 && !isSubmitting) {
+    if (select?.id && !isSubmitting) {
       setError("");
     }
   }, [select, isSubmitting]);
 
   return (
     <Listbox value={select} onChange={setSelect}>
-      <div className="flex flex-col gap-2 w-full">
-        <label className="font-medium text-sm  font-metropolis text-textColor">
-          {label}
-        </label>
+      <div className={`flex flex-col gap-2 ${currency ? "w-32" : " w-full"} `}>
+        {label && (
+          <label className="font-medium text-sm  font-metropolis text-textColor">
+            {label}
+          </label>
+        )}
         <div className="relative">
           <ListboxButton
-            className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 ${
+            className={`relative text-sm font-metropolis border ${
+              currency
+                ? "rounded-[5px] border-[1px]  px-4 py-[8px]"
+                : "rounded-md py-1.5 pl-3 pr-10 "
+            } w-full cursor-default  bg-white  text-left text-textColor2   sm:text-sm sm:leading-6 ${
               error ? "border-customRed" : "border-borderColor"
             }`}
           >
-            <span className="block truncate">{select?.name}</span>
+            <span className="block truncate">
+              {currency ? select?.code : select?.name}
+            </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon
                 aria-hidden="true"
@@ -54,14 +63,14 @@ export const SelectTextField = ({
             transition
             className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm"
           >
-            {lists.map((person) => (
+            {lists?.map((person) => (
               <ListboxOption
                 key={person.id}
                 value={person}
                 className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white"
               >
                 <span className="block truncate font-normal group-data-[selected]:font-semibold">
-                  {person.name}
+                  {currency ? person.code : person.name}
                 </span>
 
                 <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">

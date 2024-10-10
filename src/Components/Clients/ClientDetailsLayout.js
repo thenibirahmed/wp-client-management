@@ -7,21 +7,21 @@ import ClientEmails from "./ClientEmails/ClientEmails";
 import ClientAddiInfo from "./ClientAddiInfo/ClientAddiInfo";
 import { useStoreContext } from "../../store/ContextApiStore";
 
-const ClientDetailsLayout = () => {
+const ClientDetailsLayout = ({ clientId }) => {
   const { allTabItems } = useStoreContext();
 
   if (allTabItems["project"]) {
-    return <ClientProject />;
+    return <ClientProject clientId={clientId} />;
   } else if (allTabItems["invoice"]) {
-    return <ClientInvoices />;
+    return <ClientInvoices clientId={clientId} />;
   } else if (allTabItems["note"]) {
-    return <ClientNotes />;
+    return <ClientNotes clientId={clientId} />;
   } else if (allTabItems["file"]) {
-    return <ClientFiles />;
+    return <ClientFiles clientId={clientId} />;
   } else if (allTabItems["email"]) {
-    return <ClientEmails />;
+    return <ClientEmails clientId={clientId} />;
   } else if (allTabItems["info"]) {
-    return <ClientAddiInfo />;
+    return <ClientAddiInfo clientId={clientId} />;
   } else {
     return <ClientProject />;
   }

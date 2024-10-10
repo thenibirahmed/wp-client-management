@@ -10,9 +10,7 @@ import {
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import Separator from "./Separator";
 import {
-  ContactBookIcon,
   CustomerService01Icon,
-  EarthIcon,
   GlobalIcon,
   GoogleDocIcon,
   Settings02Icon,
@@ -27,15 +25,16 @@ const Sidebar = () => {
   const [navigation, setNavigation] = useState(navigationItems);
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
+  const pathArray2 = currentPath?.split("/")[0];
 
-  const onNavigationItemHandler = (currentItem) => {
+  const onNavigationItemHandler = (currentItem, subCate) => {
     setNavigation(
       navigation.map((item) => {
-        if (item.children) {
-          const isCurrent = item.name === currentItem.name;
+        if (item.children && subCate) {
+          const isCurrent = item.name === "Reports";
           const childrenUpdated = item.children.map((child) => ({
             ...child,
-            current: child.name === currentItem.name,
+            current: currentItem["name"] === child.name,
           }));
 
           return {
@@ -81,7 +80,8 @@ const Sidebar = () => {
 
         return {
           ...item,
-          current: pathArray.includes(item.link),
+          current:
+            pathArray.includes(item.link) || pathArray2.includes(item.link),
         };
       })
     );
@@ -109,12 +109,10 @@ const Sidebar = () => {
           <ul role="list" className="flex flex-1 flex-col gap-y-4">
             <ul role="list" className="-mx-2 space-y-3 pb-4">
               {navigation.map((item) => (
-                <li
-                  onClick={() => onNavigationItemHandler(item)}
-                  key={item.name}
-                >
+                <li key={item.name}>
                   {!item.children ? (
                     <a
+                      onClick={() => onNavigationItemHandler(item, false)}
                       href={item.href}
                       className={classNames(
                         item.current ? "bg-customBlue" : "",
@@ -151,7 +149,12 @@ const Sidebar = () => {
                       </DisclosureButton>
                       <DisclosurePanel as="ul" className="mt-1 px-2">
                         {item.children.map((subItem) => (
-                          <li key={subItem.name}>
+                          <li
+                            onClick={() =>
+                              onNavigationItemHandler(subItem, true)
+                            }
+                            key={subItem.name}
+                          >
                             {/* 44px */}
                             <a
                               href={subItem.href}

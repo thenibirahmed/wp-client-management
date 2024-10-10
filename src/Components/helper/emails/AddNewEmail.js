@@ -1,32 +1,96 @@
 import React, { useState, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+
 import EmailTable from "./EmailTable";
+import useHashRouting from "../../../utils/useHashRouting";
+import toast from "react-hot-toast";
+import Loaders from "../../Loaders";
+import api from "../../../api/api";
+import dayjs from "dayjs";
 import {
   Attachment02Icon,
   Image02Icon,
   Link05Icon,
   SignatureIcon,
 } from "../../../utils/icons";
+import { useStoreContext } from "../../../store/ContextApiStore";
 
-const AddNewEmail = () => {
+const AddNewEmail = ({
+  emailsData,
+  pagination,
+  refetch,
+  setOpen,
+  projectId,
+  slug,
+}) => {
   return (
     <div>
       <div className="border border-borderColor rounded-[8px] py-[13px] ">
-        <EmailBox />
+        <EmailBox
+          refetch={refetch}
+          setOpen={setOpen}
+          slug={slug}
+          id={projectId}
+        />
       </div>
-      <EmailTable />
+      <EmailTable
+        emailsData={emailsData}
+        pagination={pagination}
+        projectId={projectId}
+        slug={slug}
+      />
     </div>
   );
 };
 
 export default AddNewEmail;
 
-const EmailBox = () => {
+const EmailBox = ({ refetch, setOpen, slug, id }) => {
+  const currentPath = useHashRouting("");
+  const pathArray = currentPath?.split("/#/");
+
+  const { setIsFetching } = useStoreContext();
   const [editorContent, setEditorContent] = useState("");
+  const [submitLoader, setSubmitLoader] = useState(false);
+  const [subject, setSubject] = useState();
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const quillRef = useRef(null);
+
+  const onSubmitHandler = async (event) => {
+    event.preventDefault();
+
+    if (!id) return toast.error("Id is required");
+
+    setSubmitLoader(true);
+    setIsFetching(true);
+    const sendData = {
+      subject: subject,
+      body: editorContent,
+      scheduled_at: dayjs(new Date()).format("YYYY-MM-DD"),
+    };
+
+    if (slug === "projects") {
+      sendData.project_id = id;
+    } else {
+      sendData.client_id = id;
+    }
+
+    try {
+      const { data } = await api.post("/email/create", sendData);
+      toast.success(data?.message);
+      await refetch();
+      setOpen(false);
+      setEditorContent("");
+    } catch (err) {
+      console.log(err);
+      toast.error("Email Send Failed");
+    } finally {
+      setSubmitLoader(false);
+      setIsFetching(false);
+    }
+  };
 
   const handleAttachment = () => {
     fileInputRef.current.click();
@@ -84,14 +148,18 @@ const EmailBox = () => {
   };
 
   return (
-    <>
+    <form onSubmit={onSubmitHandler}>
       <div className="px-4">
         <input
+          name="to"
           placeholder="To"
           type="text"
           className="w-full font-metropolis  px-1 py-1 outline-none text-textColor font-medium"
         />
         <input
+          onChange={(e) => setSubject(e.target.value)}
+          name="subject"
+          required
           placeholder="Subject"
           type="text"
           className="w-full text-textColor2 font-metropolis font-normal border-b border-t border-borderColor px-1 py-2 outline-none"
@@ -125,10 +193,11 @@ const EmailBox = () => {
           </button>
         </div>
         <button
+          disabled={submitLoader}
           type="submit"
           className="font-metropolis rounded-[5px] bg-customBlue text-white py-[10px] px-[12px] text-xs font-medium"
         >
-          Send Email
+          {submitLoader ? <Loaders /> : " Send Email"}
         </button>
       </div>
 
@@ -148,6 +217,6 @@ const EmailBox = () => {
         accept="image/*"
         multiple
       />
-    </>
+    </form>
   );
 };

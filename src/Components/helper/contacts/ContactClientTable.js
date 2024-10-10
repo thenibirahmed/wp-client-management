@@ -6,44 +6,33 @@ import {
 } from "../../../utils/icons";
 import useHashRouting from "../../../utils/useHashRouting";
 import Pagination from "../../Clients/Pagination";
-import useCheckedHandler from "../../../utils/useCheckedItem";
+import { useClientCheckedHandler } from "../../../utils/useCheckedItem";
+import { useStoreContext } from "../../../store/ContextApiStore";
+import { DeleteModal } from "../../DeleteModal";
+import AddClientForm from "../../Clients/AddClientForm";
+import Modal from "../Modal";
 
-const tableData = [
-  {
-    id: 1,
-    name: "Easin",
-    email: "easin@gmail.com",
-    phone: "(405) 555-0128",
-    position: "CEO",
-    createdDate: "May 9, 2014",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 2,
-    name: "Tanvir",
-    email: "tanvir@gmail.com",
-    position: "CEO",
-    phone: "(405) 555-0128",
-    createdDate: "May 9, 2014",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
-
-const ContactClientTable = () => {
+const ContactClientTable = ({
+  clientData,
+  pagination,
+  selectedClient,
+  setSelectedClient,
+  isAllselected,
+  setIsAllSelected,
+  refetch,
+}) => {
   const currentPath = useHashRouting("");
   const pathArray = currentPath?.split("/#/");
-  const [selectedClient, setSelectedClient] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
 
-  const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
+  const [clientInfo, setClientInfo] = useState();
+  const { updateClient, setUpdateClient, deleteClient, setDeleteClient } =
+    useStoreContext();
+  const { checkedAllClient, checkedSingleClient } = useClientCheckedHandler(
     selectedClient,
     setIsAllSelected,
     setSelectedClient
   );
 
-  console.log(selectedClient);
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -63,7 +52,7 @@ const ContactClientTable = () => {
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, clientData)
                       }
                       type="checkbox"
                     />
@@ -101,9 +90,9 @@ const ContactClientTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
-                  const isChecked = selectedClient.some(
-                    (client) => client.id === item.id
+                {clientData?.map((item) => {
+                  const isChecked = selectedClient?.some(
+                    (client) => client?.client_id === item?.client_id
                   );
                   return (
                     <tr>
@@ -122,7 +111,9 @@ const ContactClientTable = () => {
                         <div className="flex  gap-3">
                           <img
                             className="h-8 w-8 rounded-full bg-gray-50"
-                            src={item.image}
+                            src={
+                              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            }
                             alt={item.name}
                           />
                           <div>
@@ -130,7 +121,7 @@ const ContactClientTable = () => {
                               {item.name}
                             </h3>
                             <span className="text-xs  text-textColor2 font-metropolis font-normal leading-3">
-                              {item.position}
+                              {item.organization}
                             </span>
                           </div>
                         </div>
@@ -142,13 +133,17 @@ const ContactClientTable = () => {
                         {item.phone}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-normal">
-                        {item.createdDate}
+                        {item.createdAt}
                       </td>
 
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={`#/clients/#/${item.name}`}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setUpdateClient(true);
+                              setClientInfo(item);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -156,9 +151,13 @@ const ContactClientTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
-                          <a
-                            href=""
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeleteClient(true);
+                              setClientInfo(item);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -166,7 +165,7 @@ const ContactClientTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -174,10 +173,30 @@ const ContactClientTable = () => {
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination pagination={pagination} slug="contact" query="/?page" />
           </div>
         </div>
       </div>
+      <Modal
+        open={updateClient}
+        setOpen={setUpdateClient}
+        title="Update Client"
+      >
+        <AddClientForm
+          refetch={refetch}
+          setOpen={setUpdateClient}
+          update
+          clientId={clientInfo?.client_id}
+        />
+      </Modal>
+      <DeleteModal
+        open={deleteClient}
+        setOpen={setDeleteClient}
+        id={clientInfo?.client_id}
+        refetch={refetch}
+        title="Delete Client"
+        path="client"
+      />
     </div>
   );
 };

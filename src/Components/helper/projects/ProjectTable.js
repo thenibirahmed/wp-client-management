@@ -1,119 +1,43 @@
 import React, { useState } from "react";
-import {
-  Delete03Icon,
-  PencilEdit02Icon,
-  Task01Icon,
-} from "../../../utils/icons";
 
+import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import RedCirlcle from "../../helper/RedCirlcle";
 import SkyBlueCirle from "../../helper/SkyBlueCirle";
 import YellowCirle from "../../helper/YellowCirle";
-import useHashRouting from "../../../utils/useHashRouting";
 import Pagination from "../../Clients/Pagination";
+import Modal from "../../helper/Modal";
+import AddNewProjectForm from "../../helper/forms/AddNewProjectForm";
+import { useStoreContext } from "../../../store/ContextApiStore";
+import { DeleteModal } from "../../DeleteModal";
+import { roundNumber } from "../../../utils/roundNumber";
 
-let assignee = [
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
-const tableData = [
-  {
-    id: 1,
+let imageSrc =
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80";
 
-    projectName: "The",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "Completed",
-    priority: "High",
-  },
-  {
-    id: 2,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "On Hold",
-    priority: "Low",
-  },
-  {
-    id: 3,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "Cancelled",
-    priority: "Medium",
-  },
-  {
-    id: 4,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "In progress",
-    priority: "Low",
-  },
-  {
-    id: 5,
-
-    projectName: "The sunflower garden",
-    clientName: "Easin Ahmed",
-    assignee,
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "In Review",
-    priority: "Low",
-  },
-];
-
-const ProjectTable = () => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-  const [selectedClient, setSelectedClient] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
-
+const ProjectTable = ({
+  projectData,
+  pagination,
+  selectedProject,
+  setSelectedProject,
+  isAllselected,
+  setIsAllSelected,
+  refetch,
+}) => {
   const { checkedAllClient, checkedSingleClient } = useCheckedHandler(
-    selectedClient,
+    selectedProject,
     setIsAllSelected,
-    setSelectedClient
+    setSelectedProject
   );
 
-  console.log(selectedClient);
+  const [projectId, setProjectId] = useState();
+  const {
+    openProjectUpdateModal,
+    setOpenProjectUpdateModal,
+    deleteProject,
+    setDeleteProject,
+  } = useStoreContext();
+
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -128,12 +52,12 @@ const ProjectTable = () => {
                   >
                     <input
                       checked={
-                        selectedClient.length > 0 && isAllselected
+                        selectedProject.length > 0 && isAllselected
                           ? true
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, projectData)
                       }
                       type="checkbox"
                     />
@@ -195,11 +119,11 @@ const ProjectTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
+                {projectData.map((item) => {
                   let itemStatus = item.status.toLowerCase();
                   let itemPriority = item.priority.toLowerCase();
 
-                  const isChecked = selectedClient.some(
+                  const isChecked = selectedProject.some(
                     (client) => client.id === item.id
                   );
 
@@ -214,11 +138,19 @@ const ProjectTable = () => {
                       ? "bg-customBg4 text-purple"
                       : itemStatus === "in review"
                       ? "bg-customBg5 text-customRed2"
-                      : "";
+                      : "bg-customBg1 text-green";
 
                   return (
-                    <tr>
-                      <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
+                    <tr
+                      className="cursor-pointer"
+                      onClick={() =>
+                        (window.location.href = `#/projects/#/${item.id}`)
+                      }
+                    >
+                      <td
+                        onClick={(e) => e.stopPropagation()}
+                        className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal"
+                      >
                         <input
                           checked={isChecked}
                           onChange={(e) =>
@@ -230,30 +162,35 @@ const ProjectTable = () => {
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.projectName}
+                          {item.project_name}
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.clientName}
+                          {item.client_name}
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6  ">
                         <div className="flex ">
                           <>
-                            {item.assignee.slice(0, 3).map((img, i) => {
-                              return (
-                                <img
-                                  src={img.src}
-                                  alt=""
-                                  className={`w-6 h-6 object-cover rounded-full ${
-                                    i === 0 ? "ml-0" : "-ml-1"
-                                  }`}
-                                />
-                              );
-                            })}
+                            {[...Array(item?.assignee).keys()]
+                              .slice(0, 4)
+                              .map((_, i) => {
+                                return (
+                                  <img
+                                    key={i}
+                                    src={imageSrc}
+                                    alt={`Assignee ${i + 1}`}
+                                    className={`w-6 h-6 object-cover rounded-full ${
+                                      i === 0 ? "ml-0" : "-ml-1"
+                                    }`}
+                                  />
+                                );
+                              })}
                             <div className="w-6 h-6 flex justify-center items-center bg-customBg2 border border-borderColor text-textColor2 font-metropolis rounded-full text-[8px] font-medium">
-                              +{item.assignee.length}
+                              {item?.assignee > 8
+                                ? +item?.assignee
+                                : item?.assignee}
                             </div>
                           </>
                         </div>
@@ -262,10 +199,24 @@ const ProjectTable = () => {
                         ${item.invoice}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-invoiceColor font-metropolis font-semibold">
-                        ${item.revenue}
+                        ${roundNumber(item.revenue)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-semibold">
-                        ${item.due}
+                        ${roundNumber(item.due)}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
+                        <div className="flex items-center gap-2">
+                          {itemPriority.toLowerCase() === "high" ? (
+                            <RedCirlcle />
+                          ) : itemPriority.toLowerCase() === "low" ? (
+                            <SkyBlueCirle />
+                          ) : itemPriority.toLowerCase() === "medium" ? (
+                            <YellowCirle />
+                          ) : (
+                            <RedCirlcle />
+                          )}
+                          {item.priority}
+                        </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm  font-metropolis font-medium">
                         <span
@@ -274,24 +225,15 @@ const ProjectTable = () => {
                           {item.status}
                         </span>
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
-                        <div className="flex items-center gap-2">
-                          {itemPriority === "high" ? (
-                            <RedCirlcle />
-                          ) : itemPriority === "low" ? (
-                            <SkyBlueCirle />
-                          ) : itemPriority === "medium" ? (
-                            <YellowCirle />
-                          ) : (
-                            <RedCirlcle />
-                          )}
-                          {item.priority}
-                        </div>
-                      </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={`#/projects/#/${item.id}`}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+
+                              setProjectId(item?.id);
+                              setOpenProjectUpdateModal(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -299,9 +241,13 @@ const ProjectTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
-                          <a
-                            href=""
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setProjectId(item?.id);
+                              setDeleteProject(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -309,7 +255,7 @@ const ProjectTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -317,10 +263,34 @@ const ProjectTable = () => {
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug="projects"
+              query="/?project"
+            />
           </div>
         </div>
       </div>
+      <Modal
+        open={openProjectUpdateModal}
+        setOpen={setOpenProjectUpdateModal}
+        title="Updtae Project"
+      >
+        <AddNewProjectForm
+          refetch={refetch}
+          setOpen={setOpenProjectUpdateModal}
+          update
+          projectId={projectId}
+        />
+      </Modal>
+      <DeleteModal
+        open={deleteProject}
+        setOpen={setDeleteProject}
+        id={projectId}
+        refetch={refetch}
+        path="project"
+        title="Delete Project"
+      />
     </div>
   );
 };

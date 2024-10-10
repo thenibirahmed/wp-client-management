@@ -1,56 +1,32 @@
-import React, { useState, useEffect } from "react";
-
-import useHashRouting from "../../../utils/useHashRouting";
-import {
-  Delete03Icon,
-  PencilEdit02Icon,
-  Task01Icon,
-} from "../../../utils/icons";
-
+import React, { useState } from "react";
+import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import Pagination from "../../Clients/Pagination";
+import { useStoreContext } from "../../../store/ContextApiStore";
+import Modal from "../Modal";
+import AddNewFileForm from "../forms/AddNewFileForm";
+import { DeleteModal } from "../../DeleteModal";
 
-const tableData = [
-  {
-    id: 1,
-    fileName: { name: "Note", title: "tunisian_dinar.list" },
-    uploadedBy: "Miles Esther",
-    time: "May 03, 2022",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 2,
-    fileName: { name: "Task", title: "tunisian_dinar.list" },
-    uploadedBy: "Tanvir ",
-    time: "August 30, 2023",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 3,
-    fileName: { name: "My App", title: "tunisian_dinar.list" },
-    uploadedBy: "Khan",
-    time: "June 01, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 4,
-    fileName: { name: "Lists", title: "tunisian_dinar.list" },
-    uploadedBy: "Jack",
-    time: "July 07, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
+const FileTable = ({
+  fileData,
+  pagination,
+  projectId,
+  selectedFile,
+  setSelectedFile,
+  isAllselected,
+  setIsAllSelected,
+  slug,
+  refetch,
+  type,
+}) => {
+  const {
+    updateFileModal,
+    setUpdateFileModal,
+    deleteFileModal,
+    setDeleteFileModal,
+  } = useStoreContext();
 
-const FileTable = () => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-
-  const [selectedFile, setSelectedFile] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
+  const [fileId, setFileId] = useState();
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedFile,
@@ -72,10 +48,10 @@ const FileTable = () => {
                   >
                     <input
                       checked={
-                        selectedFile.length > 0 && isAllselected ? true : false
+                        selectedFile?.length > 0 && isAllselected ? true : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, fileData)
                       }
                       type="checkbox"
                     />
@@ -107,7 +83,7 @@ const FileTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
+                {fileData?.map((item) => {
                   const isChecked = selectedFile.some(
                     (client) => client.id === item.id
                   );
@@ -126,33 +102,41 @@ const FileTable = () => {
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 space-y-1 ">
                         <h3 className="text-sm   text-textColor font-metropolis font-normal ">
-                          {item.fileName.name}
+                          {item.name}
                         </h3>{" "}
                         <h6 className="text-xs  text-textColor2 font-metropolis font-normal ">
-                          {item.fileName.title}
+                          {item.url}
                         </h6>
                       </td>{" "}
                       <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
-                            src={item.image}
-                            alt={item.uploadedBy}
+                            src={
+                              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            }
+                            alt={item.created_by}
                           />
                           <div>
                             <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                              {item.uploadedBy}
+                              {type === "project"
+                                ? item.created_by
+                                : item.author}
                             </h3>
                           </div>
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-normal">
-                        ${item.time}
+                        {item.time}
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={``}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setFileId(item?.id);
+                              setUpdateFileModal(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -160,9 +144,13 @@ const FileTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
-                          <a
-                            href=""
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setFileId(item?.id);
+                              setDeleteFileModal(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -170,7 +158,7 @@ const FileTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -178,10 +166,37 @@ const FileTable = () => {
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug={slug}
+              query="/?file"
+              projectId={projectId}
+            />
           </div>
         </div>
       </div>
+      <Modal
+        open={updateFileModal}
+        setOpen={setUpdateFileModal}
+        title="Update File"
+      >
+        <AddNewFileForm
+          refetch={refetch}
+          setOpen={setUpdateFileModal}
+          type={type}
+          id={fileId}
+          update={updateFileModal}
+        />
+      </Modal>
+
+      <DeleteModal
+        open={deleteFileModal}
+        setOpen={setDeleteFileModal}
+        id={fileId}
+        refetch={refetch}
+        path="file"
+        title="Delete File"
+      />
     </div>
   );
 };

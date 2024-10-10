@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-import useHashRouting from "../../../utils/useHashRouting";
 import {
   Delete03Icon,
   PencilEdit02Icon,
@@ -11,71 +10,36 @@ import SkyBlueCirle from "../../helper/SkyBlueCirle";
 import YellowCirle from "../../helper/YellowCirle";
 import Pagination from "../Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
+import { useStoreContext } from "../../../store/ContextApiStore";
+import AddNewClientProjectForm from "../../helper/forms/AddNewClientProjectForm";
+import Modal from "../../helper/Modal";
+import { DeleteModal } from "../../DeleteModal";
 
-const tableData = [
-  {
-    id: 1,
-    name: "Easin",
-    invoice: 2500,
-    revenue: 35,
-    due: 72,
-    status: "Completed",
-    priority: "High",
-  },
-  {
-    id: 2,
-    name: "Ahmed",
-    invoice: 350,
-    revenue: 5,
-    due: 72,
-    status: "On Hold",
-    priority: "Low",
-  },
-  {
-    id: 3,
-    name: "Tanvir",
-    invoice: 180,
-    revenue: 15,
-    due: 200,
-    status: "Cancelled",
-    priority: "Medium",
-  },
-  {
-    id: 4,
-    name: "Mohahhamd",
-
-    invoice: 720,
-    revenue: 150,
-    due: 750,
-    status: "In progress",
-    priority: "Low",
-  },
-  {
-    id: 5,
-    name: "Rifat",
-
-    invoice: 900,
-    revenue: 5,
-    due: 666,
-    status: "In Review",
-    priority: "Low",
-  },
-];
-
-const ClientProjectTable = () => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-
-  const [selectedClient, setSelectedClient] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
-
+const ClientProjectTable = ({
+  selectedClient,
+  setSelectedClient,
+  isAllselected,
+  setIsAllSelected,
+  projectData,
+  pagination,
+  clientId,
+  refetch,
+}) => {
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedClient,
     setIsAllSelected,
     setSelectedClient
   );
 
-  console.log(selectedClient);
+  const [projectId, setProjectId] = useState();
+
+  const {
+    openProjectUpdateModal,
+    setOpenProjectUpdateModal,
+    deleteProject,
+    setDeleteProject,
+  } = useStoreContext();
+
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -95,7 +59,7 @@ const ClientProjectTable = () => {
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, projectData)
                       }
                       type="checkbox"
                     />
@@ -145,9 +109,9 @@ const ClientProjectTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
-                  let itemStatus = item.status.toLowerCase();
-                  let itemPriority = item.priority.toLowerCase();
+                {projectData?.map((item) => {
+                  let itemStatus = item.status;
+                  let itemPriority = item.priority;
 
                   const isChecked = selectedClient.some(
                     (client) => client.id === item.id
@@ -184,13 +148,13 @@ const ClientProjectTable = () => {
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
-                        ${item.invoice}
+                        ${item.invoice.due}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-invoiceColor font-metropolis font-medium">
-                        ${item.revenue}
+                        ${item.invoice.revenue}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
-                        ${item.due}
+                        ${item.invoice.due}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm  font-metropolis font-medium">
                         <span
@@ -215,8 +179,12 @@ const ClientProjectTable = () => {
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={``}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setProjectId(item?.id);
+                              setOpenProjectUpdateModal(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -224,9 +192,13 @@ const ClientProjectTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
-                          <a
-                            href=""
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setProjectId(item?.id);
+                              setDeleteProject(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -234,7 +206,7 @@ const ClientProjectTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -242,10 +214,37 @@ const ClientProjectTable = () => {
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug="clients"
+              query="/?project"
+              projectId={clientId}
+            />
           </div>
         </div>
       </div>
+      <Modal
+        open={openProjectUpdateModal}
+        setOpen={setOpenProjectUpdateModal}
+        title="Update Project"
+      >
+        <AddNewClientProjectForm
+          refetch={refetch}
+          setOpen={setOpenProjectUpdateModal}
+          update
+          projectId={projectId}
+          clientId={clientId}
+        />
+      </Modal>
+
+      <DeleteModal
+        open={deleteProject}
+        setOpen={setDeleteProject}
+        id={projectId}
+        refetch={refetch}
+        path="project"
+        title="Delete Project"
+      />
     </div>
   );
 };

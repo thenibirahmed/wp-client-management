@@ -7,8 +7,18 @@ import {
   Search01Icon,
 } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
+import Filter from "../Filter";
+import { ClientSearchInput } from "../../Clients/SearchInput";
+import Loaders from "../../Loaders";
 
-const EmailHeader = () => {
+const EmailHeader = ({
+  selectedEmail,
+  onDeleteAction,
+  onEmailBox,
+  searchText,
+  setSearchText,
+  loader,
+}) => {
   const { createEmail, setCreateEmail } = useStoreContext();
   return (
     <div className="flex lg:flex-row  lg:justify-between flex-col lg:items-center lg:gap-0 gap-4">
@@ -16,14 +26,27 @@ const EmailHeader = () => {
         Email
       </h1>
       <div className="flex sm:flex-row flex-wrap gap-5 items-center">
-        <button>
-          <Mail02Icon className="text-textColor2" />
-        </button>
-        <button>
-          <Delete03Icon className="text-textColor2" />
-        </button>
+        {selectedEmail?.length > 0 && (
+          <>
+            {loader && <Loaders />}
 
-        <Search01Icon />
+            <button onClick={() => onEmailBox(selectedEmail)}>
+              <Mail02Icon className="text-textColor2" />
+            </button>
+            <button
+              disabled={loader}
+              onClick={() => onDeleteAction(selectedEmail)}
+            >
+              <Delete03Icon
+                className={`text-customRed ${loader ? "opacity-50" : ""}`}
+              />
+            </button>
+          </>
+        )}
+        <ClientSearchInput
+          setSearchText={setSearchText}
+          searchText={searchText}
+        />
         {createEmail ? (
           <>
             <button

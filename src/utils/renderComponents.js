@@ -14,14 +14,23 @@ import Projects from "../Components/Projects/Projects";
 import ClientDetails from "../Components/Clients/ClientDetails";
 import ProjectDetail from "../Components/Projects/ProjectDetail";
 import ProjectTaskDetails from "../Components/Projects/ProjectTask/ProjectTaskDetails";
+import ContactTeamDetails from "../Components/Contacts/Team/TeamDetails/ContactTeamDetails";
+import Errors from "../Components/Errors";
+import LogIn from "../Components/LogIn/LogIn";
 
-export const renderComponent = (path, activeUrl) => {
+export const renderComponent = (path, activeUrl, paginationUrl) => {
   switch (path) {
     case "clients":
       return <Client />;
+
+    case `clients/?${paginationUrl}`:
+      return <Client />;
+
     case `clients/#/${activeUrl}`:
       return <ClientDetails />;
     case "projects":
+      return <Projects />;
+    case `projects/?${paginationUrl}`:
       return <Projects />;
 
     case `projects/#/${activeUrl}/#/Task`:
@@ -31,6 +40,8 @@ export const renderComponent = (path, activeUrl) => {
       return <ProjectDetail />;
 
     case "invoices":
+      return <Invoices />;
+    case `invoices/?${paginationUrl}`:
       return <Invoices />;
     case "schedules":
       return <Schedules />;
@@ -44,10 +55,20 @@ export const renderComponent = (path, activeUrl) => {
       return <ProfitLoss />;
     case "contact":
       return <Contact />;
+    case `contact/?${paginationUrl}`:
+      return <Contact />;
+    case `contact/#/${activeUrl}`:
+      return <ContactTeamDetails />;
+    case `contact/#/${activeUrl}/?${paginationUrl}`:
+      return <ContactTeamDetails />;
     case "setting":
       return <Settings />;
     case "docs":
       return <Docs />;
+    case "error":
+      return <Errors />;
+    case "login":
+      return <LogIn />;
     default:
       return <Dashboard />;
   }

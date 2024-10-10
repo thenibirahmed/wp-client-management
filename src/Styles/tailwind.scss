@@ -10,5 +10,14 @@
 .ql-editor p {
   font-family: "Metropolis";
   font-weight: 400;
-  src: url("../../fonts/Metropolis-Regular.otf") format("opentype");
+  src: url("../../src/assets/fonts/Metropolis-Regular.otf") format("opentype");
+}
+
+@layer utilities {
+  .label {
+    @apply text-sm font-medium font-metropolis text-textColor;
+  }
+  .input {
+    @apply text-sm leading-tight font-metropolis text-iconColor2 outline-none py-[15px] px-[16px] rounded-[5px] border-[1px] border-borderColor;
+  }
 }

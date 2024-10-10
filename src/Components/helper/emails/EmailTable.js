@@ -11,64 +11,32 @@ import {
 import useCheckedHandler from "../../../utils/useCheckedItem";
 import truncateText from "../../../utils/truncateText";
 import { useStoreContext } from "../../../store/ContextApiStore";
-
 import Pagination from "../../Clients/Pagination";
 import Modal from "../Modal";
-
 import ViewEmail from "./ViewEmail";
 
-const tableData = [
-  {
-    id: 1,
-    from: "Easin",
-    email: {
-      title: "How a visual artist redefines success in graphic design",
-      content:
-        "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    },
-    time: "july 05, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 2,
-    from: "Tanvir",
-    email: {
-      title: "Web Development",
-      content:
-        "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    },
-    time: "August 10, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-  {
-    id: 3,
-    from: "Ahmed",
-    email: {
-      title: "Journey",
-      content:
-        "Loram Maintenance of Way, Inc. is a railroad maintenance equipment and services provider. Loram provides track maintenance services to freight, passenger, and transit railroads worldwide, as well as sells and leases equipment which performs these functions. ",
-    },
-    time: "May 05, 2024",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  },
-];
+import { DeleteModal } from "../../DeleteModal";
 
-const EmailTable = () => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-
+const EmailTable = ({
+  emailsData,
+  pagination,
+  projectId,
+  slug,
+  refetch,
+  selectedEmail,
+  setSelectedEmail,
+  isAllselected,
+  setIsAllSelected,
+}) => {
   const {
     openEmailModal,
     setOpenEmailModal,
-
+    deleteEmail,
+    setDeleteEmail,
     setSelectedViewEmail,
   } = useStoreContext();
 
-  const [selectedEmail, setSelectedEmail] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
+  const [emailId, setEmailId] = useState();
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedEmail,
@@ -77,9 +45,7 @@ const EmailTable = () => {
   );
 
   const viewEmailHandler = (emailId) => {
-    setOpenEmailModal(true);
-
-    const findEmail = tableData.find((email) => email.id === emailId);
+    const findEmail = emailsData?.find((email) => email.id === emailId);
 
     setSelectedViewEmail(findEmail);
   };
@@ -98,10 +64,12 @@ const EmailTable = () => {
                   >
                     <input
                       checked={
-                        selectedEmail.length > 0 && isAllselected ? true : false
+                        selectedEmail?.length > 0 && isAllselected
+                          ? true
+                          : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, emailsData)
                       }
                       type="checkbox"
                     />
@@ -133,9 +101,9 @@ const EmailTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
-                  const isChecked = selectedEmail.some(
-                    (client) => client.id === item.id
+                {emailsData?.map((item) => {
+                  const isChecked = selectedEmail?.some(
+                    (client) => client?.id === item?.id
                   );
 
                   return (
@@ -154,7 +122,9 @@ const EmailTable = () => {
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
-                            src={item.image}
+                            src={
+                              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            }
                             alt={item.from}
                           />
                           <div>
@@ -166,11 +136,14 @@ const EmailTable = () => {
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 space-y-1  text-textColor2 font-metropolis font-normal text-sm">
                         <h3 className="text-sm   text-textColor font-metropolis font-normal ">
-                          {item.email.title}
+                          {item.subject}
                         </h3>{" "}
-                        <h6 className="text-xs  text-textColor2 font-metropolis font-normal ">
-                          {truncateText(item.email.content)}
-                        </h6>
+                        <h6
+                          className="text-xs text-textColor2 font-metropolis font-normal"
+                          dangerouslySetInnerHTML={{
+                            __html: truncateText(item.body),
+                          }}
+                        ></h6>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-normal">
                         {item.time}
@@ -178,7 +151,10 @@ const EmailTable = () => {
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
                           <button
-                            onClick={() => viewEmailHandler(item.id)}
+                            onClick={() => {
+                              setSelectedViewEmail(item.id);
+                              setOpenEmailModal(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <ViewIcon
@@ -187,8 +163,12 @@ const EmailTable = () => {
                               height="20px"
                             />
                           </button>
-                          <a
-                            href=""
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEmailId(item?.id);
+                              setDeleteEmail(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -196,7 +176,7 @@ const EmailTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -204,17 +184,31 @@ const EmailTable = () => {
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug={slug}
+              query="/?email"
+              projectId={projectId}
+            />
           </div>
         </div>
         <Modal
           open={openEmailModal}
           setOpen={setOpenEmailModal}
-          title="How a visual artist redefines success in graphic design"
+          title="How a visual artist redefines success"
         >
           <ViewEmail />
         </Modal>
       </div>
+
+      <DeleteModal
+        open={deleteEmail}
+        setOpen={setDeleteEmail}
+        id={emailId}
+        refetch={refetch}
+        path="email"
+        title="Delete Email"
+      />
     </div>
   );
 };

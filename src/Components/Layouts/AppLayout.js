@@ -11,6 +11,7 @@ import Sidebar from "./LayoutSidebar";
 import ProfileDropDown from "./ProfileDropDown";
 import BreadCrum from "./BreadCrum";
 import { MenuSquareIcon } from "../../utils/icons";
+import { Footer } from "../Footers";
 
 const AppLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -81,7 +82,7 @@ const AppLayout = ({ children }) => {
               className="h-6 w-px bg-gray-900/10 lg:hidden"
             />
 
-            <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-between">
+            <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-between ">
               <React.Fragment>
                 <BreadCrum />
               </React.Fragment>
@@ -112,9 +113,10 @@ const AppLayout = ({ children }) => {
             </div>
           </div>
 
-          <main className="py-10 ">
-            <div className="px-4 sm:px-6 lg:px-8 space-y-8">{children}</div>
+          <main className=" min-h-[calc(100vh-180px)] ">
+            <div className="px-4 sm:px-6 lg:px-8 space-y-7">{children}</div>
           </main>
+          <Footer />
         </div>
       </div>
     </>

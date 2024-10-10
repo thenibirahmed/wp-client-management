@@ -10,6 +10,7 @@ const TextField = ({
   min,
   value,
   placeholder,
+  disabled,
 }) => {
   return (
     <div className="flex flex-col gap-2 w-full">
@@ -23,6 +24,7 @@ const TextField = ({
       </label>
 
       <input
+        disabled={disabled}
         type={type}
         id={id}
         placeholder={placeholder}

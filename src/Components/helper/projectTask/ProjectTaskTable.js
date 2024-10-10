@@ -10,61 +10,23 @@ import SkyBlueCirle from "../../helper/SkyBlueCirle";
 import YellowCirle from "../../helper/YellowCirle";
 import Pagination from "../../Clients/Pagination";
 import useCheckedHandler from "../../../utils/useCheckedItem";
-import useHashRouting from "../../../utils/useHashRouting";
+import Modal from "../Modal";
+import AddNewTaskForm from "./AddNewTaskForm";
+import { useStoreContext } from "../../../store/ContextApiStore";
+import ProjectTaskDetails from "../../Projects/ProjectTask/ProjectTaskDetails";
+import { DeleteModal } from "../../DeleteModal";
 
-const tableData = [
-  {
-    id: 1,
-    owner: "Easin Ahmedss",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
-    dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
-    status: "To Do",
-    priority: "High",
-  },
-  {
-    id: 2,
-    owner: "Easin Ahmed",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
-    dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
-    status: "Doing",
-    priority: "High",
-  },
-  {
-    id: 3,
-    owner: "Easin Ahmed",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
-    dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
-    status: "Done",
-    priority: "High",
-  },
-  {
-    id: 4,
-    owner: "Easin Ahmed",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    name: "Analysis Request",
-    dueDate: "August 2, 2013",
-    assigneeTo: "Tanvir",
-    status: "Done",
-    priority: "High",
-  },
-];
-
-const ProjectTaskTable = () => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
-
-  const [selectedClient, setSelectedClient] = useState([]);
-  const [isAllselected, setIsAllSelected] = useState(false);
+const ProjectTaskTable = ({
+  projectId,
+  taskData,
+  pagination,
+  selectedClient,
+  setSelectedClient,
+  isAllselected,
+  setIsAllSelected,
+  refetch,
+}) => {
+  const [id, setId] = useState(false);
 
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedClient,
@@ -72,7 +34,15 @@ const ProjectTaskTable = () => {
     setSelectedClient
   );
 
-  console.log(selectedClient);
+  const {
+    openUpdateTask,
+    setOpenUpdateTask,
+    setOpenTaskDesc,
+    setTaskId,
+    deleteTask,
+    setDeleteTask,
+  } = useStoreContext();
+
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -92,7 +62,7 @@ const ProjectTaskTable = () => {
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, tableData)
+                        checkedAllClient(e.target.checked, taskData)
                       }
                       type="checkbox"
                     />
@@ -101,7 +71,7 @@ const ProjectTaskTable = () => {
                     scope="col"
                     className="py-3.5 uppercase   pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6 "
                   >
-                    name
+                    title
                   </th>
                   <th
                     scope="col"
@@ -142,9 +112,12 @@ const ProjectTaskTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {tableData.map((item) => {
-                  let itemStatus = item.status.toLowerCase();
-                  let itemPriority = item.priority.toLowerCase();
+                {taskData?.map((item) => {
+                  // let itemStatus = item?.status?.toLowerCase();
+                  // let itemPriority = item?.priority?.toLowerCase();
+
+                  let itemStatus = item?.status;
+                  let itemPriority = item?.priority;
 
                   const isChecked = selectedClient.some(
                     (client) => client.id === item.id
@@ -155,13 +128,22 @@ const ProjectTaskTable = () => {
                       ? "bg-customBg3 text-red2"
                       : itemStatus === "doing"
                       ? "bg-customBg5 text-textColor"
-                      : itemStatus === "done"
+                      : itemStatus === "completed"
                       ? "bg-customBg3 text-red2"
                       : "";
 
                   return (
-                    <tr>
-                      <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
+                    <tr
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setOpenTaskDesc(true);
+                        setTaskId(item.id);
+                      }}
+                    >
+                      <td
+                        onClick={(e) => e.stopPropagation()}
+                        className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal"
+                      >
                         <input
                           checked={isChecked}
                           onChange={(e) =>
@@ -173,14 +155,14 @@ const ProjectTaskTable = () => {
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.name}
+                          {item.title}
                         </h3>
                       </td>{" "}
                       <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
-                            src={item.image}
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                             alt={item.owner}
                           />
                           <div>
@@ -191,18 +173,18 @@ const ProjectTaskTable = () => {
                         </div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor2 font-metropolis font-medium">
-                        ${item.dueDate}
+                        {item.end_date}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
                         <div className="flex items-center  gap-3">
                           <img
                             className="h-7 w-7 rounded-full bg-gray-50"
-                            src={item.image}
-                            alt={item.assigneeTo}
+                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                            alt={item.assigned_to}
                           />
                           <div>
                             <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                              {item.assigneeTo}
+                              {item.assigned_to}
                             </h3>
                           </div>
                         </div>
@@ -230,8 +212,12 @@ const ProjectTaskTable = () => {
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
                         <div className="flex gap-3">
-                          <a
-                            href={`/#/projects/#/${item.id}/#/Task`}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setId(item?.id);
+                              setOpenUpdateTask(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <PencilEdit02Icon
@@ -239,9 +225,13 @@ const ProjectTaskTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
-                          <a
-                            href=""
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setId(item?.id);
+                              setDeleteTask(true);
+                            }}
                             className="text-indigo-600 hover:text-indigo-900"
                           >
                             <Delete03Icon
@@ -249,7 +239,7 @@ const ProjectTaskTable = () => {
                               width="20px"
                               height="20px"
                             />
-                          </a>
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -257,10 +247,36 @@ const ProjectTaskTable = () => {
                 })}
               </tbody>
             </table>
-            <Pagination />
+            <Pagination
+              pagination={pagination}
+              slug="projects"
+              query="/?task"
+              projectId={projectId}
+            />
           </div>
         </div>
       </div>
+      <Modal
+        open={openUpdateTask}
+        setOpen={setOpenUpdateTask}
+        title="Update Task"
+      >
+        <AddNewTaskForm
+          refetch={refetch}
+          setOpen={setOpenUpdateTask}
+          update
+          taskId={id}
+        />
+      </Modal>
+
+      <DeleteModal
+        open={deleteTask}
+        setOpen={setDeleteTask}
+        id={id}
+        refetch={refetch}
+        path="task"
+        title="Delete Task"
+      />
     </div>
   );
 };

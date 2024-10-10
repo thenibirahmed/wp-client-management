@@ -1,40 +1,96 @@
-import React, { useRef, useState } from "react";
-import axios from "axios";
+import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 import TextField from "../helper/TextField";
 import api from "../../api/api";
+import Loaders from "../Loaders";
+import { useFetchClientEditDetails } from "../../hooks/useQuery";
+import Skeleton from "../Skeleton";
+import { useUpdateDefaultValue } from "../../hooks/useRefetch";
 
-const AddClientForm = ({ setOpen }) => {
+const AddClientForm = ({
+  setOpen,
+  refetch,
+  update = false,
+  clientId = null,
+}) => {
   const [imageUrl, setImageUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const imageRef = useRef();
+
+  const {
+    isLoading,
+    data: client,
+    error,
+  } = useFetchClientEditDetails(clientId, update, onError);
+
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
+    setError,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
   });
 
+  //custom hook for updating default value in the form to edit
+  useUpdateDefaultValue(update, client, setValue);
+
+  //submitting the form
   const addNewClientHandler = async (data) => {
-    try {
-      console.log(data);
-
-      //const { data } = await api.post("/client/create");
-
-      console.log(data);
-    } catch (err) {
-      console.log(err);
+    if (update) {
+      if (!clientId) return toast.error("ClientId is required");
     }
 
-    //reset();
+    try {
+      setLoading(true);
+      let res;
+      if (update) {
+        let { data: res } = await api.put(`/client/update/${clientId}`, data);
+        res = data;
+      } else {
+        let { data: res } = await api.post(`/client/create`, data);
+        res = data;
+      }
+      console.log("res", res);
+      toast.success(res?.message || "operation success");
+      await refetch();
+      reset();
+      setOpen(false);
+    } catch (err) {
+      console.log(err);
+
+      if (err?.response?.data?.errors["email"]?.length > 0) {
+        setError("email", {
+          message: err?.response?.data?.errors["email"][0],
+        });
+      }
+      if (err?.response?.data?.errors["name"]?.length > 0) {
+        setError("name", {
+          message: err?.response?.data?.errors["name"][0],
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onImageUploadHandler = () => {
     imageRef.current.click();
   };
+
+  function onError(err) {
+    console.log(err);
+    toast.error(
+      err?.response?.data?.message?.errors || "Failed To Fetch Client Info"
+    );
+  }
+
+  if (isLoading && update) return <Skeleton />;
 
   return (
     <div className="py-5 relative h-full ">
@@ -108,7 +164,7 @@ const AddClientForm = ({ setOpen }) => {
           <TextField
             label="ZIP Code"
             required
-            id="zipcode"
+            id="zip"
             type="number"
             message="*ZIP Code is required"
             placeholder="1254"
@@ -163,17 +219,20 @@ const AddClientForm = ({ setOpen }) => {
         </div>
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button
+            disabled={loading}
             onClick={() => setOpen(false)}
             type="button"
             className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
           >
             Cancel
           </button>
+
           <button
+            disabled={loading}
             type="submit"
             className={`font-metropolis rounded-[5px]  bg-customBlue text-white  py-[10px] px-4 text-sm font-medium`}
           >
-            Save
+            {loading ? <Loaders /> : <> {update ? "Update" : "Save"}</>}
           </button>
         </div>
       </form>

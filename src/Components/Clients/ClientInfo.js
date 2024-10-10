@@ -6,15 +6,13 @@ import {
   Mail02Icon,
   PencilEdit02Icon,
 } from "../../utils/icons";
-import useHashRouting from "../../utils/useHashRouting";
 
-const ClientInfo = () => {
-  const currentPath = useHashRouting("");
-  const pathArray = currentPath?.split("/#/");
+import Skeleton from "../Skeleton";
 
+const ClientInfo = ({ profile }) => {
   return (
     <div className="flex sm:flex-row flex-col sm:gap-0 gap-4 justify-between sm:items-center   pb-5 border-b border-b-borderColor">
-      <div className="flex  gap-4">
+      <div className="flex items-center  gap-4">
         <div>
           <img
             className="h-20 w-20 rounded-full object-cover"
@@ -24,10 +22,10 @@ const ClientInfo = () => {
         </div>
         <div>
           <h1 className="font-metropolis font-semibold  text-textColor text-3xl ">
-            {pathArray[pathArray.length - 1]}
+            {profile?.name}
           </h1>
           <span className="text-xs  text-textColor2 font-metropolis font-normal ">
-            ENGINEER
+            {profile?.designation}
           </span>
         </div>
       </div>

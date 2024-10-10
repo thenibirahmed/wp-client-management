@@ -1,27 +1,32 @@
-/*
-  This example requires some changes to your config:
-  
-  
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  
-*/
+import { useState, useEffect } from "react";
 
 import { Search01Icon } from "../../utils/icons";
 
-export const Search = () => {
+export const Search = ({ setSearchText }) => {
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchText(inputValue);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [inputValue, setSearchText]);
+
+  const handleChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
   return (
     <div className="rounded-md relative shadow-sm ml-0">
       <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center ">
         <Search01Icon aria-hidden="true" className="h-5 w-5 text-textColor2" />
       </div>
       <input
+        value={inputValue}
+        onChange={handleChange}
         id="email"
         name="email"
         type="email"
