@@ -35,32 +35,34 @@ const ProjectHeader = ({
       </h1>
       <div className="flex sm:flex-row flex-wrap gap-5 items-center">
         {loader && <Loaders />}
-        {selectedProject?.length > 0 && (
-          <>
-            <button
-              disabled={loader}
-              onClick={() => onDeleteAction(selectedProject)}
-            >
-              <Delete03Icon
-                className={`text-customRed ${loader ? "opacity-50" : ""}`}
-              />
-            </button>
-            {check && (
+        <div className=" flex sm:flex-row flex-row-reverse gap-2">
+          {selectedProject?.length > 0 && (
+            <>
               <button
                 disabled={loader}
-                onClick={() => onCheckAction(selectedProject)}
+                onClick={() => onDeleteAction(selectedProject)}
               >
-                <CheckmarkCircle02Icon
-                  className={`text-customBlue ${loader ? "opacity-50" : ""}`}
+                <Delete03Icon
+                  className={`text-customRed ${loader ? "opacity-50" : ""}`}
                 />
               </button>
-            )}
-          </>
-        )}
-        <ClientSearchInput
-          setSearchText={setSearchText}
-          searchText={searchText}
-        />
+              {check && (
+                <button
+                  disabled={loader}
+                  onClick={() => onCheckAction(selectedProject)}
+                >
+                  <CheckmarkCircle02Icon
+                    className={`text-customBlue ${loader ? "opacity-50" : ""}`}
+                  />
+                </button>
+              )}
+            </>
+          )}
+          <ClientSearchInput
+            setSearchText={setSearchText}
+            searchText={searchText}
+          />
+        </div>
         {filter && <Filter noPriority={noPriority} />}
 
         {openModal ? (

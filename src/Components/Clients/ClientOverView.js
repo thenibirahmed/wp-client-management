@@ -101,7 +101,7 @@ const ClientOverView = ({
 
   return (
     <React.Fragment>
-      <div className="flex md:flex-row flex-col justify-between md:items-center md:gap-0 gap-3 ">
+      <div className="flex xl:flex-row flex-col justify-between xl:items-center xl:gap-0 gap-3 ">
         <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
           Clients Overview
         </h1>

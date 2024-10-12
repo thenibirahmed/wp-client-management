@@ -119,7 +119,7 @@ const ClientProject = ({ clientId }) => {
     <React.Fragment>
       <ProjectHeader
         selectedProject={selectedProject}
-        title="All Project"
+        title="All Projects"
         setOpenModal={setOpenProjectModal}
         btnTitle="Add Project"
         onDeleteAction={onDeleteAction}
