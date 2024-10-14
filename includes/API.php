@@ -98,6 +98,7 @@ use WpClientManagement\API\Schedules\CreateSchedule;
 use WpClientManagement\API\Schedules\DeleteSchedule;
 use WpClientManagement\API\Schedules\GetSchedules;
 use WpClientManagement\API\Schedules\GetSingleSchedule;
+use WpClientManagement\API\Schedules\GetUpcomingSchedules;
 use WpClientManagement\API\Schedules\UpdateSchedule;
 use WpClientManagement\API\Statuses\CreateStatus;
 use WpClientManagement\API\Statuses\DeleteStatus;
@@ -271,6 +272,7 @@ class API {
         new DeleteSchedule();
         new CreateSchedule();
         new UpdateSchedule();
+        new GetUpcomingSchedules();
 
         // Status
         new GetStatuses();

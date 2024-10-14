@@ -10,17 +10,17 @@ class Overview {
     private $namespace = 'wp-client-management/v1';
     private $endpoint  = '/overview';
 
-    // protected array $rules = [
-    //     'currency' => 'nullable|exists:eic_currencies,code',
-    //     'from'     => 'nullable|date',
-    //     'to'       => 'nullable|date',
-    // ];
+    protected array $rules = [
+        'currency' => 'nullable|exists:eic_currencies,code',
+        'from'     => 'nullable|date',
+        'to'       => 'nullable|date',
+    ];
 
-    // protected array $validationMessages = [
-    //     'currency.exists'  => 'Invalid currency code.',
-    //     'from.date'        => 'Invalid date format.',
-    //     'to.date'          => 'Invalid date format.',
-    // ];
+    protected array $validationMessages = [
+        'currency.exists'  => 'Invalid currency code.',
+        'from.date'        => 'Invalid date format.',
+        'to.date'          => 'Invalid date format.',
+    ];
 
     public function __construct()
     {
@@ -33,19 +33,30 @@ class Overview {
 
     public function get_overview(\WP_REST_Request $request)
     {
-        // global $validator;
+        global $validator;
 
-        // $data = [];
+        $currency = $request->get_param('currency');
+        $from     = $request->get_param('from');
+        $to       = $request->get_param('to');
 
-        // $validator = $validator->make($data, $this->rules, $this->validationMessages);
+        $data = [];
+        $data['currency'] = $currency ?: 'USD';
+        $data['from']     = $from ? $from. ' 00:00:00' : date('Y-m-d', strtotime('-3 months'));
+        $data['to']       = $to ? $to. ' 23:59:59' : date('Y-m-d 23:59:59');
 
-        // if ($validator->fails()) {
-        //     return new \WP_REST_Response([
-        //         'errors' => $validator->errors(),
-        //     ], 400);
-        // }
+        $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
-        $invoices     = Invoice::with('client', 'project', 'status')->get();
+        if ($validator->fails()) {
+            return new \WP_REST_Response([
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        $invoices = Invoice::with('client', 'project', 'status')
+            ->whereBetween('date', [$data['from'], $data['to']])->get();
+
+        $projectsCount = Project::whereBetween('start_date', [$data['from'], $data['to']])->count();
+        $clientsCount  = Client::whereBetween('created_at', [$data['from'], $data['to']])->count();
 
         $totalInvoiceAmount = $invoices->sum('total');
         $totalInvoiceCount  = $invoices->count();
@@ -76,12 +87,12 @@ class Overview {
             ],
             "client" => [
                 'name'    => 'Total Client',
-                'amount'  => Client::count(),
+                'amount'  => $clientsCount,
                 'subText' => 'last 3 months'
             ],
             "project" => [
                 'name'    => 'Total Projects',
-                'amount'  => Project::count(),
+                'amount'  => $projectsCount,
                 'subText' => 'last 3 months'
             ],
         ];
