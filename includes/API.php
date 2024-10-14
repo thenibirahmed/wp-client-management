@@ -83,6 +83,7 @@ use WpClientManagement\API\Projects\EditProject;
 use WpClientManagement\API\Projects\GetProjects;
 use WpClientManagement\API\Projects\GetProjectEmails;
 use WpClientManagement\API\Projects\GetProjectInvoices;
+use WpClientManagement\API\Projects\GetProjectList;
 use WpClientManagement\API\Projects\GetProjectNotes;
 use WpClientManagement\API\Projects\GetProjectTasks;
 use WpClientManagement\API\Projects\GetSingleProject;
@@ -265,6 +266,7 @@ class API {
         new EditProject();
         new ProjectBulkDelete();
         new ProjectBulkComplete();
+        new GetProjectList();
 
         // Schedule
         new GetSchedules();
