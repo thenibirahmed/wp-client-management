@@ -209,21 +209,20 @@ const PlayGround = () => {
   // 	getTestData();
   // }, [])
 
-<<<<<<< HEAD
 // ***
 	const getTestData = () => {
-		axios.put(eicApiSettings.rest_url + 'wp-client-management/v1/project/update/2',
-		{
-			client_id: 2,
-			status_id: 2,
-			priority_id: 1,
-			title: 'sam project',
-			start_date: '2024-09-15',
-			due_date: '2024-09-30',
-			budget: 5000.00,
-			description: 'sam description',
-			currency_id: 1
-		},
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/overview',
+		// {
+		// 	client_id: 1,
+		// 	status_id: 2,
+		// 	priority_id: 1,
+		// 	title: 'sam project',
+		// 	start_date: '2024-09-15',
+		// 	due_date: '2024-09-30',
+		// 	budget: 5000.00,
+		// 	description: 'sam description',
+		// 	currency_id: 1
+		// },
 		{
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
@@ -243,87 +242,6 @@ const PlayGround = () => {
 			);
 		});
 	};
-=======
-  // ***
-  const getTestData = () => {
-    axios
-      .get(
-        eicApiSettings.rest_url +
-          "wp-client-management/v1/team-member/1/overview",
-        // {
-        // 			project_id: 1,
-        // 			client_id: 1,
-        // 			note: 'update hote hobe',
-        // 			currency_id: 1,
-        // 			payment_method_id: 2,
-        // 			status_id: 7,
-        // 			invoice_number: 12345,
-        // 			type: 'upate',
-        // 			title: 'Updated',
-        // 			date: '2024-09-15',
-        // 			due_date: '2024-09-30',
-        // 			bill_from_id: 1,
-        // 			bill_from_address: 'Update, Cityville',
-        // 			bill_from_phone_number: '+1234567890',
-        // 			bill_from_email: 'billing@update.com',
-        // 			invoice_items: [
-        // 			  {
-        // 				// id: 34,
-        // 				details: 'Updated hoye ja.',
-        // 				description: 'Update hocchis nah kn re vai?',
-        // 				quantity: 2,
-        // 				unit_price: 500.00,
-        // 				line_total: 1000.00,
-        // 				discount_type: 'percent',
-        // 				discount_value: 10,
-        // 				tax_type: 'percent',
-        // 				tax_value: 5
-        // 			  },
-        // 			  {
-        // 				// id: 35,
-        // 				details: 'I\'m the developer.',
-        // 				description: 'New description..',
-        // 				quantity: 6,
-        // 				unit_price: 520.00,
-        // 				line_total: 520.00,
-        // 				discount_type: 'percent',
-        // 				discount_value: 10,
-        // 				tax_type: 'percent',
-        // 				tax_value: 5
-        // 			  },
-        // 			],
-        // 			bill_to_id: 1,
-        // 			billing_address: 'Update, Townsville',
-        // 			billing_phone_number: '+9876543210',
-        // 			billing_email: 'client@update.com',
-        // 			note: 'Thanks for paying use.',
-        // 			sub_total: 1500.00,
-        // 			total:1800.00,
-        // 			discount: 0,
-        // 			tax: 0,
-        // 			fee: 0
-        // },
-        {
-          headers: {
-            "X-WP-Nonce": eicApiSettings.nonce,
-          },
-          params: {
-            // currency: '',
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setPost(response.data);
-      })
-      .catch((error) => {
-        console.log(
-          "Error:",
-          error.response ? error.response.data : error.message
-        );
-      });
-  };
->>>>>>> origin/easin-dev
 
   // const setSearch = (e) => {
   // 	if (e.length > 2) {
