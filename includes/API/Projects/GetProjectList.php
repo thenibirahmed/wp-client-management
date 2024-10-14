@@ -23,7 +23,7 @@ class GetProjectList {
     public function get_project_list()
     {
 
-        $projects    = Project::all();
+       $projects    = Project::with('status', 'client.eic_crm_user', 'tasks')->take(6)->get();
 
        $data = [];
 
