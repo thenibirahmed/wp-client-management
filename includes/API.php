@@ -32,6 +32,7 @@ use WpClientManagement\API\Clients\GetClients;
 use WpClientManagement\API\Clients\GetSelectedClientDetails;
 use WpClientManagement\API\Projects\GetProjectFiles;
 use WpClientManagement\API\Clients\GetSingleClientOverview;
+use WpClientManagement\API\Clients\GetTopClients;
 use WpClientManagement\API\Clients\UpdateClient;
 use WpClientManagement\API\Contacts\AddTeamMember;
 use WpClientManagement\API\Contacts\DeleteTeamMember;
@@ -173,6 +174,7 @@ class API {
         new GetSingleClientOverview();
         new EditClient();
         new ClientBulkDelete();
+        new GetTopClients();
 
         // DealPipeline
         new GetDealPipelines();

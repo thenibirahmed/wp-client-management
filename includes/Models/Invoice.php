@@ -158,9 +158,10 @@ class Invoice extends Model
 
     public static function getAllPaidInvoices()
     {
-        return self::where('status.type','invoice')
-                ->where('status.name','paid')
-                ->get();
+        return self::whereHas('status', function ($query) {
+            $query->where('type', 'invoice')
+                ->where('name','paid');
+        })->get();
     }
 
     public static function getActiveClientsInvoices($clientIds, $currency, $from, $to)
