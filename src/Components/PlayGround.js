@@ -209,41 +209,6 @@ const PlayGround = () => {
   // 	getTestData();
   // }, [])
 
-<<<<<<< HEAD
-// ***
-	const getTestData = () => {
-		axios.put(eicApiSettings.rest_url + 'wp-client-management/v1/project/update/2',
-		{
-			client_id: 2,
-			status_id: 2,
-			priority_id: 1,
-			title: 'sam project',
-			start_date: '2024-09-15',
-			due_date: '2024-09-30',
-			budget: 5000.00,
-			description: 'sam description',
-			currency_id: 1
-		},
-		{
-			headers: {
-				'X-WP-Nonce': eicApiSettings.nonce,
-			},
-			params: {
-				// currency: '',
-			}
-		})
-		.then((response) => {
-			console.log(response.data);
-			setPost(response.data);
-		})
-		.catch((error) => {
-			console.log(
-				"Error:",
-				error.response ? error.response.data : error.message
-			);
-		});
-	};
-=======
   // ***
   const getTestData = () => {
     axios
@@ -323,7 +288,6 @@ const PlayGround = () => {
         );
       });
   };
->>>>>>> origin/easin-dev
 
   // const setSearch = (e) => {
   // 	if (e.length > 2) {
