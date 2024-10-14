@@ -79,7 +79,7 @@ class GetTopClients {
         });
 
         $data = [];
-            
+
         foreach ($topClients as $client) {
             $data[] = [
                 'id'           => $client->id,
@@ -91,14 +91,6 @@ class GetTopClients {
 
         return new \WP_REST_Response([
             'clients'    => $data,
-            // 'pagination' => [
-            //     'total'         => $clientsData->total(),
-            //     'per_page'      => $clientsData->perPage(),
-            //     'current_page'  => $clientsData->currentPage(),
-            //     'last_page'     => $clientsData->lastPage(),
-            //     'next_page_url' => $clientsData->nextPageUrl(),
-            //     'prev_page_url' => $clientsData->previousPageUrl(),
-            // ],
         ]);
     }
 }

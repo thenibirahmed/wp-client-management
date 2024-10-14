@@ -56,6 +56,7 @@ use WpClientManagement\API\Files\DeleteFile;
 use WpClientManagement\API\Files\EditFile;
 use WpClientManagement\API\Files\FilesBulkDelete;
 use WpClientManagement\API\Files\UpdateFile;
+use WpClientManagement\API\GetReport;
 use WpClientManagement\API\Invoices\InvoiceBulkDelete;
 use WpClientManagement\API\InvoiceItems\CreateInvoiceItem;
 use WpClientManagement\API\Invoices\CreateInvoice;
@@ -153,6 +154,7 @@ class API {
 
         // Overview
         new ProjectOverview();
+        new GetReport();
 
         // Post
         new GetPosts();
