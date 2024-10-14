@@ -68,6 +68,7 @@ use WpClientManagement\API\Notes\DeleteNote;
 use WpClientManagement\API\Notes\EditNote;
 use WpClientManagement\API\Notes\NoteBulkDelete;
 use WpClientManagement\API\Notes\UpdateNote;
+use WpClientManagement\API\Overview;
 use WpClientManagement\API\PaymentMethods\SelectPaymentMethod;
 use WpClientManagement\API\Posts\GetSinglePost;
 use WpClientManagement\API\Priorities\CreatePriority;
@@ -130,6 +131,9 @@ class API {
     }
 
     public function register_routes() {
+
+        // Overview
+        new Overview();
 
         // Test
         new TestApi();
