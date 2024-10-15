@@ -1,0 +1,100 @@
+import React from "react";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  Legend,
+  Tooltip,
+  Filler,
+  PointElement,
+} from "chart.js";
+
+ChartJS.register(
+  PointElement,
+  LineElement,
+  Tooltip,
+  CategoryScale,
+  LinearScale,
+  Legend,
+  Filler
+);
+
+const Graph = ({ myData }) => {
+  // Data for labels (months) and revenue/expense values
+  const labels = myData?.map((item) => item.month);
+  const revenue = myData?.map((item) => item.revenue);
+  const expense = myData?.map((item) => item.expense);
+
+  const data = {
+    labels,
+
+    datasets: [
+      {
+        label: "Revenue",
+        data: revenue,
+        backgroundColor: "rgba(28, 100, 242, 0.1)",
+        borderColor: "rgba(28, 100, 242, 1)",
+        fill: true,
+        tension: 0.4,
+        pointBorderColor: "rgba(28, 100, 242, 1)",
+      },
+      {
+        label: "Expense",
+        data: expense,
+        backgroundColor: "rgba(253, 186, 140, 0.1)",
+        borderColor: "rgba(253, 186, 140, 1)",
+        fill: true,
+        tension: 0.4,
+        pointBorderColor: "rgba(253, 186, 140, 1)",
+      },
+    ],
+  };
+
+  const options = {
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function (value) {
+            return `$${value}`;
+          },
+        },
+        // title: {
+        //   display: true,
+
+        //   font: {
+        //     family: "Arial",
+        //     size: 16,
+        //     weight: "bold",
+        //     color: "#FF0000",
+        //   },
+        // },
+      },
+      //   x: {
+      //     title: {
+      //       display: true,
+      //       text: "Month",
+      //       font: {
+      //         family: "Arial",
+      //         size: 16,
+      //         weight: "bold",
+      //         color: "#FF0000",
+      //       },
+      //     },
+      //   },
+    },
+  };
+
+  return <Line className="w-full" data={data} options={options}></Line>;
+};
+
+export default Graph;

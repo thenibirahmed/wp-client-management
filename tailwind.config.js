@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         textColor: "rgba(31, 42, 55, 1)",
         textColor2: "rgba(75, 85, 99, 1)",
+        textColor3: "rgba(17, 25, 40, 1)",
         siderbarBG: "rgba(0, 0, 0, 1)",
         customBlue: "rgba(28, 100, 242, 1)",
         invoiceColor: "rgba(5, 122, 85, 1)",
@@ -31,6 +32,7 @@ module.exports = {
         customBg4: "rgba(229, 237, 255, 1)",
         customBg5: "rgba(253, 246, 178, 1)",
         customBg6: "rgba(225, 239, 254, 1)",
+        customBg7: "rgba(253, 186, 140, 1)",
       },
       fontFamily: {
         metropolis: ["Metropolis", "sans-serif"],
