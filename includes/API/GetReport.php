@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API;
 
+use Carbon\Carbon;
 use WpClientManagement\Middlewares\AuthMiddleware;
 use WpClientManagement\Models\Invoice;
 
@@ -38,8 +39,10 @@ class GetReport {
         $to     = $request->get_param('to');
 
         $data = [];
-        $data['from']  = $from ? $from.' 00:00:00' : date('Y-m-d', strtotime('-5 months'));
-        $data['to']    = $to ? $to.' 23:59:59' : date('Y-m-d 23:59:59');
+
+        $data['from'] = $from ? Carbon::parse($from)->startOfDay() : Carbon::now()->subMonths(5)->startOfDay();
+
+        $data['to'] = $to ? Carbon::parse($to)->endOfDay() : Carbon::now()->endOfDay();
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -52,15 +55,16 @@ class GetReport {
            }
         }
 
-        $invoices = Invoice::with('status')
-                ->whereHas('status', function ($query) {
-                    $query->where('type', 'invoice')
-                        ->where('name','paid');
-                })
-                ->whereBetween('date', [$data['from'], $data['to']])
-                ->get()
-                ->groupBy(function($invoice) {
-                    return date('M', strtotime($invoice->date));
+        $invoices = Invoice::with(['status' => function ($query) {
+            $query->where('type', 'invoice')->where('name', 'paid');
+        }])
+            ->whereBetween('date', [$data['from'], $data['to']])
+            ->get()
+            ->filter(function($invoice) {
+                return $invoice->status;
+             })
+            ->groupBy(function ($invoice) {
+                return date('M', strtotime($invoice->date));
         });
 
         $months = $this->generateMonths($data['from'], $data['to']);
@@ -86,12 +90,13 @@ class GetReport {
     private function generateMonths($startDate, $endDate)
     {
         $months = [];
-        $current = strtotime($startDate);
+        $current = Carbon::parse($startDate)->startOfMonth();
+        $end = Carbon::parse($endDate)->endOfMonth();
 
-        while ($current < strtotime($endDate)) {
-            $monthName = date('M', $current);
+        while ($current <= $end) {
+            $monthName = $current->format('M');
             $months[$monthName] = 0;
-            $current = strtotime('+1 month', $current);
+            $current->addMonth();
         }
 
         return $months;

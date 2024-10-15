@@ -1,6 +1,7 @@
 <?php
 namespace WpClientManagement\API;
 
+use WpClientManagement\Helpers\AuthUser;
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
@@ -99,6 +100,7 @@ class Overview {
 
         return new \WP_REST_Response([
             'topBar'     => $topBar,
+            'profile'    => AuthUser::user()->name,
         ]);
     }
 }
