@@ -35,63 +35,45 @@ class GetReport {
     {
         global $validator;
 
-        $from   = $request->get_param('from');
-        $to     = $request->get_param('to');
+        $from = $request->get_param('from');
+        $to   = $request->get_param('to');
 
-        $data = [];
-
-        $data['from'] = $from ? Carbon::parse($from)->startOfDay() : Carbon::now()->subMonths(5)->startOfDay();
-
-        $data['to'] = $to ? Carbon::parse($to)->endOfDay() : Carbon::now()->endOfDay();
+        $data['from'] = $from ? Carbon::parse($from)->startOfMonth() : Carbon::now()->subMonths(5)->startOfMonth();
+        $data['to']   = $to ? Carbon::parse($to)->endOfMonth() : Carbon::now()->endOfMonth();
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
-        if (!empty($data['from']) && !empty($data['to'])) {
-            if($data['from'] >= $data['to']) {
-                $validator->errors()->add('from', 'The from date must be less than the to date.');
-                    return new \WP_REST_Response([
-                    'errors' => $validator->errors(),
-           ], 400);
-           }
+        if ($data['from']->greaterThanOrEqualTo($data['to'])) {
+            $validator->errors()->add('from', 'The from date must be less than the to date.');
+            return new \WP_REST_Response(['errors' => $validator->errors()], 400);
         }
 
         $invoices = Invoice::with(['status' => function ($query) {
             $query->where('type', 'invoice')->where('name', 'paid');
         }])
-            ->whereBetween('date', [$data['from'], $data['to']])
-            ->get()
-            ->filter(function($invoice) {
-                return $invoice->status;
-             })
-            ->groupBy(function ($invoice) {
-                return date('M', strtotime($invoice->date));
-        });
+        ->whereBetween('date', [$data['from'], $data['to']])
+        ->get()
+        ->filter(fn($invoice) => $invoice->status)
+        ->groupBy(fn($invoice) => Carbon::parse($invoice->date)->format('M'));
 
         $months = $this->generateMonths($data['from'], $data['to']);
 
         $chartData = [];
-
         foreach ($months as $month => &$revenue) {
             if ($invoices->has($month)) {
                 $revenue = $invoices[$month]->sum('total');
             }
-
-            $chartData[] = [
-                'month' => $month,
-                'revenue' => $revenue
-            ];
+            $chartData[] = ['month' => $month, 'revenue' => $revenue];
         }
 
-        return new \WP_REST_Response([
-            'chartData' => $chartData,
-        ]);
+        return new \WP_REST_Response(['chartData' => $chartData]);
     }
 
     private function generateMonths($startDate, $endDate)
     {
-        $months = [];
+        $months  = [];
         $current = Carbon::parse($startDate)->startOfMonth();
-        $end = Carbon::parse($endDate)->endOfMonth();
+        $end     = Carbon::parse($endDate)->endOfMonth();
 
         while ($current <= $end) {
             $monthName = $current->format('M');
@@ -101,5 +83,6 @@ class GetReport {
 
         return $months;
     }
+
 
 }

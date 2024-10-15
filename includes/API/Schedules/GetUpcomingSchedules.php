@@ -2,7 +2,7 @@
 
 namespace WpClientManagement\API\Schedules;
 
-use DateTime;
+use Carbon\Carbon;
 use WpClientManagement\Middlewares\AuthMiddleware;
 use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Schedule;
@@ -10,9 +10,7 @@ use WpClientManagement\Models\Schedule;
 class GetUpcomingSchedules {
 
     private $namespace = 'wp-client-management/v1';
-
     private $endpoint = '/upcoming-schedules';
-
 
     protected array $rules = [
         'date' => 'nullable|date_format:Y-m-d',
@@ -25,7 +23,7 @@ class GetUpcomingSchedules {
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods'  => \WP_REST_Server::READABLE,
-            'callback' => array($this, 'get_upcoming_schedules'),
+            'callback' => [$this, 'get_upcoming_schedules'],
             'permission_callback' => [AuthMiddleware::class, 'admin'],
         ]);
     }
@@ -34,66 +32,55 @@ class GetUpcomingSchedules {
     {
         global $validator;
 
-        $date = $request->get_param('date');
+        $date = $request->get_param('date') ?: Carbon::now()->toDateString();
 
-        $data['date'] = $date ?: date('Y-m-d');
+        $from = Carbon::parse($date)->startOfDay();
+        $to   = Carbon::parse($date)->endOfDay();
 
-        $from = $data['date'] . ' 00:00:00';
-        $to   = $data['date'] . ' 23:59:59';
-
-        $validator = $validator->make($data, $this->rules, $this->validationMessages);
+        $validator = $validator->make(['date' => $date], $this->rules, $this->validationMessages);
 
         if ($validator->fails()) {
-            return new \WP_REST_Response([
-                'errors' => $validator->errors(),
-            ], 400);
+            return new \WP_REST_Response(['errors' => $validator->errors()], 400);
         }
 
-        $schedules  = Schedule::whereBetween('scheduled_at', [$from, $to])->get();
+        $schedules = Schedule::whereBetween('scheduled_at', [$from, $to])->get();
 
-        if($schedules->isEmpty()) {
-            return new \WP_REST_Response([
-                'error' => 'No Schedules found',
-            ]);
+        if ($schedules->isEmpty()) {
+            return new \WP_REST_Response(['error' => 'No Schedules found']);
         }
 
-        $guest_ids = [];
+        $guest_ids = $schedules->flatMap(fn($schedule) => json_decode($schedule->guest_ids, true) ?? [])
+                               ->unique()
+                               ->values()
+                               ->all();
 
-        foreach ($schedules as $schedule) {
-            $ids = json_decode($schedule->guest_ids, true) ?? [];
-            $guest_ids = array_merge($guest_ids, $ids);
-        }
+        $guests = EicCrmUser::getGuests($guest_ids);
 
-        $guestIds = array_unique($guest_ids);
-
-        $guests = EicCrmUser::getGuests($guestIds);
-
-        $data = [];
-        foreach ($schedules as $schedule) {
+        $data = $schedules->map(function ($schedule) use ($guests) {
             $guestIdsInSchedule = json_decode($schedule->guest_ids, true) ?? [];
-            $guestNames = [];
+            $guestNames = array_map(fn($id) => $guests[$id]->wp_user->user_login ?? 'Guest', $guestIdsInSchedule);
 
-            foreach ($guestIdsInSchedule as $guestId) {
-                if (isset($guests[$guestId])) {
-                    $guestNames[] = $guests[$guestId]->wp_user->user_login;
-                }
-            }
-
-            $data[] = [
+            return [
                 'id' => $schedule->id,
-                'topic'        => $schedule->topic,
-                'scheduled_at' => $schedule->scheduled_at ? (new DateTime($schedule->scheduled_at))->format('h:i A D, d M') : '',
-                'guests' => count($guestNames) === 1
-                ? $guestNames[0]
-                : (count($guestNames) === 2
-                ? $guestNames[0] . ' & ' . $guestNames[1]
-                : $guestNames[0] . ' & ' . (count($guestNames) - 1) . ' others'
-                )
+                'topic' => $schedule->topic,
+                'scheduled_at' => Carbon::parse($schedule->scheduled_at)->format('h:i A D, d M'),
+                'guests' => $this->formatGuestNames($guestNames),
             ];
+        })->toArray();
+
+        return new \WP_REST_Response(['schedules' => $data]);
+    }
+
+    private function formatGuestNames(array $guestNames): string
+    {
+        $count = count($guestNames);
+
+        if ($count === 1) {
+            return $guestNames[0];
+        } elseif ($count === 2) {
+            return "{$guestNames[0]} & {$guestNames[1]}";
         }
 
-        return new \WP_REST_Response([
-            'schedules'  => $data,
-        ]);
+        return "{$guestNames[0]} & " . ($count - 1) . ' others';
     }
 }

@@ -211,7 +211,7 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/overview',
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/reports',
 		// {
 		// 	client_id: 1,
 		// 	status_id: 2,
@@ -229,7 +229,7 @@ const PlayGround = () => {
 			},
 			params: {
 				// currency: '',
-        date: '2024-10-14',
+        // date: '2024-10-18'
 			}
 		})
 		.then((response) => {
