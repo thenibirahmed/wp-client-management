@@ -59,12 +59,13 @@ class GetTopClients {
                   ->where('name', 'paid');
             })->whereBetween('date', [$data['from'], $data['to']]);
         })
-        ->take(5)
         ->get()
         ->map(function ($client) {
             $client->total_amount = $client->invoices->sum('total');
             return $client;
-        });
+        })
+        ->sortByDesc('total_amount')
+        ->take(5);
 
         $paidInvoices = Invoice::getAllPaidInvoices();
         $totalRevenue = $paidInvoices->sum('total');
