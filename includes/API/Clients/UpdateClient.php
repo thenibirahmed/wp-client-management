@@ -54,6 +54,7 @@ class UpdateClient {
 
     public function update_client(\WP_REST_Request $request) {
         global $validator;
+        global $wpdb;
 
         $data = $request->get_params();
         $id   = $request->get_param('id');
@@ -103,18 +104,43 @@ class UpdateClient {
         ]);
 
         if (isset($data['name']) || isset($data['email'])) {
+            if (isset($data['name']) && !empty($data['name'])) {
+                if (username_exists($data['name'])) {
+                    return new \WP_REST_Response([
+                        'message' => 'Username already exists.',
+                    ], 400);
+                }
+                $result = $wpdb->update(
+                    $wpdb->users,
+                    ['user_login' => $data['name']],
+                    ['ID' => $eic_crm_user->wp_user_id]
+                );
 
-            $wp_user = wp_update_user(array(
+                if ($result === false) {
+                    return new \WP_REST_Response([
+                        'message' => 'Failed to update user_login: ' . $wpdb->last_error,
+                    ], 500);
+                }
+            }
+
+            $wp_user = wp_update_user([
                 'ID' => $eic_crm_user->wp_user_id,
-                'user_login' => $data['name'] ?? null,
                 'user_email' => $data['email'] ?? null,
-            ));
+            ]);
 
             if (is_wp_error($wp_user)) {
                 return new \WP_REST_Response([
                     'message' => $wp_user->get_error_message(),
-                ]);
+                ], 500);
             }
+
+            return new \WP_REST_Response([
+                'message' => 'User updated successfully!',
+            ], 200);
+        } else {
+            return new \WP_REST_Response([
+                'message' => 'No data provided for update.',
+            ], 400);
         }
 
         $client->update([

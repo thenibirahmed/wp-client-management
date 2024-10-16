@@ -2,6 +2,7 @@
 
 namespace WpClientManagement;
 
+use WpClientManagement\API\Auth\Login;
 use WpClientManagement\API\Clients\ClientBulkDelete;
 use WpClientManagement\API\Clients\ClientOverview;
 use WpClientManagement\API\Clients\CreateClient;
@@ -31,6 +32,7 @@ use WpClientManagement\API\Clients\GetClients;
 use WpClientManagement\API\Clients\GetSelectedClientDetails;
 use WpClientManagement\API\Projects\GetProjectFiles;
 use WpClientManagement\API\Clients\GetSingleClientOverview;
+use WpClientManagement\API\Clients\GetTopClients;
 use WpClientManagement\API\Clients\UpdateClient;
 use WpClientManagement\API\Contacts\AddTeamMember;
 use WpClientManagement\API\Contacts\DeleteTeamMember;
@@ -54,6 +56,7 @@ use WpClientManagement\API\Files\DeleteFile;
 use WpClientManagement\API\Files\EditFile;
 use WpClientManagement\API\Files\FilesBulkDelete;
 use WpClientManagement\API\Files\UpdateFile;
+use WpClientManagement\API\GetReport;
 use WpClientManagement\API\Invoices\InvoiceBulkDelete;
 use WpClientManagement\API\InvoiceItems\CreateInvoiceItem;
 use WpClientManagement\API\Invoices\CreateInvoice;
@@ -67,6 +70,7 @@ use WpClientManagement\API\Notes\DeleteNote;
 use WpClientManagement\API\Notes\EditNote;
 use WpClientManagement\API\Notes\NoteBulkDelete;
 use WpClientManagement\API\Notes\UpdateNote;
+use WpClientManagement\API\Overview;
 use WpClientManagement\API\PaymentMethods\SelectPaymentMethod;
 use WpClientManagement\API\Posts\GetSinglePost;
 use WpClientManagement\API\Priorities\CreatePriority;
@@ -81,6 +85,7 @@ use WpClientManagement\API\Projects\EditProject;
 use WpClientManagement\API\Projects\GetProjects;
 use WpClientManagement\API\Projects\GetProjectEmails;
 use WpClientManagement\API\Projects\GetProjectInvoices;
+use WpClientManagement\API\Projects\GetProjectList;
 use WpClientManagement\API\Projects\GetProjectNotes;
 use WpClientManagement\API\Projects\GetProjectTasks;
 use WpClientManagement\API\Projects\GetSingleProject;
@@ -96,6 +101,7 @@ use WpClientManagement\API\Schedules\CreateSchedule;
 use WpClientManagement\API\Schedules\DeleteSchedule;
 use WpClientManagement\API\Schedules\GetSchedules;
 use WpClientManagement\API\Schedules\GetSingleSchedule;
+use WpClientManagement\API\Schedules\GetUpcomingSchedules;
 use WpClientManagement\API\Schedules\UpdateSchedule;
 use WpClientManagement\API\Statuses\CreateStatus;
 use WpClientManagement\API\Statuses\DeleteStatus;
@@ -130,8 +136,15 @@ class API {
 
     public function register_routes() {
 
+        // Overview
+        new Overview();
+
         // Test
         new TestApi();
+
+
+        // Auth
+        new Login();
 
         // User
         new GetUsers();
@@ -141,6 +154,7 @@ class API {
 
         // Overview
         new ProjectOverview();
+        new GetReport();
 
         // Post
         new GetPosts();
@@ -162,6 +176,7 @@ class API {
         new GetSingleClientOverview();
         new EditClient();
         new ClientBulkDelete();
+        new GetTopClients();
 
         // DealPipeline
         new GetDealPipelines();
@@ -255,6 +270,7 @@ class API {
         new EditProject();
         new ProjectBulkDelete();
         new ProjectBulkComplete();
+        new GetProjectList();
 
         // Schedule
         new GetSchedules();
@@ -262,6 +278,7 @@ class API {
         new DeleteSchedule();
         new CreateSchedule();
         new UpdateSchedule();
+        new GetUpcomingSchedules();
 
         // Status
         new GetStatuses();

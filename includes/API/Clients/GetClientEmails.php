@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Clients;
 
+use Carbon\Carbon;
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Email;
 
@@ -95,7 +96,7 @@ class GetClientEmails {
                 'from'   => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
                 'subject'   => $email->subject,
                 'body'      => $email->body,
-                'time'      => $email->created_at ? human_time_diff(strtotime($email->created_at), current_time('timestamp')) . ' ago' : null,
+                'time'      => $email->created_at ? Carbon::parse($email->created_at)->diffForHumans() : '',
             ];
         }
 

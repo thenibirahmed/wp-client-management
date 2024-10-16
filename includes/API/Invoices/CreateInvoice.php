@@ -141,10 +141,6 @@ class CreateInvoice {
             ], 400);
         }
 
-        return new \WP_REST_Response([
-            'data' => $data
-        ]);
-
         $invoice = Invoice::create($data);
 
         if(!$invoice) {

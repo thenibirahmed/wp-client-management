@@ -31,7 +31,7 @@ class DeleteInvoice {
     public function delete_invoices(\WP_REST_Request $request) {
         global $validator;
 
-        $invoice_id = $request->get_param('id');
+        $invoice_id = intval($request->get_param('id'));
 
         $data       = ['id' => $invoice_id];
 
@@ -51,7 +51,7 @@ class DeleteInvoice {
             ], 404);
         }
 
-        $invoice->items()->delete();
+        $invoice->invoice_items()->delete();
 
         $invoice->delete();
 

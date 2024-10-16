@@ -1,6 +1,7 @@
 <?php
 namespace WpClientManagement\API\Schedules;
 
+use WpClientManagement\Helpers\AuthUser;
 use WpClientManagement\Middlewares\AuthMiddleware;
 use WpClientManagement\Models\Schedule;
 
@@ -50,7 +51,7 @@ class CreateSchedule {
         global $validator;
 
         $data = $request->get_params();
-        $data['created_by']     = isset($data['created_by'])     ? intval($data['created_by'])     : null;
+        $data['created_by']     = AuthUser::user()->id;
         $data['hosted_by']      = isset($data['hosted_by'])      ? intval($data['hosted_by'])      : null;
         $data['guest_ids']      = isset($data['guest_ids'])      ? array_map('intval', $data['guest_ids']) : null;
         $data['topic']          = isset($data['topic'])          ? sanitize_text_field($data['topic']) : null;

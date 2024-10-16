@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Clients;
 
+use Carbon\Carbon;
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\File;
 
@@ -93,10 +94,10 @@ class GetClientFiles {
             $data[] = [
                 'id'     => $file->id,
                 'name'   => $file->title,
-                'project'=> $file->project->title,
+                'project'=> $file->project?->title,
                 'author' => $wpUsers[$wp_user_id]['name'] ?? 'Unknown',
                 'url'    => $file->url,
-                'time'   => $file->created_at ? human_time_diff(strtotime($file->created_at), current_time('timestamp')) . ' ago' : null,
+                'time'   => $file->created_at ? Carbon::parse($file->created_at)->diffForHumans() : '',
             ];
         }
 

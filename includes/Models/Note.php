@@ -40,6 +40,7 @@ class Note extends Model
                     ->where('project_id',$id)
                     ->whereBetween('created_at', [$from, $to]);
 
+                     
         if(!empty($search)) {
             $query->where('note', 'like', '%' . $search . '%')
                   ->orWhereHas('eic_crm_user.wp_user', function($q) use ($search) {

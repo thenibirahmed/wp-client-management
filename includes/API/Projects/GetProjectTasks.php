@@ -75,7 +75,7 @@ class GetProjectTasks {
             ], 404);
         }
 
-        $tasks         = Task::getProjectTasks($id, $page, $data['from'], $data['to'], $data['status_id'], $data['priority_id'], $search);
+        $tasks         = Task::getProjectTasks($data['id'], $page, $data['from'], $data['to'], $data['status_id'], $data['priority_id'], $search);
 
         $eic_crm_users = EicCrmUser::selectManager(false);
 

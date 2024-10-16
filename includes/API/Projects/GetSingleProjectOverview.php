@@ -83,7 +83,7 @@ class GetSingleProjectOverview {
             'name'         => $projectData->title,
             'client_id'    => $client->id,
             'client_name'  => $client->user_login,
-            'manager_name' => $manager->user_login,
+            'manager_name' => $manager?->user_login,
             'status'       => $projectData->status->name,
             'priority'     => $projectData->priority->name,
         ];
