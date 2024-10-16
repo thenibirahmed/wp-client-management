@@ -44,6 +44,7 @@ class Client extends Model
                     ->where('name', 'paid');
                 })->whereBetween('date', [$data['from'], $data['to']]);
             })
+            ->with('invoices')
             ->get()
             ->map(function ($client) {
                 $client->total_amount = $client->invoices->sum('total');

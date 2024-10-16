@@ -211,7 +211,7 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/top-clients',
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/schedules',
 		// {
 		// 	client_id: 1,
 		// 	status_id: 2,
@@ -227,11 +227,11 @@ const PlayGround = () => {
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
 			},
-			params: {
+			// params: {
 				// currency: '',
         // date: '2024-10-18'
-        currency: 'BDT'
-			}
+        // currency: 'BDT'
+			// }
 		})
 		.then((response) => {
 			console.log(response.data);
