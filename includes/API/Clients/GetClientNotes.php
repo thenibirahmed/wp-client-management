@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Clients;
 
+use Carbon\Carbon;
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Note;
 
@@ -98,7 +99,7 @@ class GetClientNotes {
                 'id'      => $note->id,
                 'creator' => $wpUsers[$wp_user_id]['name'] ?? 'N/A',
                 'note'    => $note->note,
-                'time'    => $note->created_at ? human_time_diff(strtotime($note->created_at), current_time('timestamp')) . ' ago' : null,
+                'time'    => $note->created_at ? Carbon::parse($note->created_at)->diffForHumans() : '',
             ];
         }
 
