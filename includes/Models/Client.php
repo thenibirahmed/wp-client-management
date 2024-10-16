@@ -36,6 +36,23 @@ class Client extends Model
         return $query->paginate(10, ['*'], 'page', $page);
     }
 
+    public static function getTopClients($data)
+    {
+        return self::whereHas('invoices', function ($query) use ($data) {
+                $query->whereHas('status', function ($q) {
+                 $q->where('type', 'invoice')
+                    ->where('name', 'paid');
+                })->whereBetween('date', [$data['from'], $data['to']]);
+            })
+            ->get()
+            ->map(function ($client) {
+                $client->total_amount = $client->invoices->sum('total');
+                return $client;
+            })
+            ->sortByDesc('total_amount')
+            ->take(5);
+    }
+
 
     // Older one.
     // public static function getActiveClients($page)
