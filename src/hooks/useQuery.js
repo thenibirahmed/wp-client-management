@@ -1266,3 +1266,22 @@ export const useBulkComplete = async (
     setLoader(false);
   }
 };
+
+export const useFetchDashboardOverView = (onError) => {
+  return useQuery(
+    "dashboard-overview",
+    async () => {
+      const url = `/overview`;
+
+      return await api.get(url);
+    },
+    {
+      select: (data) => {
+        console.log(data);
+        return data;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};

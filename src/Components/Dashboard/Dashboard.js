@@ -5,6 +5,8 @@ import DasboardRevenue from "./DasboardRevenue";
 import ProjectList from "./ProjectList";
 import Schedule from "./Schedule";
 import TopClients from "./TopClients";
+import { useFetchDashboardOverView } from "../../hooks/useQuery";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
   const [dateRange, setDateRange] = useState([
@@ -14,6 +16,18 @@ const Dashboard = () => {
 
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
+
+  const {
+    isLoading,
+    data: clientList,
+    error,
+    refetch,
+  } = useFetchDashboardOverView(onError);
+
+  function onError(err) {
+    console.log(err);
+    toast.error("Failed to fetchClientOverView data");
+  }
 
   return (
     <React.Fragment>
