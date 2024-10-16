@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Emails;
 
+use Carbon\Carbon;
 use WpClientManagement\Models\Email;
 
 class GetSingleEmail {
@@ -66,7 +67,7 @@ class GetSingleEmail {
             'subject' => $email->subject,
             'from' => $wp_user->user_login,
             'body' => $email->body,
-            'date' => $email->created_at ? date('M d, Y g:iA', strtotime($email->created_at)) : '',
+            'date' => $email->created_at ? Carbon::parse($email->created_at)->format('M d, Y, h:i A') : '',
         ];
 
         return new \WP_REST_Response([
