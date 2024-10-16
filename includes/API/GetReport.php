@@ -31,15 +31,13 @@ class GetReport {
         ]);
     }
 
-    public function get_report(\WP_REST_Request $request)
+    public function get_report()
     {
         global $validator;
 
-        $from = $request->get_param('from');
-        $to   = $request->get_param('to');
-
-        $data['from'] = $from ? Carbon::parse($from)->startOfMonth() : Carbon::now()->subMonths(5)->startOfMonth();
-        $data['to']   = $to ? Carbon::parse($to)->endOfMonth() : Carbon::now()->endOfMonth();
+        $data = [];
+        $data['from'] = Carbon::now()->startOfYear();
+        $data['to']   = Carbon::now()->endOfYear();
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -68,6 +66,7 @@ class GetReport {
 
         return new \WP_REST_Response(['chartData' => $chartData]);
     }
+
 
     private function generateMonths($startDate, $endDate)
     {
