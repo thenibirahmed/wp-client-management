@@ -3,7 +3,7 @@ import ProjectListTable from "./ProjectListTable";
 import { ArrowRight02Icon } from "../../utils/icons";
 const dummyProjectData = [
   {
-    projectname: "E-Commerce Website",
+    projectname: "E-Commerce Websites",
     task: "Develop product listing page",
     createdat: "2024-10-10",
     client: "ABC Corp",

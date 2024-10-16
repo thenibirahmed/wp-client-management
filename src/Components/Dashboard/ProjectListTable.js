@@ -70,7 +70,12 @@ const ProjectListTable = ({ projectData }) => {
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
                           {item.task}
                         </h3>
-                      </td>{" "}
+                      </td>
+                      <td className="whitespace-nowrap py-4 pl-2 pr-3  sm:pl-4 ">
+                        <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
+                          {item.createdat}
+                        </h3>
+                      </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
                           {item.client}
