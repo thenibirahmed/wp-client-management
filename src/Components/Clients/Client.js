@@ -117,23 +117,25 @@ const Client = () => {
             All Clients
           </h1>
           <div className="flex sm:flex-row flex-wrap gap-5 items-center">
-            {selectedClient.length > 0 && (
-              <>
-                {loader && <Loaders />}
-                <button
-                  disabled={loader}
-                  onClick={() => onDeleteAction(selectedClient)}
-                >
-                  <Delete03Icon
-                    className={`text-customRed ${loader ? "opacity-50" : ""}`}
-                  />
-                </button>
-              </>
-            )}
-            <ClientSearchInput
-              setSearchText={setSearchText}
-              searchText={searchText}
-            />
+            <div className=" flex sm:flex-row flex-row-reverse gap-2">
+              {selectedClient.length > 0 && (
+                <>
+                  {loader && <Loaders />}
+                  <button
+                    disabled={loader}
+                    onClick={() => onDeleteAction(selectedClient)}
+                  >
+                    <Delete03Icon
+                      className={`text-customRed ${loader ? "opacity-50" : ""}`}
+                    />
+                  </button>
+                </>
+              )}
+              <ClientSearchInput
+                setSearchText={setSearchText}
+                searchText={searchText}
+              />
+            </div>
             <button
               onClick={() => setCreateClient(true)}
               type="button"

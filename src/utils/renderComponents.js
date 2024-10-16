@@ -1,4 +1,4 @@
-import Dashboard from "../Components/Dashboard";
+import Dashboard from "../Components/Dashboard/Dashboard";
 import Invoices from "../Components/Invoices";
 import Schedules from "../Components/Schedules";
 import Contact from "../Components/Contacts/Contact";

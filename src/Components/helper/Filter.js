@@ -46,7 +46,7 @@ const Filter = ({ noPriority }) => {
     return <Errors message="Internal Server Error" />;
 
   return (
-    <Menu as="div" className="relative inline-block text-left ml-4">
+    <Menu as="div" className="relative inline-block text-left sm:ml-4">
       <div>
         <Menu.Button className="flex w-32 justify-between gap-x-1.5 rounded-md p-[10px] bg-white text-textColor2 border border-borderColor text-sm font-semibold shadow-sm ring-1 ring-inset ring-textColor2 hover:bg-gray-50">
           <div className="flex-1 flex items-center gap-1">

@@ -32,7 +32,11 @@ export const SelectTextField = ({
 
   return (
     <Listbox value={select} onChange={setSelect}>
-      <div className={`flex flex-col gap-2 ${currency ? "w-32" : " w-full"} `}>
+      <div
+        className={`flex flex-col gap-2 ${
+          currency ? "sm:w-40 w-72" : " w-full"
+        } `}
+      >
         {label && (
           <label className="font-medium text-sm  font-metropolis text-textColor">
             {label}
@@ -48,7 +52,7 @@ export const SelectTextField = ({
               error ? "border-customRed" : "border-borderColor"
             }`}
           >
-            <span className="block truncate">
+            <span className="block truncate text-center">
               {currency ? select?.code : select?.name}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">

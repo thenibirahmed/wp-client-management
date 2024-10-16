@@ -42,7 +42,7 @@ const DateRangePicker = ({ dateRange, setDateRange }) => {
   return (
     <div
       ref={datePickerRef}
-      className="relative flex justify-between w-80 items-center border-[1px] border-borderColor px-4 py-[8px] rounded-[5px]"
+      className="relative flex justify-between xl:w-80 w-72 items-center border-[1px] border-borderColor  px-4 py-[8px] rounded-[5px]"
     >
       <div className="flex items-center text-[14px] font-metropolis font-normal  text-textColor2">
         {/* Display formatted date range */}
