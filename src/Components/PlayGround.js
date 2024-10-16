@@ -211,7 +211,7 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/reports',
+		axios.delete(eicApiSettings.rest_url + 'wp-client-management/v1/invoice/delete/16',
 		// {
 		// 	client_id: 1,
 		// 	status_id: 2,
@@ -227,10 +227,10 @@ const PlayGround = () => {
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
 			},
-			params: {
+			// params: {
 				// currency: '',
         // date: '2024-10-18'
-			}
+			// }
 		})
 		.then((response) => {
 			console.log(response.data);
