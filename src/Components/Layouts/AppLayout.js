@@ -49,7 +49,6 @@ const AppLayout = ({ children }) => {
                   </button>
                 </div>
               </TransitionChild>
-              {/* Sidebar  mobile, */}
 
               <React.Fragment>
                 <Sidebar />
