@@ -18,7 +18,7 @@ const dummyData = [
 
 const DasboardRevenue = () => {
   return (
-    <div className=" border  border-borderColor rounded-[8px] p-[32px]">
+    <div className=" border  border-borderColor rounded-[8px] lg:p-[32px] p-5">
       <div className="flex justify-between">
         <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
           Revenue
@@ -31,7 +31,7 @@ const DasboardRevenue = () => {
         </button>
       </div>
 
-      {/* <div className="flex items-center gap-[20px]  mt-3">
+      <div className="flex items-center gap-[20px]  mt-3">
         <div className="flex items-center gap-[4px]">
           <BlueCircle />
           <span className="text-xs font-normal font-metropolis text-textColor2">
@@ -44,8 +44,8 @@ const DasboardRevenue = () => {
             Expense
           </span>
         </div>
-      </div> */}
-      <div className="mt-7">
+      </div>
+      <div className="mt-7 w-full">
         <Graph myData={dummyData} />
       </div>
     </div>

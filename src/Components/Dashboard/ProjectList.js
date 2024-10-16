@@ -41,7 +41,7 @@ const dummyProjectData = [
 
 const ProjectList = () => {
   return (
-    <div className=" border  border-borderColor rounded-[8px] p-[32px]">
+    <div className=" border  border-borderColor rounded-[8px] lg:p-[32px] p-5">
       <div className="flex justify-between">
         <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
           Project List
@@ -53,6 +53,7 @@ const ProjectList = () => {
           <ArrowRight02Icon className="text-customBlue" />
         </button>
       </div>
+
       <div className="mt-6">
         <ProjectListTable projectData={dummyProjectData} />
       </div>

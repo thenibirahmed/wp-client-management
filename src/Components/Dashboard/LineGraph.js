@@ -57,7 +57,24 @@ const Graph = ({ myData }) => {
     responsive: true,
     plugins: {
       legend: {
-        display: true,
+        display: false, // Hide the default legend
+      },
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            const index = tooltipItem.dataIndex;
+            const rev = revenue[index];
+            const exp = expense[index];
+            const diff = rev - exp;
+            const percentage = ((diff / rev) * 100).toFixed(2);
+
+            return [
+              `${diff > 0 ? "+" : ""}${diff}k (${percentage}%)`,
+              `Revenue: ${rev}k`,
+              `Expense: ${exp}k`,
+            ];
+          },
+        },
       },
     },
     scales: {
@@ -65,32 +82,26 @@ const Graph = ({ myData }) => {
         beginAtZero: true,
         ticks: {
           callback: function (value) {
-            return `$${value}`;
+            return `${value}k`;
           },
+          font: {
+            family: "Metropolis",
+            size: 14,
+            weight: 600,
+          },
+          color: "rgba(75, 85, 99, 1)",
         },
-        // title: {
-        //   display: true,
-
-        //   font: {
-        //     family: "Arial",
-        //     size: 16,
-        //     weight: "bold",
-        //     color: "#FF0000",
-        //   },
-        // },
       },
-      //   x: {
-      //     title: {
-      //       display: true,
-      //       text: "Month",
-      //       font: {
-      //         family: "Arial",
-      //         size: 16,
-      //         weight: "bold",
-      //         color: "#FF0000",
-      //       },
-      //     },
-      //   },
+      x: {
+        ticks: {
+          font: {
+            family: "Metropolis",
+            size: 14,
+            weight: 600,
+          },
+          color: "rgba(75, 85, 99, 1)",
+        },
+      },
     },
   };
 

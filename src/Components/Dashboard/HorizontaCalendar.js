@@ -1,22 +1,20 @@
 import React, { useState } from "react";
-import dayjs from "dayjs"; // Using Day.js to manage dates
+import dayjs from "dayjs";
+
 import { ArrowLeft01Icon, ArrowRight01Icon } from "../../utils/icons";
 
 const Calendar = () => {
-  const [currentDate, setCurrentDate] = useState(dayjs()); // Start from today's date
-  const today = dayjs(); // Store the current date
+  const [currentDate, setCurrentDate] = useState(dayjs());
+  const today = dayjs();
 
-  // Function to move to the next week (add 7 days)
   const handleNextWeek = () => {
     setCurrentDate(currentDate.add(7, "day"));
   };
 
-  // Function to move to the previous week (subtract 7 days)
   const handlePreviousWeek = () => {
     setCurrentDate(currentDate.subtract(7, "day"));
   };
 
-  // Get the days of the week starting from the current date
   const getWeekDates = () => {
     let week = [];
     for (let i = 0; i < 7; i++) {
@@ -25,15 +23,13 @@ const Calendar = () => {
     return week;
   };
 
-  // Render day names (Sun, Mon, etc.) and dates
   const weekDates = getWeekDates();
 
-  // Get the current month and year for display
   const currentMonthYear = currentDate.format("MMMM YYYY");
 
   return (
-    <div className="pt-8">
-      <div className="flex justify-between items-center mb-4">
+    <div className="pt-6">
+      <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-semibold text-textColor3 font-metropolis">
           {currentMonthYear}
         </h2>
@@ -58,7 +54,7 @@ const Calendar = () => {
       </div>
 
       {/* Display Corresponding Dates */}
-      <div className="grid grid-cols-7 gap-4 mt-2">
+      <div className="grid grid-cols-7 gap-4 mt-2 pb-5 border-b-[1px] border-b-borderColor">
         {weekDates.map((date, index) => (
           <div key={index} className="text-center">
             <span

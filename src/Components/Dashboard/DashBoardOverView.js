@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import toast from "react-hot-toast";
+
 import DateRangePicker from "../DateRangePicker";
 import { OvierViewItem } from "../helper/OverViewItem";
 import { ArrowUpRight01Icon } from "../../utils/icons";
@@ -40,7 +40,7 @@ const DashBoardOverView = ({
         </div>
       </div>
 
-      <div className="flex   w-full  md:flex-row flex-col  md:justify-between  items-center border border-borderColor rounded-lg">
+      <div className="flex   w-full  xl:flex-row flex-col  xl:justify-between  items-center border border-borderColor rounded-lg">
         <>
           <OvierViewItem
             title="Total Invoice"

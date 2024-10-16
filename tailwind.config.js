@@ -19,6 +19,7 @@ module.exports = {
         iconColor: "rgba(107, 114, 128, 1)",
         iconColor2: "rgba(156, 163, 175, 1)",
         borderColor: "rgba(209, 213, 219, 1)",
+        borderColor2: "rgba(249, 250, 251, 1)",
         skyBlue: "rgba(141, 162, 251, 1)",
         yellow: "rgba(227, 160, 8, 1)",
         red: "rgba(224, 36, 36, 1)",

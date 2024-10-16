@@ -39,10 +39,10 @@ const dummyData = [
 
 const TopClients = () => {
   return (
-    <div className=" border  border-borderColor rounded-[8px] p-[24px] space-y-[20px]">
-      <div className="flex justify-between">
+    <div className=" border  border-borderColor rounded-[8px] lg:p-[24px] p-4 space-y-[20px]">
+      <div className="flex xl:flex-row flex-col xl:justify-between">
         <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
-          Project List
+          Top 5 Clients
         </h1>
         <button className="flex items-center gap-2">
           <span className="font-metropolis uppercase text-sm font-semibold text-customBlue">
@@ -52,7 +52,9 @@ const TopClients = () => {
         </button>
       </div>
 
-      <PieChart myData={dummyPieData} />
+      <div className="pt-3 pb-2 w-full  ">
+        <PieChart myData={dummyPieData} />
+      </div>
 
       <div className="pt-5 font-metropolis ">
         <div className="grid grid-cols-3 pb-3  border-b-[1px] border-b-borderColor ">

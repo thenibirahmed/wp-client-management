@@ -18,7 +18,7 @@ export const OvierViewItem = ({
         }`}
       >
         {icons ? (
-          <div className="flex items-center md:justify-between justify-center">
+          <div className="flex items-center xl:justify-between justify-start">
             <h3
               className={`font-metropolis uppercase text-xs  font-semibold ${
                 expense ? "text-white" : "text-textColor2"

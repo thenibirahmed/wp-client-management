@@ -26,12 +26,12 @@ const Dashboard = () => {
         setDateTo={setDateTo}
       />{" "}
       <React.Fragment>
-        <div className="flex xl:flex-row flex-col gap-4">
-          <div className="flex-1 space-y-[20px]">
+        <div className="flex lg:flex-row flex-col gap-4">
+          <div className="xl:w-[70%] lg:w-[65%] w-full space-y-[20px]">
             <DasboardRevenue />
             <ProjectList />
           </div>
-          <div className="lg:w-[400px] w-full space-y-[20px]">
+          <div className="xl:w-[30%] lg:w-[35%] w-full space-y-[20px]">
             <Schedule />
             <TopClients />
           </div>
