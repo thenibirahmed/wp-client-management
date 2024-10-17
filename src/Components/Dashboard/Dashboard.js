@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import DashBoardOverView from "./DashBoardOverView";
+import toast from "react-hot-toast";
 import dayjs from "dayjs";
+
+import DashBoardOverView from "./DashBoardOverView";
 import DasboardRevenue from "./DasboardRevenue";
 import ProjectList from "./ProjectList";
 import Schedule from "./Schedule";
 import TopClients from "./TopClients";
+import Skeleton from "../Skeleton";
+import Errors from "../Errors";
 import {
   useFetchDashboardOverView,
   useFetchDashboardProjectLists,
-  useFetchDashboardReport,
   useFetchDashboardReports,
   useFetchDashboardTopClients,
   useFetchDashboardUpcomingShedule,
 } from "../../hooks/useQuery";
-import toast from "react-hot-toast";
-import Skeleton from "../Skeleton";
 
 const Dashboard = () => {
   const [dateRange, setDateRange] = useState([
@@ -29,7 +30,6 @@ const Dashboard = () => {
     isLoading,
     data: dashboard,
     error,
-    refetch,
   } = useFetchDashboardOverView(onError);
 
   const {
@@ -58,12 +58,30 @@ const Dashboard = () => {
     error: clientErr,
   } = useFetchDashboardTopClients(onError);
 
-  if (isLoading || projectLoader) return <Skeleton />;
+  const loaders =
+    isLoading ||
+    projectLoader ||
+    scheduleLoader ||
+    clientLoader ||
+    reportLoader;
+
+  if (loaders) return <Skeleton />;
 
   function onError(err) {
     console.log(err);
-    toast.error("Failed to fetchClientOverView data");
+    toast.error(err?.reponse?.data?.messge || "Internal server error");
   }
+
+  const errors = error || clientErr || projectErr || reportErr || scheduleErr;
+
+  if (errors)
+    return (
+      <Errors
+        message={
+          error?.response?.data?.errors?.id[0] || "internal server error"
+        }
+      />
+    );
 
   return (
     <React.Fragment>

@@ -17,22 +17,6 @@ export const MultiSelectTextField = ({
   allIds,
   update = false,
 }) => {
-  const [state, setState] = useState(false);
-
-  useEffect(() => {
-    if (isSubmitting && allIds?.length === 0) {
-      setState(true);
-    }
-
-    if (allIds?.length > 0) {
-      setState(false);
-    }
-  }, [isSubmitting, allIds]);
-
-  console.log("allids", allIds);
-  console.log("length = ", allIds?.length);
-  console.log("isSubmitting = ", isSubmitting);
-
   const handleSelect = (person) => {
     const isIncluded = select?.some((item) => item.id === person.id);
     if (isIncluded) {
@@ -50,9 +34,7 @@ export const MultiSelectTextField = ({
         </label>
         <div className="relative ">
           <ListboxButton
-            className={`relative w-full cursor-default border rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900  focus:outline-none sm:text-sm sm:leading-6 ${
-              state ? "border-customRed" : "border-borderColor"
-            }`}
+            className={`relative w-full cursor-default border rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900  focus:outline-none sm:text-sm sm:leading-6  border-borderColor`}
           >
             <span className="block truncate">
               {select?.length > 0
@@ -100,11 +82,6 @@ export const MultiSelectTextField = ({
             ))}
           </ListboxOptions>
         </div>
-        {state && (
-          <p className="text-xs font-semibold text-customRed -mt-1">
-            Assignee is required*
-          </p>
-        )}
       </div>
     </Listbox>
   );
