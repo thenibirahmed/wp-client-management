@@ -69,7 +69,7 @@ const Dashboard = () => {
       />{" "}
       <React.Fragment>
         <div className="flex lg:flex-row flex-col gap-4">
-          <div className="2xl:w-[72%] xl:w-[70%] lg:w-[65%] w-full space-y-[20px]">
+          <div className=" xl:w-[70%] lg:w-[65%] w-full space-y-[20px]">
             <DasboardRevenue />
             <ProjectList projects={project?.projects} />
           </div>

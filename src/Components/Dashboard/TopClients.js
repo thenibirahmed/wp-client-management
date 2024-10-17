@@ -52,7 +52,7 @@ const TopClients = ({ clients }) => {
         </button>
       </div>
 
-      <div className="pt-3 pb-2 lg:w-full sm:w-1/3 w-full  ">
+      <div className="pt-3 pb-2 mx-auto 2xl:w-[75%]  lg:w-full sm:w-1/3 w-full  ">
         <PieChart myData={dummyPieData} />
       </div>
 
