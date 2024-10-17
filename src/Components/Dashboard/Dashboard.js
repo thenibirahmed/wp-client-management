@@ -9,6 +9,7 @@ import {
   useFetchDashboardOverView,
   useFetchDashboardProjectLists,
   useFetchDashboardReport,
+  useFetchDashboardReports,
   useFetchDashboardTopClients,
   useFetchDashboardUpcomingShedule,
 } from "../../hooks/useQuery";
@@ -37,11 +38,19 @@ const Dashboard = () => {
     error: scheduleErr,
   } = useFetchDashboardUpcomingShedule(onError);
 
+  console.log("schedules", schedules);
+
   const {
     isLoading: projectLoader,
     data: project,
     error: projectErr,
   } = useFetchDashboardProjectLists(onError);
+
+  const {
+    isLoading: reportLoader,
+    data: report,
+    error: reportErr,
+  } = useFetchDashboardReports(onError);
 
   const {
     isLoading: clientLoader,
@@ -70,7 +79,7 @@ const Dashboard = () => {
       <React.Fragment>
         <div className="flex lg:flex-row flex-col gap-4">
           <div className=" xl:w-[70%] lg:w-[65%] w-full space-y-[20px]">
-            <DasboardRevenue />
+            <DasboardRevenue chartData={report?.chartData} />
             <ProjectList projects={project?.projects} />
           </div>
           <div className="2xl:w-[28%] xl:w-[30%] lg:w-[35%] w-full space-y-[20px]">

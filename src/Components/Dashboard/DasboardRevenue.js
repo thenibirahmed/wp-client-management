@@ -1,22 +1,14 @@
 import React from "react";
 import { ArrowRight02Icon } from "../../utils/icons";
 import Graph from "./LineGraph";
-const dummyData = [
-  { month: "Jan", revenue: 1200, expense: 1000 },
-  { month: "Feb", revenue: 1500, expense: 1300 },
-  { month: "Mar", revenue: 1000, expense: 900 },
-  { month: "Apr", revenue: 2200, expense: 1800 },
-  { month: "May", revenue: 1300, expense: 1100 },
-  { month: "Jun", revenue: 1800, expense: 1500 },
-  { month: "Jul", revenue: 2000, expense: 1700 },
-  { month: "Aug", revenue: 1900, expense: 1600 },
-  { month: "Sep", revenue: 2100, expense: 1800 },
-  { month: "Oct", revenue: 2500, expense: 2000 },
-  { month: "Nov", revenue: 3000, expense: 2400 },
-  { month: "Dec", revenue: 3200, expense: 2600 },
-];
 
-const DasboardRevenue = () => {
+const DasboardRevenue = ({ chartData }) => {
+  const chartDataList = chartData?.map((item) => ({
+    month: item?.month,
+    revenue: Number(item?.revenue),
+    expense: chartData?.expense || 0,
+  }));
+
   return (
     <div className=" border  border-borderColor rounded-[8px] lg:p-[32px] p-5">
       <div className="flex justify-between">
@@ -46,7 +38,7 @@ const DasboardRevenue = () => {
         </div>
       </div>
       <div className="mt-7 w-full">
-        <Graph myData={dummyData} />
+        <Graph myData={chartDataList} />
       </div>
     </div>
   );

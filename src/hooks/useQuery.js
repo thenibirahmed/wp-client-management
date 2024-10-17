@@ -1352,3 +1352,24 @@ export const useFetchDashboardTopClients = (onError) => {
     }
   );
 };
+
+export const useFetchDashboardReports = (onError) => {
+  return useQuery(
+    "dashboard-report",
+    async () => {
+      const url = `/reports`;
+
+      return await api.get(url);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          chartData: data.data.chartData,
+        };
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
