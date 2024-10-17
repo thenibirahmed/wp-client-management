@@ -211,7 +211,7 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/project/1/tasks',
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/upcoming-schedules',
 		// {
 		// 	client_id: 1,
 		// 	status_id: 2,

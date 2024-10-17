@@ -46,7 +46,7 @@ class GetUpcomingSchedules {
         $schedules = Schedule::whereBetween('scheduled_at', [$from, $to])->get();
 
         if ($schedules->isEmpty()) {
-            return new \WP_REST_Response(['error' => 'No Schedules found']);
+            return new \WP_REST_Response(['schedules' => []]);
         }
 
         $guest_ids = $schedules->flatMap(fn($schedule) => json_decode($schedule->guest_ids, true) ?? [])
