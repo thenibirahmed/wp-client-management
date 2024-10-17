@@ -52,6 +52,7 @@ class UpdateTeamMember {
 
     public function update_client(\WP_REST_Request $request) {
         global $validator;
+        global $wpdb;
 
         $data = $request->get_params();
         $id   = $request->get_param('id');
@@ -95,9 +96,27 @@ class UpdateTeamMember {
 
         if (isset($data['name']) || isset($data['email'])) {
 
+            if (isset($data['name']) && !empty($data['name'])) {
+                if (username_exists($data['name'])) {
+                    return new \WP_REST_Response([
+                        'message' => 'Username already exists.',
+                    ], 400);
+                }
+                $result = $wpdb->update(
+                    $wpdb->users,
+                    ['user_login' => $data['name']],
+                    ['ID' => $eic_crm_user->wp_user_id]
+                );
+
+                if ($result === false) {
+                    return new \WP_REST_Response([
+                        'message' => 'Failed to update user_login: ' . $wpdb->last_error,
+                    ], 500);
+                }
+            }
+
             $wp_user_data = array(
                 'ID' => $eic_crm_user->wp_user_id,
-                'user_login' => $data['name'] ?? null,
                 'user_email' => $data['email'] ?? null,
             );
 
