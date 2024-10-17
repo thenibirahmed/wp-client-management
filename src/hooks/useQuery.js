@@ -506,7 +506,7 @@ export const useFetchPriorities = (type, onError) => {
 
 export const useFetchStatus = (type, onError) => {
   return useQuery(
-    "project-status",
+    `project-status-${type}`,
     async () => {
       return await api.get(`/select/${type}/status`);
     },
@@ -1341,7 +1341,6 @@ export const useFetchDashboardTopClients = (onError) => {
     },
     {
       select: (data) => {
-        console.log("top clients", data.data);
         const sendData = {
           clients: data.data.clients,
         };

@@ -31,13 +31,9 @@ const ClientDetails = () => {
     setDateFrom,
     dateTo,
     setDateTo,
-    selectStatus,
     setSelectStatus,
-    selectPriority,
     setSelectPriority,
     setSelectedFilter,
-
-    searchText,
     setSearchText,
     selectCurrency,
     setSelectCurrency,

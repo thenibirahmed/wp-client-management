@@ -68,7 +68,7 @@ const AddNewTaskForm = ({
     isLoading: isLoadingStatus,
     data: statuses,
     error: pStatusErr,
-  } = useFetchStatus("project", onError);
+  } = useFetchStatus("task", onError);
 
   const {
     isLoading: isLoadingSelectProject,

@@ -114,7 +114,7 @@ const AddNewInvoiceForm = ({
     isLoading: isLoadingStatus,
     data: statuses,
     error: pStatusErr,
-  } = useFetchStatus("project", onError);
+  } = useFetchStatus("invoice", onError);
 
   const { isLoading: isLoadingCliDetails, data: client } =
     useFetchClientDetails(selectClient?.id, onClientErr);

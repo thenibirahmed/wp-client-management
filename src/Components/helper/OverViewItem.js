@@ -69,7 +69,7 @@ export const OvierViewItem = ({
           </div>
         )}{" "}
         {clients && (
-          <div className="flex   gap-[4px]">
+          <div className="flex items-center   gap-[5px]">
             <span className="bg-customBg3 p-[4px] rounded-[5px] font-metropolis text-sm font-semibold text-red">
               -12%
             </span>
