@@ -59,7 +59,7 @@ export const OvierViewItem = ({
           </h6>
         )}
         {expense && (
-          <div className="flex items-center lg:justify-start justify-center  gap-[10px]">
+          <div className="flex items-center  gap-[10px]">
             <span className="bg-white p-[4px] rounded-[5px] font-metropolis text-sm font-semibold text-invoiceColor">
               +6%
             </span>
@@ -69,7 +69,7 @@ export const OvierViewItem = ({
           </div>
         )}{" "}
         {clients && (
-          <div className="flex items-center lg:justify-start justify-center gap-[4px]">
+          <div className="flex   gap-[4px]">
             <span className="bg-customBg3 p-[4px] rounded-[5px] font-metropolis text-sm font-semibold text-red">
               -12%
             </span>

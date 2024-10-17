@@ -122,7 +122,6 @@ const ClientOverView = ({
       <div className="flex   w-full  md:flex-row flex-col  md:justify-between  items-center border border-borderColor rounded-lg">
         {singleClient ? (
           <>
-            {" "}
             <OvierViewItem
               title={topBar?.invoice?.name}
               amount={topBar?.invoice?.amount}

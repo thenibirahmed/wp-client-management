@@ -5,8 +5,15 @@ import DasboardRevenue from "./DasboardRevenue";
 import ProjectList from "./ProjectList";
 import Schedule from "./Schedule";
 import TopClients from "./TopClients";
-import { useFetchDashboardOverView } from "../../hooks/useQuery";
+import {
+  useFetchDashboardOverView,
+  useFetchDashboardProjectLists,
+  useFetchDashboardReport,
+  useFetchDashboardTopClients,
+  useFetchDashboardUpcomingShedule,
+} from "../../hooks/useQuery";
 import toast from "react-hot-toast";
+import Skeleton from "../Skeleton";
 
 const Dashboard = () => {
   const [dateRange, setDateRange] = useState([
@@ -19,10 +26,30 @@ const Dashboard = () => {
 
   const {
     isLoading,
-    data: clientList,
+    data: dashboard,
     error,
     refetch,
   } = useFetchDashboardOverView(onError);
+
+  const {
+    isLoading: scheduleLoader,
+    data: schedules,
+    error: scheduleErr,
+  } = useFetchDashboardUpcomingShedule(onError);
+
+  const {
+    isLoading: projectLoader,
+    data: project,
+    error: projectErr,
+  } = useFetchDashboardProjectLists(onError);
+
+  const {
+    isLoading: clientLoader,
+    data: client,
+    error: clientErr,
+  } = useFetchDashboardTopClients(onError);
+
+  if (isLoading || projectLoader) return <Skeleton />;
 
   function onError(err) {
     console.log(err);
@@ -38,16 +65,17 @@ const Dashboard = () => {
         setDateFrom={setDateFrom}
         dateTo={dateTo}
         setDateTo={setDateTo}
+        topBar={dashboard?.topBar}
       />{" "}
       <React.Fragment>
         <div className="flex lg:flex-row flex-col gap-4">
-          <div className="xl:w-[70%] lg:w-[65%] w-full space-y-[20px]">
+          <div className="2xl:w-[72%] xl:w-[70%] lg:w-[65%] w-full space-y-[20px]">
             <DasboardRevenue />
-            <ProjectList />
+            <ProjectList projects={project?.projects} />
           </div>
-          <div className="xl:w-[30%] lg:w-[35%] w-full space-y-[20px]">
+          <div className="2xl:w-[28%] xl:w-[30%] lg:w-[35%] w-full space-y-[20px]">
             <Schedule />
-            <TopClients />
+            <TopClients clients={client?.clients} />
           </div>
         </div>
       </React.Fragment>

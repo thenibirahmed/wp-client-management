@@ -37,7 +37,7 @@ const dummyData = [
   },
 ];
 
-const TopClients = () => {
+const TopClients = ({ clients }) => {
   return (
     <div className=" border  border-borderColor rounded-[8px] lg:p-[24px] p-4 space-y-[20px]">
       <div className="flex xl:flex-row flex-col xl:justify-between">
@@ -52,7 +52,7 @@ const TopClients = () => {
         </button>
       </div>
 
-      <div className="pt-3 pb-2 w-full  ">
+      <div className="pt-3 pb-2 lg:w-full sm:w-1/3 w-full  ">
         <PieChart myData={dummyPieData} />
       </div>
 

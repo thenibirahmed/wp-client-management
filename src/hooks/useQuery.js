@@ -1277,8 +1277,75 @@ export const useFetchDashboardOverView = (onError) => {
     },
     {
       select: (data) => {
-        console.log(data);
-        return data;
+        const sendData = {
+          profile: data.data.profile,
+          topBar: data.data.topBar,
+        };
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchDashboardUpcomingShedule = (onError) => {
+  return useQuery(
+    "dashboard-upcoming-schedules",
+    async () => {
+      const url = `/upcoming-schedules`;
+
+      return await api.get(url);
+    },
+    {
+      select: (data) => {
+        console.log("schedules", data.data);
+
+        const sendData = {
+          schedules: data.data.schedules,
+        };
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+export const useFetchDashboardProjectLists = (onError) => {
+  return useQuery(
+    "dashboard-project-lists",
+    async () => {
+      const url = `/project-list`;
+
+      return await api.get(url);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          projects: data.data.projects,
+        };
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+export const useFetchDashboardTopClients = (onError) => {
+  return useQuery(
+    "dashboard-top-clients",
+    async () => {
+      const url = `/top-clients`;
+
+      return await api.get(url);
+    },
+    {
+      select: (data) => {
+        console.log("top clients", data.data);
+        const sendData = {
+          clients: data.data.clients,
+        };
+        return sendData;
       },
       onError,
       staleTime: 5000,
