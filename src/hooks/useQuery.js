@@ -726,6 +726,7 @@ export const useFetchProjectTask = (
 
         return sendData;
       },
+      enabled: !!projectId,
       onError,
       staleTime: 5000,
     }

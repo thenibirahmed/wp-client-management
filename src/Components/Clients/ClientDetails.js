@@ -62,7 +62,9 @@ const ClientDetails = () => {
     dateTo,
     selectCurrency,
     refetch,
-    isFetching
+    isFetching,
+    true,
+    clientId
   );
 
   const {

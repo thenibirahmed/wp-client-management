@@ -65,7 +65,9 @@ const ProjectTask = ({ projectId }) => {
     dateTo,
     selectStatus,
     selectPriority,
-    refetch
+    refetch,
+    true,
+    projectId
   );
 
   const onDeleteAction = async (ids) => {

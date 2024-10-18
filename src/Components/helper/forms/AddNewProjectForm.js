@@ -429,7 +429,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button
             disabled={submitLoader}
-            onClick={() => setOpenProjectModal(false)}
+            onClick={() => setOpen(false)}
             type="button"
             className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
           >

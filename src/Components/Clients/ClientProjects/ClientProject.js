@@ -65,7 +65,9 @@ const ClientProject = ({ clientId }) => {
     dateTo,
     selectStatus,
     selectPriority,
-    refetch
+    refetch,
+    true,
+    clientId
   );
 
   const handler = () => {
@@ -158,7 +160,11 @@ const ClientProject = ({ clientId }) => {
         setOpen={setOpenProjectModal}
         title="Add Project"
       >
-        <AddNewClientProjectForm clientId={clientId} refetch={refetch} />
+        <AddNewClientProjectForm
+          clientId={clientId}
+          refetch={refetch}
+          setOpen={setOpenProjectModal}
+        />
       </Modal>
     </React.Fragment>
   );

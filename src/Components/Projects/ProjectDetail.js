@@ -69,7 +69,9 @@ const ProjectDetail = () => {
     dateTo,
     selectCurrency,
     refetch,
-    isFetching
+    isFetching,
+    true,
+    projectId
   );
 
   const {
