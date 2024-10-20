@@ -38,6 +38,7 @@ const Projects = () => {
     setSelectedFilter,
     searchText,
     setSearchText,
+    setCreateInvoice,
   } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -102,6 +103,7 @@ const Projects = () => {
   };
 
   useEffect(() => {
+    setCreateInvoice(false);
     setAllTabItems({
       project: true,
       task: true,

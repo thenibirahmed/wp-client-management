@@ -26,6 +26,7 @@ const AddNewClientProjectForm = ({
   refetch,
   update = false,
   projectId,
+  setOpen,
 }) => {
   const datePickerStartRef = useRef(null);
   const datePickerDueRef = useRef(null);
@@ -392,11 +393,11 @@ const AddNewClientProjectForm = ({
 
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button
-            onClick={() => setOpenProjectModal(false)}
+            onClick={() => setOpen(false)}
             type="button"
             className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
           >
-            Cancel
+            Cancels
           </button>
           <button
             type="submit"

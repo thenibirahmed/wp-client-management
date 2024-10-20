@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import {
   Label,
@@ -52,7 +50,7 @@ export const SelectTextField = ({
               error ? "border-customRed" : "border-borderColor"
             }`}
           >
-            <span className="block truncate text-center">
+            <span className="block truncate ">
               {currency ? select?.code : select?.name}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">

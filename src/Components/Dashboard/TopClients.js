@@ -37,7 +37,8 @@ const dummyData = [
   },
 ];
 
-const TopClients = () => {
+const TopClients = ({ clients }) => {
+  console.log(clients);
   return (
     <div className=" border  border-borderColor rounded-[8px] lg:p-[24px] p-4 space-y-[20px]">
       <div className="flex xl:flex-row flex-col xl:justify-between">
@@ -52,8 +53,8 @@ const TopClients = () => {
         </button>
       </div>
 
-      <div className="pt-3 pb-2 w-full  ">
-        <PieChart myData={dummyPieData} />
+      <div className="pt-3 pb-2 mx-auto 2xl:w-[75%]  lg:w-full sm:w-1/3 w-full  ">
+        <PieChart myData={clients} />
       </div>
 
       <div className="pt-5 font-metropolis ">
@@ -67,19 +68,19 @@ const TopClients = () => {
           <div></div>
         </div>
         <div className="pt-4 space-y-[16px]">
-          {dummyData.map((item) => (
+          {clients.map((item) => (
             <div className="grid grid-cols-3 ">
               <div className="text-sm font-normal text-textColor2">
                 {item.name}
               </div>
               <div className="text-sm   font-semibold text-textColor3">
-                ${item.amount}
+                ${item.total_revenue}
               </div>
               <div className="flex items-center gap-2">
                 <div className="text-sm flex font-normal  text-textColor2">
-                  <span> {item.percentage}</span> <span>%</span>
+                  <span> {Number(item.percentage)}</span> <span>%</span>
                 </div>
-                <ProgressBars percentage={item.percentage} />
+                <ProgressBars percentage={Number(item.percentage)} />
               </div>
             </div>
           ))}

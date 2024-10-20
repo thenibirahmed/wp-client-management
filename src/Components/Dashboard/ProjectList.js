@@ -39,7 +39,7 @@ const dummyProjectData = [
   },
 ];
 
-const ProjectList = () => {
+const ProjectList = ({ projects }) => {
   return (
     <div className=" border  border-borderColor rounded-[8px] lg:p-[32px] p-5">
       <div className="flex justify-between">
@@ -55,7 +55,7 @@ const ProjectList = () => {
       </div>
 
       <div className="mt-6">
-        <ProjectListTable projectData={dummyProjectData} />
+        <ProjectListTable projectData={projects} />
       </div>
     </div>
   );

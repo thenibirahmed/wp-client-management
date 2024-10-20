@@ -43,8 +43,8 @@ const ProjectListTable = ({ projectData }) => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {projectData.map((item) => {
-                  let itemStatus = item.status.toLowerCase();
+                {projectData?.map((item) => {
+                  let itemStatus = item?.status?.toLowerCase();
 
                   const statusClass =
                     itemStatus === "completed"
@@ -63,17 +63,17 @@ const ProjectListTable = ({ projectData }) => {
                     <tr className="cursor-pointer">
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.projectname}
+                          {item.name}
                         </h3>
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.task}
+                          {item.tasks}
                         </h3>
                       </td>
                       <td className="whitespace-nowrap py-4 pl-2 pr-3  sm:pl-4 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
-                          {item.createdat}
+                          {item.created_at}
                         </h3>
                       </td>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">

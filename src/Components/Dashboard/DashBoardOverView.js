@@ -12,6 +12,7 @@ const DashBoardOverView = ({
   setDateFrom,
   dateTo,
   setDateTo,
+  topBar,
 }) => {
   const [startDate, endDate] = dateRange;
 
@@ -43,30 +44,30 @@ const DashBoardOverView = ({
       <div className="flex   w-full  xl:flex-row flex-col  xl:justify-between  items-center border border-borderColor rounded-lg">
         <>
           <OvierViewItem
-            title="Total Invoice"
-            amount={450}
-            invoice="1 Invoice"
+            title={topBar?.invoice?.name}
+            amount={topBar?.invoice?.amount}
+            invoice={topBar?.invoice?.subText}
             icons
             Icon={ArrowUpRight01Icon}
             dashboard
           />
           <OvierViewItem
-            title="Total Revenue"
-            amount={450}
-            invoice="1 Invoice"
+            title={topBar?.revenue?.name}
+            amount={topBar?.revenue?.amount}
+            invoice={topBar?.revenue?.subText}
             icons
             Icon={ArrowUpRight01Icon}
             dashboard
           />
           <OvierViewItem
-            title="Total Due"
-            amount={450}
-            invoice="1 Invoice"
+            title={topBar?.due?.name}
+            amount={topBar?.due?.amount}
+            invoice={topBar?.due?.subText}
             icons
             Icon={ArrowUpRight01Icon}
             dashboard
           />
-          <OvierViewItem
+          {/* <OvierViewItem
             title="Total Expence"
             amount={450}
             invoice="1 Invoice"
@@ -74,11 +75,22 @@ const DashBoardOverView = ({
             Icon={ArrowUpRight01Icon}
             dashboard
             expense
+          /> */}
+          <OvierViewItem
+            isProject
+            title={topBar?.project?.name}
+            amount={topBar?.project?.amount}
+            invoice={topBar?.project?.subText}
+            icons
+            Icon={ArrowUpRight01Icon}
+            dashboard
+            clients
           />
           <OvierViewItem
-            title="Total Clients"
-            amount={450}
-            invoice="1 Invoice"
+            isProject
+            title={topBar?.client?.name}
+            amount={topBar?.client?.amount}
+            invoice={topBar?.client?.subText}
             icons
             Icon={ArrowUpRight01Icon}
             dashboard

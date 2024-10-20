@@ -8,23 +8,41 @@ export const useRefetch = (
   selectStatus,
   selectPriority,
   refetch,
-  selectCurrency = null
+  selectCurrency = null,
+  requiredId = false,
+  clientId = null
 ) => {
   useEffect(() => {
     const refetchHandler = async () => {
       await refetch();
     };
 
-    if (
-      paginationUrl ||
-      searchText ||
-      dateFrom ||
-      dateTo ||
-      selectStatus ||
-      selectPriority ||
-      selectCurrency
-    ) {
-      refetchHandler();
+    if (requiredId) {
+      if (clientId) {
+        if (
+          paginationUrl ||
+          searchText ||
+          dateFrom ||
+          dateTo ||
+          selectStatus ||
+          selectPriority ||
+          selectCurrency
+        ) {
+          refetchHandler();
+        }
+      } else {
+        if (
+          paginationUrl ||
+          searchText ||
+          dateFrom ||
+          dateTo ||
+          selectStatus ||
+          selectPriority ||
+          selectCurrency
+        ) {
+          refetchHandler();
+        }
+      }
     }
   }, [
     paginationUrl,
@@ -34,6 +52,8 @@ export const useRefetch = (
     selectStatus,
     selectPriority,
     selectCurrency,
+    requiredId,
+    clientId,
   ]);
 };
 
@@ -263,17 +283,27 @@ export const useClientOverViewRefetch = (
   dateEnd,
   selectCurrency,
   refetch,
-  isFetching = false
+  isFetching = false,
+  requiredId = false,
+  clientId = null
 ) => {
   useEffect(() => {
     const refetchHandler = async () => {
       await refetch();
     };
 
-    if (dateStart || dateEnd || selectCurrency || isFetching) {
-      refetchHandler();
+    if (requiredId) {
+      if (clientId) {
+        if (dateStart || dateEnd || selectCurrency || isFetching) {
+          refetchHandler();
+        }
+      }
+    } else {
+      if (dateStart || dateEnd || selectCurrency || isFetching) {
+        refetchHandler();
+      }
     }
-  }, [dateStart, dateEnd, selectCurrency, isFetching]);
+  }, [dateStart, dateEnd, selectCurrency, isFetching, requiredId, clientId]);
 };
 
 export const useUpdateTeamValue = (update, editTeam, setValue) => {
