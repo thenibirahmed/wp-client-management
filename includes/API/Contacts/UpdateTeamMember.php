@@ -96,12 +96,7 @@ class UpdateTeamMember {
 
         if (isset($data['name']) || isset($data['email'])) {
 
-            if (isset($data['name']) && !empty($data['name'])) {
-                if (username_exists($data['name'])) {
-                    return new \WP_REST_Response([
-                        'message' => 'Username already exists.',
-                    ], 400);
-                }
+            if (!empty($data['name'])) {
                 $result = $wpdb->update(
                     $wpdb->users,
                     ['user_login' => $data['name']],
@@ -115,10 +110,10 @@ class UpdateTeamMember {
                 }
             }
 
-            $wp_user_data = array(
+            $wp_user_data = [
                 'ID' => $eic_crm_user->wp_user_id,
                 'user_email' => $data['email'] ?? null,
-            );
+            ];
 
             $wp_user = wp_update_user($wp_user_data);
 

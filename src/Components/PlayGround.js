@@ -211,8 +211,8 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.put(eicApiSettings.rest_url + 'wp-client-management/v1/client/update/12',
-		{
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/employee/16/details',
+		// {
 		// 	client_id: 1,
 		// 	status_id: 2,
 		// 	priority_id: 1,
@@ -222,11 +222,9 @@ const PlayGround = () => {
 		// 	budget: 5000.00,
 		// 	description: 'sam description',
 		// 	currency_id: 1
-    name: 'madara',
-    email: 'madara@uchiha.com',
-    organization: 'updated,'
-		},
+		// },
 		{
+      
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
 			},
