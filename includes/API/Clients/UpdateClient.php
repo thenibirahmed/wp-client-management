@@ -99,48 +99,30 @@ class UpdateClient {
             'city'         => $data['city'],
             'state'        => $data['state'],
             'zip'          => $data['zip'],
-            'country'      => $data['country'],
-            'organization' => $data['organization']
+            'country'      => $data['country']
         ]);
 
-        if (isset($data['name']) || isset($data['email'])) {
-            if (isset($data['name']) && !empty($data['name'])) {
-                if (username_exists($data['name'])) {
-                    return new \WP_REST_Response([
-                        'message' => 'Username already exists.',
-                    ], 400);
-                }
-                $result = $wpdb->update(
-                    $wpdb->users,
-                    ['user_login' => $data['name']],
-                    ['ID' => $eic_crm_user->wp_user_id]
-                );
+        $result = $wpdb->update(
+            $wpdb->users,
+            ['user_login' => $data['name']],
+            ['ID' => $eic_crm_user->wp_user_id]
+        );
 
-                if ($result === false) {
-                    return new \WP_REST_Response([
-                        'message' => 'Failed to update user_login: ' . $wpdb->last_error,
-                    ], 500);
-                }
-            }
-
-            $wp_user = wp_update_user([
-                'ID' => $eic_crm_user->wp_user_id,
-                'user_email' => $data['email'] ?? null,
-            ]);
-
-            if (is_wp_error($wp_user)) {
-                return new \WP_REST_Response([
-                    'message' => $wp_user->get_error_message(),
-                ], 500);
-            }
-
+        if ($result === false) {
             return new \WP_REST_Response([
-                'message' => 'User updated successfully!',
-            ], 200);
-        } else {
+                'message' => 'Failed to update user_login: ' . $wpdb->last_error,
+            ], 500);
+        }
+
+        $wp_user = wp_update_user([
+            'ID' => $eic_crm_user->wp_user_id,
+            'user_email' => $data['email'] ?? null,
+        ]);
+
+        if (is_wp_error($wp_user)) {
             return new \WP_REST_Response([
-                'message' => 'No data provided for update.',
-            ], 400);
+                'message' => $wp_user->get_error_message(),
+            ], 500);
         }
 
         $client->update([

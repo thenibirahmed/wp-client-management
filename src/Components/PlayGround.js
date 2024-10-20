@@ -211,8 +211,8 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/upcoming-schedules',
-		// {
+		axios.put(eicApiSettings.rest_url + 'wp-client-management/v1/client/update/12',
+		{
 		// 	client_id: 1,
 		// 	status_id: 2,
 		// 	priority_id: 1,
@@ -222,7 +222,10 @@ const PlayGround = () => {
 		// 	budget: 5000.00,
 		// 	description: 'sam description',
 		// 	currency_id: 1
-		// },
+    name: 'madara',
+    email: 'madara@uchiha.com',
+    organization: 'updated,'
+		},
 		{
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
@@ -231,6 +234,8 @@ const PlayGround = () => {
 				// currency: '',
         // date: '2024-10-18'
         // currency: 'BDT'
+        // from: '2024-06-17',
+        // to: '2024-10-17'
 			// }
 		})
 		.then((response) => {
