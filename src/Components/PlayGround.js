@@ -211,7 +211,7 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/employee/16/details',
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/project/10/invoices',
 		// {
 		// 	client_id: 1,
 		// 	status_id: 2,
@@ -224,17 +224,18 @@ const PlayGround = () => {
 		// 	currency_id: 1
 		// },
 		{
-      
+
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
-			},
-			// params: {
+			},  
+			params: {
+        search: '5000'
 				// currency: '',
         // date: '2024-10-18'
         // currency: 'BDT'
         // from: '2024-06-17',
         // to: '2024-10-17'
-			// }
+			}
 		})
 		.then((response) => {
 			console.log(response.data);

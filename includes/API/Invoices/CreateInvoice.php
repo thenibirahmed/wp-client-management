@@ -126,7 +126,7 @@ class CreateInvoice {
         $data['fee']                    = floatval($data['fee'] ?? 0.0);
 
         if (isset($data['project_id']) && !isset($data['client_id'])) {
-            $data['client_id'] = Project::where('id', $data['project_id'])->pluck('client_id')->first();
+            $data['client_id'] = Project::where('id', $data['project_id'])->pluck('client_id')->first() ?? null;
         }
 
         if(isset($data['project_id']) && !isset($data['currency_id'])) {
