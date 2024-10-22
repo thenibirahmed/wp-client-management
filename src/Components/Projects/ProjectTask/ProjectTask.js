@@ -66,6 +66,7 @@ const ProjectTask = ({ projectId }) => {
     selectStatus,
     selectPriority,
     refetch,
+    null,
     true,
     projectId
   );
@@ -121,6 +122,7 @@ const ProjectTask = ({ projectId }) => {
         setSearchText={setSearchText}
         searchText={searchText}
         filter
+        taskFilter
         loader={loader}
       />
 

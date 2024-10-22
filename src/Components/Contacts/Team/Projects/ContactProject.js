@@ -36,7 +36,18 @@ const ContactProject = ({ teamId }) => {
     refetch,
   } = useFetchSingleTeamProject(teamId, paginationUrl, searchText, onError);
 
-  useRefetch(paginationUrl, searchText, null, null, null, null, refetch);
+  useRefetch(
+    paginationUrl,
+    searchText,
+    null,
+    null,
+    null,
+    null,
+    refetch,
+    null,
+    true,
+    teamId
+  );
 
   const onDeleteAction = async (ids) => {
     await useBulkDelete(

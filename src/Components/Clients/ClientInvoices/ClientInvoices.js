@@ -11,9 +11,10 @@ import {
   useFetchProjectInvoice,
   useFetchSelectCurrency,
 } from "../../../hooks/useQuery";
-import { useInvoiceRefetch, useRefetch } from "../../../hooks/useRefetch";
+import { useRefetch } from "../../../hooks/useRefetch";
 import Errors from "../../Errors";
 import useHashRouting from "../../../utils/useHashRouting";
+import Skeleton from "../../Skeleton";
 
 const ClientInvoices = ({ clientId }) => {
   const [loader, setLoader] = useState(false);
@@ -21,13 +22,10 @@ const ClientInvoices = ({ clientId }) => {
     setCreateInvoice,
     updateInvoice,
     setUpdateInvoice,
-
     dateFrom,
     dateTo,
     selectStatus,
-    setSelectStatus,
     selectPriority,
-    setSelectPriority,
     searchText,
     setSearchText,
     selectCurrency,
@@ -122,13 +120,12 @@ const ClientInvoices = ({ clientId }) => {
     toast.error("Failed to fetch all project Invoice Data");
   }
 
-  if (inoiceErr) {
+  if (isLoadingSelectCurrency) return <Skeleton />;
+
+  if (inoiceErr || selecturrencyErr) {
     return (
       <Errors
-        message={
-          inoiceErr?.response?.data?.errors ||
-          `Failed To Fetch Project inoice for clientId ${clientId}`
-        }
+        message={inoiceErr?.response?.data?.errors || `Internal Server Error`}
       />
     );
   }

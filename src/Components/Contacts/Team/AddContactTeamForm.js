@@ -28,13 +28,13 @@ const AddContactTeamForm = ({ setOpen, refetch, teamId, update = false }) => {
     data: projectLists,
     error,
   } = useFetchSelectProjects(onError);
-  console.log("projectLists", projectLists?.projects);
+
   const {
     isLoading: editLoader,
     data: editTeam,
     error: editErr,
   } = useFetchTeamMemberEditDetails(teamId, update, onError);
-  console.log("editTeam", editTeam);
+
   const {
     register,
     handleSubmit,

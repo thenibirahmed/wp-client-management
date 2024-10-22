@@ -38,7 +38,6 @@ const dummyData = [
 ];
 
 const TopClients = ({ clients }) => {
-  console.log(clients);
   return (
     <div className=" border  border-borderColor rounded-[8px] lg:p-[24px] p-4 space-y-[20px]">
       <div className="flex xl:flex-row flex-col xl:justify-between">

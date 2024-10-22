@@ -29,8 +29,6 @@ const ProjectOverView = ({
   selectCurrency,
   setSelectCurrency,
 }) => {
-  console.log("topBar", topBar);
-
   const [startDate, endDate] = dateRange;
 
   const {

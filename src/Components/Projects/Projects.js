@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import dayjs from "dayjs";
 
 import EmptyTable from "../helper/EmptyTable";
@@ -10,16 +11,15 @@ import ProjectHeader from "../helper/projects/ProjectHeader";
 import ProjectTable from "../helper/projects/ProjectTable";
 import AddNewProjectForm from "../helper/forms/AddNewProjectForm";
 import ProjectTaskDetails from "./ProjectTask/ProjectTaskDetails";
+import Skeleton from "../Skeleton";
+import Errors from "../Errors";
+import useHashRouting from "../../utils/useHashRouting";
+import { useRefetch } from "../../hooks/useRefetch";
 import {
   useBulkComplete,
   useBulkDelete,
   useFetchAllProjects,
 } from "../../hooks/useQuery";
-import Skeleton from "../Skeleton";
-import toast from "react-hot-toast";
-import Errors from "../Errors";
-import useHashRouting from "../../utils/useHashRouting";
-import { useRefetch } from "../../hooks/useRefetch";
 
 const Projects = () => {
   const [loader, setLoader] = useState(false);

@@ -16,7 +16,6 @@ const ProjectTaskDetails = () => {
     error,
     refetch,
   } = useFetchSingleTask(taskId, onError);
-  console.log("projectask View", projectTask);
 
   function onError(err) {
     console.log(err);

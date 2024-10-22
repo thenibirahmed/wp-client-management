@@ -776,7 +776,6 @@ export const useFetchProjectInvoice = (
     },
     {
       select: (data) => {
-        console.log("client invoice ", data.data);
         const sendData = {
           invoices: data.data.invoices,
           pagination: data.data.pagination,
@@ -1300,8 +1299,6 @@ export const useFetchDashboardUpcomingShedule = (onError) => {
     },
     {
       select: (data) => {
-        console.log("schedules", data.data);
-
         const sendData = {
           schedules: data.data.schedules,
         };

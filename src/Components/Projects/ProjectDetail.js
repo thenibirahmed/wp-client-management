@@ -152,7 +152,11 @@ const ProjectDetail = () => {
           {openTaskDesc ? (
             <ProjectTaskDetails />
           ) : (
-            <AddNewInvoice update={updateInvoice} />
+            <AddNewInvoice
+              update={updateInvoice}
+              type="project"
+              clientId={projectId}
+            />
           )}
         </React.Fragment>
       )}

@@ -15,11 +15,6 @@ export const App = () => {
   const getPaginationUrl = currentPath?.split("?")[1];
   const paginationUrl = getPaginationUrl ? getPaginationUrl : "page=1";
 
-  // console.log("currentPath", currentPath);
-  // console.log("pathArray", pathArray);
-  //console.log("getPaginationUrl", getPaginationUrl);
-  console.log("pathArray", pathArray);
-
   const isLoginPage = pathArray[0] === "login";
 
   return (
