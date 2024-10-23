@@ -15,8 +15,6 @@ const ViewEmail = () => {
     error,
   } = useFetchSingleEmailView(selectedViewEmail, onError);
 
-  console.log("emailData", emailData);
-
   function onError(err) {
     console.log(err);
     toast.error("Failed to fetch email details");

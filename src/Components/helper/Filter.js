@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Disclosure, Menu } from "@headlessui/react";
+import toast from "react-hot-toast";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+
 import { useFetchPriorities, useFetchStatus } from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
 import Errors from "../Errors";
@@ -10,7 +12,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Filter = ({ noPriority }) => {
+const Filter = ({ noPriority, taskFilter = false }) => {
   const {
     selectStatus,
     setSelectStatus,
@@ -19,7 +21,6 @@ const Filter = ({ noPriority }) => {
     selectedFilter,
     setSelectedFilter,
   } = useStoreContext();
-  console.log();
 
   // State for the selected filter
 
@@ -29,11 +30,12 @@ const Filter = ({ noPriority }) => {
     error: pPrioritiesErr,
   } = useFetchPriorities("project", onError);
 
+  const filterOption = taskFilter ? "task" : "project";
   const {
     isLoading: isLoadingStatus,
     data: statuses,
     error: pStatusErr,
-  } = useFetchStatus("project", onError);
+  } = useFetchStatus(filterOption, onError);
 
   function onError(err) {
     toast.error(err?.response?.data?.message?.errors || "Something went wrong");
@@ -41,6 +43,10 @@ const Filter = ({ noPriority }) => {
   }
 
   const isLoading = isLoadingStatus || isLoadingPriorities;
+
+  if (isLoading) {
+    return <Skeleton />;
+  }
 
   if (pPrioritiesErr || pStatusErr)
     return <Errors message="Internal Server Error" />;

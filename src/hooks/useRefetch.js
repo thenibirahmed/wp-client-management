@@ -30,18 +30,18 @@ export const useRefetch = (
         ) {
           refetchHandler();
         }
-      } else {
-        if (
-          paginationUrl ||
-          searchText ||
-          dateFrom ||
-          dateTo ||
-          selectStatus ||
-          selectPriority ||
-          selectCurrency
-        ) {
-          refetchHandler();
-        }
+      }
+    } else {
+      if (
+        paginationUrl ||
+        searchText ||
+        dateFrom ||
+        dateTo ||
+        selectStatus ||
+        selectPriority ||
+        selectCurrency
+      ) {
+        refetchHandler();
       }
     }
   }, [

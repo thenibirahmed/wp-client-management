@@ -231,11 +231,6 @@ const AddNewInvoiceForm = ({
       clientInvoice?.bill_to_id != selectClient?.id &&
       update
     ) {
-      console.log("client details should update");
-      console.log("client email", client?.clientDetails?.email);
-      console.log("client address", client?.clientDetails?.address);
-      console.log("client phone", client?.clientDetails?.phone);
-
       setValue("cemail", client?.clientDetails?.email);
       setValue("caddress", client?.clientDetails?.address);
       setValue("cphone", client?.clientDetails?.phone);
@@ -254,11 +249,6 @@ const AddNewInvoiceForm = ({
       clientInvoice?.bill_from_id != selectEmplyoee?.id &&
       update
     ) {
-      console.log("emaployee details should update");
-      console.log("emaployee email", emplyoee?.employeeDetails?.email);
-      console.log("emaployee address", emplyoee?.employeeDetails?.address);
-      console.log("emaployee phone", emplyoee?.employeeDetails?.phone);
-
       setValue("email", emplyoee?.employeeDetails?.email);
       setValue("address", emplyoee?.employeeDetails?.address);
       setValue("phone", emplyoee?.employeeDetails?.phone);
@@ -268,7 +258,16 @@ const AddNewInvoiceForm = ({
   useEffect(() => {
     if (projectsLists?.projects?.length > 0) {
       if (!update) {
-        setSelectedProject(projectsLists?.projects[0]);
+        if (type === "project") {
+          // const selectedProject = projectsLists?.projects?.find(
+          //   (item) => item.id === Number(clientId)
+          // );
+
+          // setSelectedProject(selectedProject);
+          setSelectedProject(projectsLists?.projects[0]);
+        } else {
+          setSelectedProject(projectsLists?.projects[0]);
+        }
       } else if (update && clientInvoice) {
         const projectList = projectsLists?.projects.find(
           (item) => item.id === clientInvoice?.project_id
@@ -356,6 +355,8 @@ const AddNewInvoiceForm = ({
     update,
     clientInvoice,
     statuses,
+    type,
+    clientId,
   ]);
 
   function onClientErr(err) {
@@ -379,7 +380,8 @@ const AddNewInvoiceForm = ({
     isLoadingSelectCurrency ||
     isLoadProjectManager ||
     isLoadingPayMethod ||
-    isLoadingProClient;
+    isLoadingProClient ||
+    isLoadingStatus;
 
   if (isLoading || invoiceLoader) {
     return <Skeleton />;
@@ -390,7 +392,8 @@ const AddNewInvoiceForm = ({
     selecturrencyErr ||
     paymentErr ||
     er ||
-    projectClientErr
+    projectClientErr ||
+    pStatusErr
   )
     return <Errors message="Internal Server Error" />;
   return (

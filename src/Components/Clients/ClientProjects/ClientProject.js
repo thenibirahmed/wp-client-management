@@ -66,6 +66,7 @@ const ClientProject = ({ clientId }) => {
     selectStatus,
     selectPriority,
     refetch,
+    null,
     true,
     clientId
   );

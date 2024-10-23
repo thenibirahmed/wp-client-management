@@ -29,8 +29,6 @@ const ProjectOverView = ({
   selectCurrency,
   setSelectCurrency,
 }) => {
-  console.log("topBar", topBar);
-
   const [startDate, endDate] = dateRange;
 
   const {
@@ -141,25 +139,26 @@ const ProjectOverView = ({
         ) : (
           <>
             <OvierViewItem
-              title={projectOverView?.projectOverView?.due?.name}
-              amount={projectOverView?.projectOverView?.due?.total}
-              invoice={projectOverView?.projectOverView?.due?.subText}
-            />{" "}
-            <OvierViewItem
               title={projectOverView?.projectOverView?.invoice?.name}
               amount={projectOverView?.projectOverView?.invoice?.total}
               invoice={projectOverView?.projectOverView?.invoice?.subText}
             />
             <OvierViewItem
+              title={projectOverView?.projectOverView?.revenue?.name}
+              amount={projectOverView?.projectOverView?.revenue?.total}
+              invoice={projectOverView?.projectOverView?.revenue?.subText}
+            />
+            <OvierViewItem
+              title={projectOverView?.projectOverView?.due?.name}
+              amount={projectOverView?.projectOverView?.due?.total}
+              invoice={projectOverView?.projectOverView?.due?.subText}
+            />
+
+            <OvierViewItem
               isProject
               title={projectOverView?.projectOverView?.projects?.name}
               amount={projectOverView?.projectOverView?.projects?.count}
               invoice={projectOverView?.projectOverView?.projects?.subText}
-            />
-            <OvierViewItem
-              title={projectOverView?.projectOverView?.revenue?.name}
-              amount={projectOverView?.projectOverView?.revenue?.total}
-              invoice={projectOverView?.projectOverView?.revenue?.subText}
             />
           </>
         )}

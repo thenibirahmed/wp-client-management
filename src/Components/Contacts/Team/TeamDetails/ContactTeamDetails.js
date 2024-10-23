@@ -27,7 +27,7 @@ const ContactTeamDetails = () => {
     refetch,
   } = useFetchSingleTeamOverview(teamId, onError);
 
-  useClientOverViewRefetch(null, null, null, refetch, isFetching);
+  useClientOverViewRefetch(null, null, null, refetch, isFetching, true, teamId);
 
   function onError(err) {
     console.log(err);

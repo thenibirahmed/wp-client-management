@@ -15,9 +15,8 @@ function extractContent(str) {
 const BreadCrum = () => {
   const currentPath = useHashRouting("");
 
-  console.log("breadcrum main ", currentPath);
   const breadcrum = extractContent(currentPath);
-  console.log("breadcrum ", breadcrum);
+
   return (
     <nav aria-label="Breadcrumb" className="flex font-metropolis">
       <ol role="list" className="flex items-center space-x-2">

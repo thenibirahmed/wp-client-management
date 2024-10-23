@@ -226,7 +226,7 @@ const AddNewTaskForm = ({
             id="title"
             type="text"
             message="This field is required*"
-            placeholder="Project Title"
+            placeholder="Title"
             register={register}
             errors={errors}
           />

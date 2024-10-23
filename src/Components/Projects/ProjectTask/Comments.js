@@ -14,8 +14,6 @@ import Loaders from "../../Loaders";
 import api from "../../../api/api";
 
 const Comments = ({ comments, refetch }) => {
-  console.log("all comments", comments);
-
   return (
     <div>
       <h1 className="font-metropolis text-textColor font-semibold sm:text-2xl text-xl  leading-10 mb-5 ">

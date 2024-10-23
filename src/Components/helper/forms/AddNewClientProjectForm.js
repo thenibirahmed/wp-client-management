@@ -109,7 +109,7 @@ const AddNewClientProjectForm = ({
     setIsFetching(true);
 
     const idsLists = allIds.map((item) => item);
-    console.log("ids", idsLists);
+
     const sendData = {
       title: data.title,
       manager_id: selectProjectManager?.id,
@@ -123,7 +123,6 @@ const AddNewClientProjectForm = ({
       due_date: dayjs(endDate).format("YYYY-MM-DD"),
       description: data?.description,
     };
-    console.log("sending data", sendData);
 
     try {
       let res;

@@ -56,7 +56,7 @@ const AddClientForm = ({
         let { data: res } = await api.post(`/client/create`, data);
         res = data;
       }
-      console.log("res", res);
+
       toast.success(res?.message || "operation success");
       await refetch();
       reset();

@@ -72,7 +72,6 @@ const ProjectTaskTable = () => {
     setSelectedClient
   );
 
-  console.log(selectedClient);
   return (
     <div className="mt-8 flow-root">
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

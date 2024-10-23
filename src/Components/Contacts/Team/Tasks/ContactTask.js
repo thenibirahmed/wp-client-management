@@ -35,7 +35,18 @@ const ContactTask = ({ teamId }) => {
     refetch,
   } = useFetchSingleTeamTasks(teamId, paginationUrl, searchText, onError);
 
-  useRefetch(paginationUrl, searchText, null, null, null, null, refetch);
+  useRefetch(
+    paginationUrl,
+    searchText,
+    null,
+    null,
+    null,
+    null,
+    refetch,
+    null,
+    true,
+    teamId
+  );
 
   const onDeleteAction = async (ids) => {
     setIsFetching(true);
