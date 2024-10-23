@@ -1,41 +1,7 @@
 import React from "react";
 import PieChart from "./PieChart";
 import { ArrowRight02Icon } from "../../utils/icons";
-const dummyPieData = [
-  { category: "Category 1", value: 30 },
-  { category: "Category 2", value: 20 },
-  { category: "Category 3", value: 15 },
-  { category: "Category 4", value: 25 },
-  { category: "Category 5", value: 10 },
-];
-
-const dummyData = [
-  {
-    name: "Product A",
-    amount: 5000,
-    percentage: 25,
-  },
-  {
-    name: "Product B",
-    amount: 3000,
-    percentage: 15,
-  },
-  {
-    name: "Product C",
-    amount: 7000,
-    percentage: 35,
-  },
-  {
-    name: "Product D",
-    amount: 4000,
-    percentage: 20,
-  },
-  {
-    name: "Product E",
-    amount: 1000,
-    percentage: 5,
-  },
-];
+import { formatRevenue } from "../../utils/formatter";
 
 const TopClients = ({ clients }) => {
   return (
@@ -67,19 +33,19 @@ const TopClients = ({ clients }) => {
           <div></div>
         </div>
         <div className="pt-4 space-y-[16px]">
-          {clients.map((item) => (
+          {clients.map((item, i) => (
             <div className="grid grid-cols-3 ">
               <div className="text-sm font-normal text-textColor2">
                 {item.name}
               </div>
               <div className="text-sm   font-semibold text-textColor3">
-                ${item.total_revenue}
+                ${formatRevenue(item.total_revenue)}
               </div>
               <div className="flex items-center gap-2">
                 <div className="text-sm flex font-normal  text-textColor2">
                   <span> {Number(item.percentage)}</span> <span>%</span>
                 </div>
-                <ProgressBars percentage={Number(item.percentage)} />
+                <ProgressBars percentage={Number(item.percentage)} index={i} />
               </div>
             </div>
           ))}
@@ -91,12 +57,20 @@ const TopClients = ({ clients }) => {
 
 export default TopClients;
 
-const ProgressBars = ({ percentage }) => {
+const backgroundColor = [
+  "rgba(26, 86, 219, 1)",
+  "rgba(253, 186, 140, 1)",
+  "rgba(22, 189, 202, 1)",
+  "rgba(214, 31, 105, 1)",
+  "rgba(88, 80, 236, 1)",
+];
+
+const ProgressBars = ({ percentage, index }) => {
   return (
     <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
       <div
-        className="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500"
-        style={{ width: percentage }}
+        className=" h-1.5 rounded-full "
+        style={{ width: percentage, backgroundColor: backgroundColor[index] }}
       />
     </div>
   );
