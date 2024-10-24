@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Schedules;
 
+use WpClientManagement\Middlewares\AuthMiddleware;
 use WpClientManagement\Models\Schedule;
 
 class DeleteSchedule {
@@ -22,9 +23,9 @@ class DeleteSchedule {
 
     public function __construct() {
         register_rest_route($this->namespace, $this->endpoint, [
-            'methods' => \WP_REST_Server::DELETABLE,
+            'methods'  => \WP_REST_Server::DELETABLE,
             'callback' => array($this, 'delete_schedule'),
-            'permission_callback' => 'is_user_logged_in',
+            'permission_callback' => [AuthMiddleware::class, 'admin'],
         ]);
     }
 
