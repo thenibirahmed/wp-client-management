@@ -21,9 +21,12 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
   const [endDate, setEndDate] = useState(new Date());
 
   const [assigneeLists, setAssigneeLists] = useState();
-
   const [selectedAssignees, setSelectedAssignees] = useState([]);
   const [allIds, setAllIds] = useState([]);
+
+  const [scheduleClintLists, setScheduleClintLists] = useState();
+  const [selectedScheduleClient, setSelectedScheduleClient] = useState([]);
+  const [allScheduleId, setAllScheduleIds] = useState([]);
 
   const [submitLoader, setSubmitLoader] = useState(false);
 
@@ -56,10 +59,22 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
   }, [selectedAssignees]);
 
   useEffect(() => {
+    setAllScheduleIds(selectedScheduleClient.map((item) => item.id));
+  }, [selectedScheduleClient]);
+
+  useEffect(() => {
     if (managers?.employee.length > 0) {
       setAssigneeLists(managers?.employee);
     }
   }, [managers]);
+
+  useEffect(() => {
+    if (schedules?.clients.length > 0) {
+      setScheduleClintLists(schedules?.clients);
+    } else {
+      setScheduleClintLists([{ id: null, name: "No Client Found" }]);
+    }
+  }, [schedules]);
 
   const isLoading = isLoadProjectManager;
 
@@ -111,10 +126,10 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
           <div className=" flex-1 ">
             <MultiSelectTextField
               label="Select Schedule Client"
-              select={selectedAssignees}
-              setSelect={setSelectedAssignees}
-              lists={assigneeLists}
-              allIds={allIds}
+              select={selectedScheduleClient}
+              setSelect={setSelectedScheduleClient}
+              lists={scheduleClintLists}
+              allIds={allScheduleId}
               isSubmitting={isSubmitting}
             />
           </div>

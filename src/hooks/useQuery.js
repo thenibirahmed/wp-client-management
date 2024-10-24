@@ -687,9 +687,8 @@ export const useFetchScheduleClient = (onError) => {
     },
     {
       select: (data) => {
-        console.log(data.data);
         const sendData = {
-          employee: data.data,
+          clients: data.data.clients,
         };
 
         return sendData;
