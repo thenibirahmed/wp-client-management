@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Schedules;
 
+use Carbon\Carbon;
 use DateTime;
 use WpClientManagement\Helpers\AuthUser;
 use WpClientManagement\Models\Client;
@@ -28,10 +29,8 @@ class GetSchedules {
 
         if(AuthUser::user()->role == 'admin') {
             $schedules = Schedule::paginate(5, ['*'], 'page', $page);
-        }elseif(AuthUser::user()->role == 'client') {
-            $schedules = Schedule::getClientSchedules(AuthUser::user()->id, $page);
         }else {
-            $schedules = Schedule::getTeamMemberSchedules(AuthUser::user()->id, $page);
+            $schedules = Schedule::getClientSchedules(AuthUser::user()->id, $page);
         }
 
         if(!$schedules) {
@@ -40,37 +39,26 @@ class GetSchedules {
             ]);
         }
 
-        $guest_ids = [];
 
-        foreach ($schedules as $schedule) {
-            $ids = json_decode($schedule->guest_ids, true) ?? [];
-            $guest_ids = array_merge($guest_ids, $ids);
-        }
+        // $guests = Schedule::getGuests($guestIds);
 
-        $guestIds = array_unique($guest_ids);
-
-        $guests = Client::getGuests($guestIds);
+        // return new \WP_REST_Response([
+        //     'schedules' => $schedules,
+        //     'guests' => $guests
+        // ]);
 
         $data = [];
+
         foreach ($schedules as $schedule) {
-            $guestIdsInSchedule = json_decode($schedule->guest_ids, true) ?? [];
-            $guestNames = [];
-
-            foreach ($guestIdsInSchedule as $guestId) {
-                if (isset($guests[$guestId])) {
-                    $guestNames[] = $guests[$guestId]->wp_user->user_login;
-                }
-            }
-
             $data[] = [
-                'id' => $schedule->id,
-                'created_by'   => $schedule->creator->wp_user->user_login ?? '',
-                'hosted_by'    => $schedule->host->wp_user->user_login ?? '',
-                'topic'        => $schedule->topic,
-                'description'  => $schedule->description,
-                'scheduled_at' => $schedule->scheduled_at ? (new DateTime($schedule->scheduled_at))->format('D d F, Y h:i A') : '',
-                'guests'       => count($guestNames),
-                'duration'     => $schedule->duration . ' ' . Schedule::DURATION_TYPES[$schedule->duration_type] ?? '',
+                'id'       => $schedule->id,
+                'creator'  => $schedule->author->wp_user->user_login,
+                'host'  => $schedule->host->wp_user->user_login,
+                'topic'    => $schedule->topic,
+                'description' => $schedule->description,
+                'scheduled_at' => Carbon::parse($schedule->scheduled_at)->format('h:i A D, d M'),
+                'link'  => $schedule->link,
+                'duration' => $schedule->duration . ' ' . Schedule::DURATION_TYPES[$schedule->duration_type],
             ];
         }
 

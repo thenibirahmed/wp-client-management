@@ -69,11 +69,6 @@ class Client extends Model
     //     })->paginate(20, ['*'], 'page', $page);
     // }
 
-    public static function getGuests($ids)
-    {
-        return self::whereIn('id', $ids)->get()->keyBy('id');
-    }
-
     public static function getClientData($id)
     {
         return self::with('eic_crm_user')->find($id);
