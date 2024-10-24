@@ -48,7 +48,7 @@ class CreateNote{
         $data['note']            = sanitize_textarea_field($data['note'] ?? '');
 
         if(isset($data['project_id']) && !isset($data['client_id'])) {
-            $data['client_id'] =  Project::where('id', $data['project_id'])->pluck('client_id')->first();
+            $data['client_id'] =  Project::where('id', $data['project_id'])->pluck('client_id')->first() ?? null;
         }
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);

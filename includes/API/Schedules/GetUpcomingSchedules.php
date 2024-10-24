@@ -4,7 +4,6 @@ namespace WpClientManagement\API\Schedules;
 
 use Carbon\Carbon;
 use WpClientManagement\Middlewares\AuthMiddleware;
-use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Schedule;
 
 class GetUpcomingSchedules {
@@ -54,19 +53,23 @@ class GetUpcomingSchedules {
                                ->values()
                                ->all();
 
-        $guests = EicCrmUser::getGuests($guest_ids);
+        $guests = Schedule::getGuests($guest_ids);
 
         $data = $schedules->map(function ($schedule) use ($guests) {
-            $guestIdsInSchedule = json_decode($schedule->guest_ids, true) ?? [];
-            $guestNames = array_map(fn($id) => $guests[$id]->wp_user->user_login ?? 'Guest', $guestIdsInSchedule);
+
+            $guestNames = $guests->filter(fn($guest) => in_array($guest->id, json_decode($schedule->guest_ids, true)))
+                                 ->map(fn($guest) => $guest->wp_user->user_login)
+                                 ->values()
+                                 ->all();
 
             return [
-                'id' => $schedule->id,
-                'topic' => $schedule->topic,
-                'scheduled_at' => Carbon::parse($schedule->scheduled_at)->format('h:i A D, d M'),
-                'guests' => $this->formatGuestNames($guestNames),
+                'id'            => $schedule->id,
+                'topic'         => $schedule->topic,
+                'description'   => $schedule->description,
+                'scheduled_at'  => Carbon::parse($schedule->scheduled_at)->format('h:i A D, d M'),
+                'guests'        => $this->formatGuestNames($guestNames),
             ];
-        })->toArray();
+        });
 
         return new \WP_REST_Response(['schedules' => $data]);
     }

@@ -81,17 +81,17 @@ class ProjectOverview {
             'topBar' => [
                 'invoice' => [
                     'name'    => 'Total Invoices',
-                    'total'   => $totalInvoicesAmount,
+                    'total'   => number_format($totalInvoicesAmount, 2),
                     'subText' => $totalInvoiceCount . ($totalInvoiceCount == 1 ? ' invoice' : ' invoices')
                 ],
                 'revenue' => [
                     'name'    => 'Total Revenue',
-                    'total'   => $totalPaidInvoiceAmount,
+                    'total'   => number_format($totalPaidInvoiceAmount, 2),
                     'subText' => $totalPaidInvoiceCount . ($totalPaidInvoiceCount == 1 ? ' invoice' : ' invoices')
-                ],
+                ], 
                 'due' => [
                     'name'    => 'Total Due',
-                    'total'   => $totalUnpaidInvoiceAmount,
+                    'total'   => number_format($totalUnpaidInvoiceAmount, 2),
                     'subText' => $totalUnpaidInvoiceCount . ($totalUnpaidInvoiceCount == 1 ? ' invoice' : ' invoices')
                 ],
                 'projects' => [

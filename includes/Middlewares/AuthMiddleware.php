@@ -1,6 +1,5 @@
 <?php
 namespace WpClientManagement\Middlewares;
-use WP_Error;
 use WpClientManagement\Helpers\AuthUser;
 
 class AuthMiddleware

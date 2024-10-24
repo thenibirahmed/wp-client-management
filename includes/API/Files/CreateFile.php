@@ -3,6 +3,7 @@ namespace WpClientManagement\API\Files;
 
 use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\File;
+use WpClientManagement\Models\Project;
 
 class CreateFile{
 
@@ -47,6 +48,10 @@ class CreateFile{
         $data['client_id']       = isset($data['client_id']) ? intval($data['client_id']) : null;
         $data['title']           = sanitize_text_field($data['title'] ?? '');
         $data['url']             = esc_url_raw($data['url'] ?? '');
+
+        if(isset($data['project_id']) && !isset($data['client_id'])) {
+            $data['client_id'] =  Project::where('id', $data['project_id'])->pluck('client_id')->first() ?? null;
+        }
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

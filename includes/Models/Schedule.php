@@ -27,9 +27,14 @@ class Schedule extends Model
         'days'    => 'Days',
     ];
 
-    public static function getClientSchedules($client_id, $page) {
+    public static function getGuests($ids)
+    {
+        return EicCrmUser::whereIn('id', $ids)->get();
+    }
 
-        return Schedule::whereRaw("JSON_CONTAINS(guest_ids, '$client_id')")->paginate(5, ['*'], 'page', $page);
+    public static function getSchedules($id, $page) {
+
+        return Schedule::whereRaw("JSON_CONTAINS(guest_ids, '$id')")->paginate(5, ['*'], 'page', $page);
     }
 
     public static function getTeamMemberSchedules($id, $page)
@@ -43,15 +48,13 @@ class Schedule extends Model
         return $this->belongsTo(EicCrmUser::class, 'created_by');
     }
 
-    
-
     public function host()
     {
         return $this->belongsTo(EicCrmUser::class, 'hosted_by');
     }
 
-    public function eic_crm_user() {
-        return $this->belongsTo(EicCrmUser::class);
+    public function author() {
+        return $this->belongsTo(EicCrmUser::class, 'created_by');
     }
 
     public function client() {

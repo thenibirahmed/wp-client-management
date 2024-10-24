@@ -211,8 +211,11 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/upcoming-schedules',
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/select-employee',
 		// {
+    //   name: 'lee',
+    //   email: 'lee@lee.com',
+    //   organization: 'tai jutsu',
 		// 	client_id: 1,
 		// 	status_id: 2,
 		// 	priority_id: 1,
@@ -222,15 +225,27 @@ const PlayGround = () => {
 		// 	budget: 5000.00,
 		// 	description: 'sam description',
 		// 	currency_id: 1
+    // hosted_by: 1,
+    // guest_ids: [1,22,23,24,25],
+    // topic: 'admin topic',
+    // description: 'admin description',
+    // scheduled_at: '2024-09-15 12:00:00',
+    // duration: 2,
+    // duration_type: 'hours',
+    // link: 'admin link'
 		// },
 		{
+
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
 			},
 			// params: {
-				// currency: '',
+        // search: '5000'
+				// currency: 'EUR',
         // date: '2024-10-18'
         // currency: 'BDT'
+        // from: '2024-06-17',
+        // to: '2024-10-17'
 			// }
 		})
 		.then((response) => {
