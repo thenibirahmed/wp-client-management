@@ -86,6 +86,6 @@ class GetSchedules {
             return "{$guestNames[0]} & {$guestNames[1]}";
         }
 
-        return "{$guestNames[0]} & " . ($count - 1) . ' others';
+        return "{$guestNames[0]}, {$guestNames[1]} & " . ($count - 2) . ' others';
     }
 }
