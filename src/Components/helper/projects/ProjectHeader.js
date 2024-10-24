@@ -28,6 +28,7 @@ const ProjectHeader = ({
   noPriority = false,
   taskFilter = false,
   invoiceFilter = false,
+  searchACtive = true,
 }) => {
   const { updateNotes, setUpdateNotes } = useStoreContext();
   return (
@@ -60,10 +61,12 @@ const ProjectHeader = ({
               )}
             </>
           )}
-          <ClientSearchInput
-            setSearchText={setSearchText}
-            searchText={searchText}
-          />
+          {searchACtive && (
+            <ClientSearchInput
+              setSearchText={setSearchText}
+              searchText={searchText}
+            />
+          )}
         </div>
         {filter && (
           <Filter

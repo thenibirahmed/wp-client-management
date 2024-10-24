@@ -1,6 +1,6 @@
 import Dashboard from "../Components/Dashboard/Dashboard";
 import Invoices from "../Components/Invoices";
-import Schedules from "../Components/Schedules";
+import Schedules from "../Components/schedules/Schedules";
 import Contact from "../Components/Contacts/Contact";
 import Settings from "../Components/Settings";
 import Docs from "../Components/Docs";

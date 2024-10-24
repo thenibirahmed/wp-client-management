@@ -679,6 +679,27 @@ export const useFetchAssignee = (onError) => {
   );
 };
 
+export const useFetchScheduleClient = (onError) => {
+  return useQuery(
+    ["select-schedule-client"],
+    async () => {
+      return await api.get(`/select-schedule-client`);
+    },
+    {
+      select: (data) => {
+        console.log(data.data);
+        const sendData = {
+          employee: data.data,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
 export const useFetchProjectTask = (
   projectId,
   searchText,

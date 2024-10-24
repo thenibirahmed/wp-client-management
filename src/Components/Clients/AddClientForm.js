@@ -130,7 +130,6 @@ const AddClientForm = ({
           />
           <TextField
             label="Phone"
-            required
             id="phone"
             type="number"
             message="*Phone Number is required"
@@ -142,7 +141,6 @@ const AddClientForm = ({
 
         <TextField
           label="Address"
-          required
           id="address"
           type="text"
           message="*Address is required"
@@ -153,7 +151,6 @@ const AddClientForm = ({
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <TextField
             label="City"
-            required
             id="city"
             type="text"
             message="*City is required"
@@ -163,7 +160,6 @@ const AddClientForm = ({
           />{" "}
           <TextField
             label="ZIP Code"
-            required
             id="zip"
             type="number"
             message="*ZIP Code is required"
@@ -175,7 +171,6 @@ const AddClientForm = ({
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <TextField
             label="Country"
-            required
             id="country"
             type="text"
             message="*Country is required"
@@ -185,7 +180,6 @@ const AddClientForm = ({
           />
           <TextField
             label="State / Region / Province "
-            required
             id="state"
             type="text"
             message="*State is required"
