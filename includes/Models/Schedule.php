@@ -32,9 +32,9 @@ class Schedule extends Model
         return EicCrmUser::whereIn('id', $ids)->get();
     }
 
-    public static function getClientSchedules($client_id, $page) {
+    public static function getSchedules($id, $page) {
 
-        return Schedule::whereRaw("JSON_CONTAINS(guest_ids, '$client_id')")->paginate(5, ['*'], 'page', $page);
+        return Schedule::whereRaw("JSON_CONTAINS(guest_ids, '$id')")->paginate(5, ['*'], 'page', $page);
     }
 
     public static function getTeamMemberSchedules($id, $page)
