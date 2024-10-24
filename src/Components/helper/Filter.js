@@ -12,7 +12,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Filter = ({ noPriority, taskFilter = false }) => {
+const Filter = ({ noPriority, taskFilter = false, invoiceFilter = false }) => {
   const {
     selectStatus,
     setSelectStatus,
@@ -30,7 +30,11 @@ const Filter = ({ noPriority, taskFilter = false }) => {
     error: pPrioritiesErr,
   } = useFetchPriorities("project", onError);
 
-  const filterOption = taskFilter ? "task" : "project";
+  const filterOption = taskFilter
+    ? "task"
+    : invoiceFilter
+    ? "invoice"
+    : "project";
   const {
     isLoading: isLoadingStatus,
     data: statuses,

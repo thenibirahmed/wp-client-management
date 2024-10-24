@@ -1,3 +1,5 @@
+import { formatRevenue } from "../../utils/formatter";
+
 export const OvierViewItem = ({
   title,
   amount,
@@ -9,16 +11,16 @@ export const OvierViewItem = ({
   Icon,
   dashboard = false,
 }) => {
-  const convertedAmount = Number(amount).toFixed(2);
+  const convertedAmount = formatRevenue(amount);
   return (
     <>
       <div
-        className={`xl:w-80 w-full space-y-4  text-center md:text-start  px-5 py-5 ${
+        className={`xl:w-80 w-full space-y-4  text-center xl:text-start  px-5 py-5 ${
           expense ? "bg-customBlue" : ""
         }`}
       >
         {icons ? (
-          <div className="flex items-center xl:justify-between justify-start">
+          <div className="flex items-center xl:justify-between justify-center">
             <h3
               className={`font-metropolis uppercase text-xs  font-semibold ${
                 expense ? "text-white" : "text-textColor2"
@@ -59,7 +61,7 @@ export const OvierViewItem = ({
           </h6>
         )}
         {expense && (
-          <div className="flex items-center  gap-[10px]">
+          <div className="flex items-center xl:justify-start justify-center  gap-[10px]">
             <span className="bg-white p-[4px] rounded-[5px] font-metropolis text-sm font-semibold text-invoiceColor">
               +6%
             </span>
@@ -69,7 +71,7 @@ export const OvierViewItem = ({
           </div>
         )}{" "}
         {clients && (
-          <div className="flex items-center   gap-[5px]">
+          <div className="flex items-center xl:justify-start  justify-center  gap-[5px]">
             <span className="bg-customBg3 p-[4px] rounded-[5px] font-metropolis text-sm font-semibold text-red">
               -12%
             </span>

@@ -27,6 +27,7 @@ const ProjectHeader = ({
   loader,
   noPriority = false,
   taskFilter = false,
+  invoiceFilter = false,
 }) => {
   const { updateNotes, setUpdateNotes } = useStoreContext();
   return (
@@ -64,7 +65,13 @@ const ProjectHeader = ({
             searchText={searchText}
           />
         </div>
-        {filter && <Filter noPriority={noPriority} taskFilter={taskFilter} />}
+        {filter && (
+          <Filter
+            noPriority={noPriority}
+            taskFilter={taskFilter}
+            invoiceFilter={invoiceFilter}
+          />
+        )}
 
         {openModal ? (
           <>

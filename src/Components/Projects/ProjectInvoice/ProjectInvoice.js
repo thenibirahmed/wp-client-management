@@ -148,6 +148,7 @@ const ProjectInvoice = ({ projectId }) => {
         filter
         loader={loader}
         noPriority
+        invoiceFilter
       />
 
       {invoiceList?.invoices.length > 0 ? (

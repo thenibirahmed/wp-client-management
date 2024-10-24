@@ -144,6 +144,7 @@ const ClientInvoices = ({ clientId }) => {
         filter
         loader={loader}
         noPriority
+        invoiceFilter
       />
 
       {invoiceList?.invoices.length > 0 ? (
