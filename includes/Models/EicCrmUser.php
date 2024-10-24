@@ -54,11 +54,6 @@ class EicCrmUser extends Model
         return self::whereNotIn('id', $clientIds)->get();
     }
 
-    public static function getGuests($ids)
-    {
-        return self::whereIn('id', $ids)->get()->keyBy('id');
-    }
-
     public function user() {
         return $this->belongsTo(User::class);
     }

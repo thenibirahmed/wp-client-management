@@ -211,7 +211,7 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/project/10/invoices',
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/client/12/overview',
 		// {
 		// 	client_id: 1,
 		// 	status_id: 2,
@@ -222,15 +222,23 @@ const PlayGround = () => {
 		// 	budget: 5000.00,
 		// 	description: 'sam description',
 		// 	currency_id: 1
+    // hosted_by: 1,
+    // guest_ids: [12,13,14,15],
+    // topic: 'sam topic',
+    // description: 'sam description',
+    // scheduled_at: '2024-09-15 12:00:00',
+    // duration: 1,
+    // duration_type: 'hours',
+    // link: 'sam link'
 		// },
 		{
 
 			headers: {
 				'X-WP-Nonce': eicApiSettings.nonce,
-			},  
+			},
 			params: {
-        search: '5000'
-				// currency: '',
+        // search: '5000'
+				currency: 'EUR',
         // date: '2024-10-18'
         // currency: 'BDT'
         // from: '2024-06-17',

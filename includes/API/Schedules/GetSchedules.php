@@ -4,6 +4,7 @@ namespace WpClientManagement\API\Schedules;
 
 use DateTime;
 use WpClientManagement\Helpers\AuthUser;
+use WpClientManagement\Models\Client;
 use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\Schedule;
 
@@ -48,7 +49,7 @@ class GetSchedules {
 
         $guestIds = array_unique($guest_ids);
 
-        $guests = EicCrmUser::getGuests($guestIds);
+        $guests = Client::getGuests($guestIds);
 
         $data = [];
         foreach ($schedules as $schedule) {

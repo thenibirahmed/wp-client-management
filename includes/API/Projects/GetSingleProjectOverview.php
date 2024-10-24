@@ -104,17 +104,17 @@ class GetSingleProjectOverview {
         $topBar = [
             "invoice" => [
                 'name'    => 'Total Invoice',
-                'total'   => $totalInvoiceAmount,
+                'total'   => format_number($totalInvoiceAmount),
                 'subText' => $totalInvoiceCount . ($totalInvoiceCount == 1 ? ' invoice' : ' invoices')
             ],
             "revenue" => [
                 'name'    => 'Total Revenue',
-                'total'   => $totalPaidInvoiceAmount,
+                'total'   => format_number($totalPaidInvoiceAmount),
                 'subText' => $paidInvoiceCount . ($paidInvoiceCount == 1 ? ' invoice' : ' invoices')
             ],
             "due" => [
                 'name'    => 'Total Due',
-                'total'   => $totalDueAmount,
+                'total'   => format_number($totalDueAmount),
                 'subText' => $unpaidInvoiceCount . ($unpaidInvoiceCount == 1 ? ' invoice' : ' invoices')
             ],
             "employee" => [
