@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { Delete03Icon, PencilEdit02Icon } from "../../utils/icons";
 
+import { Delete03Icon } from "../../utils/icons";
 import Pagination from "../Clients/Pagination";
-
 import useCheckedHandler from "../../utils/useCheckedItem";
-import { useStoreContext } from "../../store/ContextApiStore";
 import { DeleteModal } from "../DeleteModal";
 
 const ScheduleTable = ({
-  clientData,
+  scheduleData,
   pagination,
   selectedClient,
   setSelectedClient,
@@ -44,7 +42,7 @@ const ScheduleTable = ({
                           : false
                       }
                       onChange={(e) =>
-                        checkedAllClient(e.target.checked, clientData)
+                        checkedAllClient(e.target.checked, scheduleData)
                       }
                       type="checkbox"
                     />
@@ -106,7 +104,7 @@ const ScheduleTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {clientData?.map((item) => {
+                {scheduleData?.map((item) => {
                   const isChecked = selectedClient.some(
                     (client) => client?.id === item?.id
                   );
@@ -181,7 +179,11 @@ const ScheduleTable = ({
                 })}
               </tbody>
             </table>
-            {/* <Pagination pagination={pagination} slug="clients" query="/?page" /> */}
+            <Pagination
+              pagination={pagination}
+              slug="schedules"
+              query="/?page"
+            />
           </div>
         </div>
       </div>
@@ -190,7 +192,7 @@ const ScheduleTable = ({
         open={deleteClient}
         setOpen={setDeleteClient}
         id={clientId}
-        refetch={() => {}}
+        refetch={refetch}
         title="Delete Schedule"
         path="schedule"
       />

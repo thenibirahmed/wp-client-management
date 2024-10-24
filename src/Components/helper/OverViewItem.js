@@ -10,8 +10,9 @@ export const OvierViewItem = ({
   clients = false,
   Icon,
   dashboard = false,
+  symbol,
 }) => {
-  const convertedAmount = formatRevenue(amount);
+  const convertedAmount = amount;
   return (
     <>
       <div
@@ -48,7 +49,7 @@ export const OvierViewItem = ({
             dashboard ? "pt-3" : ""
           }  ${expense ? "text-white" : "text-textColor"}`}
         >
-          {!isProject ? "$" : ""}
+          {!isProject ? symbol : ""}
           {isProject ? amount : convertedAmount}
         </h1>
         {!expense && !clients && (

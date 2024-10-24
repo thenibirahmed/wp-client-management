@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
+import dayjs from "dayjs";
 
 import TextField from "../helper/TextField";
 import { useFetchAssignee, useFetchScheduleClient } from "../../hooks/useQuery";
@@ -12,13 +13,15 @@ import Loaders from "../Loaders";
 import Errors from "../Errors";
 import { MultiSelectTextField } from "../helper/MultiSelectTextField";
 import { SelectTextField } from "../helper/SelectTextField";
+import api from "../../api/api";
+import { durationTypes } from "../../utils/durationTypes";
 
 const AddNewScheduleForm = ({ refetch, setOpen }) => {
   const datePickerStartRef = useRef(null);
-  const datePickerDueRef = useRef(null);
 
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+
+  const [selectDuration, setSelectDuration] = useState();
 
   const [assigneeLists, setAssigneeLists] = useState();
   const [selectedAssignees, setSelectedAssignees] = useState([]);
@@ -45,14 +48,40 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
     register,
     handleSubmit,
     reset,
-    setError,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onTouched",
   });
 
-  const addNewProjectHandler = async (data) => {};
+  const addNewProjectHandler = async (data) => {
+    try {
+      setSubmitLoader(true);
+
+      const guestIds = [...allIds, ...allScheduleId];
+      const sendData = {
+        hosted_by: allIds,
+        guest_ids: guestIds,
+        topic: data.topic,
+        description: data.description,
+        scheduled_at: dayjs(startDate).format("YYYY-MM-DD HH:mm:ss"),
+        duration: data.duration,
+        duration_type: selectDuration.type,
+        link: data.link,
+      };
+
+      const { data: response } = await api.post(`/schedule/create`, sendData);
+
+      toast.success(response?.message || "operation success");
+      await refetch();
+      reset();
+      setOpen(false);
+    } catch (err) {
+      console.log(err);
+      toast.error(response?.response?.data?.message || "Something Went Wrong");
+    } finally {
+      setSubmitLoader(false);
+    }
+  };
 
   useEffect(() => {
     setAllIds(selectedAssignees.map((item) => item.id));
@@ -76,7 +105,11 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
     }
   }, [schedules]);
 
-  const isLoading = isLoadProjectManager;
+  useEffect(() => {
+    setSelectDuration(durationTypes[0]);
+  }, []);
+
+  const isLoading = isLoadProjectManager || isLoadingSchedule;
 
   function onError(err) {
     toast.error(err?.response?.data?.message);
@@ -87,7 +120,8 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
     return <Skeleton />;
   }
 
-  if (pManagerErr) return <Errors message="Internal Server Error" />;
+  if (pManagerErr || scheduleErr)
+    return <Errors message="Internal Server Error" />;
 
   return (
     <div className="py-5 relative h-full ">
@@ -95,20 +129,21 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
         className="space-y-4 "
         onSubmit={handleSubmit(addNewProjectHandler)}
       >
-        <div className="flex md:flex-row items-end flex-col gap-4 w-full">
-          <div className=" flex-1 ">
-            <TextField
-              label="Topic"
-              required
-              id="topic"
-              type="text"
-              message="This field is required*"
-              placeholder="Topic"
-              register={register}
-              errors={errors}
-            />
-          </div>
-          <div className=" flex-1 ">
+        <div className=" flex-1 ">
+          <TextField
+            label="Topic"
+            required
+            id="topic"
+            type="text"
+            message="This field is required*"
+            placeholder="Topic"
+            register={register}
+            errors={errors}
+          />
+        </div>
+
+        <div className="flex md:flex-row items-center flex-col gap-4 w-full">
+          <div className="flex-1">
             <TextField
               label="Duration"
               required
@@ -120,9 +155,18 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
               errors={errors}
             />
           </div>
+          <div className="flex-1">
+            <SelectTextField
+              label="Duration Types"
+              select={selectDuration}
+              setSelect={setSelectDuration}
+              lists={durationTypes}
+              isSubmitting={isSubmitting}
+            />
+          </div>
         </div>
 
-        <div className="flex md:flex-row items-end flex-col gap-4 w-full">
+        <div className="flex md:flex-row items-center flex-col gap-4 w-full">
           <div className=" flex-1 ">
             <MultiSelectTextField
               label="Select Schedule Client"
@@ -148,7 +192,7 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <div className="flex flex-col gap-2 w-full">
             <label className="font-medium text-sm  font-metropolis text-textColor">
-              scheduled At
+              Scheduled At
             </label>
             <div
               className={`relative text-sm font-metropolis border w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-textColor2   sm:text-sm sm:leading-6 `}
@@ -174,7 +218,6 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
         <div className=" flex-1 ">
           <TextField
             label="Link"
-            required
             id="link"
             type="link"
             message="This field is required*"
@@ -200,7 +243,7 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
                 : "border-borderColor"
             }`}
             {...register("description", {
-              required: { value: true, message: "Description is required*" },
+              required: { value: false, message: "Description is required*" },
             })}
           />
           {errors["description"]?.message && (

@@ -38,6 +38,8 @@ const Dashboard = () => {
     error: scheduleErr,
   } = useFetchDashboardUpcomingShedule(onError);
 
+  console.log("sc", schedules);
+
   const {
     isLoading: projectLoader,
     data: project,

@@ -1390,3 +1390,22 @@ export const useFetchDashboardReports = (onError) => {
     }
   );
 };
+
+export const useFetchSchedules = (paginationUrl, onError) => {
+  return useQuery(
+    "schedules",
+    async () => {
+      const url = `/schedules/?${paginationUrl}`;
+
+      return await api.get(url);
+    },
+    {
+      select: (data) => ({
+        schedules: data.data.schedules,
+        pagination: data.data.pagination,
+      }),
+      onError,
+      staleTime: 5000,
+    }
+  );
+};

@@ -118,11 +118,13 @@ const ProjectOverView = ({
               title={topBar?.due?.name}
               amount={topBar?.due?.total}
               invoice={topBar?.due?.subText}
+              symbol={topBar?.currency?.symbol}
             />{" "}
             <OvierViewItem
               title={topBar?.invoice?.name}
               amount={topBar?.invoice?.total}
               invoice={topBar?.invoice?.subText}
+              symbol={topBar?.currency?.symbol}
             />
             <OvierViewItem
               isProject
@@ -134,6 +136,7 @@ const ProjectOverView = ({
               title={topBar?.revenue?.name}
               amount={topBar?.revenue?.total}
               invoice={topBar?.revenue?.subText}
+              symbol={topBar?.currency?.symbol}
             />
           </>
         ) : (
@@ -142,16 +145,19 @@ const ProjectOverView = ({
               title={projectOverView?.projectOverView?.invoice?.name}
               amount={projectOverView?.projectOverView?.invoice?.total}
               invoice={projectOverView?.projectOverView?.invoice?.subText}
+              symbol={projectOverView?.projectOverView?.currency?.symbol}
             />
             <OvierViewItem
               title={projectOverView?.projectOverView?.revenue?.name}
               amount={projectOverView?.projectOverView?.revenue?.total}
               invoice={projectOverView?.projectOverView?.revenue?.subText}
+              symbol={projectOverView?.projectOverView?.currency?.symbol}
             />
             <OvierViewItem
               title={projectOverView?.projectOverView?.due?.name}
               amount={projectOverView?.projectOverView?.due?.total}
               invoice={projectOverView?.projectOverView?.due?.subText}
+              symbol={projectOverView?.projectOverView?.currency?.symbol}
             />
 
             <OvierViewItem
