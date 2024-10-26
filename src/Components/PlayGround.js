@@ -211,7 +211,7 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/select-employee',
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/schedules',
 		// {
     //   name: 'lee',
     //   email: 'lee@lee.com',
@@ -225,11 +225,11 @@ const PlayGround = () => {
 		// 	budget: 5000.00,
 		// 	description: 'sam description',
 		// 	currency_id: 1
-    // hosted_by: 1,
+    // hosted_by: 14,
     // guest_ids: [1,22,23,24,25],
-    // topic: 'admin topic',
-    // description: 'admin description',
-    // scheduled_at: '2024-09-15 12:00:00',
+    // topic: 'test topic',
+    // description: 'test description',
+    // scheduled_at: '2024-10-24 06:30:00',
     // duration: 2,
     // duration_type: 'hours',
     // link: 'admin link'
