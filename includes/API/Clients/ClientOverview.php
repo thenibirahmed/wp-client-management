@@ -2,6 +2,7 @@
 namespace WpClientManagement\API\Clients;
 
 use WpClientManagement\Models\Client;
+use WpClientManagement\Models\Currency;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
 
@@ -90,6 +91,8 @@ class ClientOverview {
         $paidInvoiceCount   = $invoices->where('status.name', 'paid')->where('status.type', 'invoice')->count();
         $unpaidInvoiceCount = $totalInvoiceCount - $paidInvoiceCount;
 
+        $currency = Currency::getCurrencyData($data['currency']);
+
         $topBar = [
             "invoice" => [
                 'name'    => 'Total Invoice',
@@ -111,7 +114,7 @@ class ClientOverview {
                 'amount'  => $projectCount,
                 'subText' => 'last 3 months'
             ],
-            'currency' => $data['currency'],
+            'currency' => $currency,
         ];
 
         return new \WP_REST_Response([

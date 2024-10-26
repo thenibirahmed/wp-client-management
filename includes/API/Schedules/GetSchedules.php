@@ -26,7 +26,10 @@ class GetSchedules {
 
         if(AuthUser::user()->role == 'admin') {
             $schedules = Schedule::paginate(5, ['*'], 'page', $page);
-        }else {
+        }elseif(AuthUser::user()->role == 'client') {
+            $schedules = Schedule::getSchedules(AuthUser::user()->guest_id, $page);         
+        }
+        else {
             $schedules = Schedule::getSchedules(AuthUser::user()->id, $page);
         }
 
