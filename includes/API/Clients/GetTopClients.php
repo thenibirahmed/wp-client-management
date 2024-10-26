@@ -73,7 +73,7 @@ class GetTopClients {
             $data[] = [
                 'id'           => $client->id,
                 'name'         => $client->eic_crm_user->wp_user->user_login,
-                'total_revenue'=> number_format($client->total_amount,2),
+                'total_revenue'=> format_number($client->total_amount,2),
                 'percentage'   => $client->percentage,
             ];
         }
