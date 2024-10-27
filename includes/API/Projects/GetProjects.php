@@ -115,9 +115,9 @@ class GetProjects {
                 'assignee'     => $project->eicCrmUsers->count(),
                 'priority'     => $project->priority->name,
                 'status'       => $project->status->name,
-                'invoice'      => $invoices['total'] ?? 0,
-                'revenue'      => $invoices['revenue'] ?? 0,
-                'due'          => $invoices['due'] ?? 0,
+                'invoice'      => number_format($invoices['total'], 2),
+                'revenue'      => number_format($invoices['revenue'], 2),
+                'due'          => number_format($invoices['due'], 2),
             ];
        });
 

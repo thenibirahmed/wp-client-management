@@ -92,7 +92,7 @@ class GetClientInvoices {
                 'id'             => $invoice->id,
                 'code'           => $invoice->code,
                 'project'        => $invoice->project->title,
-                'amount'         => $invoice->total,
+                'amount'         => number_format($invoice->total, 2),
                 'status'         => $invoice?->status?->name,
                 'payment_method' => $invoice?->paymentMethod?->name,
                 'due_date'       => $invoice?->due_date ? human_time_diff(strtotime($invoice?->due_date), current_time('timestamp')) . ' ago' : null,

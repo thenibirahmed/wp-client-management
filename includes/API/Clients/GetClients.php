@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Clients;
 
+use Carbon\Carbon;
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
 
@@ -107,42 +108,46 @@ class GetClients {
                 'client_id'     => $client->id,
                 'organization'  => $client->organization,
                 'project_count' => $client->projects->count() ?? 0,
-                'invoice'       => $invoices ?? [],
+                'invoice'       => [
+                    'total'   => number_format($invoices['total'], 2),
+                    'revenue' => number_format($invoices['revenue'], 2),
+                    'due'     => number_format($invoices['due'], 2),
+                ],
                 'name'          => $wpUser['name'] ?? null,
                 'email'         => $wpUser['email'] ?? null,
                 'phone'         => $client->eic_crm_user->phone ?? '',
-                'created_at'    => $client->created_at->format('Y-m-d'),
+                'created_at'    => $client->created_at ? Carbon::parse($client->created_at)->format('M d, Y') : '',
             ];
         });
 
-    //    if($search) {
-    //         $clientsWithDetails = $clientsWithDetails->filter(function ($client) use ($search) {
-    //             return stripos($client['name'], $search) !== false;
-    //         });
-    //    }
+        //    if($search) {
+        //         $clientsWithDetails = $clientsWithDetails->filter(function ($client) use ($search) {
+        //             return stripos($client['name'], $search) !== false;
+        //         });
+        //    }
 
-        // $topBar = [
-        //     "invoice" => [
-        //         'name'    => 'Total Invoice',
-        //         'amount'  => $totalInvoices,
-        //         'subText' => $totalInvoiceCount . ($totalInvoiceCount == 1 ? ' invoice' : ' invoices')
-        //     ],
-        //     "revenue" => [
-        //         'name'    => 'Total Revenue',
-        //         'amount'  => $totalRevenue,
-        //         'subText' => $paidInvoiceCount . ($paidInvoiceCount == 1 ? ' invoice' : ' invoices')
-        //     ],
-        //     "due" => [
-        //         'name'    => 'Total Due',
-        //         'amount'  => $totalDue,
-        //         'subText' => $unpaidInvoiceCount . ($unpaidInvoiceCount == 1 ? ' invoice' : ' invoices')
-        //     ],
-        //     "project" => [
-        //         'name'    => 'Total Projects',
-        //         'amount'  => $projectCount,
-        //         'subText' => 'last 3 months'
-        //     ]
-        // ];
+            // $topBar = [
+            //     "invoice" => [
+            //         'name'    => 'Total Invoice',
+            //         'amount'  => $totalInvoices,
+            //         'subText' => $totalInvoiceCount . ($totalInvoiceCount == 1 ? ' invoice' : ' invoices')
+            //     ],
+            //     "revenue" => [
+            //         'name'    => 'Total Revenue',
+            //         'amount'  => $totalRevenue,
+            //         'subText' => $paidInvoiceCount . ($paidInvoiceCount == 1 ? ' invoice' : ' invoices')
+            //     ],
+            //     "due" => [
+            //         'name'    => 'Total Due',
+            //         'amount'  => $totalDue,
+            //         'subText' => $unpaidInvoiceCount . ($unpaidInvoiceCount == 1 ? ' invoice' : ' invoices')
+            //     ],
+            //     "project" => [
+            //         'name'    => 'Total Projects',
+            //         'amount'  => $projectCount,
+            //         'subText' => 'last 3 months'
+            //     ]
+            // ];
 
         return new \WP_REST_Response([
             'clients'    => $clientsWithDetails,

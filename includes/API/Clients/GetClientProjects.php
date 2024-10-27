@@ -119,9 +119,9 @@ class GetClientProjects {
                 'status'    => $project->status->name ?? '',
                 'priority'  => $project->priority->name ?? '',
                 'invoice'   => [
-                    'total'   => $invoiceData['total'],
-                    'revenue' => $invoiceData['revenue'],
-                    'due'     => $invoiceData['due'],
+                    'total'   => number_format($invoiceData['total'], 2),
+                    'revenue' => number_format($invoiceData['revenue'], 2),
+                    'due'     => number_format($invoiceData['due'], 2),
                 ],
             ];
         }

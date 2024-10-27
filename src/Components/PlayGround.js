@@ -211,7 +211,7 @@ const PlayGround = () => {
 
 // ***
 	const getTestData = () => {
-		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/project/12/overview',
+		axios.get(eicApiSettings.rest_url + 'wp-client-management/v1/clients',
 		// {
     //   name: 'lee',
     //   email: 'lee@lee.com',
