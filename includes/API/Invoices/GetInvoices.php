@@ -3,6 +3,7 @@
 namespace WpClientManagement\API\Invoices;
 
 use WpClientManagement\Helpers\AuthUser;
+use WpClientManagement\Middlewares\AuthMiddleware;
 use WpClientManagement\Models\Invoice;
 
 class GetInvoices {
@@ -29,7 +30,7 @@ class GetInvoices {
         register_rest_route($this->namespace, $this->endpoint, [
             'methods' => \WP_REST_Server::READABLE,
             'callback' => array($this, 'get_invoices'),
-            'permission_callback' => 'is_user_logged_in',
+            'permission_callback' => [AuthMiddleware::class, 'client'],
         ]);
     }
 
@@ -62,6 +63,10 @@ class GetInvoices {
             $invoices = Invoice::with('project')->paginate(5, ['*'], 'page', $page);
         }elseif(AuthUser::user()->role == 'client') {
             $invoices = Invoice::getClientInvoices(AuthUser::user()->id, $page, $data['currency'], $data['from'], $data['to'], $data['status_id'], $data['search']);
+        }else{
+            return new \Wp_REST_Response([
+                'error' => 'Unauthorized.'
+            ], 401);
         }
 
         $data = [];

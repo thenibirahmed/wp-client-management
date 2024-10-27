@@ -146,8 +146,8 @@ const InvoiceTable = ({
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-semibold text-sm">
                         ${" "}
                         {isClient
-                          ? roundNumber(item.amount)
-                          : roundNumber(item.total)}
+                          ? item.amount
+                          : item.total}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm  font-metropolis font-medium">
                         <span

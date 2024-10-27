@@ -38,8 +38,6 @@ const Dashboard = () => {
     error: scheduleErr,
   } = useFetchDashboardUpcomingShedule(onError);
 
-  console.log("sc", schedules);
-
   const {
     isLoading: projectLoader,
     data: project,
@@ -101,7 +99,7 @@ const Dashboard = () => {
             <ProjectList projects={project?.projects} />
           </div>
           <div className="2xl:w-[28%] xl:w-[30%] lg:w-[35%] w-full space-y-[20px]">
-            <Schedule />
+            <Schedule schedules={schedules?.schedules} />
             <TopClients clients={client?.clients} />
           </div>
         </div>

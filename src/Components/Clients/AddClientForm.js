@@ -108,7 +108,6 @@ const AddClientForm = ({
           />
           <TextField
             label="Organization"
-            required
             id="organization"
             type="text"
             message="*Organization is required"

@@ -54,7 +54,7 @@ class GetEmails {
         }
 
         return new \WP_REST_Response([
-            'data' => $data,
+            'emails' => $data,
             'pagination' => [
                 'total'         => $emails->total(),
                 'per_page'      => $emails->perPage(),

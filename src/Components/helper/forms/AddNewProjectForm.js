@@ -391,7 +391,6 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
         <div className="w-full">
           <TextField
             label="Budget"
-            required
             id="budget"
             type="number"
             message="This field is required*"
@@ -415,9 +414,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
                 ? "border-customRed"
                 : "border-borderColor"
             }`}
-            {...register("description", {
-              required: { value: true, message: "Description is required*" },
-            })}
+            {...register("description")}
           />
           {errors["description"]?.message && (
             <p className="text-xs font-semibold text-customRed -mt-1">

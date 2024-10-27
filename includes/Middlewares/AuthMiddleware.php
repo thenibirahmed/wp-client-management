@@ -27,6 +27,15 @@ class AuthMiddleware
         }
     }
 
+    public static function client()
+    {
+        if(is_user_logged_in() && AuthUser::user()->role == 'client' || AuthUser::user()->role == 'admin') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static function guest()
     {
         if(is_user_logged_in()) {

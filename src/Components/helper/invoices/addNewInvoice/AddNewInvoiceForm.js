@@ -155,67 +155,88 @@ const AddNewInvoiceForm = ({
       return setError("This field is required*");
     }
 
+    let isValid = true;
+
+    const invoice_items = invoiceItem?.map((item, i) => {
+      if (!item.itemDetails) {
+        toast.error(`Item name is missing for the item ${i + 1}`);
+        isValid = false;
+      } else if (!item.rate || item.rate === 0) {
+        toast.error(`Item Rate is missing for the item ${i + 1}`);
+        isValid = false;
+      } else if (!item.quantity || item.quantity === 0) {
+        toast.error(`Item quantity is missing for the item ${i + 1}`);
+        isValid = false;
+      }
+      return item;
+    });
+
     if (invoice_items?.length === 0)
       return toast.error("At least one items is required");
 
-    setSubmitLoader(true);
+    if (isValid) {
+      setSubmitLoader(true);
 
-    const sendData = {
-      project_id: Number(selectedProject?.id),
-      title: data.title,
-      invoice_number: Number(data.invoicenumber),
-      payment_method_id: selectPayMethod?.id,
-      currency_id: selectCurrency?.id,
-      status_id: selectStatus?.id,
-      date: dayjs(invoiceDate).format("YYYY-MM-DD"),
-      due_date: dayjs(dueDate).format("YYYY-MM-DD"),
-      billing_address: data?.caddress,
-      billing_phone_number: data?.cphone,
-      billing_email: data?.cemail,
-      bill_from_address: data?.address,
-      bill_from_phone_number: data?.phone,
-      bill_from_email: data?.email,
-      bill_from_id: selectEmplyoee?.id,
-      bill_to_id: selectClient?.id,
-      note: noteText,
-      sub_total: subtotal,
-      total: finalAmount,
-      discount: totalDiscount,
-      tax: totalTax,
-      fee: 10,
-      invoice_items,
-    };
+      const sendData = {
+        project_id: Number(selectedProject?.id),
+        title: data.title,
+        invoice_number: Number(data.invoicenumber),
+        payment_method_id: selectPayMethod?.id,
+        currency_id: selectCurrency?.id,
+        status_id: selectStatus?.id,
+        date: dayjs(invoiceDate).format("YYYY-MM-DD"),
+        due_date: dayjs(dueDate).format("YYYY-MM-DD"),
+        billing_address: data?.caddress,
+        billing_phone_number: data?.cphone,
+        billing_email: data?.cemail,
+        bill_from_address: data?.address,
+        bill_from_phone_number: data?.phone,
+        bill_from_email: data?.email,
+        bill_from_id: selectEmplyoee?.id,
+        bill_to_id: selectClient?.id,
+        note: noteText,
+        sub_total: subtotal,
+        total: finalAmount,
+        discount: totalDiscount,
+        tax: totalTax,
+        fee: 10,
+        invoice_items,
+      };
 
-    if (update) {
-      if (clientId) {
-        sendData.client_id = Number(clientInvoice?.client_id);
-      }
-    } else {
-      if (clientId) {
-        sendData.client_id = Number(clientId);
-      }
-    }
-    setIsFetching(true);
-    try {
-      let res;
       if (update) {
-        let { data } = await api.put(`/invoice/update/${invoiceId}`, sendData);
-        res = data;
+        if (clientId) {
+          sendData.client_id = Number(clientInvoice?.client_id);
+        }
       } else {
-        let { data } = await api.post("/invoice/create", sendData);
-        res = data;
+        if (clientId) {
+          sendData.client_id = Number(clientId);
+        }
       }
-      toast.success(res?.message || "Operation Success");
-      reset();
+      setIsFetching(true);
+      try {
+        let res;
+        if (update) {
+          let { data } = await api.put(
+            `/invoice/update/${invoiceId}`,
+            sendData
+          );
+          res = data;
+        } else {
+          let { data } = await api.post("/invoice/create", sendData);
+          res = data;
+        }
+        toast.success(res?.message || "Operation Success");
+        reset();
 
-      setCreateInvoice(false);
-      setUpdateInvoice(false);
-    } catch (err) {
-      console.log(err);
-      toast.error("Something went wrong");
-    } finally {
-      setSubmitLoader(false);
-      setIsFetching(false);
+        setCreateInvoice(false);
+        setUpdateInvoice(false);
+      } catch (err) {
+        console.log(err);
+        toast.error("Something went wrong");
+      } finally {
+        setSubmitLoader(false);
+        setIsFetching(false);
+      }
     }
   };
 

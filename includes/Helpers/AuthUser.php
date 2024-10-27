@@ -28,10 +28,11 @@ class AuthUser
         }
 
         return (object) [
-            'id'    => $eic_user->role->name === 'client' ? $eic_user->client->id : $eic_user->id,
-            'name'  => $wp_user->user_login,
-            'email' => $wp_user->user_email,
-            'role'  => $eic_user->role->name,
+            'id'        => $eic_user->role->name === 'client' ? $eic_user->client->id : $eic_user->id,
+            'name'      => $wp_user->user_login,
+            'email'     => $wp_user->user_email,
+            'role'      => $eic_user->role->name,
+            'guest_id'  => $eic_user->id,
         ];
     }
 }

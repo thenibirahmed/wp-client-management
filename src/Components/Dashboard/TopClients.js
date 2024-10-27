@@ -41,7 +41,7 @@ const TopClients = ({ clients }) => {
               <div className="text-sm   font-semibold text-textColor3">
                 ${formatRevenue(item.total_revenue)}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex xl:flex-row lg:flex-col items-center gap-2">
                 <div className="text-sm flex font-normal  text-textColor2">
                   <span> {Number(item.percentage)}</span> <span>%</span>
                 </div>

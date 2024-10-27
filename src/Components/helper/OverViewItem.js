@@ -50,6 +50,7 @@ export const OvierViewItem = ({
           }  ${expense ? "text-white" : "text-textColor"}`}
         >
           {!isProject ? symbol : ""}
+          {dashboard && !isProject && "$"}
           {isProject ? amount : convertedAmount}
         </h1>
         {!expense && !clients && (

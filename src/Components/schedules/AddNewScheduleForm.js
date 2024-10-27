@@ -55,6 +55,8 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
 
   const addNewProjectHandler = async (data) => {
     try {
+      if (allIds.length === 0) return toast.error("Employee is required");
+
       setSubmitLoader(true);
 
       const guestIds = [...allIds, ...allScheduleId];
@@ -77,7 +79,7 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
       setOpen(false);
     } catch (err) {
       console.log(err);
-      toast.error(response?.response?.data?.message || "Something Went Wrong");
+      toast.error(err?.response?.data?.message || "Something Went Wrong");
     } finally {
       setSubmitLoader(false);
     }
@@ -146,7 +148,6 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
           <div className="flex-1">
             <TextField
               label="Duration"
-              required
               id="duration"
               type="text"
               message="This field is required*"
@@ -242,9 +243,7 @@ const AddNewScheduleForm = ({ refetch, setOpen }) => {
                 ? "border-customRed"
                 : "border-borderColor"
             }`}
-            {...register("description", {
-              required: { value: false, message: "Description is required*" },
-            })}
+            {...register("description")}
           />
           {errors["description"]?.message && (
             <p className="text-xs font-semibold text-customRed -mt-1">

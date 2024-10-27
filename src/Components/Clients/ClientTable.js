@@ -147,13 +147,13 @@ const ClientTable = ({
                         {item.project_count}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-invoiceColor font-metropolis font-medium text-sm">
-                        ${roundNumber(item.invoice.total)}
+                        ${item.invoice.total}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-invoiceColor font-metropolis font-medium">
-                        ${roundNumber(item.invoice.revenue)}
+                        ${item.invoice.revenue}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-medium">
-                        ${roundNumber(item.invoice.due)}
+                        ${item.invoice.due}
                       </td>
                       <td
                         onClick={(e) => e.stopPropagation()}
