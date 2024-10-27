@@ -199,10 +199,10 @@ const ProjectTable = ({
                         ${item.invoice}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-invoiceColor font-metropolis font-semibold">
-                        ${roundNumber(item.revenue)}
+                        ${item.revenue}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-customRed font-metropolis font-semibold">
-                        ${roundNumber(item.due)}
+                        ${item.due}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
                         <div className="flex items-center gap-2">
