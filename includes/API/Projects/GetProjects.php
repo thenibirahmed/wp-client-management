@@ -2,6 +2,7 @@
 
 namespace WpClientManagement\API\Projects;
 
+use WpClientManagement\Helpers\AuthUser;
 use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
 use WpClientManagement\Models\Project;
@@ -59,7 +60,17 @@ class GetProjects {
             ], 400);
         }
 
-        $projects    = Project::getAllProjects($page, $data['from'], $data['to'], $data['status_id'], $data['priority_id'], $search);
+        if(AuthUser::user()->role === 'admin') {
+            $projects    = Project::getAllProjects($page, $data['from'], $data['to'], $data['status_id'], $data['priority_id'], $search);
+        }elseif(AuthUser::user()->role === 'client') {
+            $projects    = Project::getClientProjects(AuthUser::user()->id, $page, $data['from'], $data['to'], $data['priority_id'], $data['status_id'], $search);
+        }elseif(AuthUser::user()->role === 'team-member') {
+            $projects    = Project::getTeamMemberProjects(AuthUser::user()->id, $page, $data['from'], $data['to'], $data['priority_id'], $data['status_id'], $search);
+        }else{
+            return new \WP_REST_Response([
+                'error' => 'Unauthorized',
+            ], 401);
+        }
 
         $clients     = Client::whereHas('projects')->get();
 

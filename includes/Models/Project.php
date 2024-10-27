@@ -8,6 +8,7 @@ use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Status;
 use WpClientManagement\Models\Invoice;
 use Illuminate\Database\Eloquent\Model;
+use WpClientManagement\Helpers\AuthUser;
 use WpClientManagement\Models\Priority;
 use WpClientManagement\Models\EicCrmUser;
 use WpClientManagement\Models\DealPipeline;
@@ -68,6 +69,7 @@ class Project extends Model
                 ->where('client_id', $id)
                 ->whereBetween('start_date', [$from, $to]);
 
+
         if($status_id){
             $query->where('status_id', $status_id);
         }
@@ -83,19 +85,44 @@ class Project extends Model
         return $query->paginate(20, ['*'], 'project', $page);
     }
 
-    public static function getTeamMemberProjects($id, $search, $page)
+    public static function getTeamMemberProjects($id, $page, $from, $to, $priority_id, $status_id, $search = '')
     {
-        $query = Project::with('status', 'priority')
-                    ->whereHas('eicCrmUsers', function ($query) use ($id) {
-            $query->where('eic_crm_user_id', $id);
-        });
+        $authUser = EicCrmUser::find($id);
+
+        $projectIds = $authUser->assignedProjects->pluck('id')->toArray(); ;
+
+        $query = self::with('invoices','priority')
+                ->whereIn('id', $projectIds)
+                ->whereBetween('start_date', [$from, $to]);
+
+        if($status_id){
+            $query->where('status_id', $status_id);
+        }
+
+        if($priority_id){
+            $query->where('priority_id', $priority_id);
+        }
 
         if(!empty($search)){
             $query->where('title', 'like', '%'.$search.'%');
         }
 
-        return $query->paginate(3, ['*'], 'project', $page);
+        return $query->paginate(20, ['*'], 'project', $page);
     }
+
+    // public static function getTeamMemberProjects($id, $search, $page)
+    // {
+    //     $query = Project::with('status', 'priority')
+    //                 ->whereHas('eicCrmUsers', function ($query) use ($id) {
+    //         $query->where('eic_crm_user_id', $id);
+    //     });
+
+    //     if(!empty($search)){
+    //         $query->where('title', 'like', '%'.$search.'%');
+    //     }
+
+    //     return $query->paginate(3, ['*'], 'project', $page);
+    // }
 
     public static function getProjectData($id)
     {
