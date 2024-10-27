@@ -62,6 +62,10 @@ class GetInvoices {
             $invoices = Invoice::with('project')->paginate(5, ['*'], 'page', $page);
         }elseif(AuthUser::user()->role == 'client') {
             $invoices = Invoice::getClientInvoices(AuthUser::user()->id, $page, $data['currency'], $data['from'], $data['to'], $data['status_id'], $data['search']);
+        }else{
+            return new \Wp_REST_Response([
+                'error' => 'Unauthorized.'
+            ], 401);
         }
 
         $data = [];
