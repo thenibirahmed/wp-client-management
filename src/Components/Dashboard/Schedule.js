@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import Calendar from "./HorizontaCalendar";
 import { ArrowRight02Icon } from "../../utils/icons";
 import useCheckedHandler from "../../utils/useCheckedItem";
@@ -73,7 +74,7 @@ const Schedule = ({ schedules }) => {
                     isChecked ? "text-textColor" : "text-iconColor2"
                   }`}
                 >
-                  {item.description}
+                  {item.guests}
                 </h4>
               </div>
             </div>

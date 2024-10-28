@@ -5,7 +5,6 @@ import useCheckedHandler from "../../../utils/useCheckedItem";
 import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { DeleteModal } from "../../DeleteModal";
-import { roundNumber } from "../../../utils/roundNumber";
 
 const InvoiceTable = ({
   invoiceList,
@@ -144,10 +143,7 @@ const InvoiceTable = ({
                         {isClient ? item.project : item.client_name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-semibold text-sm">
-                        ${" "}
-                        {isClient
-                          ? item.amount
-                          : item.total}
+                        $ {isClient ? item.amount : item.total}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm  font-metropolis font-medium">
                         <span

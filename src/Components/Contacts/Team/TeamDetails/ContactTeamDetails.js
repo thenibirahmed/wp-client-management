@@ -1,13 +1,15 @@
 import React from "react";
+import toast from "react-hot-toast";
+
 import ClientInfo from "../../../Clients/ClientInfo";
 import ContactTeamDetailsLayout from "./ContactTeamDetailsLayout";
 import ContactTeamDetailsTabs from "./ContactTeamDetailsTabs";
 import useHashRouting from "../../../../utils/useHashRouting";
 import { useFetchSingleTeamOverview } from "../../../../hooks/useQuery";
-import toast from "react-hot-toast";
 import Skeleton from "../../../Skeleton";
 import { useClientOverViewRefetch } from "../../../../hooks/useRefetch";
 import { useStoreContext } from "../../../../store/ContextApiStore";
+
 const extractProjectId = (url) => {
   const match = url.match(/contact\/#\/(\d+)/);
   return match ? match[1] : null;

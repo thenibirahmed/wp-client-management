@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Cancel01Icon,
   Delete03Icon,
   PencilEdit02Icon,
   SquareArrowMoveLeftUpIcon,
@@ -53,13 +54,23 @@ const Comments = ({ author, date, comment, id, first }) => {
         </p>
       </div>
       <div className="space-x-4">
-        <button onClick={() => setCommentReplyId(id)}>
-          <SquareArrowMoveLeftUpIcon
-            className="text-textColor2"
-            width="20px"
-            height="20px"
-          />
-        </button>
+        {commentReplyId && commentReplyId === id ? (
+          <button onClick={() => setCommentReplyId("")}>
+            <Cancel01Icon
+              className="text-textColor2"
+              width="20px"
+              height="20px"
+            />
+          </button>
+        ) : (
+          <button onClick={() => setCommentReplyId(id)}>
+            <SquareArrowMoveLeftUpIcon
+              className="text-textColor2"
+              width="20px"
+              height="20px"
+            />
+          </button>
+        )}
         <button>
           <PencilEdit02Icon
             className="text-textColor2"

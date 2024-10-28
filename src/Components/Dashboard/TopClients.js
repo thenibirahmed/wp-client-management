@@ -39,7 +39,7 @@ const TopClients = ({ clients }) => {
                 {item.name}
               </div>
               <div className="text-sm   font-semibold text-textColor3">
-                ${formatRevenue(item.total_revenue)}
+                ${item.total_revenue}
               </div>
               <div className="flex xl:flex-row lg:flex-col items-center gap-2">
                 <div className="text-sm flex font-normal  text-textColor2">

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { useStoreContext } from "../../store/ContextApiStore";
-
 import ContactTabs from "./ContactTabs";
 import ContactTabLayout from "./ContactTabLayout";
 

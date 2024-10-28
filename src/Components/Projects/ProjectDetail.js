@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { useStoreContext } from "../../store/ContextApiStore";
 import ProjectInfo from "./ProjectInfo";
 import ProjectOverView from "./ProjectOverView";
-
 import ProjectDetailsLayout from "./ProjectDetailsLayout";
 import Tab from "../helper/Tabs";
 import AddNewInvoice from "../helper/invoices/addNewInvoice/AddNewInvoice";
 import useHashRouting from "../../utils/useHashRouting";
-import {
-  useFetchSelectCurrency,
-  useFetchSingleProjectOverView,
-} from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
 import Errors from "../Errors";
 import ProjectTaskDetails from "./ProjectTask/ProjectTaskDetails";
 import { useClientOverViewRefetch } from "../../hooks/useRefetch";
+import {
+  useFetchSelectCurrency,
+  useFetchSingleProjectOverView,
+} from "../../hooks/useQuery";
 
 const extractProjectId = (url) => {
   const match = url.match(/projects\/#\/(\d+)/);
@@ -38,11 +37,8 @@ const ProjectDetail = () => {
     setDateFrom,
     dateTo,
     setDateTo,
-    selectStatus,
     setSelectStatus,
-    selectPriority,
     setSelectPriority,
-    searchText,
     setSearchText,
     selectCurrency,
     setSelectCurrency,

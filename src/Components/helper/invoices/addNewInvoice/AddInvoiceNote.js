@@ -1,6 +1,7 @@
 import React from "react";
 import { useStoreContext } from "../../../../store/ContextApiStore";
 import useSubtotal from "../../../../hooks/useSubtotal";
+import { formatRevenue } from "../../../../utils/formatter";
 
 const AddInvoiceNote = ({ invoiceItem, setNoteText, noteText }) => {
   const { setCreateInvoice } = useStoreContext();
@@ -27,7 +28,7 @@ const AddInvoiceNote = ({ invoiceItem, setNoteText, noteText }) => {
             Subtotal
           </h1>
           <h1 className="font-metropolis font-normal text-textColor">
-            $ {subtotal}
+            $ {formatRevenue(subtotal)}
           </h1>
         </div>
         <div className="flex justify-between items-center px-4 py-[16px] border">
@@ -35,13 +36,13 @@ const AddInvoiceNote = ({ invoiceItem, setNoteText, noteText }) => {
             Discount
           </h1>
           <h1 className="font-metropolis font-normal text-textColor">
-            $ {totalDiscount}
+            $ {formatRevenue(totalDiscount)}
           </h1>
         </div>{" "}
         <div className="flex justify-between items-center px-4 py-[16px] border">
           <h1 className="font-metropolis font-normal text-textColor">Tax</h1>
           <h1 className="font-metropolis font-normal text-textColor">
-            $ {totalTax}
+            $ {formatRevenue(totalTax)}
           </h1>
         </div>{" "}
         <div className="flex justify-between items-center px-4 py-[16px] border">
@@ -49,7 +50,7 @@ const AddInvoiceNote = ({ invoiceItem, setNoteText, noteText }) => {
             Total
           </h1>
           <h1 className="font-metropolis font-normal text-textColor">
-            $ {finalAmount}
+            $ {formatRevenue(finalAmount)}
           </h1>
         </div>
       </div>

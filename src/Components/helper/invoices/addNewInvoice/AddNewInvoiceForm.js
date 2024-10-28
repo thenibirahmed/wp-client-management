@@ -158,14 +158,14 @@ const AddNewInvoiceForm = ({
     let isValid = true;
 
     const invoice_items = invoiceItem?.map((item, i) => {
-      if (!item.itemDetails) {
-        toast.error(`Item name is missing for the item ${i + 1}`);
+      if (!item.itemDetails && isValid) {
+        toast.error(`Please enter the item name for item ${i + 1}`);
         isValid = false;
-      } else if (!item.rate || item.rate === 0) {
-        toast.error(`Item Rate is missing for the item ${i + 1}`);
+      } else if ((!item.rate || item.rate === 0) && isValid) {
+        toast.error(`Please enter the rate amount for item ${i + 1}`);
         isValid = false;
-      } else if (!item.quantity || item.quantity === 0) {
-        toast.error(`Item quantity is missing for the item ${i + 1}`);
+      } else if ((!item.quantity || item.quantity === 0) && isValid) {
+        toast.error(`Please enter the quantity for item ${i + 1}`);
         isValid = false;
       }
       return item;

@@ -3,6 +3,7 @@ import { Add01Icon, Delete03Icon } from "../../../../utils/icons";
 import Pagination from "../../../Clients/Pagination";
 import useSubtotal from "../../../../hooks/useSubtotal";
 import { useStoreContext } from "../../../../store/ContextApiStore";
+import { formatRevenue } from "../../../../utils/formatter";
 
 const InvoiceItemTable = ({ invoiceItem, setInvoiceItems }) => {
   const itemDetailsRef = useRef(null);
@@ -245,7 +246,7 @@ const InvoiceItemTable = ({ invoiceItem, setInvoiceItems }) => {
                             </select>
                           </td>
                           <td className="text-sm text-textColor font-metropolis font-semibold leading-[14px]">
-                            ${item?.total}
+                            ${formatRevenue(item?.total)}
                           </td>
                         </tr>
                       ))}

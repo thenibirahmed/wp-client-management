@@ -33,8 +33,6 @@ const Client = () => {
     setAllTabItems,
     createClient,
     setCreateClient,
-    updateClient,
-    setUpdateClient,
     dateRange,
     setDateRange,
     dateFrom,
