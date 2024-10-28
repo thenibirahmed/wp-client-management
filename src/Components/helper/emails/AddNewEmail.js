@@ -62,6 +62,7 @@ const EmailBox = ({ refetch, setOpen, slug, id }) => {
     event.preventDefault();
 
     if (!id) return toast.error("Id is required");
+    if (!editorContent) return toast.error("Email Body is required");
 
     setSubmitLoader(true);
     setIsFetching(true);
@@ -159,7 +160,6 @@ const EmailBox = ({ refetch, setOpen, slug, id }) => {
         <input
           onChange={(e) => setSubject(e.target.value)}
           name="subject"
-          required
           placeholder="Subject"
           type="text"
           className="w-full text-textColor2 font-metropolis font-normal border-b border-t border-borderColor px-1 py-2 outline-none"

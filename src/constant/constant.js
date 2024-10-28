@@ -1,3 +1,3 @@
-import loginImage from "../assets/images/image.png";
+import loginImage from "../assets/images/image.jpg";
 
 export { loginImage };

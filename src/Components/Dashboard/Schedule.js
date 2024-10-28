@@ -3,34 +3,7 @@ import Calendar from "./HorizontaCalendar";
 import { ArrowRight02Icon } from "../../utils/icons";
 import useCheckedHandler from "../../utils/useCheckedItem";
 
-const sheduleItems = [
-  {
-    id: 1,
-    ttme: "09.50",
-    date: "Wed, 11 Jan",
-    title: "Business Analytics Press",
-    subtitle: "David Morgan and 20+ more",
-    active: false,
-  },
-  {
-    id: 2,
-    ttme: "09.50",
-    date: "Wed, 11 Jan",
-    title: "Business Analytics Press",
-    subtitle: "David Morgan and 20+ more",
-    active: true,
-  },
-  {
-    id: 3,
-    ttme: "09.50",
-    date: "Wed, 11 Jan",
-    title: "Business Analytics Press",
-    subtitle: "David Morgan and 20+ more",
-    active: false,
-  },
-];
-
-const Schedule = () => {
+const Schedule = ({ schedules }) => {
   const [selectedClient, setSelectedClient] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
@@ -57,7 +30,7 @@ const Schedule = () => {
       <Calendar />
 
       <div className="space-y-[16px] mt-7 ">
-        {sheduleItems.map((item) => {
+        {schedules?.map((item) => {
           const isChecked = selectedClient.some(
             (client) => client?.id === item?.id
           );
@@ -76,7 +49,7 @@ const Schedule = () => {
                       isChecked ? "text-textColor" : "text-iconColor2"
                     }`}
                   >
-                    {item.ttme}
+                    {item.scheduled_at}
                   </p>
                   <span
                     className={`text-xs font-normal ${
@@ -93,14 +66,14 @@ const Schedule = () => {
                     isChecked ? "text-textColor" : "text-iconColor2"
                   }`}
                 >
-                  {item.title}
+                  {item.topic}
                 </h3>
                 <h4
                   className={`text-xs font-normal font-metropolis ${
                     isChecked ? "text-textColor" : "text-iconColor2"
                   }`}
                 >
-                  {item.subtitle}
+                  {item.description}
                 </h4>
               </div>
             </div>

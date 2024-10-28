@@ -334,9 +334,7 @@ const AddNewTaskForm = ({
                 ? "border-customRed"
                 : "border-borderColor"
             }`}
-            {...register("description", {
-              required: { value: true, message: "Description is required*" },
-            })}
+            {...register("description")}
           />
           {errors["description"]?.message && (
             <p className="text-xs font-semibold text-customRed -mt-1">

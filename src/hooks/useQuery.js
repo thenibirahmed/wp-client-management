@@ -679,6 +679,26 @@ export const useFetchAssignee = (onError) => {
   );
 };
 
+export const useFetchScheduleClient = (onError) => {
+  return useQuery(
+    ["select-schedule-client"],
+    async () => {
+      return await api.get(`/select-schedule-client`);
+    },
+    {
+      select: (data) => {
+        const sendData = {
+          clients: data.data.clients,
+        };
+
+        return sendData;
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
 export const useFetchProjectTask = (
   projectId,
   searchText,
@@ -1365,6 +1385,25 @@ export const useFetchDashboardReports = (onError) => {
         };
         return sendData;
       },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchSchedules = (paginationUrl, onError) => {
+  return useQuery(
+    "schedules",
+    async () => {
+      const url = `/schedules/?${paginationUrl}`;
+
+      return await api.get(url);
+    },
+    {
+      select: (data) => ({
+        schedules: data.data.schedules,
+        pagination: data.data.pagination,
+      }),
       onError,
       staleTime: 5000,
     }

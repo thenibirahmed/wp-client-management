@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 
 import Invoices from "./Components/Invoices";
-import Schedules from "./Components/Schedules";
+import Schedules from "./Components/schedules/Schedules";
 import Reports from "./Components/Reports";
 import Settings from "./Components/Settings";
 import PlayGround from "./Components/PlayGround";
