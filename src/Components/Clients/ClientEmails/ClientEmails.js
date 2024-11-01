@@ -12,6 +12,7 @@ import { useRefetch } from "../../../hooks/useRefetch";
 import EmptyTable from "../../helper/EmptyTable";
 import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
+import { BulkDeleteModal } from "../../BulkDeleteModal";
 
 const ClientEmails = ({ clientId }) => {
   const [loader, setLoader] = useState(false);
@@ -23,6 +24,8 @@ const ClientEmails = ({ clientId }) => {
     searchText,
     setSearchText,
     setIsFetching,
+    bulkDeleteClientEmail,
+    setBulkDeleteClientEmail,
   } = useStoreContext();
 
   const [selectedEmail, setSelectedEmail] = useState([]);
@@ -55,7 +58,14 @@ const ClientEmails = ({ clientId }) => {
 
   const onDeleteAction = async (ids) => {
     setIsFetching(true);
-    await useBulkDelete("/emails/bulk-delete", ids, refetch, setLoader, false);
+    await useBulkDelete(
+      "/emails/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false,
+      setBulkDeleteClientEmail
+    );
     setSelectedEmail([]);
     setIsFetching(false);
   };
@@ -79,7 +89,7 @@ const ClientEmails = ({ clientId }) => {
     <React.Fragment>
       <EmailHeader
         selectedEmail={selectedEmail}
-        onDeleteAction={onDeleteAction}
+        setOpenBulkActionModal={setBulkDeleteClientEmail}
         onEmailBox={onEmailBox}
         searchText={searchText}
         setSearchText={setSearchText}
@@ -132,6 +142,14 @@ const ClientEmails = ({ clientId }) => {
           )}
         </React.Fragment>
       )}
+
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteClientEmail}
+        setOpen={setBulkDeleteClientEmail}
+        onDeleteAction={() => onDeleteAction(selectedEmail)}
+        title="Delete Email"
+      />
     </React.Fragment>
   );
 };

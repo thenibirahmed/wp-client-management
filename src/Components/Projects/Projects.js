@@ -20,6 +20,7 @@ import {
   useBulkDelete,
   useFetchAllProjects,
 } from "../../hooks/useQuery";
+import { BulkDeleteModal } from "../BulkDeleteModal";
 
 const Projects = () => {
   const [loader, setLoader] = useState(false);
@@ -39,6 +40,8 @@ const Projects = () => {
     searchText,
     setSearchText,
     setCreateInvoice,
+    bulkDeleteProject,
+    setBulkDeleteProject,
   } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -87,7 +90,8 @@ const Projects = () => {
       ids,
       refetch,
       setLoader,
-      false
+      false,
+      setBulkDeleteProject
     );
     setSelectedProject([]);
   };
@@ -153,7 +157,7 @@ const Projects = () => {
                 title="All Project"
                 setOpenModal={setOpenProjectModal}
                 btnTitle="Add Project"
-                onDeleteAction={onDeleteAction}
+                setOpenBulkActionModal={setBulkDeleteProject}
                 onCheckAction={onCheckAction}
                 searchText={searchText}
                 setSearchText={setSearchText}
@@ -205,6 +209,13 @@ const Projects = () => {
           </Modal>
         </>
       )}
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteProject}
+        setOpen={setBulkDeleteProject}
+        onDeleteAction={() => onDeleteAction(selectedProject)}
+        title="Delete Project"
+      />
     </React.Fragment>
   );
 };

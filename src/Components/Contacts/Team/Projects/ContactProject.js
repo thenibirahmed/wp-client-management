@@ -4,9 +4,7 @@ import useHashRouting from "../../../../utils/useHashRouting";
 import {
   useBulkComplete,
   useBulkDelete,
-  useFetchSingleTeamOverview,
   useFetchSingleTeamProject,
-  useFetchSingleTeamTasks,
 } from "../../../../hooks/useQuery";
 import toast from "react-hot-toast";
 import EmptyTable from "../../../helper/EmptyTable";
@@ -17,6 +15,7 @@ import Modal from "../../../helper/Modal";
 import AddNewProjectForm from "../../../helper/forms/AddNewProjectForm";
 import { useStoreContext } from "../../../../store/ContextApiStore";
 import { useRefetch } from "../../../../hooks/useRefetch";
+import { BulkDeleteModal } from "../../../BulkDeleteModal";
 
 const ContactProject = ({ teamId }) => {
   const currentPath = useHashRouting("");
@@ -26,8 +25,14 @@ const ContactProject = ({ teamId }) => {
   const [selectedProject, setSelectedProject] = useState([]);
   const [isAllselected, setIsAllSelected] = useState(false);
 
-  const { openProjectModal, setOpenProjectModal, searchText, setSearchText } =
-    useStoreContext();
+  const {
+    openProjectModal,
+    setOpenProjectModal,
+    searchText,
+    setSearchText,
+    bulkDeleteTeamProject,
+    setBulkDeleteTeamProject,
+  } = useStoreContext();
 
   const {
     isLoading,
@@ -55,7 +60,8 @@ const ContactProject = ({ teamId }) => {
       ids,
       refetch,
       setLoader,
-      false
+      false,
+      setBulkDeleteTeamProject
     );
     setSelectedProject([]);
   };
@@ -85,7 +91,7 @@ const ContactProject = ({ teamId }) => {
             title="Projects"
             setOpenModal={setOpenProjectModal}
             btnTitle="Add Project"
-            onDeleteAction={onDeleteAction}
+            setOpenBulkActionModal={setBulkDeleteTeamProject}
             onCheckAction={onCheckAction}
             setSearchText={setSearchText}
             searchText={searchText}
@@ -128,6 +134,14 @@ const ContactProject = ({ teamId }) => {
           </Modal>
         </>
       </div>
+
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteTeamProject}
+        setOpen={setBulkDeleteTeamProject}
+        onDeleteAction={() => onDeleteAction(selectedProject)}
+        title="Delete Project"
+      />
     </React.Fragment>
   );
 };

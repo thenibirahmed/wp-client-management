@@ -15,7 +15,7 @@ const TabHeader = ({
   setSearchText,
   searchText,
   loader,
-  onClick,
+  setOpenBulkActionModal,
 }) => {
   const { contactTabs } = useStoreContext();
   return (
@@ -27,7 +27,10 @@ const TabHeader = ({
         {" "}
         {loader && <Loaders />}
         {selectedClient?.length > 0 && (
-          <button disabled={loader} onClick={onClick}>
+          <button
+            disabled={loader}
+            onClick={() => setOpenBulkActionModal(true)}
+          >
             <Delete03Icon className="text-customRed" />
           </button>
         )}

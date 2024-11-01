@@ -13,6 +13,7 @@ import Skeleton from "../../Skeleton";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
+import { BulkDeleteModal } from "../../BulkDeleteModal";
 
 const ProjectFile = ({ projectId }) => {
   const [loader, setLoader] = useState(false);
@@ -24,6 +25,8 @@ const ProjectFile = ({ projectId }) => {
     searchText,
     setSearchText,
     setIsFetching,
+    bulkDeleteProjectFile,
+    setBulkDeleteProjectFile,
   } = useStoreContext();
 
   const [selectedFile, setSelectedFile] = useState([]);
@@ -56,7 +59,14 @@ const ProjectFile = ({ projectId }) => {
 
   const onDeleteAction = async (ids) => {
     setIsFetching(true);
-    await useBulkDelete("/files/bulk-delete", ids, refetch, setLoader, false);
+    await useBulkDelete(
+      "/files/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false,
+      setBulkDeleteProjectFile
+    );
     setSelectedFile([]);
     setIsFetching(false);
   };
@@ -87,7 +97,7 @@ const ProjectFile = ({ projectId }) => {
         title="Files"
         setOpenModal={setOpenFileModal}
         btnTitle="Add File"
-        onDeleteAction={onDeleteAction}
+        setOpenBulkActionModal={setBulkDeleteProjectFile}
         onCheckAction={onCheckAction}
         setSearchText={setSearchText}
         searchText={searchText}
@@ -136,6 +146,13 @@ const ProjectFile = ({ projectId }) => {
           id={projectId}
         />
       </Modal>
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteProjectFile}
+        setOpen={setBulkDeleteProjectFile}
+        onDeleteAction={() => onDeleteAction(selectedFile)}
+        title="Delete File"
+      />
     </React.Fragment>
   );
 };

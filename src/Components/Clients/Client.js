@@ -19,6 +19,7 @@ import Errors from "../Errors";
 import useHashRouting from "../../utils/useHashRouting";
 import { useRefetch } from "../../hooks/useRefetch";
 import Loaders from "../Loaders";
+import { BulkDeleteModal } from "../BulkDeleteModal";
 
 const Client = () => {
   const [loader, setLoader] = useState(false);
@@ -39,6 +40,8 @@ const Client = () => {
     setDateFrom,
     dateTo,
     setDateTo,
+    bulkDeleteClient,
+    setBulkDeleteClient,
   } = useStoreContext();
 
   const [selectedClient, setSelectedClient] = useState([]);
@@ -59,7 +62,14 @@ const Client = () => {
   };
 
   const onDeleteAction = async (ids) => {
-    await useBulkDelete("/clients/bulk-delete", ids, refetch, setLoader, true);
+    await useBulkDelete(
+      "/clients/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      true,
+      setBulkDeleteClient
+    );
     setSelectedClient([]);
   };
 
@@ -119,7 +129,7 @@ const Client = () => {
                   {loader && <Loaders />}
                   <button
                     disabled={loader}
-                    onClick={() => onDeleteAction(selectedClient)}
+                    onClick={() => setBulkDeleteClient(true)}
                   >
                     <Delete03Icon
                       className={`text-customRed ${loader ? "opacity-50" : ""}`}
@@ -179,6 +189,14 @@ const Client = () => {
       <Modal open={createClient} setOpen={setCreateClient} title="Add Client">
         <AddClientForm setOpen={setCreateClient} refetch={refetch} />
       </Modal>
+
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteClient}
+        setOpen={setBulkDeleteClient}
+        onDeleteAction={() => onDeleteAction(selectedClient)}
+        title="Delete Client"
+      />
     </React.Fragment>
   );
 };

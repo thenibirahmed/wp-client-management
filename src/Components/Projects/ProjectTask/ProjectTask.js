@@ -17,6 +17,7 @@ import Skeleton from "../../Skeleton";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
+import { BulkDeleteModal } from "../../BulkDeleteModal";
 
 const ProjectTask = ({ projectId }) => {
   const [loader, setLoader] = useState(false);
@@ -33,6 +34,8 @@ const ProjectTask = ({ projectId }) => {
     searchText,
     setSearchText,
     setIsFetching,
+    bulkDeleteProjectTask,
+    setBulkDeleteProjectTask,
   } = useStoreContext();
 
   const [selectedProjectTask, setSelectedProjectTask] = useState([]);
@@ -73,7 +76,14 @@ const ProjectTask = ({ projectId }) => {
 
   const onDeleteAction = async (ids) => {
     setIsFetching(true);
-    await useBulkDelete("/tasks/bulk-delete", ids, refetch, setLoader, false);
+    await useBulkDelete(
+      "/tasks/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false,
+      setBulkDeleteProjectTask
+    );
     setSelectedProjectTask([]);
     setIsFetching(false);
   };
@@ -117,7 +127,7 @@ const ProjectTask = ({ projectId }) => {
         title="Task"
         setOpenModal={setOpenTask}
         btnTitle="Add Task"
-        onDeleteAction={onDeleteAction}
+        setOpenBulkActionModal={setBulkDeleteProjectTask}
         onCheckAction={onCheckAction}
         setSearchText={setSearchText}
         searchText={searchText}
@@ -125,7 +135,6 @@ const ProjectTask = ({ projectId }) => {
         taskFilter
         loader={loader}
       />
-
       <React.Fragment>
         {isLoading ? (
           <Skeleton />
@@ -161,6 +170,14 @@ const ProjectTask = ({ projectId }) => {
       <Modal open={openTask} setOpen={setOpenTask} title="Add Task">
         <AddNewTaskForm refetch={refetch} setOpen={setOpenTask} />
       </Modal>
+
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteProjectTask}
+        setOpen={setBulkDeleteProjectTask}
+        onDeleteAction={() => onDeleteAction(selectedProjectTask)}
+        title="Delete Task"
+      />
     </React.Fragment>
   );
 };

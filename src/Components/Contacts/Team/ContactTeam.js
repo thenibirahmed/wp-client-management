@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import { useRefetch } from "../../../hooks/useRefetch";
 import EmptyTable from "../../helper/EmptyTable";
-import TabHeader from "../TabHeader";
 import Modal from "../../helper/Modal";
 import AddContactTeamForm from "./AddContactTeamForm";
 import ContactTeamTable from "../../helper/contacts/ContactTeamTable";
@@ -18,9 +17,11 @@ import { UserCircle02Icon } from "../../../utils/icons";
 import ProjectHeader from "../../helper/projects/ProjectHeader";
 import api from "../../../api/api";
 import { useStoreContext } from "../../../store/ContextApiStore";
+import { BulkDeleteModal } from "../../BulkDeleteModal";
 
 const ContactTeam = () => {
-  const { searchText, setSearchText } = useStoreContext();
+  const { searchText, setSearchText, bulkDeleteTeam, setBulkDeleteTeam } =
+    useStoreContext();
   const [loader, setLoader] = useState(false);
   const [open, setOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState([]);
@@ -48,7 +49,8 @@ const ContactTeam = () => {
       ids,
       refetch,
       setLoader,
-      false
+      false,
+      setBulkDeleteTeam
     );
     setSelectedClient([]);
   };
@@ -66,7 +68,7 @@ const ContactTeam = () => {
         title="Team"
         setOpenModal={setOpen}
         btnTitle="Add Member"
-        onDeleteAction={onDeleteAction}
+        setOpenBulkActionModal={setBulkDeleteTeam}
         onCheckAction={onCheckAction}
         filter={false}
         check={false}
@@ -110,6 +112,14 @@ const ContactTeam = () => {
       <Modal open={open} setOpen={setOpen} title="Add Member">
         <AddContactTeamForm setOpen={setOpen} refetch={refetch} />
       </Modal>
+
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteTeam}
+        setOpen={setBulkDeleteTeam}
+        onDeleteAction={() => onDeleteAction(selectedClient)}
+        title="Delete Team Member"
+      />
     </React.Fragment>
   );
 };

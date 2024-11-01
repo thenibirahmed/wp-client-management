@@ -13,7 +13,7 @@ import Loaders from "../../Loaders";
 
 const EmailHeader = ({
   selectedEmail,
-  onDeleteAction,
+  setOpenBulkActionModal,
   onEmailBox,
   searchText,
   setSearchText,
@@ -35,7 +35,7 @@ const EmailHeader = ({
             </button>
             <button
               disabled={loader}
-              onClick={() => onDeleteAction(selectedEmail)}
+              onClick={() => setOpenBulkActionModal(true)}
             >
               <Delete03Icon
                 className={`text-customRed ${loader ? "opacity-50" : ""}`}

@@ -17,6 +17,7 @@ import { useRefetch } from "../../../hooks/useRefetch";
 import useHashRouting from "../../../utils/useHashRouting";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
+import { BulkDeleteModal } from "../../BulkDeleteModal";
 
 const ClientProject = ({ clientId }) => {
   const {
@@ -31,6 +32,8 @@ const ClientProject = ({ clientId }) => {
     searchText,
     setSearchText,
     setIsFetching,
+    bulkDeleteClientProject,
+    setBulkDeleteClientProkect,
   } = useStoreContext();
 
   const [loader, setLoader] = useState(false);
@@ -82,7 +85,8 @@ const ClientProject = ({ clientId }) => {
       ids,
       refetch,
       setLoader,
-      false
+      false,
+      setBulkDeleteClientProkect
     );
     setSelectedProject([]);
     setIsFetching(false);
@@ -125,7 +129,7 @@ const ClientProject = ({ clientId }) => {
         title="All Projects"
         setOpenModal={setOpenProjectModal}
         btnTitle="Add Project"
-        onDeleteAction={onDeleteAction}
+        setOpenBulkActionModal={setBulkDeleteClientProkect}
         onCheckAction={onCheckAction}
         searchText={searchText}
         setSearchText={setSearchText}
@@ -167,6 +171,14 @@ const ClientProject = ({ clientId }) => {
           setOpen={setOpenProjectModal}
         />
       </Modal>
+
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteClientProject}
+        setOpen={setBulkDeleteClientProkect}
+        onDeleteAction={() => onDeleteAction(selectedProject)}
+        title="Delete Project"
+      />
     </React.Fragment>
   );
 };

@@ -12,6 +12,7 @@ import Skeleton from "../../Skeleton";
 import EmptyTable from "../../helper/EmptyTable";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
+import { BulkDeleteModal } from "../../BulkDeleteModal";
 
 const ProjectEmail = ({ projectId }) => {
   const [loader, setLoader] = useState(false);
@@ -23,6 +24,8 @@ const ProjectEmail = ({ projectId }) => {
     searchText,
     setSearchText,
     setIsFetching,
+    bulkDeleteProjectEmail,
+    setBulkDeleteProjectEmail,
   } = useStoreContext();
 
   const [selectedEmail, setSelectedEmail] = useState([]);
@@ -55,7 +58,14 @@ const ProjectEmail = ({ projectId }) => {
 
   const onDeleteAction = async (ids) => {
     setIsFetching(true);
-    await useBulkDelete("/emails/bulk-delete", ids, refetch, setLoader, false);
+    await useBulkDelete(
+      "/emails/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false,
+      setBulkDeleteProjectEmail
+    );
     setSelectedEmail([]);
     setIsFetching(false);
   };
@@ -84,13 +94,12 @@ const ProjectEmail = ({ projectId }) => {
     <React.Fragment>
       <EmailHeader
         selectedEmail={selectedEmail}
-        onDeleteAction={onDeleteAction}
+        setOpenBulkActionModal={setBulkDeleteProjectEmail}
         onEmailBox={onEmailBox}
         searchText={searchText}
         setSearchText={setSearchText}
         loader={loader}
       />
-
       {createEmail ? (
         <React.Fragment>
           <AddNewEmail
@@ -138,7 +147,14 @@ const ProjectEmail = ({ projectId }) => {
             </>
           )}
         </React.Fragment>
-      )}
+      )}{" "}
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteProjectEmail}
+        setOpen={setBulkDeleteProjectEmail}
+        onDeleteAction={() => onDeleteAction(selectedEmail)}
+        title="Delete Email"
+      />
     </React.Fragment>
   );
 };

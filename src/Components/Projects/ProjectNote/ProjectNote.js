@@ -12,6 +12,7 @@ import ProjectHeader from "../../helper/projects/ProjectHeader";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useBulkDelete, useFetchProjectNotes } from "../../../hooks/useQuery";
 import { useRefetch } from "../../../hooks/useRefetch";
+import { BulkDeleteModal } from "../../BulkDeleteModal";
 
 const ProjectNote = ({ projectId }) => {
   const [loader, setLoader] = useState(false);
@@ -27,6 +28,8 @@ const ProjectNote = ({ projectId }) => {
     searchText,
     setSearchText,
     setIsFetching,
+    bulkDeleteProjectNote,
+    setBulkDeleteProjectNote,
   } = useStoreContext();
 
   const [selectedNote, setSelectedNote] = useState([]);
@@ -59,7 +62,14 @@ const ProjectNote = ({ projectId }) => {
 
   const onDeleteAction = async (ids) => {
     setIsFetching(true);
-    await useBulkDelete("/notes/bulk-delete", ids, refetch, setLoader, false);
+    await useBulkDelete(
+      "/notes/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false,
+      setBulkDeleteProjectNote
+    );
     setSelectedNote([]);
     setIsFetching(false);
   };
@@ -92,7 +102,7 @@ const ProjectNote = ({ projectId }) => {
         openModal={updateNotes ? updateNotes : createNote}
         btnTitle="Add Note"
         cancelTitle="Cancel"
-        onDeleteAction={onDeleteAction}
+        setOpenBulkActionModal={setBulkDeleteProjectNote}
         onCheckAction={onCheckAction}
         setSearchText={setSearchText}
         searchText={searchText}
@@ -157,6 +167,13 @@ const ProjectNote = ({ projectId }) => {
           )}
         </React.Fragment>
       )}
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteProjectNote}
+        setOpen={setBulkDeleteProjectNote}
+        onDeleteAction={() => onDeleteAction(selectedNote)}
+        title="Delete Note"
+      />
     </React.Fragment>
   );
 };

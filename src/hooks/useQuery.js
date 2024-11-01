@@ -1234,7 +1234,8 @@ export const useBulkDelete = async (
   ids,
   refetch,
   setLoader,
-  nestedId = false
+  nestedId = false,
+  setOpenModal = () => {}
 ) => {
   let bulk_ids;
 
@@ -1250,6 +1251,7 @@ export const useBulkDelete = async (
 
     toast.success(data?.message || "Delete Successful");
     await refetch();
+    setOpenModal(false);
   } catch (err) {
     console.log(err);
     toast.error(err?.response?.data?.message || "Operation Failed");

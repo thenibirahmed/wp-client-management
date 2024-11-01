@@ -101,10 +101,6 @@ const AddNewClientProjectForm = ({
       return setError("This field is required*");
     }
 
-    if (allIds?.length === 0) {
-      return;
-    }
-
     setSubmitLoader(true);
     setIsFetching(true);
 
