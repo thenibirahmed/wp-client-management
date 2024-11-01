@@ -121,10 +121,6 @@ const Projects = () => {
     toast.error("Failed to fetch all projects or project Overview data");
   }
 
-  if (isLoading) {
-    return <Skeleton />;
-  }
-
   if (allProjectError) {
     return <Errors message="Internal Server Error" />;
   }
@@ -165,32 +161,36 @@ const Projects = () => {
                 filter
               />
             </>
-            <React.Fragment>
-              {projects.projects.length > 0 ? (
-                <>
-                  <ProjectTable
-                    projectData={projects.projects}
-                    pagination={projects.pagination}
-                    selectedProject={selectedProject}
-                    setSelectedProject={setSelectedProject}
-                    isAllselected={isAllselected}
-                    setIsAllSelected={setIsAllSelected}
-                    refetch={refetch}
-                  />
-                </>
-              ) : (
-                <>
-                  <EmptyTable
-                    handler={() => setOpenProjectModal(true)}
-                    Icon={UserCircle02Icon}
-                    setOpen={setOpenProjectModal}
-                    title="  No Project Created Yer"
-                    subtitle="Start building your Project list"
-                    btnText=" Add Project"
-                  />
-                </>
-              )}
-            </React.Fragment>
+            {!isLoading ? (
+              <React.Fragment>
+                {projects?.projects?.length > 0 ? (
+                  <>
+                    <ProjectTable
+                      projectData={projects.projects}
+                      pagination={projects.pagination}
+                      selectedProject={selectedProject}
+                      setSelectedProject={setSelectedProject}
+                      isAllselected={isAllselected}
+                      setIsAllSelected={setIsAllSelected}
+                      refetch={refetch}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <EmptyTable
+                      handler={() => setOpenProjectModal(true)}
+                      Icon={UserCircle02Icon}
+                      setOpen={setOpenProjectModal}
+                      title="  No Project Created Yer"
+                      subtitle="Start building your Project list"
+                      btnText=" Add Project"
+                    />
+                  </>
+                )}
+              </React.Fragment>
+            ) : (
+              <Skeleton />
+            )}
           </div>
 
           <Modal

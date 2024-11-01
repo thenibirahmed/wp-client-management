@@ -1,7 +1,7 @@
 import React, { lazy } from "react";
 
 const Dashboard = lazy(() => import("../Components/Dashboard/Dashboard"));
-const Invoices = lazy(() => import("../Components/Invoices"));
+const Invoices = lazy(() => import("../Components/Invoices/Invoices"));
 const Schedules = lazy(() => import("../Components/schedules/Schedules"));
 const Contact = lazy(() => import("../Components/Contacts/Contact"));
 const Settings = lazy(() => import("../Components/Settings"));

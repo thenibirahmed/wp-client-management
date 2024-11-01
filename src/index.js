@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 
-import Invoices from "./Components/Invoices";
+import Invoices from "./Components/Invoices/Invoices";
 import Schedules from "./Components/schedules/Schedules";
 import Reports from "./Components/Reports";
 import Settings from "./Components/Settings";
@@ -9,6 +9,7 @@ import PlayGround from "./Components/PlayGround";
 import Client from "./Components/Clients/Client";
 import Projects from "./Components/Projects/Projects";
 import Dashboard from "./Components/Dashboard/Dashboard";
+import { MainApp } from "./MainApp";
 
 const App = () => {
   const [hash, setHash] = useState(window.location.hash || "#");
@@ -96,5 +97,5 @@ const App = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  render(<App />, document.getElementById("wp-client-management-root"));
+  render(<MainApp />, document.getElementById("wp-client-management-root"));
 });

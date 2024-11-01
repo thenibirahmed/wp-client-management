@@ -7,6 +7,7 @@ import { useFetchPriorities, useFetchStatus } from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
 import Errors from "../Errors";
 import { useStoreContext } from "../../store/ContextApiStore";
+import Loaders from "../Loaders";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -49,7 +50,7 @@ const Filter = ({ noPriority, taskFilter = false, invoiceFilter = false }) => {
   const isLoading = isLoadingStatus || isLoadingPriorities;
 
   if (isLoading) {
-    return <Skeleton />;
+    return <Loaders />;
   }
 
   if (pPrioritiesErr || pStatusErr)

@@ -112,7 +112,7 @@ const ProjectTaskTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {taskData?.map((item) => {
+                {taskData?.map((item, i) => {
                   // let itemStatus = item?.status?.toLowerCase();
                   // let itemPriority = item?.priority?.toLowerCase();
 
@@ -134,6 +134,7 @@ const ProjectTaskTable = ({
 
                   return (
                     <tr
+                      key={i}
                       className="cursor-pointer"
                       onClick={() => {
                         setOpenTaskDesc(true);

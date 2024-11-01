@@ -109,7 +109,7 @@ const ClientProjectTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {projectData?.map((item) => {
+                {projectData?.map((item, i) => {
                   let itemStatus = item.status;
                   let itemPriority = item.priority;
 
@@ -131,7 +131,7 @@ const ClientProjectTable = ({
                       : "";
 
                   return (
-                    <tr>
+                    <tr key={i}>
                       <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
                         <input
                           checked={isChecked}

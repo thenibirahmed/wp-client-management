@@ -1409,3 +1409,24 @@ export const useFetchSchedules = (paginationUrl, onError) => {
     }
   );
 };
+
+export const useFetchEstimateInvoice = (paginationUrl, onError) => {
+  return useQuery(
+    "estimate-invoices",
+    async () => {
+      const url = `/invoices/?${paginationUrl}`;
+
+      return await api.get(url);
+    },
+    {
+      select: (data) => {
+        return {
+          invoices: data.data.data,
+          pagination: data.data.pagination,
+        };
+      },
+      onError,
+      staleTime: 5000,
+    }
+  );
+};

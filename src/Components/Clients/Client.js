@@ -81,8 +81,6 @@ const Client = () => {
     toast.error("Failed to fetchClientOverView data");
   }
 
-  if (isLoading) return <Skeleton />;
-
   if (error)
     return (
       <Errors
@@ -148,31 +146,35 @@ const Client = () => {
           </div>
         </div>
 
-        <React.Fragment>
-          {clientList?.clients?.length > 0 ? (
-            <>
-              <ClientTable
-                clientData={clientList?.clients}
-                pagination={clientList?.pagination}
-                selectedClient={selectedClient}
-                setSelectedClient={setSelectedClient}
-                isAllselected={isAllselected}
-                setIsAllSelected={setIsAllSelected}
-                refetch={refetch}
-              />
-            </>
-          ) : (
-            <>
-              <EmptyTable
-                Icon={UserCircle02Icon}
-                handler={addNewClient}
-                title="  Clients Not Yet Registered"
-                subtitle="Start building your client list."
-                btnText=" Add Client"
-              />
-            </>
-          )}
-        </React.Fragment>
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          <React.Fragment>
+            {clientList?.clients?.length > 0 ? (
+              <>
+                <ClientTable
+                  clientData={clientList?.clients}
+                  pagination={clientList?.pagination}
+                  selectedClient={selectedClient}
+                  setSelectedClient={setSelectedClient}
+                  isAllselected={isAllselected}
+                  setIsAllSelected={setIsAllSelected}
+                  refetch={refetch}
+                />
+              </>
+            ) : (
+              <>
+                <EmptyTable
+                  Icon={UserCircle02Icon}
+                  handler={addNewClient}
+                  title="  Clients Not Yet Registered"
+                  subtitle="Start building your client list."
+                  btnText=" Add Client"
+                />
+              </>
+            )}
+          </React.Fragment>
+        )}
       </div>
       <Modal open={createClient} setOpen={setCreateClient} title="Add Client">
         <AddClientForm setOpen={setCreateClient} refetch={refetch} />

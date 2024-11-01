@@ -33,7 +33,7 @@ const TopClients = ({ clients }) => {
           <div></div>
         </div>
         <div className="pt-4 space-y-[16px]">
-          {clients.map((item, i) => (
+          {clients?.map((item, i) => (
             <div className="grid grid-cols-3 ">
               <div className="text-sm font-normal text-textColor2">
                 {item.name}

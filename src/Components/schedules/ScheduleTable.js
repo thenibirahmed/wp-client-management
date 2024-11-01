@@ -4,6 +4,7 @@ import { Delete03Icon } from "../../utils/icons";
 import Pagination from "../Clients/Pagination";
 import useCheckedHandler from "../../utils/useCheckedItem";
 import { DeleteModal } from "../DeleteModal";
+import truncateText from "../../utils/truncateText";
 
 const ScheduleTable = ({
   scheduleData,
@@ -104,17 +105,12 @@ const ScheduleTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {scheduleData?.map((item) => {
+                {scheduleData?.map((item, i) => {
                   const isChecked = selectedClient.some(
                     (client) => client?.id === item?.id
                   );
                   return (
-                    <tr
-                      className="cursor-pointer"
-                      onClick={() =>
-                        (window.location.href = `#/clients/#/${item?.client_id}`)
-                      }
-                    >
+                    <tr key={i}>
                       <td
                         onClick={(e) => e.stopPropagation()}
                         className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal"
@@ -142,7 +138,7 @@ const ScheduleTable = ({
                         {item.host}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
-                        {item.link}
+                        {truncateText(item.link)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
                         {item.scheduled_at}
@@ -151,7 +147,7 @@ const ScheduleTable = ({
                         {item.topic}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
-                        {item.description}
+                        {truncateText(item.description, 30)}
                       </td>
                       <td
                         onClick={(e) => e.stopPropagation()}
