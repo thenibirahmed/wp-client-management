@@ -11,8 +11,8 @@ class Assets {
      * Calling the hook to enqueue
      */
     public function __construct() {
-        add_action("wp_enqueue_scripts",[$this, "enqueue_frontend_scripts"]);
-        add_action("admin_enqueue_scripts",[$this, "enqueue_admin_scripts"]);
+        add_action("wp_enqueue_scripts", [$this, "enqueue_frontend_scripts"], 20);
+        add_action("admin_enqueue_scripts", [$this, "enqueue_admin_scripts"]);
     }
 
     /**
@@ -30,6 +30,19 @@ class Assets {
      */
     public function enqueue_styles() {
         wp_enqueue_style('wp-client-management-frontend', WP_CLIENT_MANAGEMENT_ASSETS . '/frontend.css', [], filemtime(WP_CLIENT_MANAGEMENT_PATH . '/build/frontend.css'));
+
+        if (is_page_template('client-management')) {
+            global $wp_styles;
+
+            foreach ($wp_styles->registered as $handle => $style) {
+                if($handle == 'wp-client-management-frontend') {
+                    continue;
+                }
+
+                wp_dequeue_style($handle);
+                wp_deregister_style($handle);
+            }
+        }
     }
 
     /**
