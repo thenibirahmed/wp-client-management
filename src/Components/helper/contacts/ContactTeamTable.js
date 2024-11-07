@@ -83,12 +83,13 @@ const ContactTeamTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {teamLists?.map((item) => {
+                {teamLists?.map((item, i) => {
                   const isChecked = selectedClient.some(
                     (client) => client.id === item.id
                   );
                   return (
                     <tr
+                      key={i}
                       className="cursor-pointer"
                       onClick={() =>
                         (window.location.href = `#/contact/#/${item.id}`)

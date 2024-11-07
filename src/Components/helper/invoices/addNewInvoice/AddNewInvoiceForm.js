@@ -280,12 +280,15 @@ const AddNewInvoiceForm = ({
     if (projectsLists?.projects?.length > 0) {
       if (!update) {
         if (type === "project") {
-          // const selectedProject = projectsLists?.projects?.find(
-          //   (item) => item.id === Number(clientId)
-          // );
+          const selectedProject = projectsLists?.projects?.find(
+            (item) => item.id === Number(clientId)
+          );
 
-          // setSelectedProject(selectedProject);
-          setSelectedProject(projectsLists?.projects[0]);
+          if (selectedProject) {
+            setSelectedProject(selectedProject);
+          } else {
+            setSelectedProject(projectsLists?.projects[0]);
+          }
         } else {
           setSelectedProject(projectsLists?.projects[0]);
         }

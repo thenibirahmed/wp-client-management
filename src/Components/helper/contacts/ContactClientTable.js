@@ -90,12 +90,12 @@ const ContactClientTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {clientData?.map((item) => {
+                {clientData?.map((item, i) => {
                   const isChecked = selectedClient?.some(
                     (client) => client?.client_id === item?.client_id
                   );
                   return (
-                    <tr>
+                    <tr key={i}>
                       <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
                         <input
                           checked={isChecked}

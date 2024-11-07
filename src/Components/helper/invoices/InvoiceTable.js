@@ -5,6 +5,7 @@ import useCheckedHandler from "../../../utils/useCheckedItem";
 import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { DeleteModal } from "../../DeleteModal";
+import { formatRevenue } from "../../../utils/formatter";
 
 const InvoiceTable = ({
   invoiceList,
@@ -17,6 +18,7 @@ const InvoiceTable = ({
   refetch,
   isClient = false,
   slug,
+  estimateInvoice = false,
 }) => {
   const { checkedSingleClient, checkedAllClient } = useCheckedHandler(
     selectedInvoices,
@@ -102,7 +104,7 @@ const InvoiceTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {invoiceList?.map((item) => {
+                {invoiceList?.map((item, i) => {
                   let itemStatus = item.status;
 
                   const isChecked = selectedInvoices.some(
@@ -123,7 +125,7 @@ const InvoiceTable = ({
                       : "bg-customBg4 text-purple";
 
                   return (
-                    <tr>
+                    <tr key={i}>
                       <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
                         <input
                           checked={isChecked}
@@ -143,7 +145,7 @@ const InvoiceTable = ({
                         {isClient ? item.project : item.client_name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-semibold text-sm">
-                        $ {isClient ? item.amount : item.total}
+                        ${isClient ? item.amount : item.total}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm  font-metropolis font-medium">
                         <span
@@ -159,28 +161,32 @@ const InvoiceTable = ({
                         {item.due_date}
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">
-                        <div className="flex gap-3">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setUpdateInvoice(true);
-                              setInvoiceId(item?.id);
-                            }}
-                            className="text-indigo-600 hover:text-indigo-900"
-                          >
-                            <PencilEdit02Icon
-                              className="text-textColor2"
-                              width="20px"
-                              height="20px"
-                            />
-                          </button>
+                        <div className="flex  gap-3">
+                          {!estimateInvoice && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setUpdateInvoice(true);
+                                setInvoiceId(item?.id);
+                              }}
+                              className="text-indigo-600 hover:text-indigo-900"
+                            >
+                              <PencilEdit02Icon
+                                className="text-textColor2"
+                                width="20px"
+                                height="20px"
+                              />
+                            </button>
+                          )}
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               setDeleteInvoice(true);
                               setInvoiceId(item?.id);
                             }}
-                            className="text-indigo-600 hover:text-indigo-900"
+                            className={`text-indigo-600 hover:text-indigo- ${
+                              estimateInvoice ? "pl-4" : ""
+                            } `}
                           >
                             <Delete03Icon
                               className="text-customRed"

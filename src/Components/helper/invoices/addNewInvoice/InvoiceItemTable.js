@@ -110,7 +110,7 @@ const InvoiceItemTable = ({ invoiceItem, setInvoiceItems }) => {
                           scope="col"
                           className="py-3.5 uppercase pl-4 pr-3 text-left text-sm font-semibold text-textColor2 sm:pl-6"
                         >
-                          Item Details
+                          Details
                         </th>
                         <th
                           scope="col"

@@ -97,12 +97,13 @@ const ClientTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {clientData?.map((item) => {
+                {clientData?.map((item, i) => {
                   const isChecked = selectedClient.some(
                     (client) => client?.client_id === item?.client_id
                   );
                   return (
                     <tr
+                      key={i}
                       className="cursor-pointer"
                       onClick={() =>
                         (window.location.href = `#/clients/#/${item?.client_id}`)

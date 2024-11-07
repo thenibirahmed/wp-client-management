@@ -20,6 +20,7 @@ import {
   useBulkDelete,
   useFetchAllProjects,
 } from "../../hooks/useQuery";
+import { BulkDeleteModal } from "../BulkDeleteModal";
 
 const Projects = () => {
   const [loader, setLoader] = useState(false);
@@ -39,6 +40,8 @@ const Projects = () => {
     searchText,
     setSearchText,
     setCreateInvoice,
+    bulkDeleteProject,
+    setBulkDeleteProject,
   } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -87,7 +90,8 @@ const Projects = () => {
       ids,
       refetch,
       setLoader,
-      false
+      false,
+      setBulkDeleteProject
     );
     setSelectedProject([]);
   };
@@ -119,10 +123,6 @@ const Projects = () => {
   function onError(err) {
     console.log(err);
     toast.error("Failed to fetch all projects or project Overview data");
-  }
-
-  if (isLoading) {
-    return <Skeleton />;
   }
 
   if (allProjectError) {
@@ -157,7 +157,7 @@ const Projects = () => {
                 title="All Project"
                 setOpenModal={setOpenProjectModal}
                 btnTitle="Add Project"
-                onDeleteAction={onDeleteAction}
+                setOpenBulkActionModal={setBulkDeleteProject}
                 onCheckAction={onCheckAction}
                 searchText={searchText}
                 setSearchText={setSearchText}
@@ -165,32 +165,36 @@ const Projects = () => {
                 filter
               />
             </>
-            <React.Fragment>
-              {projects.projects.length > 0 ? (
-                <>
-                  <ProjectTable
-                    projectData={projects.projects}
-                    pagination={projects.pagination}
-                    selectedProject={selectedProject}
-                    setSelectedProject={setSelectedProject}
-                    isAllselected={isAllselected}
-                    setIsAllSelected={setIsAllSelected}
-                    refetch={refetch}
-                  />
-                </>
-              ) : (
-                <>
-                  <EmptyTable
-                    handler={() => setOpenProjectModal(true)}
-                    Icon={UserCircle02Icon}
-                    setOpen={setOpenProjectModal}
-                    title="  No Project Created Yer"
-                    subtitle="Start building your Project list"
-                    btnText=" Add Project"
-                  />
-                </>
-              )}
-            </React.Fragment>
+            {!isLoading ? (
+              <React.Fragment>
+                {projects?.projects?.length > 0 ? (
+                  <>
+                    <ProjectTable
+                      projectData={projects.projects}
+                      pagination={projects.pagination}
+                      selectedProject={selectedProject}
+                      setSelectedProject={setSelectedProject}
+                      isAllselected={isAllselected}
+                      setIsAllSelected={setIsAllSelected}
+                      refetch={refetch}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <EmptyTable
+                      handler={() => setOpenProjectModal(true)}
+                      Icon={UserCircle02Icon}
+                      setOpen={setOpenProjectModal}
+                      title="  No Project Created Yer"
+                      subtitle="Start building your Project list"
+                      btnText=" Add Project"
+                    />
+                  </>
+                )}
+              </React.Fragment>
+            ) : (
+              <Skeleton />
+            )}
           </div>
 
           <Modal
@@ -205,6 +209,13 @@ const Projects = () => {
           </Modal>
         </>
       )}
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteProject}
+        setOpen={setBulkDeleteProject}
+        onDeleteAction={() => onDeleteAction(selectedProject)}
+        title="Delete Project"
+      />
     </React.Fragment>
   );
 };

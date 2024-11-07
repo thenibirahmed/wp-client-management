@@ -31,12 +31,12 @@ const Schedule = ({ schedules }) => {
       <Calendar />
 
       <div className="space-y-[16px] mt-7 ">
-        {schedules?.map((item) => {
+        {schedules?.map((item, i) => {
           const isChecked = selectedClient.some(
             (client) => client?.id === item?.id
           );
           return (
-            <div className="flex items-center justify-between">
+            <div key={i} className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <input
                   checked={isChecked}

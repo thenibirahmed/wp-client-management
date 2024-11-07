@@ -1,9 +1,9 @@
-function truncateText(text) {
+function truncateText(text, len = 30) {
   const textLegth = text?.length;
 
-  if (textLegth < 65) return text;
+  if (textLegth < len) return text;
 
-  return text?.substring(0, 65) + "...";
+  return text?.substring(0, len) + "...";
 }
 
 export default truncateText;

@@ -18,7 +18,7 @@ const ProjectHeader = ({
   openModal,
   btnTitle,
   cancelTitle,
-  onDeleteAction,
+  setOpenBulkActionModal,
   onCheckAction,
   filter = false,
   check = true,
@@ -43,7 +43,7 @@ const ProjectHeader = ({
             <>
               <button
                 disabled={loader}
-                onClick={() => onDeleteAction(selectedProject)}
+                onClick={() => setOpenBulkActionModal(true)}
               >
                 <Delete03Icon
                   className={`text-customRed ${loader ? "opacity-50" : ""}`}

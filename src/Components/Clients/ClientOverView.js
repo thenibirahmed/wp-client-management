@@ -87,7 +87,7 @@ const ClientOverView = ({
     setSelectedFilter("Filter");
   };
 
-  if (isLoading || isLoadingSelectCurrency) return <Skeleton />;
+  const isLoadings = isLoading || isLoadingSelectCurrency;
 
   if (error || selecturrencyErr)
     return (
@@ -119,64 +119,68 @@ const ClientOverView = ({
         </div>
       </div>
 
-      <div className="flex   w-full  md:flex-row flex-col  md:justify-between  items-center border border-borderColor rounded-lg">
-        {singleClient ? (
-          <>
-            <OvierViewItem
-              title={topBar?.invoice?.name}
-              amount={topBar?.invoice?.amount}
-              invoice={topBar?.invoice?.subText}
-              symbol={topBar?.currency?.symbol}
-            />
-            <OvierViewItem
-              title={topBar?.revenue?.name}
-              amount={topBar?.revenue?.amount}
-              invoice={topBar?.revenue?.subText}
-              symbol={topBar?.currency?.symbol}
-            />
-            <OvierViewItem
-              title={topBar?.due?.name}
-              amount={topBar?.due?.amount}
-              invoice={topBar?.due?.subText}
-              symbol={topBar?.currency?.symbol}
-            />
-            <OvierViewItem
-              title={topBar?.project?.name}
-              amount={topBar?.project?.amount}
-              invoice={topBar?.project?.subText}
-              isProject
-            />
-          </>
-        ) : (
-          <>
-            {" "}
-            <OvierViewItem
-              title={clientOverView?.topBar?.invoice?.name}
-              amount={clientOverView?.topBar?.invoice?.amount}
-              invoice={clientOverView?.topBar?.invoice?.subText}
-              symbol={clientOverView?.topBar?.currency?.symbol}
-            />
-            <OvierViewItem
-              title={clientOverView?.topBar?.revenue?.name}
-              amount={clientOverView?.topBar?.revenue?.amount}
-              invoice={clientOverView?.topBar?.revenue?.subText}
-              symbol={clientOverView?.topBar?.currency?.symbol}
-            />
-            <OvierViewItem
-              title={clientOverView?.topBar?.due?.name}
-              amount={clientOverView?.topBar?.due?.amount}
-              invoice={clientOverView?.topBar?.due?.subText}
-              symbol={clientOverView?.topBar?.currency?.symbol}
-            />
-            <OvierViewItem
-              title={clientOverView?.topBar?.project?.name}
-              amount={clientOverView?.topBar?.project?.amount}
-              invoice={clientOverView?.topBar?.project?.subText}
-              isProject
-            />
-          </>
-        )}
-      </div>
+      {isLoadings ? (
+        <Skeleton />
+      ) : (
+        <div className="flex   w-full  md:flex-row flex-col  md:justify-between  items-center border border-borderColor rounded-lg">
+          {singleClient ? (
+            <>
+              <OvierViewItem
+                title={topBar?.invoice?.name}
+                amount={topBar?.invoice?.amount}
+                invoice={topBar?.invoice?.subText}
+                symbol={topBar?.currency?.symbol}
+              />
+              <OvierViewItem
+                title={topBar?.revenue?.name}
+                amount={topBar?.revenue?.amount}
+                invoice={topBar?.revenue?.subText}
+                symbol={topBar?.currency?.symbol}
+              />
+              <OvierViewItem
+                title={topBar?.due?.name}
+                amount={topBar?.due?.amount}
+                invoice={topBar?.due?.subText}
+                symbol={topBar?.currency?.symbol}
+              />
+              <OvierViewItem
+                title={topBar?.project?.name}
+                amount={topBar?.project?.amount}
+                invoice={topBar?.project?.subText}
+                isProject
+              />
+            </>
+          ) : (
+            <>
+              {" "}
+              <OvierViewItem
+                title={clientOverView?.topBar?.invoice?.name}
+                amount={clientOverView?.topBar?.invoice?.amount}
+                invoice={clientOverView?.topBar?.invoice?.subText}
+                symbol={clientOverView?.topBar?.currency?.symbol}
+              />
+              <OvierViewItem
+                title={clientOverView?.topBar?.revenue?.name}
+                amount={clientOverView?.topBar?.revenue?.amount}
+                invoice={clientOverView?.topBar?.revenue?.subText}
+                symbol={clientOverView?.topBar?.currency?.symbol}
+              />
+              <OvierViewItem
+                title={clientOverView?.topBar?.due?.name}
+                amount={clientOverView?.topBar?.due?.amount}
+                invoice={clientOverView?.topBar?.due?.subText}
+                symbol={clientOverView?.topBar?.currency?.symbol}
+              />
+              <OvierViewItem
+                title={clientOverView?.topBar?.project?.name}
+                amount={clientOverView?.topBar?.project?.amount}
+                invoice={clientOverView?.topBar?.project?.subText}
+                isProject
+              />
+            </>
+          )}
+        </div>
+      )}
     </React.Fragment>
   );
 };

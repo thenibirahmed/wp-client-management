@@ -87,7 +87,7 @@ const ProjectOverView = ({
     console.log(err);
   }
 
-  if (projectOverViewLoader || isLoadingSelectCurrency) return <Skeleton />;
+  const isLoading = projectOverViewLoader || isLoadingSelectCurrency;
 
   if (projectOverViewError || selecturrencyErr)
     return <Errors message={"Internal Server Error"} />;
@@ -111,64 +111,68 @@ const ProjectOverView = ({
           />
         </div>
       </div>
-      <div className="flex   w-full  md:flex-row flex-col  md:justify-between  items-center border border-borderColor rounded-lg">
-        {projectDetails ? (
-          <>
-            <OvierViewItem
-              title={topBar?.due?.name}
-              amount={topBar?.due?.total}
-              invoice={topBar?.due?.subText}
-              symbol={topBar?.currency?.symbol}
-            />{" "}
-            <OvierViewItem
-              title={topBar?.invoice?.name}
-              amount={topBar?.invoice?.total}
-              invoice={topBar?.invoice?.subText}
-              symbol={topBar?.currency?.symbol}
-            />
-            <OvierViewItem
-              isProject
-              title={topBar?.employee?.name}
-              amount={topBar?.employee?.total}
-              invoice={topBar?.employee?.subText}
-            />
-            <OvierViewItem
-              title={topBar?.revenue?.name}
-              amount={topBar?.revenue?.total}
-              invoice={topBar?.revenue?.subText}
-              symbol={topBar?.currency?.symbol}
-            />
-          </>
-        ) : (
-          <>
-            <OvierViewItem
-              title={projectOverView?.projectOverView?.invoice?.name}
-              amount={projectOverView?.projectOverView?.invoice?.total}
-              invoice={projectOverView?.projectOverView?.invoice?.subText}
-              symbol={projectOverView?.projectOverView?.currency?.symbol}
-            />
-            <OvierViewItem
-              title={projectOverView?.projectOverView?.revenue?.name}
-              amount={projectOverView?.projectOverView?.revenue?.total}
-              invoice={projectOverView?.projectOverView?.revenue?.subText}
-              symbol={projectOverView?.projectOverView?.currency?.symbol}
-            />
-            <OvierViewItem
-              title={projectOverView?.projectOverView?.due?.name}
-              amount={projectOverView?.projectOverView?.due?.total}
-              invoice={projectOverView?.projectOverView?.due?.subText}
-              symbol={projectOverView?.projectOverView?.currency?.symbol}
-            />
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        <div className="flex   w-full  md:flex-row flex-col  md:justify-between  items-center border border-borderColor rounded-lg">
+          {projectDetails ? (
+            <>
+              <OvierViewItem
+                title={topBar?.due?.name}
+                amount={topBar?.due?.total}
+                invoice={topBar?.due?.subText}
+                symbol={topBar?.currency?.symbol}
+              />{" "}
+              <OvierViewItem
+                title={topBar?.invoice?.name}
+                amount={topBar?.invoice?.total}
+                invoice={topBar?.invoice?.subText}
+                symbol={topBar?.currency?.symbol}
+              />
+              <OvierViewItem
+                isProject
+                title={topBar?.employee?.name}
+                amount={topBar?.employee?.total}
+                invoice={topBar?.employee?.subText}
+              />
+              <OvierViewItem
+                title={topBar?.revenue?.name}
+                amount={topBar?.revenue?.total}
+                invoice={topBar?.revenue?.subText}
+                symbol={topBar?.currency?.symbol}
+              />
+            </>
+          ) : (
+            <>
+              <OvierViewItem
+                title={projectOverView?.projectOverView?.invoice?.name}
+                amount={projectOverView?.projectOverView?.invoice?.total}
+                invoice={projectOverView?.projectOverView?.invoice?.subText}
+                symbol={projectOverView?.projectOverView?.currency?.symbol}
+              />
+              <OvierViewItem
+                title={projectOverView?.projectOverView?.revenue?.name}
+                amount={projectOverView?.projectOverView?.revenue?.total}
+                invoice={projectOverView?.projectOverView?.revenue?.subText}
+                symbol={projectOverView?.projectOverView?.currency?.symbol}
+              />
+              <OvierViewItem
+                title={projectOverView?.projectOverView?.due?.name}
+                amount={projectOverView?.projectOverView?.due?.total}
+                invoice={projectOverView?.projectOverView?.due?.subText}
+                symbol={projectOverView?.projectOverView?.currency?.symbol}
+              />
 
-            <OvierViewItem
-              isProject
-              title={projectOverView?.projectOverView?.projects?.name}
-              amount={projectOverView?.projectOverView?.projects?.count}
-              invoice={projectOverView?.projectOverView?.projects?.subText}
-            />
-          </>
-        )}
-      </div>
+              <OvierViewItem
+                isProject
+                title={projectOverView?.projectOverView?.projects?.name}
+                amount={projectOverView?.projectOverView?.projects?.count}
+                invoice={projectOverView?.projectOverView?.projects?.subText}
+              />
+            </>
+          )}
+        </div>
+      )}
     </React.Fragment>
   );
 };

@@ -15,12 +15,20 @@ import ProjectHeader from "../../../helper/projects/ProjectHeader";
 import { useStoreContext } from "../../../../store/ContextApiStore";
 import Modal from "../../../helper/Modal";
 import AddNewTaskForm from "../../../helper/projectTask/AddNewTaskForm";
+import { BulkDeleteModal } from "../../../BulkDeleteModal";
 
 const ContactTask = ({ teamId }) => {
   const [loader, setLoader] = useState(false);
 
-  const { openTask, setOpenTask, searchText, setSearchText, setIsFetching } =
-    useStoreContext();
+  const {
+    openTask,
+    setOpenTask,
+    searchText,
+    setSearchText,
+    setIsFetching,
+    bulkDeleteTeamTask,
+    setBulkDeleteTeamTask,
+  } = useStoreContext();
 
   const currentPath = useHashRouting("");
   const getPaginationUrl = currentPath?.split("?")[1];
@@ -50,7 +58,14 @@ const ContactTask = ({ teamId }) => {
 
   const onDeleteAction = async (ids) => {
     setIsFetching(true);
-    await useBulkDelete("/tasks/bulk-delete", ids, refetch, setLoader, false);
+    await useBulkDelete(
+      "/tasks/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false,
+      setBulkDeleteTeamTask
+    );
     setSelectedTask([]);
     setIsFetching(false);
   };
@@ -82,7 +97,7 @@ const ContactTask = ({ teamId }) => {
           title="Tasks"
           setOpenModal={setOpenTask}
           btnTitle="Add Task"
-          onDeleteAction={onDeleteAction}
+          setOpenBulkActionModal={setBulkDeleteTeamTask}
           onCheckAction={onCheckAction}
           loader={loader}
           setSearchText={setSearchText}
@@ -115,6 +130,14 @@ const ContactTask = ({ teamId }) => {
       <Modal open={openTask} setOpen={setOpenTask} title="Add Task">
         <AddNewTaskForm refetch={refetch} setOpen={setOpenTask} contact />
       </Modal>
+
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteTeamTask}
+        setOpen={setBulkDeleteTeamTask}
+        onDeleteAction={() => onDeleteAction(selectedTask)}
+        title="Delete Task"
+      />
     </React.Fragment>
   );
 };

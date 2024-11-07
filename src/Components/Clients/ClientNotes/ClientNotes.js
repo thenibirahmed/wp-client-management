@@ -12,6 +12,7 @@ import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
 import Skeleton from "../../Skeleton";
 import Errors from "../../Errors";
+import { BulkDeleteModal } from "../../BulkDeleteModal";
 
 const ClientNotes = ({ clientId }) => {
   const [loader, setLoader] = useState(false);
@@ -28,6 +29,8 @@ const ClientNotes = ({ clientId }) => {
     searchText,
     setSearchText,
     setIsFetching,
+    bulkDeleteClientNote,
+    setBulkDeleteClientNote,
   } = useStoreContext();
 
   const [selectedNote, setSelectedNote] = useState([]);
@@ -60,7 +63,14 @@ const ClientNotes = ({ clientId }) => {
 
   const onDeleteAction = async (ids) => {
     setIsFetching(true);
-    await useBulkDelete("/notes/bulk-delete", ids, refetch, setLoader, false);
+    await useBulkDelete(
+      "/notes/bulk-delete",
+      ids,
+      refetch,
+      setLoader,
+      false,
+      setBulkDeleteClientNote
+    );
     setSelectedNote([]);
     setIsFetching(false);
   };
@@ -95,7 +105,7 @@ const ClientNotes = ({ clientId }) => {
         openModal={updateNotes ? updateNotes : createNote}
         btnTitle="Add Note"
         cancelTitle="Cancel"
-        onDeleteAction={onDeleteAction}
+        setOpenBulkActionModal={setBulkDeleteClientNote}
         onCheckAction={onCheckAction}
         check={false}
         loader={loader}
@@ -157,6 +167,14 @@ const ClientNotes = ({ clientId }) => {
           )}
         </React.Fragment>
       )}
+
+      <BulkDeleteModal
+        loader={loader}
+        open={bulkDeleteClientNote}
+        setOpen={setBulkDeleteClientNote}
+        onDeleteAction={() => onDeleteAction(selectedNote)}
+        title="Delete Note"
+      />
     </React.Fragment>
   );
 };

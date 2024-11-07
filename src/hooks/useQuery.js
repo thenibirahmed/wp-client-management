@@ -1234,7 +1234,8 @@ export const useBulkDelete = async (
   ids,
   refetch,
   setLoader,
-  nestedId = false
+  nestedId = false,
+  setOpenModal = () => {}
 ) => {
   let bulk_ids;
 
@@ -1250,6 +1251,7 @@ export const useBulkDelete = async (
 
     toast.success(data?.message || "Delete Successful");
     await refetch();
+    setOpenModal(false);
   } catch (err) {
     console.log(err);
     toast.error(err?.response?.data?.message || "Operation Failed");
@@ -1404,6 +1406,27 @@ export const useFetchSchedules = (paginationUrl, onError) => {
         schedules: data.data.schedules,
         pagination: data.data.pagination,
       }),
+      onError,
+      staleTime: 5000,
+    }
+  );
+};
+
+export const useFetchEstimateInvoice = (paginationUrl, onError) => {
+  return useQuery(
+    "estimate-invoices",
+    async () => {
+      const url = `/invoices/?${paginationUrl}`;
+
+      return await api.get(url);
+    },
+    {
+      select: (data) => {
+        return {
+          invoices: data.data.data,
+          pagination: data.data.pagination,
+        };
+      },
       onError,
       staleTime: 5000,
     }

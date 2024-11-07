@@ -103,7 +103,7 @@ const ContactTeamProjectTable = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {teamLists?.map((item) => {
+                {teamLists?.map((item, i) => {
                   let itemStatus = item.status.toLowerCase();
                   let itemPriority = item.priority.toLowerCase();
 
@@ -125,7 +125,7 @@ const ContactTeamProjectTable = ({
                       : "";
 
                   return (
-                    <tr>
+                    <tr key={i}>
                       <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
                         <input
                           checked={isChecked}

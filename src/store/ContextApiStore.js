@@ -14,6 +14,26 @@ export const ContextProvider = ({ children }) => {
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
 
+  const [bulkDeleteClient, setBulkDeleteClient] = useState(false);
+  const [bulkDeleteClientProject, setBulkDeleteClientProkect] = useState(false);
+  const [bulkDeleteClientInvoice, setBulkDeleteClientInvoice] = useState(false);
+  const [bulkDeleteClientNote, setBulkDeleteClientNote] = useState(false);
+  const [bulkDeleteClientFile, setBulkDeleteClientFile] = useState(false);
+  const [bulkDeleteClientEmail, setBulkDeleteClientEmail] = useState(false);
+
+  const [bulkDeleteProject, setBulkDeleteProject] = useState(false);
+  const [bulkDeleteProjectTask, setBulkDeleteProjectTask] = useState(false);
+  const [bulkDeleteProjectInvoice, setBulkDeleteProjectInvoice] =
+    useState(false);
+  const [bulkDeleteProjectNote, setBulkDeleteProjectNote] = useState(false);
+  const [bulkDeleteProjectFile, setBulkDeleteProjectFile] = useState(false);
+  const [bulkDeleteProjectEmail, setBulkDeleteProjectEmail] = useState(false);
+
+  const [bulkDeleteTeam, setBulkDeleteTeam] = useState(false);
+  const [bulkDeleteTeamProject, setBulkDeleteTeamProject] = useState(false);
+  const [bulkDeleteTeamTask, setBulkDeleteTeamTask] = useState(false);
+  const [bulkDeleteTeamClient, setBulkDeleteTeamClient] = useState(false);
+
   const [selectStatus, setSelectStatus] = useState("");
   const [selectPriority, setSelectPriority] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("Filter");
@@ -159,6 +179,38 @@ export const ContextProvider = ({ children }) => {
     setSelectCurrency,
     deleteInvoice,
     setDeleteInvoice,
+    bulkDeleteClient,
+    setBulkDeleteClient,
+    bulkDeleteClientProject,
+    setBulkDeleteClientProkect,
+    bulkDeleteClientInvoice,
+    setBulkDeleteClientInvoice,
+    bulkDeleteClientNote,
+    setBulkDeleteClientNote,
+    bulkDeleteClientFile,
+    setBulkDeleteClientFile,
+    bulkDeleteClientEmail,
+    setBulkDeleteClientEmail,
+    bulkDeleteProject,
+    setBulkDeleteProject,
+    bulkDeleteProjectTask,
+    setBulkDeleteProjectTask,
+    bulkDeleteProjectInvoice,
+    setBulkDeleteProjectInvoice,
+    bulkDeleteProjectNote,
+    setBulkDeleteProjectNote,
+    bulkDeleteProjectFile,
+    setBulkDeleteProjectFile,
+    bulkDeleteProjectEmail,
+    setBulkDeleteProjectEmail,
+    bulkDeleteTeam,
+    setBulkDeleteTeam,
+    bulkDeleteTeamProject,
+    setBulkDeleteTeamProject,
+    bulkDeleteTeamTask,
+    setBulkDeleteTeamTask,
+    bulkDeleteTeamClient,
+    setBulkDeleteTeamClient,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

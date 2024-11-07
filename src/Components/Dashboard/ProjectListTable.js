@@ -43,7 +43,7 @@ const ProjectListTable = ({ projectData }) => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {projectData?.map((item) => {
+                {projectData?.map((item, i) => {
                   let itemStatus = item?.status?.toLowerCase();
 
                   const statusClass =
@@ -60,7 +60,13 @@ const ProjectListTable = ({ projectData }) => {
                       : "bg-customBg1 text-green";
 
                   return (
-                    <tr className="cursor-pointer">
+                    <tr
+                      onClick={() =>
+                        (window.location.href = `#/projects/#/${item.id}`)
+                      }
+                      key={i}
+                      className="cursor-pointer"
+                    >
                       <td className="whitespace-nowrap py-4 pl-4 pr-3  sm:pl-6 ">
                         <h3 className="text-sm  text-textColor font-metropolis font-normal leading-[14px]">
                           {item.name}

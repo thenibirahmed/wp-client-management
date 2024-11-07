@@ -47,9 +47,12 @@ const ProjectList = ({ projects }) => {
           Project List
         </h1>
         <button className="flex items-center gap-2">
-          <span className="font-metropolis uppercase text-sm font-semibold text-customBlue">
+          <a
+            href="#/clients"
+            className="font-metropolis uppercase text-sm font-semibold text-customBlue"
+          >
             View all
-          </span>
+          </a>
           <ArrowRight02Icon className="text-customBlue" />
         </button>
       </div>
