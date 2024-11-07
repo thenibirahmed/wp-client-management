@@ -33,15 +33,34 @@ class Assets {
 
         if (is_page_template('client-management')) {
             global $wp_styles;
-
+            
             foreach ($wp_styles->registered as $handle => $style) {
-                if($handle == 'wp-client-management-frontend') {
+                if(in_array($handle, [
+                    'wp-client-management-frontend', 
+                    'media-views', 
+                    'wp-mediaelement', 
+                    'mediaelement', 
+                    'imgareaselect', 
+                    'thickbox', 
+                    'buttons', 
+                    'dashicons', 
+                    'admin-bar', 
+                    'common', 
+                    'forms', 
+                    'media', 
+                    'wp-pointer',
+                    'wp-block-library'
+                ])) {
                     continue;
                 }
 
                 wp_dequeue_style($handle);
                 wp_deregister_style($handle);
             }
+        }
+
+        if (!wp_style_is('common', 'enqueued')) {
+            wp_enqueue_style('wp-common', includes_url('/css/common.css'), [], null);
         }
     }
 
@@ -52,6 +71,8 @@ class Assets {
      */
     public function enqueue_scripts() {
         wp_register_script('wp-client-management-frontend', WP_CLIENT_MANAGEMENT_ASSETS . '/frontend.js', ['wp-element'], filemtime(WP_CLIENT_MANAGEMENT_PATH . '/build/frontend.js'), true);
+
+        wp_enqueue_media();
 
         wp_localize_script('wp-client-management-frontend', 'eicApiSettings', array(
             'rest_url' => esc_url_raw(rest_url()),
