@@ -80,7 +80,23 @@ const AddClientForm = ({
   };
 
   const onImageUploadHandler = () => {
-    imageRef.current.click();
+    // imageRef.current.click();
+
+    var clientPhoto = wp.media({
+        title: 'Upload a Photo',
+        button: {
+            text: 'Use this photo'
+        },
+        multiple: false
+    });
+    
+    clientPhoto.open();
+
+    clientPhoto.on('select', function(){
+        var image = clientPhoto.state().get('selection').first().toJSON();
+        console.log(image);
+        console.log(image.url);
+    });
   };
 
   function onError(err) {
