@@ -11,9 +11,9 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "illuminate/database": "^12.0@dev",
-        "illuminate/pagination": "^12.0@dev",
-        "illuminate/validation": "^12.0@dev"
+        "illuminate/database": "8.x-dev",
+        "illuminate/validation": "8.x-dev",
+        "illuminate/pagination": "8.x-dev"
     },
     "autoload": {
         "psr-4": {
@@ -26,6 +26,9 @@
     "config": {
         "allow-plugins": {
             "kylekatarnls/update-helper": true
+        },
+        "platform": {
+            "php": "7.4"
         }
     }
 }
