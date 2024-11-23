@@ -83,19 +83,19 @@ const AddClientForm = ({
     // imageRef.current.click();
 
     var clientPhoto = wp.media({
-        title: 'Upload a Photo',
-        button: {
-            text: 'Use this photo'
-        },
-        multiple: false
+      title: "Upload a Photo",
+      button: {
+        text: "Use this photo",
+      },
+      multiple: false,
     });
-    
+
     clientPhoto.open();
 
-    clientPhoto.on('select', function(){
-        var image = clientPhoto.state().get('selection').first().toJSON();
-        console.log(image);
-        console.log(image.url);
+    clientPhoto.on("select", function () {
+      var image = clientPhoto.state().get("selection").first().toJSON();
+      console.log(image);
+      console.log(image.url);
     });
   };
 
@@ -118,7 +118,7 @@ const AddClientForm = ({
             id="name"
             type="text"
             message="*Name is required"
-            placeholder="Easin"
+            placeholder="John Doe"
             register={register}
             errors={errors}
           />
@@ -139,14 +139,14 @@ const AddClientForm = ({
             id="email"
             type="email"
             message="*Email is required"
-            placeholder="easin@gmail.com"
+            placeholder="name@example.com"
             register={register}
             errors={errors}
           />
           <TextField
             label="Phone"
             id="phone"
-            type="number"
+            type="text"
             message="*Phone Number is required"
             placeholder="Phone"
             register={register}

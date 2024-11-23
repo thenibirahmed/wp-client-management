@@ -24,9 +24,14 @@ const ClientInfo = ({ profile }) => {
           <h1 className="font-metropolis font-semibold  text-textColor text-3xl ">
             {profile?.name}
           </h1>
-          <span className="text-xs  text-textColor2 font-metropolis font-normal ">
-            {profile?.designation}
-          </span>
+          <div>
+            <span className="text-xs  text-textColor2 font-metropolis font-normal ">
+              {profile?.designation}{" "}
+            </span>
+            <span className="text-xs  text-textColor2 font-metropolis font-normal ">
+              - {profile?.organization}
+            </span>
+          </div>
         </div>
       </div>
       <div className="flex gap-6">

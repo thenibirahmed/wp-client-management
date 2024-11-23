@@ -169,7 +169,7 @@ const AddContactTeamForm = ({ setOpen, refetch, teamId, update = false }) => {
             label="Phone"
             required
             id="phone"
-            type="number"
+            type="text"
             message="*This field is required"
             placeholder="Phone"
             register={register}

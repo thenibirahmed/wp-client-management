@@ -517,6 +517,7 @@ const AddNewInvoiceForm = ({
               setSelect={setSelectCurrency}
               lists={currencyLists?.currency}
               isSubmitting={isSubmitting}
+              currency
             />
             <SelectTextField
               label="Pay Method"

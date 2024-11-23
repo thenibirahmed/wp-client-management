@@ -20,12 +20,12 @@ const Schedule = ({ schedules }) => {
         <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
           Upcoming Schedule
         </h1>
-        <button className="flex items-center gap-2">
+        <a href="#/schedules" className="flex items-center gap-2">
           <h3 className="font-metropolis uppercase text-sm font-semibold text-customBlue">
             View all
           </h3>
           <ArrowRight02Icon className="text-customBlue" />
-        </button>
+        </a>
       </div>
 
       <Calendar />

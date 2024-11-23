@@ -56,7 +56,7 @@ export const MultiSelectTextField = ({
               <ListboxOption
                 key={person.id}
                 value={person}
-                className={`group relative cursor-default select-none py-2 pl-3 pr-9 ${
+                className={`group relative cursor-default select-none py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white ${
                   select?.some((p) => p?.id === person?.id)
                     ? "bg-indigo-600 text-white"
                     : "text-gray-900"

@@ -275,6 +275,7 @@ const AddNewClientProjectForm = ({
             setSelect={setSelectCurrency}
             lists={currencyLists?.currency}
             isSubmitting={isSubmitting}
+            currency
           />
         </div>
 
@@ -392,7 +393,7 @@ const AddNewClientProjectForm = ({
             type="button"
             className={`border border-borderColor rounded-[5px] font-metropolis  text-textColor py-[10px] px-4 text-sm font-medium`}
           >
-            Cancels
+            Cancel
           </button>
           <button
             type="submit"

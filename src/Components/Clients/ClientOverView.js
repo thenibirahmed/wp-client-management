@@ -115,6 +115,7 @@ const ClientOverView = ({
             lists={currencyLists?.currency}
             isSubmitting={false}
             currency
+            topBar
           />
         </div>
       </div>

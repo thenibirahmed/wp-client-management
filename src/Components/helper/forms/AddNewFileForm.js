@@ -148,7 +148,7 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button
             onClick={() => {
-              setOpenFileModal(false);
+              setOpen(false);
               setImageUrl("");
             }}
             type="button"

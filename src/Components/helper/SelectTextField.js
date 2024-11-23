@@ -15,6 +15,7 @@ export const SelectTextField = ({
   lists,
   isSubmitting,
   currency = false,
+  topBar,
 }) => {
   const [error, setError] = useState("");
 
@@ -32,7 +33,7 @@ export const SelectTextField = ({
     <Listbox value={select} onChange={setSelect}>
       <div
         className={`flex flex-col gap-2 ${
-          currency ? "sm:w-40 w-72" : " w-full"
+          currency && topBar ? "sm:w-40 w-72" : " w-full"
         } `}
       >
         {label && (
@@ -71,9 +72,18 @@ export const SelectTextField = ({
                 value={person}
                 className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white"
               >
-                <span className="block truncate font-normal group-data-[selected]:font-semibold">
-                  {currency ? person.code : person.name}
-                </span>
+                {!currency && (
+                  <span className="block truncate font-normal group-data-[selected]:font-semibold">
+                    {person.name}
+                  </span>
+                )}
+
+                {currency && (
+                  <div className="flex gap-1 items-center ">
+                    <span> {person.code}</span>
+                    <span className="font-semibold">({person.symbol})</span>
+                  </div>
+                )}
 
                 <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
                   <CheckIcon aria-hidden="true" className="h-5 w-5" />

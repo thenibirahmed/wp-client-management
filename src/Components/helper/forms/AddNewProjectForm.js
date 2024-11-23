@@ -316,6 +316,7 @@ const AddNewProjectForm = ({ refetch, setOpen, update = false, projectId }) => {
           </div>
           <div className="flex-1">
             <SelectTextField
+              currency
               label="Currency"
               select={selectCurrency}
               setSelect={setSelectCurrency}

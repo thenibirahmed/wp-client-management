@@ -15,12 +15,12 @@ const DasboardRevenue = ({ chartData }) => {
         <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
           Revenue
         </h1>
-        <button className="flex items-center gap-2">
+        {/* <button className="flex items-center gap-2">
           <h3 className="font-metropolis uppercase text-sm font-semibold text-customBlue">
             See Report
           </h3>
           <ArrowRight02Icon className="text-customBlue" />
-        </button>
+        </button> */}
       </div>
 
       <div className="flex items-center gap-[20px]  mt-3">
