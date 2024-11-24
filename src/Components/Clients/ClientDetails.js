@@ -114,7 +114,11 @@ const ClientDetails = () => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <ClientInfo profile={singleClientOverView?.profile} />
+          <ClientInfo
+            profile={singleClientOverView?.profile}
+            clientId={clientId}
+            refetch={refetch}
+          />
           <ClientOverView
             dateRange={dateRange}
             setDateRange={setDateRange}
