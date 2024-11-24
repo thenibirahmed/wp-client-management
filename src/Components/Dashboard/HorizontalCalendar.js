@@ -5,6 +5,7 @@ import { ArrowLeft01Icon, ArrowRight01Icon } from "../../utils/icons";
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState(dayjs()); // Default selected to today
   const today = dayjs();
 
   const handleNextWeek = () => {
@@ -24,8 +25,11 @@ const Calendar = () => {
   };
 
   const weekDates = getWeekDates();
-
   const currentMonthYear = currentDate.format("MMMM YYYY");
+
+  const handleDateClick = (date) => {
+    setSelectedDate(date); // Allow selecting any date, including today
+  };
 
   return (
     <div className="pt-6">
@@ -56,12 +60,20 @@ const Calendar = () => {
       {/* Display Corresponding Dates */}
       <div className="grid grid-cols-7 gap-4 mt-2 pb-5 border-b-[1px] border-b-borderColor">
         {weekDates.map((date, index) => (
-          <div key={index} className="text-center">
+          <div
+            key={index}
+            className="text-center cursor-pointer" // Make dates clickable
+            onClick={() => handleDateClick(date)}
+          >
             <span
-              className={`uppercase text-xs font-semibold font-metropolis ${
-                date.isSame(today, "day")
-                  ? "text-customBlue bg-customBg6 w-[36px] h-[36px] rounded-full"
-                  : "text-textColor2"
+              className={`uppercase text-xs font-semibold font-metropolis w-[36px] h-[36px] flex items-center justify-center rounded-full ${
+                date.isSame(today, "day") // Highlight current date
+                  ? date.isSame(selectedDate, "day")
+                    ? "text-white bg-blue-500" // Selected current date
+                    : "text-customBlue bg-customBg6" // Non-selected current date
+                  : date.isSame(selectedDate, "day")
+                  ? "text-white bg-blue-500" // Selected other date
+                  : "text-textColor2" // Default unselected date
               }`}
             >
               {date.format("DD")}
