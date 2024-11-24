@@ -16,6 +16,7 @@ import { useStoreContext } from "../../../../store/ContextApiStore";
 import Modal from "../../../helper/Modal";
 import AddNewTaskForm from "../../../helper/projectTask/AddNewTaskForm";
 import { BulkDeleteModal } from "../../../BulkDeleteModal";
+import { BulkActionModal } from "../../../BulkActionModal";
 
 const ContactTask = ({ teamId }) => {
   const [loader, setLoader] = useState(false);
@@ -28,6 +29,8 @@ const ContactTask = ({ teamId }) => {
     setIsFetching,
     bulkDeleteTeamTask,
     setBulkDeleteTeamTask,
+    bulkActionTask,
+    setBulkActionTask,
   } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -76,7 +79,8 @@ const ContactTask = ({ teamId }) => {
       ids,
       refetch,
       setLoader,
-      false
+      false,
+      setBulkActionTask
     );
     setSelectedTask([]);
   };
@@ -102,6 +106,7 @@ const ContactTask = ({ teamId }) => {
           loader={loader}
           setSearchText={setSearchText}
           searchText={searchText}
+          setOpenBulkAction={setBulkActionTask}
         />
         {taskLists?.task?.length > 0 ? (
           <ContactTeamTaskTable
@@ -130,13 +135,19 @@ const ContactTask = ({ teamId }) => {
       <Modal open={openTask} setOpen={setOpenTask} title="Add Task">
         <AddNewTaskForm refetch={refetch} setOpen={setOpenTask} contact />
       </Modal>
-
       <BulkDeleteModal
         loader={loader}
         open={bulkDeleteTeamTask}
         setOpen={setBulkDeleteTeamTask}
         onDeleteAction={() => onDeleteAction(selectedTask)}
         title="Delete Task"
+      />{" "}
+      <BulkActionModal
+        loader={loader}
+        open={bulkActionTask}
+        setOpen={setBulkActionTask}
+        onBulAction={() => onCheckAction(selectedTask)}
+        title="Action"
       />
     </React.Fragment>
   );

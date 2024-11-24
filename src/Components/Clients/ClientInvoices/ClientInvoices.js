@@ -16,6 +16,7 @@ import Errors from "../../Errors";
 import useHashRouting from "../../../utils/useHashRouting";
 import Skeleton from "../../Skeleton";
 import { BulkDeleteModal } from "../../BulkDeleteModal";
+import { BulkActionModal } from "../../BulkActionModal";
 
 const ClientInvoices = ({ clientId }) => {
   const [loader, setLoader] = useState(false);
@@ -35,6 +36,8 @@ const ClientInvoices = ({ clientId }) => {
     setIsFetching,
     bulkDeleteClientInvoice,
     setBulkDeleteClientInvoice,
+    bulkActionInvoice,
+    setBulkActionInvoice,
   } = useStoreContext();
 
   const [selectedInvoices, setSelectedInvoices] = useState([]);
@@ -114,7 +117,8 @@ const ClientInvoices = ({ clientId }) => {
       ids,
       refetch,
       setLoader,
-      false
+      false,
+      setBulkActionInvoice
     );
     setSelectedInvoices([]);
   };
@@ -149,6 +153,7 @@ const ClientInvoices = ({ clientId }) => {
         loader={loader}
         noPriority
         invoiceFilter
+        setOpenBulkAction={setBulkActionInvoice}
       />
 
       {invoiceList?.invoices.length > 0 ? (
@@ -190,6 +195,14 @@ const ClientInvoices = ({ clientId }) => {
         setOpen={setBulkDeleteClientInvoice}
         onDeleteAction={() => onDeleteAction(selectedInvoices)}
         title="Delete Invoice"
+      />
+
+      <BulkActionModal
+        loader={loader}
+        open={bulkActionInvoice}
+        setOpen={setBulkActionInvoice}
+        onBulAction={() => onCheckAction(selectedInvoices)}
+        title="Action"
       />
     </React.Fragment>
   );

@@ -28,6 +28,7 @@ const ClientOverView = ({
   setSelectedFilter,
   selectCurrency,
   setSelectCurrency,
+  title = "Clients Overview",
 }) => {
   const [startDate, endDate] = dateRange;
 
@@ -103,7 +104,7 @@ const ClientOverView = ({
     <React.Fragment>
       <div className="flex xl:flex-row flex-col justify-between xl:items-center xl:gap-0 gap-3 ">
         <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
-          Clients Overview
+          {title}
         </h1>
 
         <div className="sm:w-fit flex sm:flex-row flex-col  items-center gap-2 sm:justify-start justify-center w-full">

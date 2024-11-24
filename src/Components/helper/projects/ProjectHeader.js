@@ -29,6 +29,7 @@ const ProjectHeader = ({
   taskFilter = false,
   invoiceFilter = false,
   searchACtive = true,
+  setOpenBulkAction = () => {},
 }) => {
   const { updateNotes, setUpdateNotes } = useStoreContext();
   return (
@@ -52,7 +53,7 @@ const ProjectHeader = ({
               {check && (
                 <button
                   disabled={loader}
-                  onClick={() => onCheckAction(selectedProject)}
+                  onClick={() => setOpenBulkAction(true)}
                 >
                   <CheckmarkCircle02Icon
                     className={`text-customBlue ${loader ? "opacity-50" : ""}`}

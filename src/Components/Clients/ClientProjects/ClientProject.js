@@ -18,6 +18,7 @@ import useHashRouting from "../../../utils/useHashRouting";
 import Errors from "../../Errors";
 import Skeleton from "../../Skeleton";
 import { BulkDeleteModal } from "../../BulkDeleteModal";
+import { BulkActionModal } from "../../BulkActionModal";
 
 const ClientProject = ({ clientId }) => {
   const {
@@ -34,6 +35,8 @@ const ClientProject = ({ clientId }) => {
     setIsFetching,
     bulkDeleteClientProject,
     setBulkDeleteClientProkect,
+    bulkActionProject,
+    setBulkActionProject,
   } = useStoreContext();
 
   const [loader, setLoader] = useState(false);
@@ -98,7 +101,8 @@ const ClientProject = ({ clientId }) => {
       ids,
       refetch,
       setLoader,
-      false
+      false,
+      setBulkActionProject
     );
     setSelectedProject([]);
   };
@@ -135,6 +139,7 @@ const ClientProject = ({ clientId }) => {
         setSearchText={setSearchText}
         loader={loader}
         filter
+        setOpenBulkAction={setBulkActionProject}
       />
       {clientProjects?.projects?.length > 0 ? (
         <>
@@ -178,6 +183,14 @@ const ClientProject = ({ clientId }) => {
         setOpen={setBulkDeleteClientProkect}
         onDeleteAction={() => onDeleteAction(selectedProject)}
         title="Delete Project"
+      />
+
+      <BulkActionModal
+        loader={loader}
+        open={bulkActionProject}
+        setOpen={setBulkActionProject}
+        onBulAction={() => onCheckAction(selectedProject)}
+        title="Action"
       />
     </React.Fragment>
   );

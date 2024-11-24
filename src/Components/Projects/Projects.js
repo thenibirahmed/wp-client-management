@@ -21,6 +21,8 @@ import {
   useFetchAllProjects,
 } from "../../hooks/useQuery";
 import { BulkDeleteModal } from "../BulkDeleteModal";
+import ClientOverView from "../Clients/ClientOverView";
+import { BulkActionModal } from "../BulkActionModal";
 
 const Projects = () => {
   const [loader, setLoader] = useState(false);
@@ -42,6 +44,8 @@ const Projects = () => {
     setCreateInvoice,
     bulkDeleteProject,
     setBulkDeleteProject,
+    bulkActionProject,
+    setBulkActionProject,
   } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -101,7 +105,8 @@ const Projects = () => {
       ids,
       refetch,
       setLoader,
-      false
+      false,
+      setBulkActionProject
     );
     setSelectedProject([]);
   };
@@ -135,7 +140,7 @@ const Projects = () => {
         <ProjectTaskDetails />
       ) : (
         <>
-          <ProjectOverView
+          <ClientOverView
             dateRange={dateRange}
             setDateRange={setDateRange}
             dateFrom={dateFrom}
@@ -148,6 +153,7 @@ const Projects = () => {
             setSearchText={setSearchText}
             selectCurrency={selectCurrency}
             setSelectCurrency={setSelectCurrency}
+            title="Projects Overview"
           />
 
           <div className="space-y-6">
@@ -163,6 +169,7 @@ const Projects = () => {
                 setSearchText={setSearchText}
                 loader={loader}
                 filter
+                setOpenBulkAction={setBulkActionProject}
               />
             </>
             {!isLoading ? (
@@ -215,6 +222,13 @@ const Projects = () => {
         setOpen={setBulkDeleteProject}
         onDeleteAction={() => onDeleteAction(selectedProject)}
         title="Delete Project"
+      />
+      <BulkActionModal
+        loader={loader}
+        open={bulkActionProject}
+        setOpen={setBulkActionProject}
+        onBulAction={() => onCheckAction(selectedProject)}
+        title="Action"
       />
     </React.Fragment>
   );

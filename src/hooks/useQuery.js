@@ -1265,7 +1265,8 @@ export const useBulkComplete = async (
   ids,
   refetch,
   setLoader,
-  nestedId = false
+  nestedId = false,
+  setOpenModal = () => {}
 ) => {
   let bulk_ids;
 
@@ -1281,6 +1282,7 @@ export const useBulkComplete = async (
 
     toast.success(data?.message || "Update Successful");
     await refetch();
+    setOpenModal(false);
   } catch (err) {
     console.log(err);
     toast.error(err?.response?.data?.message || "Operation Failed");

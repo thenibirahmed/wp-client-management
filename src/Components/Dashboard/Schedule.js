@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Calendar from "./HorizontaCalendar";
+import Calendar from "./HorizontalCalendar";
 import { ArrowRight02Icon } from "../../utils/icons";
 import useCheckedHandler from "../../utils/useCheckedItem";
 

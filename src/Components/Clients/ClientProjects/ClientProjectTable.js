@@ -131,8 +131,17 @@ const ClientProjectTable = ({
                       : "";
 
                   return (
-                    <tr key={i}>
-                      <td className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal">
+                    <tr
+                      onClick={() =>
+                        (window.location.href = `#/projects/#/${item.id}`)
+                      }
+                      key={i}
+                      className="cursor-pointer"
+                    >
+                      <td
+                        onClick={(e) => e.stopPropagation()}
+                        className="whitespace-nowrap pl-4 sm:pl-6  py-4 text-sm text-textColor font-metropolis font-normal"
+                      >
                         <input
                           checked={isChecked}
                           onChange={(e) =>

@@ -607,7 +607,7 @@ const AddNewInvoiceForm = ({
                         label="Phone Number"
                         required
                         id="phone"
-                        type="number"
+                        type="text"
                         message="This field is required*"
                         placeholder="+11 123 456 7899"
                         register={register}
@@ -665,7 +665,7 @@ const AddNewInvoiceForm = ({
                         label="Phone Number"
                         required
                         id="cphone"
-                        type="number"
+                        type="text"
                         message="This field is required*"
                         placeholder="+11 123 456 7899"
                         register={register}

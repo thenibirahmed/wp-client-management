@@ -34,6 +34,10 @@ export const ContextProvider = ({ children }) => {
   const [bulkDeleteTeamTask, setBulkDeleteTeamTask] = useState(false);
   const [bulkDeleteTeamClient, setBulkDeleteTeamClient] = useState(false);
 
+  const [bulkActionProject, setBulkActionProject] = useState(false);
+  const [bulkActionInvoice, setBulkActionInvoice] = useState(false);
+  const [bulkActionTask, setBulkActionTask] = useState(false);
+
   const [selectStatus, setSelectStatus] = useState("");
   const [selectPriority, setSelectPriority] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("Filter");
@@ -211,6 +215,12 @@ export const ContextProvider = ({ children }) => {
     setBulkDeleteTeamTask,
     bulkDeleteTeamClient,
     setBulkDeleteTeamClient,
+    bulkActionProject,
+    setBulkActionProject,
+    bulkActionInvoice,
+    setBulkActionInvoice,
+    bulkActionTask,
+    setBulkActionTask,
   };
 
   return <ContextApi.Provider value={sendData}>{children}</ContextApi.Provider>;

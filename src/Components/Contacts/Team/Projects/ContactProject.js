@@ -16,6 +16,7 @@ import AddNewProjectForm from "../../../helper/forms/AddNewProjectForm";
 import { useStoreContext } from "../../../../store/ContextApiStore";
 import { useRefetch } from "../../../../hooks/useRefetch";
 import { BulkDeleteModal } from "../../../BulkDeleteModal";
+import { BulkActionModal } from "../../../BulkActionModal";
 
 const ContactProject = ({ teamId }) => {
   const currentPath = useHashRouting("");
@@ -32,6 +33,8 @@ const ContactProject = ({ teamId }) => {
     setSearchText,
     bulkDeleteTeamProject,
     setBulkDeleteTeamProject,
+    bulkActionProject,
+    setBulkActionProject,
   } = useStoreContext();
 
   const {
@@ -71,7 +74,8 @@ const ContactProject = ({ teamId }) => {
       ids,
       refetch,
       setLoader,
-      false
+      false,
+      setBulkActionProject
     );
     setSelectedProject([]);
   };
@@ -95,6 +99,7 @@ const ContactProject = ({ teamId }) => {
             onCheckAction={onCheckAction}
             setSearchText={setSearchText}
             searchText={searchText}
+            setOpenBulkAction={setBulkActionProject}
           />
         </>
         {teamLists?.teamproject?.length > 0 ? (
@@ -134,13 +139,19 @@ const ContactProject = ({ teamId }) => {
           </Modal>
         </>
       </div>
-
       <BulkDeleteModal
         loader={loader}
         open={bulkDeleteTeamProject}
         setOpen={setBulkDeleteTeamProject}
         onDeleteAction={() => onDeleteAction(selectedProject)}
         title="Delete Project"
+      />{" "}
+      <BulkActionModal
+        loader={loader}
+        open={bulkActionProject}
+        setOpen={setBulkActionProject}
+        onBulAction={() => onCheckAction(selectedProject)}
+        title="Action"
       />
     </React.Fragment>
   );

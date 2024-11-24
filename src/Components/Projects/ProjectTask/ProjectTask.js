@@ -18,6 +18,7 @@ import ProjectHeader from "../../helper/projects/ProjectHeader";
 import useHashRouting from "../../../utils/useHashRouting";
 import { useRefetch } from "../../../hooks/useRefetch";
 import { BulkDeleteModal } from "../../BulkDeleteModal";
+import { BulkActionModal } from "../../BulkActionModal";
 
 const ProjectTask = ({ projectId }) => {
   const [loader, setLoader] = useState(false);
@@ -36,6 +37,8 @@ const ProjectTask = ({ projectId }) => {
     setIsFetching,
     bulkDeleteProjectTask,
     setBulkDeleteProjectTask,
+    bulkActionTask,
+    setBulkActionTask,
   } = useStoreContext();
 
   const [selectedProjectTask, setSelectedProjectTask] = useState([]);
@@ -94,7 +97,8 @@ const ProjectTask = ({ projectId }) => {
       ids,
       refetch,
       setLoader,
-      false
+      false,
+      setBulkActionTask
     );
     setSelectedProjectTask([]);
   };
@@ -134,6 +138,7 @@ const ProjectTask = ({ projectId }) => {
         filter
         taskFilter
         loader={loader}
+        setOpenBulkAction={setBulkActionTask}
       />
       <React.Fragment>
         {isLoading ? (
@@ -177,6 +182,14 @@ const ProjectTask = ({ projectId }) => {
         setOpen={setBulkDeleteProjectTask}
         onDeleteAction={() => onDeleteAction(selectedProjectTask)}
         title="Delete Task"
+      />
+
+      <BulkActionModal
+        loader={loader}
+        open={bulkActionTask}
+        setOpen={setBulkActionTask}
+        onBulAction={() => onCheckAction(selectedProjectTask)}
+        title="Action"
       />
     </React.Fragment>
   );
