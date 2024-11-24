@@ -31,6 +31,7 @@ const Client = () => {
 
   const {
     setCreateInvoice,
+    setUpdateInvoice,
     setAllTabItems,
     createClient,
     setCreateClient,
@@ -75,6 +76,7 @@ const Client = () => {
 
   useEffect(() => {
     setCreateInvoice(false);
+    setUpdateInvoice(false);
     setAllTabItems({
       project: true,
       task: true,

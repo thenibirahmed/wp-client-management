@@ -46,6 +46,7 @@ const Projects = () => {
     setBulkDeleteProject,
     bulkActionProject,
     setBulkActionProject,
+    setUpdateInvoice,
   } = useStoreContext();
 
   const currentPath = useHashRouting("");
@@ -113,6 +114,7 @@ const Projects = () => {
 
   useEffect(() => {
     setCreateInvoice(false);
+    setUpdateInvoice(false);
     setAllTabItems({
       project: true,
       task: true,

@@ -203,12 +203,12 @@ const AddNewInvoiceForm = ({
         invoice_items,
       };
 
-      if (update) {
+      if (update && type === "client") {
         if (clientId) {
           sendData.client_id = Number(clientInvoice?.client_id);
         }
       } else {
-        if (clientId) {
+        if (clientId && type === "client") {
           sendData.client_id = Number(clientId);
         }
       }
