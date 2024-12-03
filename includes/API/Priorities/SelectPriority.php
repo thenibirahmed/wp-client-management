@@ -28,7 +28,7 @@ class SelectPriority {
         foreach ($projectPriorities as $priority) {
             $data[] = [
                 'id'   => $priority->id,
-                'name' => $priority->name
+                'name' => ucwords($priority->name)
             ];
         }
 
