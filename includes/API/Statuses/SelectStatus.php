@@ -28,7 +28,7 @@ class SelectStatus {
         foreach ($projectStatuses as $status) {
             $data[] = [
                 'id' => $status->id,
-                'name' => $status->name
+                'name' => ucwords(str_replace('_', ' ', $status->name))
             ];
         }
 

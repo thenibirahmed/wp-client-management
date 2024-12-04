@@ -6,6 +6,7 @@ import { Delete03Icon, PencilEdit02Icon } from "../../../utils/icons";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import { DeleteModal } from "../../DeleteModal";
 import { formatRevenue } from "../../../utils/formatter";
+import toTitleCase from "../../../utils/titleCase";
 
 const InvoiceTable = ({
   invoiceList,
@@ -151,7 +152,7 @@ const InvoiceTable = ({
                         <span
                           className={`${statusClass} py-[2px] px-[10px] font-metropolis font-medium text-xs rounded-[5px]`}
                         >
-                          {item.status}
+                          {toTitleCase(item.status)}
                         </span>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4  text-textColor font-metropolis font-normal text-sm">
