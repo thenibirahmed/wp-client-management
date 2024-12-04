@@ -154,15 +154,27 @@ const AddClientForm = ({
           />
         </div>
 
-        <TextField
-          label="Address"
-          id="address"
-          type="text"
-          message="*Address is required"
-          placeholder="2972 Westheimer Rd. Santa Ana, Illinois 85486 "
-          register={register}
-          errors={errors}
-        />
+        <div className="flex md:flex-row flex-col gap-4 w-full">
+          <TextField
+            label="Address"
+            id="address"
+            type="text"
+            message="*Address is required"
+            placeholder="2972 Westheimer Rd. Santa Ana, Illinois 85486 "
+            register={register}
+            errors={errors}
+          />
+          <TextField
+            label="Designation"
+            id="designation"
+            type="text"
+            message="*designation is required"
+            placeholder="Designation"
+            register={register}
+            errors={errors}
+          />
+        </div>
+
         <div className="flex md:flex-row flex-col gap-4 w-full">
           <TextField
             label="City"
