@@ -22,6 +22,7 @@ class CreateClient {
         'country'      => 'nullable|string',
         'role'         => 'nullable|string',
         'organization' => 'nullable|string',
+        'image_url'    => 'required|string',
         'status'       => 'nullable|string',
     ];
 
@@ -39,6 +40,7 @@ class CreateClient {
         'country.string'      => 'The country must be a valid string.',
         'role.string'         => 'The role must be a valid string.',
         'organization.string' => 'The organization must be a string.',
+        'image_url.string'    => 'The image url must be a string.',
         'status.string'       => 'The status must be a string.',
     ];
 
@@ -64,6 +66,7 @@ class CreateClient {
         $data['zip']          = isset($data['zip']) ? sanitize_text_field($data['zip']) : '';
         $data['country']      = isset($data['country']) ? sanitize_text_field($data['country']) : '';
         $data['organization'] = isset($data['organization']) ? sanitize_text_field($data['organization']) : '';
+        $data['image_url']    = isset($data['image_url']) ? sanitize_url($data['image_url']) : '';
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 
@@ -112,6 +115,7 @@ class CreateClient {
         $client_data = array(
             'eic_crm_user_id' => $eic_crm_user->id,
             'organization'    => $data['organization'],
+            'image_url'       => $data['image_url'],
         );
 
         $client = Client::create($client_data);

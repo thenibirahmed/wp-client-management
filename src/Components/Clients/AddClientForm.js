@@ -203,6 +203,16 @@ const AddClientForm = ({
             errors={errors}
           />
         </div>
+        <div className="flex md:flex-row flex-col gap-4 w-full">
+          <TextField
+              label="Image URL"
+              id="image_url"
+              type="text"
+              placeholder="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
+              register={register}
+              errors={errors}
+            />
+        </div>
         <div className="flex  flex-col gap-2 md:w-1/2 w-full">
           <label
             className={"font-medium text-sm  font-metropolis text-textColor "}

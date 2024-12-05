@@ -15,7 +15,8 @@ class Client extends Model
     protected $fillable  = [
         'eic_crm_user_id',
         'organization',
-        'status'
+        'status',
+        'image_url',
     ];
 
     public static function getActiveClients($page, $from, $to, $search = '')
