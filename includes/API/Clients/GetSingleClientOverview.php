@@ -78,6 +78,7 @@ class GetSingleClientOverview {
             'phone'        => $clientData->eic_crm_user->phone,
             'address'      => $clientData->eic_crm_user->address,
             'organization' => $clientData->organization,
+            'image_url'    => $clientData->image_url,
             'designation'  => $clientData->eic_crm_user->designation,
         ];
 
