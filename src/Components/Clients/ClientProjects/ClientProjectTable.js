@@ -14,6 +14,7 @@ import { useStoreContext } from "../../../store/ContextApiStore";
 import AddNewClientProjectForm from "../../helper/forms/AddNewClientProjectForm";
 import Modal from "../../helper/Modal";
 import { DeleteModal } from "../../DeleteModal";
+import toTitleCase from "../../../utils/titleCase";
 
 const ClientProjectTable = ({
   selectedClient,
@@ -169,7 +170,7 @@ const ClientProjectTable = ({
                         <span
                           className={`${statusClass} py-[2px] px-[10px] font-metropolis font-medium text-xs rounded-[5px]`}
                         >
-                          {item.status}
+                          {toTitleCase(item.status)}
                         </span>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
@@ -183,7 +184,7 @@ const ClientProjectTable = ({
                           ) : (
                             <RedCirlcle />
                           )}
-                          {item.priority}
+                          {toTitleCase(item.priority)}
                         </div>
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">

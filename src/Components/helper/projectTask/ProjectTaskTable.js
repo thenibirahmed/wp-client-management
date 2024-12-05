@@ -15,6 +15,7 @@ import AddNewTaskForm from "./AddNewTaskForm";
 import { useStoreContext } from "../../../store/ContextApiStore";
 import ProjectTaskDetails from "../../Projects/ProjectTask/ProjectTaskDetails";
 import { DeleteModal } from "../../DeleteModal";
+import toTitleCase from "../../../utils/titleCase";
 
 const ProjectTaskTable = ({
   projectId,
@@ -194,7 +195,7 @@ const ProjectTaskTable = ({
                         <span
                           className={`${statusClass} py-[2px] px-[10px] font-metropolis font-medium text-xs rounded-[5px]`}
                         >
-                          {item.status}
+                          {toTitleCase(item.status)}
                         </span>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-textColor font-metropolis font-medium">
@@ -208,7 +209,7 @@ const ProjectTaskTable = ({
                           ) : (
                             <RedCirlcle />
                           )}
-                          {item.priority}
+                          {toTitleCase(item.priority)}
                         </div>
                       </td>
                       <td className="whitespace-nowrap   px-3 py-4 ">

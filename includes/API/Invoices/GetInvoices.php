@@ -2,8 +2,10 @@
 
 namespace WpClientManagement\API\Invoices;
 
+use Carbon\Carbon;
 use WpClientManagement\Helpers\AuthUser;
 use WpClientManagement\Middlewares\AuthMiddleware;
+use WpClientManagement\Models\Client;
 use WpClientManagement\Models\Invoice;
 
 class GetInvoices {
@@ -69,21 +71,47 @@ class GetInvoices {
             ], 401);
         }
 
-        $data = [];
-        foreach ($invoices as $invoice) {
-            $data[] = [
-                'id'             => $invoice->id,
-                'code'           => $invoice->code,
-                'project'        => $invoice->project->title,
-                'amount'         => $invoice->total,
-                'status'         => $invoice->status->name,
-                'payment_method' => $invoice->paymentMethod?->name,
-                'due_date'       => $invoice->due_date ? human_time_diff(strtotime($invoice->due_date), current_time('timestamp')) . ' ago' : null,
+        $clientIds   = $invoices->pluck('client_id')->toArray();
+        $clients     = Client::whereIn('id', $clientIds)
+                    ->with('eic_crm_user')
+                    ->get();
+
+        $wp_user_ids = $clients->pluck('eic_crm_user.wp_user_id')->toArray();
+
+        $wpUsersDb = get_users([
+            'include' => $wp_user_ids,
+        ]);
+
+        $wpUsers = [];
+        foreach ($wpUsersDb as $user) {
+            $wpUsers[$user->ID] = [
+                'name'  => $user->user_login,
+                'email' => $user->user_email,
             ];
         }
 
-        return new \WP_REST_Response([
-            'data' => $data,
+
+        $invoiceWithDetails = $invoices->map(function ($invoice) use ($wpUsers) {
+            $client     = $invoice->client;
+            $wp_user_id = $client?->eic_crm_user->wp_user_id;
+            $wp_user    = $wpUsers[$wp_user_id] ?? [];
+ 
+            return [
+                'id'             => $invoice->id,
+                'code'           => $invoice->code,
+                'client_name'    => $wp_user['name'] ?? '',
+                'project_name'   => $invoice->project?->name,
+                'currency'       => $invoice->currency?->name,
+                'total'          => number_format($invoice->total, 2),
+                'status'         => $invoice->status->name,
+                'payment_method' => $invoice->paymentMethod?->name,
+                'due_date'       => $invoice->due_date ? Carbon::parse($invoice->due_date)->format('M d, Y') : '',
+            ];
+ 
+        });
+
+        $response = [
+            'invoices'   => $invoiceWithDetails,
             'pagination' => [
                 'total'         => $invoices->total(),
                 'per_page'      => $invoices->perPage(),
@@ -92,6 +120,8 @@ class GetInvoices {
                 'next_page_url' => $invoices->nextPageUrl(),
                 'prev_page_url' => $invoices->previousPageUrl(),
             ],
-        ]);
+        ];
+        
+        return new \WP_REST_Response($response);
     }
 }

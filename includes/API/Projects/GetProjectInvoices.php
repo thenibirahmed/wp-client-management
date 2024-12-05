@@ -123,7 +123,6 @@ class GetProjectInvoices {
                'payment_method' => $invoice->paymentMethod?->name,
                'due_date'       => $invoice->due_date ? date('M d, Y', strtotime($invoice->due_date)) : '',
            ];
-
         });
 
         $response = [
