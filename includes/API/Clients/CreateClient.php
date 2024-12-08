@@ -23,7 +23,7 @@ class CreateClient {
         'role'         => 'nullable|string',
         'organization' => 'nullable|string',
         'designation'  => 'nullable|string',
-        'image_url'    => 'required|string',
+        'image_url'    => 'required|url',
         'status'       => 'nullable|string',
     ];
 
@@ -42,7 +42,7 @@ class CreateClient {
         'role.string'         => 'The role must be a valid string.',
         'organization.string' => 'The organization must be a string.',
         'designation.string'  => 'The organization must be a string.',
-        'image_url.string'    => 'The image url must be a string.',
+        'image_url.url'       => 'The image url must be a valid URL.',
         'status.string'       => 'The status must be a string.',
     ];
 
@@ -69,7 +69,7 @@ class CreateClient {
         $data['country']      = isset($data['country']) ? sanitize_text_field($data['country']) : '';
         $data['organization'] = isset($data['organization']) ? sanitize_text_field($data['organization']) : '';
         $data['designation']  = isset($data['designation']) ? sanitize_text_field($data['designation']) : '';
-        $data['image_url']    = isset($data['image_url']) ? sanitize_url($data['image_url']) : '';
+        $data['image_url']    = isset($data['image_url']) ? sanitize_url($data['image_url']) : null;
 
         $validator = $validator->make($data, $this->rules, $this->validationMessages);
 

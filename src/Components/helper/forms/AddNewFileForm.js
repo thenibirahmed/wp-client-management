@@ -51,6 +51,7 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
     const sendData = {
       title: data.title,
       url: data.url,
+      image_url: data.image_url,
     };
 
     if (update) {
@@ -144,6 +145,16 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
             <Image02Icon className="w-4 h-4 text-customBlue" />
             <span>Upload File</span>
           </button>
+        </div>
+        <div className="flex md:flex-row flex-col gap-4 w-full">
+          <TextField
+              label="Image URL"
+              id="image_url"
+              type="text"
+              placeholder="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
+              register={register}
+              errors={errors}
+            />
         </div>
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button

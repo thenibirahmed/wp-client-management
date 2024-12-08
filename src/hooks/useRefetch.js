@@ -105,7 +105,7 @@ export const useUpdateDefaultValue = (update, client, setValue) => {
 export const useUpdateDefaultFileValue = (update, client, setValue, type) => {
   useEffect(() => {
     if (update && client) {
-      const { title, url, client_id, project_id } = client;
+      const { title, url, client_id, project_id, image_url } = client;
 
       if (type === "client") {
         setValue("client_id", client_id);
@@ -115,6 +115,7 @@ export const useUpdateDefaultFileValue = (update, client, setValue, type) => {
 
       setValue("title", title);
       setValue("url", url);
+      setValue('image_url', image_url);
     }
   }, [update, client]);
 };

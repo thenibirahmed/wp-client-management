@@ -74,6 +74,11 @@ const AddClientForm = ({
           message: err?.response?.data?.errors["name"][0],
         });
       }
+      if (err?.response?.data?.errors["image_url"]?.length > 0) {
+        setError("image_url", {
+          message: err?.response?.data?.errors["image_url"][0],
+        });
+      }
     } finally {
       setLoading(false);
     }

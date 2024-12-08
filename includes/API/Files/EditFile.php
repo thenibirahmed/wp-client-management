@@ -42,6 +42,7 @@ class EditFile {
             'project_id' => $file->project_id,
             'title'      => $file->title,
             'url'        => $file->url,
+            'image_url'  => $file->image_url,
         ];
 
         return new \WP_REST_Response([

@@ -120,6 +120,7 @@ class Installer {
                         `title` varchar(255) NOT NULL,
                         `url` varchar(255) NOT NULL,
                         `type` varchar(255) NOT NULL,
+                        `image_url` varchar(255) DEFAULT NULL,
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,
                         PRIMARY KEY (`id`)

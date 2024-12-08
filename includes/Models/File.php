@@ -15,7 +15,8 @@ class File extends Model
         'client_id',
         'title',
         'url',
-        'type'
+        'type',
+        'image_url',
     ];
 
     public static function getClientFiles($id, $page, $from, $to, $search = '')

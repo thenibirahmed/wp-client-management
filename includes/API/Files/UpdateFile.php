@@ -16,6 +16,7 @@ class UpdateFile {
         'project_id'       => 'nullable|exists:eic_projects,id',
         'title'            => 'required|string',
         'url'              => 'required|string',
+        'image_url'        => 'nullable|url',
     ];
 
     protected array $validationMessages = [
@@ -24,7 +25,8 @@ class UpdateFile {
         'project_id.exists'         => 'The Project does not exists',
         'title.required'            => 'The Title is required',
         'title.string'              => 'The Title must be a valid string',
-        'url.required'              => 'The URL is required'
+        'url.required'              => 'The URL is required',
+        'image_url.url'             => 'The Image URL must be a valid URL',
     ];
 
     public function __construct() {
@@ -45,6 +47,7 @@ class UpdateFile {
         $data['client_id']  = isset($data['client_id']) ? intval($data['client_id']) : null;
         $data['title']      = sanitize_text_field($data['title'] ?? '');
         $data['url']        = esc_url_raw($data['url'] ?? '');
+        $data['image_url']  = isset($data['image_url']) ? sanitize_url($data['image_url']) : null;
 
         if(isset($data['project_id']) && !isset($data['client_id'])) {
             $data['client_id'] =  Project::where('id', $data['project_id'])->pluck('client_id')->first();
