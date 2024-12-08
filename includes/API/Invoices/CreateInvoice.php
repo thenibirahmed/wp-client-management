@@ -150,9 +150,21 @@ class CreateInvoice {
         }
 
         if (isset($data['invoice_items']) && is_array($data['invoice_items'])) {
-            $sanitized_invoice_items = array_map(function($item) {
-                return array_map('sanitize_text_field', $item);
-            }, $data['invoice_items']);
+            $sanitized_invoice_items = [];
+
+            foreach($data['invoice_items'] as $invoice_item) {
+                $sanitized_invoice_items[] = [
+                    'details' => isset($invoice_item['itemDetails']) ? sanitize_text_field($invoice_item['itemDetails']) : null,
+                    'quantity' => isset($invoice_item['quantity']) ? intval($invoice_item['quantity']) : null,
+                    'unit_price' => floatval($invoice_item['rate'] ?? 0.0),
+                    'discount_type' => isset($invoice_item['discountType']) ? sanitize_text_field($invoice_item['discountType']) : null,
+                    'discount_value' => floatval($invoice_item['discount'] ?? 0.0),
+                    'tax_type' => isset($invoice_item['taxType']) ? sanitize_text_field($invoice_item['taxType']) : null,
+                    'tax_value' => floatval($invoice_item['tax'] ?? 0.0),
+                    'line_total' => floatval($invoice_item['total'] ?? 0.0),
+                ];
+            }
+
             $invoice->invoice_items()->createMany($sanitized_invoice_items);
         } else {
             $invoice->invoice_items()->createMany([]);
