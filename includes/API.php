@@ -99,6 +99,7 @@ use WpClientManagement\API\Projects\SelectProject;
 use WpClientManagement\API\Projects\SelectProjectManager;
 use WpClientManagement\API\Projects\SelectScheduleClient;
 use WpClientManagement\API\Projects\UpdateProject;
+use WpClientManagement\API\Projects\UpdateProjectAdditionalInfo;
 use WpClientManagement\API\Schedules\CreateSchedule;
 use WpClientManagement\API\Schedules\DeleteSchedule;
 use WpClientManagement\API\Schedules\GetSchedules;
@@ -268,6 +269,7 @@ class API {
         new GetProjectFiles();
         new GetProjectEmails();
         new GetProjectAdditionalInfo();
+        new UpdateProjectAdditionalInfo();
         new GetProjectInvoices();
         new SelectProject();
         new GetSelectedClientDetails();
