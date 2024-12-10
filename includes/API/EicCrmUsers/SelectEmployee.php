@@ -30,8 +30,23 @@ class SelectEmployee {
 
         $wpUsers = [];
         foreach ($wpUsersDb as $user) {
+            $meta = get_user_meta($user->ID);
+            
+            if(
+                (is_null($meta['first_name'][0]) || $meta['first_name'][0] === '')
+                && (is_null($meta['last_name'][0]) || $meta['last_name'][0] === '')
+            ) {
+                $name = "{$meta['nickname'][0]}";
+            } else {
+                if(is_null($meta['nickname'][0]) || $meta['nickname'][0] === '') {
+                    $name = "{$meta['first_name'][0]} {$meta['last_name'][0]}";
+                } else {
+                    $name = "{$meta['first_name'][0]} {$meta['last_name'][0]} ({$meta['nickname'][0]})";
+                }
+            }
+
             $wpUsers[$user->ID] = [
-                'name'  => $user->user_login,
+                'name'  => $name,
             ];
         }
 
@@ -44,6 +59,7 @@ class SelectEmployee {
                 'name' => $wp_user['name'] ?? null
             ];
         });
+        error_log(json_encode($employeeWithDetails));
 
         return new \WP_REST_Response([
             'employee' => $employeeWithDetails
