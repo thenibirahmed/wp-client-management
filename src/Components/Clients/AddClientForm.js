@@ -8,6 +8,7 @@ import Loaders from "../Loaders";
 import { useFetchClientEditDetails } from "../../hooks/useQuery";
 import Skeleton from "../Skeleton";
 import { useUpdateDefaultValue } from "../../hooks/useRefetch";
+import { wpImageUploader } from "../../utils/wpImageUploader";
 
 const AddClientForm = ({
   setOpen,
@@ -15,7 +16,7 @@ const AddClientForm = ({
   update = false,
   clientId = null,
 }) => {
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const imageRef = useRef();
@@ -38,22 +39,29 @@ const AddClientForm = ({
   });
 
   //custom hook for updating default value in the form to edit
-  useUpdateDefaultValue(update, client, setValue);
+  useUpdateDefaultValue(update, client, setValue, setImageUrl);
 
   //submitting the form
   const addNewClientHandler = async (data) => {
     if (update) {
       if (!clientId) return toast.error("ClientId is required");
     }
+    const sendData = {
+      ...data,
+      image_url: imageUrl,
+    };
 
     try {
       setLoading(true);
       let res;
       if (update) {
-        let { data: res } = await api.put(`/client/update/${clientId}`, data);
+        let { data: res } = await api.put(
+          `/client/update/${clientId}`,
+          sendData
+        );
         res = data;
       } else {
-        let { data: res } = await api.post(`/client/create`, data);
+        let { data: res } = await api.post(`/client/create`, sendData);
         res = data;
       }
 
@@ -87,23 +95,25 @@ const AddClientForm = ({
   const onImageUploadHandler = () => {
     // imageRef.current.click();
 
-    var clientPhoto = wp.media({
-      title: "Upload a Photo",
-      button: {
-        text: "Use this photo",
-      },
-      multiple: false,
-    });
+    // var clientPhoto = wp.media({
+    //   title: "Upload a Photo",
+    //   button: {
+    //     text: "Use this photo",
+    //   },
+    //   multiple: false,
+    // });
 
-    clientPhoto.open();
+    // clientPhoto.open();
 
-    clientPhoto.on("select", function () {
-      var image = clientPhoto.state().get("selection").first().toJSON();
-      console.log(image);
-      console.log(image.url);
-    });
+    // clientPhoto.on("select", function () {
+    //   var image = clientPhoto.state().get("selection").first().toJSON();
+    //   //console.log(image);
+    //   setImageUrl(image.url);
+    // });
+
+    wpImageUploader(setImageUrl);
   };
-
+  console.log("url", imageUrl);
   function onError(err) {
     console.log(err);
     toast.error(
@@ -220,16 +230,7 @@ const AddClientForm = ({
             errors={errors}
           />
         </div>
-        <div className="flex md:flex-row flex-col gap-4 w-full">
-          <TextField
-              label="Image URL"
-              id="image_url"
-              type="text"
-              placeholder="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
-              register={register}
-              errors={errors}
-            />
-        </div>
+
         <div className="flex  flex-col gap-2 md:w-1/2 w-full">
           <label
             className={"font-medium text-sm  font-metropolis text-textColor "}
@@ -238,7 +239,6 @@ const AddClientForm = ({
           </label>
 
           <input
-            onChange={(e) => setImageUrl(e.target.files[0])}
             ref={imageRef}
             type="file"
             className="hidden"
@@ -253,6 +253,23 @@ const AddClientForm = ({
             <span>Upload Image</span>
           </button>
         </div>
+        {imageUrl && (
+          <div className="relative">
+            <div className=" flex justify-end w-full mb-2">
+              <button
+                onClick={() => setImageUrl(null)}
+                className="bg-rose-700 text-white px-2 py-1 rounded-lg"
+              >
+                Remove
+              </button>
+            </div>
+
+            <img
+              className="min-w-32 max-w-44 h-auto rounded-md"
+              src={imageUrl}
+            />
+          </div>
+        )}
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button
             disabled={loading}

@@ -73,7 +73,12 @@ export const useInvoiceRefetch = (paginationUrl, isFetching, refetch) => {
   }, [paginationUrl, isFetching]);
 };
 
-export const useUpdateDefaultValue = (update, client, setValue) => {
+export const useUpdateDefaultValue = (
+  update,
+  client,
+  setValue,
+  setImageUrl
+) => {
   useEffect(() => {
     if (update && client) {
       const {
@@ -87,6 +92,7 @@ export const useUpdateDefaultValue = (update, client, setValue) => {
         phone,
         state,
         zip,
+        image_url,
       } = client;
 
       setValue("name", name);
@@ -98,6 +104,7 @@ export const useUpdateDefaultValue = (update, client, setValue) => {
       setValue("phone", phone);
       setValue("state", state);
       setValue("zip", zip);
+      setImageUrl(image_url);
     }
   }, [update, client]);
 };
@@ -115,7 +122,7 @@ export const useUpdateDefaultFileValue = (update, client, setValue, type) => {
 
       setValue("title", title);
       setValue("url", url);
-      setValue('image_url', image_url);
+      setValue("image_url", image_url);
     }
   }, [update, client]);
 };
