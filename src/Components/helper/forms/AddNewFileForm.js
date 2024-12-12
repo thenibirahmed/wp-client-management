@@ -10,10 +10,11 @@ import Loaders from "../../Loaders";
 import { useFetchFileEditDetails } from "../../../hooks/useQuery";
 import { useUpdateDefaultFileValue } from "../../../hooks/useRefetch";
 import Skeleton from "../../Skeleton";
+import { wpImageUploader } from "../../../utils/wpImageUploader";
 
 const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
   const { setOpenFileModal, setIsFetching } = useStoreContext();
-  const [imageUrl, setImageUrl] = useState();
+  const [imageUrl, setImageUrl] = useState(null);
   const [submitLoader, setSubmitLoader] = useState(false);
   const imageRef = useRef();
 
@@ -50,8 +51,7 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
     setIsFetching(true);
     const sendData = {
       title: data.title,
-      url: data.url,
-      image_url: data.image_url,
+      image_url: data.url ? data.url : imageUrl,
     };
 
     if (update) {
@@ -67,6 +67,8 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
         sendData.client_id = id;
       }
     }
+
+    console.log("sendData", sendData);
 
     try {
       let res;
@@ -92,14 +94,8 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
   };
 
   const onImageUploadHandler = () => {
-    imageRef.current.click();
+    wpImageUploader(setImageUrl);
   };
-
-  useEffect(() => {
-    if (imageUrl) {
-      reset();
-    }
-  }, [imageUrl]);
 
   if (fileLoader) return <Skeleton />;
   return (
@@ -107,7 +103,7 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
       <form className="space-y-4 " onSubmit={handleSubmit(addNewFileHandler)}>
         <TextField
           label="Title"
-          required={!imageUrl}
+          required
           id="title"
           type="text"
           message="*Title is required"
@@ -131,12 +127,7 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
         </div>
 
         <div className="flex  flex-col gap-2  w-full">
-          <input
-            onChange={(e) => setImageUrl(e.target.files[0])}
-            ref={imageRef}
-            type="file"
-            className="hidden"
-          />
+          <input ref={imageRef} type="file" className="hidden" />
           <button
             type="button"
             onClick={onImageUploadHandler}
@@ -146,16 +137,25 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
             <span>Upload File</span>
           </button>
         </div>
-        <div className="flex md:flex-row flex-col gap-4 w-full">
-          <TextField
-              label="Image URL"
-              id="image_url"
-              type="text"
-              placeholder="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
-              register={register}
-              errors={errors}
+
+        {imageUrl && (
+          <div className="relative">
+            <div className=" flex justify-end w-full mb-2">
+              <button
+                onClick={() => setImageUrl(null)}
+                className="bg-rose-700 text-white px-2 py-1 rounded-lg"
+              >
+                Remove
+              </button>
+            </div>
+
+            <img
+              className="min-w-32 max-w-44 h-auto rounded-md"
+              src={imageUrl}
             />
-        </div>
+          </div>
+        )}
+
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button
             onClick={() => {

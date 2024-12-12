@@ -270,7 +270,8 @@ export const useFetchFileEditDetails = (id, update, onError) => {
     },
     {
       select: (data) => {
-        const { id, client_id, project_id, title, url, image_url } = data.data.file;
+        const { id, client_id, project_id, title, url, image_url } =
+          data.data.file;
 
         return { id, client_id, project_id, title, url, image_url };
       },
