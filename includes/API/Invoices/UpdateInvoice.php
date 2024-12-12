@@ -171,16 +171,26 @@ class UpdateInvoice {
 
             foreach ($data['invoice_items'] as $item) {
                 $sanitized_item = array_map('sanitize_text_field', $item);
+                $invoice_item_data = [
+                    'details'        => $item['itemDetails'],
+                    'quantity'       => $item['quantity'],
+                    'unit_price'     => $item['rate'],
+                    'discount_type'  => $item['discountType'],
+                    'discount_value' => $item['discount'],
+                    'tax_type'       => $item['taxType'],
+                    'tax_value'      => $item['tax'],
+                    'line_total'     => $item['total'],
+                ];
 
                 if (!empty($sanitized_item['id'])) {
                     $provided_item_ids[] = $sanitized_item['id'];
 
                     $invoiceItem = $invoice->invoice_items()->find($sanitized_item['id']);
                     if ($invoiceItem) {
-                        $invoiceItem->update($sanitized_item);
+                        $invoiceItem->update($invoice_item_data);
                     }
                 } else {
-                    $newItem = $invoice->invoice_items()->create($sanitized_item);
+                    $newItem = $invoice->invoice_items()->create($invoice_item_data);
                     $provided_item_ids[] = $newItem->id;
                 }
             }

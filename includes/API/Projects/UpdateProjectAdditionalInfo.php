@@ -55,7 +55,6 @@ class UpdateProjectAdditionalInfo {
             ], 404);
         }
 
-        error_log(json_encode($data));
         $project->update([
             'description' => $data['description'],
         ]);

@@ -16,7 +16,7 @@ class CreateFile{
         'client_id'        => 'nullable|exists:eic_clients,id',
         'project_id'       => 'nullable|exists:eic_projects,id',
         'title'            => 'required|string',
-        'url'              => 'required|string',
+        'url'              => 'nullable|string',
         'image_url'        => 'nullable|url',
     ];
 
@@ -27,7 +27,6 @@ class CreateFile{
         'client_id.exists'          => 'The Client does not exists',
         'title.required'            => 'The Title is required',
         'title.string'              => 'The Title must be a valid string',
-        'url.required'              => 'The URL is required',
         'image_url.url'             => 'The Image URL must be a valid URL',
     ];
 

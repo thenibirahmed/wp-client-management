@@ -59,7 +59,6 @@ class SelectEmployee {
                 'name' => $wp_user['name'] ?? null
             ];
         });
-        error_log(json_encode($employeeWithDetails));
 
         return new \WP_REST_Response([
             'employee' => $employeeWithDetails
