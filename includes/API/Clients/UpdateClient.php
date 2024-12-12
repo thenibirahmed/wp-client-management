@@ -23,6 +23,7 @@ class UpdateClient {
             'country'      => 'nullable|string',
             'role'         => 'nullable|string',
             'organization' => 'nullable|string',
+            'image_url'    => 'required|url',
             'status'       => 'nullable|string',
         ];
     }
@@ -41,6 +42,7 @@ class UpdateClient {
         'country.string'      => 'The country must be a valid string.',
         'role.string'         => 'The role must be a valid string.',
         'organization.string' => 'The organization must be a string.',
+        'image_url.url'       => 'The image url must be a valid URL.',
         'status.string'       => 'The status must be a string.',
     ];
 
@@ -68,6 +70,7 @@ class UpdateClient {
         $data['zip']          = isset($data['zip']) ? sanitize_text_field($data['zip']) : '';
         $data['country']      = isset($data['country']) ? sanitize_text_field($data['country']) : '';
         $data['organization'] = isset($data['organization']) ? sanitize_text_field($data['organization']) : '';
+        $data['image_url']    = isset($data['image_url']) ? sanitize_url($data['image_url']) : null;
 
         $client = Client::find($id);
 
@@ -126,7 +129,8 @@ class UpdateClient {
         }
 
         $client->update([
-            'organization' => $data['organization']
+            'organization' => $data['organization'],
+            'image_url'    => $data['image_url'],
         ]);
 
         return new \WP_REST_Response([

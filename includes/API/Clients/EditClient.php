@@ -58,6 +58,7 @@ class EditClient{
             'state'        => $eic_crm_user->state,
             'zip'          => $eic_crm_user->zip,
             'country'      => $eic_crm_user->country,
+            'image_url'    => $client->image_url,
         ];
 
         return new \WP_REST_Response([
