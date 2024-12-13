@@ -131,6 +131,7 @@ export const useFetchClientEditDetails = (id, update, onError) => {
           phone,
           state,
           zip,
+          image_url,
         } = data.data.client;
 
         return {
@@ -144,6 +145,7 @@ export const useFetchClientEditDetails = (id, update, onError) => {
           phone,
           state,
           zip,
+          image_url,
         };
       },
       enabled: !!id && update,
@@ -270,10 +272,9 @@ export const useFetchFileEditDetails = (id, update, onError) => {
     },
     {
       select: (data) => {
-        const { id, client_id, project_id, title, url, image_url } =
-          data.data.file;
+        const { id, client_id, project_id, title, url } = data.data.file;
 
-        return { id, client_id, project_id, title, url, image_url };
+        return { id, client_id, project_id, title, url };
       },
       enabled: !!id && update,
       onError,

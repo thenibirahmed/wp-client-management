@@ -51,7 +51,7 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
     setIsFetching(true);
     const sendData = {
       title: data.title,
-      image_url: data.url ? data.url : imageUrl,
+      url: data.url,
     };
 
     if (update) {
@@ -67,8 +67,6 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
         sendData.client_id = id;
       }
     }
-
-    console.log("sendData", sendData);
 
     try {
       let res;
@@ -97,6 +95,12 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
     wpImageUploader(setImageUrl);
   };
 
+  useEffect(() => {
+    if (imageUrl) {
+      setValue("url", imageUrl);
+    }
+  }, [imageUrl]);
+
   if (fileLoader) return <Skeleton />;
   return (
     <div className="py-5 relative h-full ">
@@ -113,7 +117,7 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
         />
         <TextField
           label="Add URL / Upload File"
-          required={!imageUrl}
+          required
           id="url"
           type="url"
           message="*Url is required"
@@ -137,24 +141,6 @@ const AddNewFileForm = ({ refetch, setOpen, type, id, update = false }) => {
             <span>Upload File</span>
           </button>
         </div>
-
-        {imageUrl && (
-          <div className="relative">
-            <div className=" flex justify-end w-full mb-2">
-              <button
-                onClick={() => setImageUrl(null)}
-                className="bg-rose-700 text-white px-2 py-1 rounded-lg"
-              >
-                Remove
-              </button>
-            </div>
-
-            <img
-              className="min-w-32 max-w-44 h-auto rounded-md"
-              src={imageUrl}
-            />
-          </div>
-        )}
 
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button

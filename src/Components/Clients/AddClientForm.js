@@ -39,7 +39,7 @@ const AddClientForm = ({
   });
 
   //custom hook for updating default value in the form to edit
-  useUpdateDefaultValue(update, client, setValue, setImageUrl);
+  useUpdateDefaultValue(update, client, setValue);
 
   //submitting the form
   const addNewClientHandler = async (data) => {
@@ -50,6 +50,8 @@ const AddClientForm = ({
       ...data,
       image_url: imageUrl,
     };
+
+    console.log("sendData", sendData);
 
     try {
       setLoading(true);
@@ -113,7 +115,13 @@ const AddClientForm = ({
 
     wpImageUploader(setImageUrl);
   };
-  console.log("url", imageUrl);
+
+  useEffect(() => {
+    if (imageUrl) {
+      setValue("image_url", imageUrl);
+    }
+  }, [imageUrl]);
+
   function onError(err) {
     console.log(err);
     toast.error(
@@ -230,6 +238,18 @@ const AddClientForm = ({
             errors={errors}
           />
         </div>
+        <div className=" w-full">
+          <TextField
+            label="Add URL / Upload File"
+            id="image_url"
+            type="text"
+            placeholder="Image url"
+            register={register}
+            errors={errors}
+            required={false}
+            message="Image url required"
+          />
+        </div>
 
         <div className="flex  flex-col gap-2 md:w-1/2 w-full">
           <label
@@ -253,23 +273,7 @@ const AddClientForm = ({
             <span>Upload Image</span>
           </button>
         </div>
-        {imageUrl && (
-          <div className="relative">
-            <div className=" flex justify-end w-full mb-2">
-              <button
-                onClick={() => setImageUrl(null)}
-                className="bg-rose-700 text-white px-2 py-1 rounded-lg"
-              >
-                Remove
-              </button>
-            </div>
 
-            <img
-              className="min-w-32 max-w-44 h-auto rounded-md"
-              src={imageUrl}
-            />
-          </div>
-        )}
         <div className="flex  w-full justify-between items-center absolute bottom-5">
           <button
             disabled={loading}
