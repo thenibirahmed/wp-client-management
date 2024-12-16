@@ -23,7 +23,7 @@ class CreateClient {
         'role'         => 'nullable|string',
         'organization' => 'nullable|string',
         'designation'  => 'nullable|string',
-        'image_url'    => 'required|url',
+        'image_url'    => 'nullable|url',
         'status'       => 'nullable|string',
     ];
 
