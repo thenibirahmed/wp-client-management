@@ -1,4 +1,5 @@
 import React, { lazy } from "react";
+import EstimateInvoice from "../Components/EstimateInvoice/EstimateInvoice";
 
 const Dashboard = lazy(() => import("../Components/Dashboard/Dashboard"));
 const Invoices = lazy(() => import("../Components/Invoices/Invoices"));
@@ -48,10 +49,14 @@ export const renderComponent = (path, activeUrl, paginationUrl) => {
     case `projects/#/${activeUrl}`:
       return <ProjectDetail />;
 
+    case "estimate-invoice":
+      return <EstimateInvoice />;
+
     case "invoices":
       return <Invoices />;
     case `invoices/?${paginationUrl}`:
       return <Invoices />;
+
     case "schedules":
       return <Schedules />;
     case `schedules/?${paginationUrl}`:
