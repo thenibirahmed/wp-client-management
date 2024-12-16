@@ -183,15 +183,15 @@ class UpdateInvoice {
                 ];
 
                 if (!empty($sanitized_item['id'])) {
-                    $provided_item_ids[] = $sanitized_item['id'];
+                    $newItem = $invoice->invoice_items()->create($invoice_item_data);
+                    $provided_item_ids[] = $newItem->id;
+                } else {
+                    $provided_item_ids[] = $sanitized_item['invoice_id'];
 
-                    $invoiceItem = $invoice->invoice_items()->find($sanitized_item['id']);
+                    $invoiceItem = $invoice->invoice_items()->find($sanitized_item['invoice_id']);
                     if ($invoiceItem) {
                         $invoiceItem->update($invoice_item_data);
                     }
-                } else {
-                    $newItem = $invoice->invoice_items()->create($invoice_item_data);
-                    $provided_item_ids[] = $newItem->id;
                 }
             }
 
