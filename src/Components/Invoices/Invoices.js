@@ -43,7 +43,7 @@ const Invoices = () => {
       <h1 className="font-metropolis font-semibold  text-textColor text-2xl">
         All Invoices
       </h1>
-      {invoiceList?.invoices.length > 0 ? (
+      {invoiceList?.invoices?.length > 0 ? (
         <React.Fragment>
           {invoiceLoader ? (
             <Skeleton />

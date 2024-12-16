@@ -32,8 +32,8 @@ export const navigationItems = [
   },
   {
     name: "Estimates & Invoices",
-    href: "#/invoices",
-    link: "invoices",
+    href: "#/estimate-invoice",
+    link: "estimate-invoice",
     icon: Invoice01Icon,
     current: false,
   },
