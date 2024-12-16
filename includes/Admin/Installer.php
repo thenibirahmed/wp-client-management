@@ -69,6 +69,7 @@ class Installer {
                         `organization` varchar(255) DEFAULT NULL,
                         `status` varchar(255) NOT NULL DEFAULT 'unknown',
                         `image_url` varchar(255) DEFAULT NULL,
+                        `description` varchar(255) DEFAULT NULL,
                         `created_at` timestamp NULL DEFAULT NULL,
                         `updated_at` timestamp NULL DEFAULT NULL,
                         PRIMARY KEY (`id`)
